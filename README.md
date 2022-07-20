@@ -3,4 +3,4 @@
 This app is created using:-
  a) React Js
  b) Node.Js
- c) Stream Services
+ c) Spcket.IO
