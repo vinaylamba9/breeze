@@ -19,12 +19,13 @@ const PORT = process.env.PORT
 
 const BASIC_UTILS = require("./utils/basicUtils.js");
 const DB_UTILS = require("./utils/dbUtils");
-
+const { DB_CONFIG } = require("./config/dbConfig");
+const users = require("./routes/userRoutes/index");
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
 
 /* ================ Configuring Database START  =================*/
-// DB_UTILS.dbUtils.dbInit();
+DB_CONFIG.dbInit();
 /* ================ Configuring Database END  =================*/
 
 
@@ -43,9 +44,6 @@ app.use(helmet());
 /* ================ Configuring body and Cookie Parser END  =================*/
 
 
-app.get("/", (req, res) => {
-    res.send("Hello world")
-})
 
 app.get("/api/chat", (req, res) => {
     res.send(chats);
@@ -55,6 +53,16 @@ app.get("/api/chat/:id", (req, res) => {
     const singleChat = chats.find(ch => ch._id == req.params.id);
     res.send(singleChat);
 })
+
+/* ========================= ROUTES START ==============================*/
+
+
+// app.use("/", index)              // INDEX ROUTES
+app.use("/api/user", users);        // USERS ROUTES
+
+/* ========================= ROUTES END ==============================*/
+
+
 
 /* ================ Connecting with the PORT STARTS  =================*/
 
