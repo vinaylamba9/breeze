@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const userModel = require("../models/userModel");
 
 const DB_UTILS = {
-    findByEmailOrUserName: async function (email) {
+    findByEmail: async function (email) {
         try {
             let dbResponse = await userModel.findOne(
                 {

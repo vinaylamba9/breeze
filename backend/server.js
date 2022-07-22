@@ -5,20 +5,13 @@ const app = express();
 const path = require("path");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const session = require("express-session");
 const helmet = require('helmet');
-const SHA256 = require("crypto-js/sha256");
-const MongoStore = require('connect-mongo');
-const mongoose = require("mongoose");
 const cors = require('cors');
 const { chats } = require("./data/data");
 const PORT = process.env.PORT
 
 
 /* ================ Configuring UTILITY PACKAGES START  =================*/
-
-const BASIC_UTILS = require("./utils/basicUtils.js");
-const DB_UTILS = require("./utils/dbUtils");
 const { DB_CONFIG } = require("./config/dbConfig");
 const users = require("./routes/userRoutes/index");
 /* ================ Configuring UTILITY PACKAGES END  =================*/
@@ -79,4 +72,4 @@ const bootstrapMessage = () => {
 
 app.listen(PORT).on('listening', onListening);
 
-/* ================ Connecting with the PORT STARTS  =================*/
+/* ================ Connecting with the PORT ENDS  =================*/
