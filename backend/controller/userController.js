@@ -30,7 +30,7 @@ const userController = {
                 responseData = errors;
                 responseMessage = HTTPStatusCode.BAD_REQUEST
             } else {
-                let dbResponse = await DB_UTILS.findByEmailOrUserName(req.body.email);
+                let dbResponse = await DB_UTILS.findByEmail(req.body.email);
                 if (!dbResponse) {
                     let signupData = {
                         "email": req.body.email,
@@ -40,7 +40,6 @@ const userController = {
                     };
                     let signedUpResponse = await DB_UTILS.createUser(userModel, signupData);
                     if (signedUpResponse) {
-                        //TODO:- ADD AUTH TOKEN;
                         const token = await signedUpResponse.createToken();
                         signedUpResponse.token = token;
                         responseStatusCode = HTTPStatusCode.CREATED;
@@ -49,12 +48,49 @@ const userController = {
                     } else {
                         responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                         responseData = errors;
-                        responseMessage = "Failed to create user."
+                        responseMessage = "FAILED TO CREATE USER."
                     }
                 } else {
                     responseStatusCode = HTTPStatusCode.FORBIDDEN;
                     responseMessage = HTTPStatusCode.FORBIDDEN;
                     responseData = "USER ALREADY EXISTS."
+                }
+            }
+        } catch (error) {
+            responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        } finally {
+            return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+        }
+    },
+    loginUser: async function (req, res) {
+        let responseStatusCode, responseMessage, responseData;
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                responseData = errors;
+                responseMessage = HTTPStatusCode.BAD_REQUEST
+            } else {
+                let dbResponse = await DB_UTILS.findByEmail(req.body.email);
+                if (dbResponse) {
+                    const isPasswordMatched = await bcrypt.compare(req.body.password, dbResponse.password);
+                    if (isPasswordMatched) {
+                        const token = await dbResponse.createToken();              // CREATE TOKEN
+                        dbResponse.token = token;                         // ASSIGNING JWT TOKEN
+                        responseStatusCode = HTTPStatusCode.OK;
+                        responseMessage = HTTPStatusCode.OK;
+                        responseData = dbResponse
+                    } else {
+                        responseStatusCode = HTTPStatusCode.NOT_FOUND;
+                        responseMessage = HTTPStatusCode.NOT_FOUND;
+                        responseData = "PASSWORD DOESN'T MATCH."
+                    }
+                } else {
+                    responseStatusCode = HTTPStatusCode.NOT_FOUND;
+                    responseMessage = HTTPStatusCode.NOT_FOUND;
+                    responseData = "USER NOT FOUND."
                 }
             }
         } catch (error) {
