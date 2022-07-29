@@ -2,8 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-colorWithOpacity: #f1f5fa;
+  --secondary-color: #757d85;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --danger-colorWithOpacity: #fdf2f3;
+  --info-color: #17a2b8;
+  --muted-color: #6c757d;
+  --success-color: #28a745;
+  --text-color-purity: #fff;
+  --text-color-dark: #000;
+  --background-color-light: #fff;
+  --background-color-dark: #000;
+  --background-color-ebony: #5c5b5b;
+  --background-color-metal: #969696;
+  --background-color-jade: #313131;
+  --background-color-raven: #050301;
+  --background-color-leather: #0b0705;
+  --background-color-pulp: #f7edc9;
+  --color-darkTeal: #005459;
+  --color-TealWithOpacity: #f5fcf9;
+  --color-champagne: #fcf0da;
+  --fontsize-strong: 40px;
+  --fontsize-tough: 32px;
+  --fontsize-pearl: 28px;
+  --fontsize-trim: 24px;
+  --fontsize-glossy: 20px;
+  --fontsize-virgin: 18px;
+  --fontsize-brittle: 16px;
+}
+
 * {
-  overflow-x: hidden;
+  overflow: hidden;
   word-wrap: break-word;
 }
 ::-webkit-scrollbar {
