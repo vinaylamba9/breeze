@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 const ToggleOnBoard = ({ label, linkLabel, link }) => {
     return (
-        <div className="mt-4 text-fontsize-brittle mr-10 self-end">
-            <p>
+        <div className="mt-5% text-fontsize-brittle mr-10% self-end">
+            <p className="text-fontsize-brittle text-text-color-dark">
                 {label}
                 <b>
-                    <Link className="text-color-darkTeal" to={link}>{linkLabel}</Link>
+                    <Link className="text-color-darkTeal no-underline" to={link}>{linkLabel}</Link>
                 </b>
             </p>
         </div>

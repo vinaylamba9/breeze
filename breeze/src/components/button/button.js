@@ -2,15 +2,15 @@ import PropTypes from "prop-types";
 
 
 const Button = ({ label, onClickHandler, icon, backgroundColor, textColor }) => {
-    console.log(label)
+
     return (
-        <div onClick={onClickHandler} style={{ backgroundColor: backgroundColor, color: textColor }}
+        <div onClick={onClickHandler} style={{ backgroundColor: backgroundColor, color: textColor, boxShadow: "1px 5px 15px rgba(0, 0, 0, 0.1)" }}
             className="flex w-60% outline-none border-none cursor-pointer rounded-3xl mx-4 my-4 px-8 py-3.5 text-fontsize-brittle active:opacity-90 active:bg-primaryColorWithOpacity active:transition-all">
-            <div className="">
-                {icon && <img src={icon} height="20" width="20" alt="icon" />}
+            <div className="left-0">
+                {icon && <img src={icon} height="20" width="20" alt="google" />}
             </div >
-            <div className="flex basis-11/12 justify-center">
-                <p>{label}</p>
+            <div className="flex basis-100% justify-center">
+                {label}
             </div>
         </div >
     )
