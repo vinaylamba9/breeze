@@ -70,7 +70,7 @@ InputField.propTypes = {
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number
-    ]).isRequired
+    ])
 }
 export default InputField
 

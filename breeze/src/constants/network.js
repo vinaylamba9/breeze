@@ -10,10 +10,10 @@ export class NetworkInfo {
 }
 
 export class MethodType {
-    static get = "/get";
-    static post = "/post";
-    static put = "/update";
-    static delete = "/delete";
+    static GET = "/get";
+    static POST = "/post";
+    static PUT = "/update";
+    static DELETE = "/delete";
 }
 
 export class APIType {
