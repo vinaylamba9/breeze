@@ -53,6 +53,10 @@ app.get("/api/chat/:id", (req, res) => {
 // app.use("/", index)              // INDEX ROUTES
 app.use("/api/user", users);        // USERS ROUTES
 
+
+//TODO:-
+// app.use(notFound);
+// app.use(errorHandle);
 /* ========================= ROUTES END ==============================*/
 
 
