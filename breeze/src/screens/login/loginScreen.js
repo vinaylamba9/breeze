@@ -24,7 +24,7 @@ const LoginScreen = () => {
         <div className='flex flex-col animate-fadeIn'>
             <ToggleOnBoard label='New to Breeze? ' linkLabel='Signup' link={Routes.SIGNUPROUTE} />
             <center>
-                <div className='mt-10% text-fontsize-brittle'>
+                <div className='mt-5% text-fontsize-brittle'>
                     <TypewriterLabel label="Log in with " />
                     <InputField
                         type="text"

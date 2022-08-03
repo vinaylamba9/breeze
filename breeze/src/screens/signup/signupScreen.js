@@ -12,7 +12,6 @@ import GoogleIcon from "assets/images/google.png";
 import { InputType } from 'constants/application';
 import Toast from 'components/toast/toast';
 import Spinner from 'components/spinner/spinner';
-import { MethodType } from 'constants/network';
 import axios from 'axios';
 
 
@@ -20,7 +19,7 @@ const SignupScreen = () => {
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [isLoading, setIsLoading] = useState(false);
     const [imageURL, setImageURL] = useState("");
-
+    const [toastComponent, setToastComponent] = useState("");
 
     const profileImageUpload = async (pics) => {
         setIsLoading(true);
@@ -29,12 +28,12 @@ const SignupScreen = () => {
             data.append("file", pics);
             data.append("upload_preset", process.env.REACT_APP_NAME)
             data.append("cloud_name", process.env.REACT_APP_CLOUDNAME)
-            let response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
-            response = response.data;
-            setImageURL(response.url.toString());
+            const response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
+            console.log(response, '-----🍠 ----------');
+            let result = response.data;
+            setImageURL(result.url.toString());
             setIsLoading(false);
-        } else {
-            return <Toast backgroundColor={`var(--color-darkTeal)`} toastTitle="Avatar Upload" toastSubtitle="Please select an Image." toastIcon="" />;
+            setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle="Avatar uploaded successfully." dismissTime={5000} />)
         }
     }
 
@@ -50,12 +49,12 @@ const SignupScreen = () => {
 
     return (
         <div className='flex flex-col animate-fadeIn'>
-            {isLoading && <Spinner />}
+
             <ToggleOnBoard label='Already a user? ' linkLabel='Login' link={Routes.LOGINROUTE} />
             <center>
                 <div className=' flex flex-col text-fontsize-brittle '>
                     <TypewriterLabel label="Signup with " />
-                    <div className='-mt-5% border '>
+                    <div className='-mt-5% '>
                         <InputField
                             type={InputType.TEXT}
                             name="name"
@@ -85,16 +84,20 @@ const SignupScreen = () => {
                             validators={[ValidateInput.required, ValidateInput.password]}
                             errorMsg={error["password"]}
                         />
-                        {/* <Toast backgroundColor={`var(--color-darkTeal)`} toastTitle="Image Uploaded." toastSubtitle="Hello, world!" toastIcon="" /> */}
-                        <InputField
-                            type={InputType.FILE}
-                            name="profileImage"
-                            value={formValues["profileImage"]}
-                            placeholder="* Avatar"
-                            onChangeHandler={(e) => profileImageUpload(e.target.files[0])}
-                            validators={[ValidateInput.required]}
-                            errorMsg={error["profileImage"]}
-                        />
+
+                        {isLoading === false ? toastComponent : ""}
+
+                        {
+                            isLoading === false ?
+                                <InputField
+                                    type={InputType.FILE}
+                                    name="profileImage"
+                                    placeholder="* profileImage"
+                                    accept="image/x-png,image/gif,image/jpeg"
+                                    onChangeHandler={(e) => profileImageUpload(e.target.files[0])}
+                                />
+                                : <Spinner />
+                        }
                         <Button
                             backgroundColor={`var(--color-darkTeal)`}
                             textColor={`var(--text-color-purity)`}

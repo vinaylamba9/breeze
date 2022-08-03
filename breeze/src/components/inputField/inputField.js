@@ -4,7 +4,7 @@ import { Fragment, useEffect } from 'react';
 import { useRef, useState } from 'react';
 
 
-const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators }) => {
+const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators, accept }) => {
 
     const inputRef = useRef();
     const [error, setError] = useState(errorMsg);
@@ -21,16 +21,17 @@ const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg,
             <div className="flex flex-row  content-center justify-center items-center py-2%  ">
                 <input
                     ref={inputRef}
-                    className={!(error === "") ?
-                        `rounded-3xl 
+                    className={
+                        error ?
+                            `rounded-3xl 
                         text-background-color-dark
                         bg-dangerColorWithOpacity
                         w-60%  px-5% py-2.5
                         border-none
                         text-fontsize-brittle
                         outline-2 outline-danger-color ` :
-
-                        `rounded-3xl 
+                            `rounded-3xl 
+                            
                         text-background-color-dark
                         bg-color-TealWithOpacity 
                         w-60% px-8 py-2.5
@@ -44,9 +45,10 @@ const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg,
                     placeholder={placeholder}
                     value={value}
                     onChange={onChangeHandler}
+                    accept={accept && accept}
                 />
                 {
-                    trailingIcon && <div style={{ position: "absolute", right: "12%" }}
+                    trailingIcon && <div style={{ cursor: "pointer", position: "absolute", right: "12%" }}
                         onClick={onIconToggleHandler}>{trailingIcon}
                     </div>
                 }
@@ -65,7 +67,7 @@ InputField.propTypes = {
     placeholder: PropTypes.string.isRequired,
     onChangeHandler: PropTypes.func.isRequired,
     onIconToggleHandler: PropTypes.func,
-    validators: PropTypes.array.isRequired,
+    validators: PropTypes.array,
     errorMsg: PropTypes.string,
     value: PropTypes.oneOfType([
         PropTypes.string,

@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
-  // purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false,
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
   theme: {
@@ -70,7 +70,8 @@ module.exports = {
         '60%': '60%',
         '70%': '70%',
         '80%': '80%',
-        '90%': '90%'
+        '90%': '90%',
+        '100%': '100%'
       },
       flexBasis: {
         '10%': '10%',
@@ -122,6 +123,9 @@ module.exports = {
             opacity: '1'
           }
         }
+      },
+      boxShadow: {
+        'material': '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
       }
     },
   },
