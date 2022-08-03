@@ -29,11 +29,10 @@ const SignupScreen = () => {
             data.append("upload_preset", process.env.REACT_APP_NAME)
             data.append("cloud_name", process.env.REACT_APP_CLOUDNAME)
             const response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
-            console.log(response, '-----🍠 ----------');
             let result = response.data;
             setImageURL(result.url.toString());
             setIsLoading(false);
-            setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle="Avatar uploaded successfully." dismissTime={5000} />)
+            setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle="Avatar uploaded successfully." dismissTime={2000} />)
         }
     }
 

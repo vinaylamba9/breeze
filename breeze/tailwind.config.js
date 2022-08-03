@@ -112,7 +112,10 @@ module.exports = {
         '90%': '90%'
       },
       animation: {
-        'fadeIn': 'fadeIn 1s'
+        'fadeIn': 'fadeIn 1s',
+        'fadeOut': 'fadeOut 1s',
+        'fadeInOut': 'fadeInOut 5s',
+        'slideLeft': 'slideLeft 5s'
       },
       keyframes: {
         fadeIn: {
@@ -122,8 +125,42 @@ module.exports = {
           '100%': {
             opacity: '1'
           }
+        },
+        fadeOut: {
+          '0%': {
+            opacity: '1'
+          },
+          '100%': {
+            opacity: '0'
+          }
+        },
+        fadeInOut: {
+          '0%': {
+            opacity: '0'
+          },
+          '25%': {
+            opacity: '1'
+          },
+          '50%': {
+            opacity: '1'
+          },
+          '75%': {
+            opacity: '1'
+          },
+          '100%': {
+            opacity: '0'
+          }
+        },
+        slideLeft: {
+          'from': {
+            marginLeft: '100%'
+          },
+          'to': {
+            marginLeft: '0%'
+          }
         }
       },
+
       boxShadow: {
         'material': '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
       }

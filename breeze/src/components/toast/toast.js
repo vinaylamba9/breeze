@@ -23,13 +23,12 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, dismissTime }) => {
                 setBackgroundColor('bg-danger-color');
                 setToastIcon("exclamation-triangle");
             }
-
         }
     }
 
     useEffect(() => {
         toastConfigurationSet();
-        setTimeout(() => toastRef.current.removeChild(toastRef.current.children[0]), dismissTime) //Auto-dismmisable
+        setTimeout(() => toastRef.current.removeChild(toastRef.current.children[0]), 5000) //Auto-dismmisable
         return () => {
             clearTimeout();
         }
@@ -41,7 +40,7 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, dismissTime }) => {
 
     return (
 
-        <div key={statusCode} className="z-20 flex flex- col justify-center " ref={toastRef}>
+        <div key={statusCode} className="z-20 animate-fadeInOut flex flex- col justify-center " ref={toastRef}>
             <div div className={`${backgroundColor}  absolute top-2 right-2 shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block mb-3`} id="static-example" role="alert" aria-live="assertive" aria-atomic="true" >
                 <div style={{ borderBottom: "1px solid white" }} className={`${backgroundColor} flex justify-between items-center py-2 px-3 bg-clip-padding border-b  rounded-t-lg`}>
                     <p className="font-bold text-white flex items-center">
