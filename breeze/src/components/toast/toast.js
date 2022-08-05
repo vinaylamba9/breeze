@@ -30,7 +30,7 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
             }
             default: {
                 setShowToast(true);
-                setBackgroundColor('bg-warning-color');
+                setBackgroundColor('bg-info-color');
                 setToastIcon("exclamation-triangle");
                 break;
             }

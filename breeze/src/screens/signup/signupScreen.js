@@ -32,11 +32,10 @@ const SignupScreen = () => {
             setIsLoading(false);
             setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />)
             return;
-        } else {
-            setIsLoading(false);
-            setToastComponent(<Toast toastTitle="Avatar Upload" toastSubtitle="Please choose proper format." autoDismissable />)
-            return;
         }
+        setIsLoading(false);
+        setToastComponent(<Toast statusCode={Math.random()} toastTitle="Avatar Upload" toastSubtitle="Please choose proper format." autoDismissable />)
+        return;
     }
 
 
@@ -99,7 +98,7 @@ const SignupScreen = () => {
                                 backgroundColor={`var(--color-darkTeal)`}
                                 textColor={`var(--text-color-purity)`}
                                 label="Get Set Breeze"
-                                onClickHandler={() => console.log("clicked")}
+                                onClickHandler={onSubmitHandler}
                             /> : <Spinner />
                         }
                         <p>Or</p>
@@ -108,7 +107,11 @@ const SignupScreen = () => {
                             backgroundColor={`var(--text-color-purity)`}
                             textColor={`var(--text-color-dark)`}
                             label="Signup with Google"
-                            onClickHandler={() => console.warn("Singup with google")}
+                            onClickHandler={() => {
+                                setIsLoading(false);
+                                setToastComponent(<Toast statusCode={Math.random()} toastTitle="Signup with Google" toastSubtitle="Will Integrate soon." autoDismissable />)
+                                return;
+                            }}
                         />
                     </div>
                 </div>
