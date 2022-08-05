@@ -13,12 +13,12 @@ import { InputType } from 'constants/application';
 import Toast from 'components/toast/toast';
 import Spinner from 'components/spinner/spinner';
 import axios from 'axios';
+import FileUpload from 'components/fileUpload/fileUpload';
 
 
 const SignupScreen = () => {
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [isLoading, setIsLoading] = useState(false);
-    const [imageURL, setImageURL] = useState("");
     const [toastComponent, setToastComponent] = useState("");
 
     const profileImageUpload = async (pics) => {
@@ -29,10 +29,13 @@ const SignupScreen = () => {
             data.append("upload_preset", process.env.REACT_APP_NAME)
             data.append("cloud_name", process.env.REACT_APP_CLOUDNAME)
             const response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
-            let result = response.data;
-            setImageURL(result.url.toString());
             setIsLoading(false);
-            setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle="Avatar uploaded successfully." dismissTime={2000} />)
+            setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />)
+            return;
+        } else {
+            setIsLoading(false);
+            setToastComponent(<Toast toastTitle="Avatar Upload" toastSubtitle="Please choose proper format." autoDismissable />)
+            return;
         }
     }
 
@@ -83,26 +86,22 @@ const SignupScreen = () => {
                             validators={[ValidateInput.required, ValidateInput.password]}
                             errorMsg={error["password"]}
                         />
-
-                        {isLoading === false ? toastComponent : ""}
+                        {!isLoading && toastComponent}
+                        <FileUpload
+                            type={InputType.FILE}
+                            name="profileImage"
+                            accept="image/x-png,image/gif,image/jpeg"
+                            onChangeHandler={(e) => profileImageUpload(e.target.files[0])}
+                        />
 
                         {
-                            isLoading === false ?
-                                <InputField
-                                    type={InputType.FILE}
-                                    name="profileImage"
-                                    placeholder="* profileImage"
-                                    accept="image/x-png,image/gif,image/jpeg"
-                                    onChangeHandler={(e) => profileImageUpload(e.target.files[0])}
-                                />
-                                : <Spinner />
+                            !isLoading ? <Button
+                                backgroundColor={`var(--color-darkTeal)`}
+                                textColor={`var(--text-color-purity)`}
+                                label="Get Set Breeze"
+                                onClickHandler={() => console.log("clicked")}
+                            /> : <Spinner />
                         }
-                        <Button
-                            backgroundColor={`var(--color-darkTeal)`}
-                            textColor={`var(--text-color-purity)`}
-                            label="Get Set Breeze"
-                            onClickHandler={() => console.log("clicked")}
-                        />
                         <p>Or</p>
                         <Button
                             icon={GoogleIcon}

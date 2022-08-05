@@ -1,46 +1,56 @@
 import { HTTPStatusCode } from "constants/network";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-const Toast = ({ statusCode, toastTitle, toastSubtitle, dismissTime }) => {
+const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     const [backgroundColor, setBackgroundColor] = useState();
+    const [showToast, setShowToast] = useState(false);
     const [toastIcon, setToastIcon] = useState();
     const toastRef = useRef();
 
-    const toastConfigurationSet = () => {
+    const toastConfigurationSet = useCallback(() => {
         switch (statusCode) {
             case HTTPStatusCode.OK: {
+                setShowToast(true);
                 setBackgroundColor('bg-color-darkTeal');
                 setToastIcon('info-circle');
                 break;
             }
             case HTTPStatusCode.BAD_REQUEST: {
+                setShowToast(true);
                 setBackgroundColor('bg-danger-color');
                 setToastIcon("exclamation-triangle");
                 break;
             }
-            default: {
-                setBackgroundColor('bg-danger-color');
+            case 0: {
+                setShowToast(true);
+                setBackgroundColor('bg-warning-color');
                 setToastIcon("exclamation-triangle");
+                break;
+            }
+            default: {
+                setShowToast(true);
+                setBackgroundColor('bg-warning-color');
+                setToastIcon("exclamation-triangle");
+                break;
             }
         }
-    }
+    }, [statusCode])
 
     useEffect(() => {
         toastConfigurationSet();
-        setTimeout(() => toastRef.current.removeChild(toastRef.current.children[0]), 5000) //Auto-dismmisable
+        autoDismissable && setTimeout(() => setShowToast(false), 5000); //Auto-dismmisable
         return () => {
             clearTimeout();
         }
-    })
+    }, [autoDismissable, toastConfigurationSet])
 
 
 
-    const dismissToast = () => toastRef.current.removeChild(toastRef.current.children[0]);
+    const dismissToast = () => setShowToast(false);
 
     return (
-
-        <div key={statusCode} className="z-20 animate-fadeInOut flex flex- col justify-center " ref={toastRef}>
+        showToast && <div key={statusCode} className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} ref={toastRef}>
             <div div className={`${backgroundColor}  absolute top-2 right-2 shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block mb-3`} id="static-example" role="alert" aria-live="assertive" aria-atomic="true" >
                 <div style={{ borderBottom: "1px solid white" }} className={`${backgroundColor} flex justify-between items-center py-2 px-3 bg-clip-padding border-b  rounded-t-lg`}>
                     <p className="font-bold text-white flex items-center">
@@ -53,11 +63,12 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, dismissTime }) => {
                         <button onClick={dismissToast} type="button" className="  btn-close btn-close-white box-content w-4 h-4 ml-2 text-white border-none rounded-none opacity-50 focus:shadow-none   focus:outline-none focus:opacity-100 hover:text-white hover:opacity-75 hover:no-underline" aria-label="Close" >X</button>
                     </div>
                 </div>
-                <div style={{ backgroundColor: backgroundColor }} className="p-3 rounded-b-lg break-words text-white">
+                <div style={{ backgroundColor: backgroundColor }} className="flex p-3 rounded-b-lg break-words text-white">
                     {toastSubtitle}
                 </div>
             </div >
         </div >
+
     )
 }
 

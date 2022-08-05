@@ -4,7 +4,7 @@ import { Fragment, useEffect } from 'react';
 import { useRef, useState } from 'react';
 
 
-const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators, accept }) => {
+const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators }) => {
 
     const inputRef = useRef();
     const [error, setError] = useState(errorMsg);
@@ -31,7 +31,6 @@ const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg,
                         text-fontsize-brittle
                         outline-2 outline-danger-color ` :
                             `rounded-3xl 
-                            
                         text-background-color-dark
                         bg-color-TealWithOpacity 
                         w-60% px-8 py-2.5
@@ -39,13 +38,11 @@ const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg,
                         text-fontsize-brittle
                         focus:outline-2 focus:outline-color-darkTeal focus:bg-white`
                     }
-                    style={{ visibility: type === InputType.FILE ? "visible" : "visible" }}
                     type={type}
                     name={name}
                     placeholder={placeholder}
                     value={value}
                     onChange={onChangeHandler}
-                    accept={accept && accept}
                 />
                 {
                     trailingIcon && <div style={{ cursor: "pointer", position: "absolute", right: "12%" }}
