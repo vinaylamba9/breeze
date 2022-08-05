@@ -55,7 +55,7 @@ const SignupScreen = () => {
             <center>
                 <div className=' flex flex-col text-fontsize-brittle '>
                     <TypewriterLabel label="Signup with " />
-                    <div className='-mt-5% '>
+                    <div className='-mt-2% '>
                         <InputField
                             type={InputType.TEXT}
                             name="name"
@@ -86,6 +86,8 @@ const SignupScreen = () => {
                             errorMsg={error["password"]}
                         />
                         {!isLoading && toastComponent}
+                        {/* {!isLoading && <Toast statusCode={200} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />} */}
+
                         <FileUpload
                             type={InputType.FILE}
                             name="profileImage"
@@ -108,8 +110,7 @@ const SignupScreen = () => {
                             textColor={`var(--text-color-dark)`}
                             label="Signup with Google"
                             onClickHandler={() => {
-                                setIsLoading(false);
-                                setToastComponent(<Toast statusCode={Math.random()} toastTitle="Signup with Google" toastSubtitle="Will Integrate soon." autoDismissable />)
+                                setToastComponent(<Toast statusCode={Math.random()} toastTitle="Signup with Google" toastSubtitle="* Features will be available soon." autoDismissable />)
                                 return;
                             }}
                         />

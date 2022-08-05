@@ -1,4 +1,3 @@
-import { InputType } from 'constants/application';
 import PropTypes from 'prop-types';
 import { Fragment, useEffect } from 'react';
 import { useRef, useState } from 'react';

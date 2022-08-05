@@ -1,35 +1,30 @@
 import { HTTPStatusCode } from "constants/network";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     const [backgroundColor, setBackgroundColor] = useState();
-    const [showToast, setShowToast] = useState(false);
+    // const [showToast, setShowToast] = useState(false);
     const [toastIcon, setToastIcon] = useState();
     const toastRef = useRef();
+    const timeoutRef = useRef();
 
     const toastConfigurationSet = useCallback(() => {
         switch (statusCode) {
             case HTTPStatusCode.OK: {
-                setShowToast(true);
+                // setShowToast(true);
                 setBackgroundColor('bg-color-darkTeal');
                 setToastIcon('info-circle');
                 break;
             }
             case HTTPStatusCode.BAD_REQUEST: {
-                setShowToast(true);
+                // setShowToast(true);
                 setBackgroundColor('bg-danger-color');
                 setToastIcon("exclamation-triangle");
                 break;
             }
-            case 0: {
-                setShowToast(true);
-                setBackgroundColor('bg-warning-color');
-                setToastIcon("exclamation-triangle");
-                break;
-            }
             default: {
-                setShowToast(true);
+                // setShowToast(true);
                 setBackgroundColor('bg-info-color');
                 setToastIcon("exclamation-triangle");
                 break;
@@ -37,20 +32,38 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
         }
     }, [statusCode])
 
-    useEffect(() => {
+    const dismissToast = useCallback(() => toastRef.current.removeChild(toastRef.current.firstElementChild), []);
+
+    /* useEffect(() => {
         toastConfigurationSet();
         autoDismissable && setTimeout(() => setShowToast(false), 5000); //Auto-dismmisable
         return () => {
             clearTimeout();
         }
     }, [autoDismissable, toastConfigurationSet])
+     */
+
+    useEffect(() => {
+        toastConfigurationSet();
+        console.log('---------TIMEER REF USEEFFECT----------', timeoutRef.current);
+        timeoutRef.current = autoDismissable && setTimeout(() => {
+            console.log(typeof toastRef.current, '--------CURRENT----------')
+            dismissToast()
+        }, 5000);//Auto-dismmisable
+        console.log(timeoutRef.current);
+        return () => {
+            console.log('---------TIMEER REF CLEANUP----------');
+            clearTimeout(timeoutRef.current);
+        }
+    }, [toastConfigurationSet, autoDismissable, dismissToast])
+
+    // const dismissToast = () => setShowToast(false);
 
 
 
-    const dismissToast = () => setShowToast(false);
 
     return (
-        showToast && <div key={statusCode} className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} ref={toastRef}>
+        <div ref={toastRef} key={statusCode} id="toast" className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} >
             <div div className={`${backgroundColor}  absolute top-2 right-2 shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block mb-3`} id="static-example" role="alert" aria-live="assertive" aria-atomic="true" >
                 <div style={{ borderBottom: "1px solid white" }} className={`${backgroundColor} flex justify-between items-center py-2 px-3 bg-clip-padding border-b  rounded-t-lg`}>
                     <p className="font-bold text-white flex items-center">
@@ -66,7 +79,7 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
                 <div style={{ backgroundColor: backgroundColor }} className="flex p-3 rounded-b-lg break-words text-white">
                     {toastSubtitle}
                 </div>
-            </div >
+            </div>
         </div >
 
     )

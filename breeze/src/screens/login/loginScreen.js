@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Button from 'components/button/button';
 import InputField from 'components/inputField/inputField';
 import ToggleOnBoard from 'components/toggleOnboard/toggleOnBoard'
@@ -9,10 +9,12 @@ import { ValidateInput } from 'constants/inputValidators';
 import useForm from 'hooks/useForm';
 import TypewriterLabel from 'components/typewriterLabel/typewriterLabel';
 import GoogleIcon from "assets/images/google.png";
+import Toast from 'components/toast/toast';
 
 
 const LoginScreen = () => {
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
+    const [toastComponent, setToastComponent] = useState("");
 
     const userLoginInfo = useRef({
         "email": "",
@@ -24,7 +26,7 @@ const LoginScreen = () => {
         <div className='flex flex-col animate-fadeIn'>
             <ToggleOnBoard label='New to Breeze? ' linkLabel='Signup' link={Routes.SIGNUPROUTE} />
             <center>
-                <div className='mt-5% text-fontsize-brittle'>
+                <div className='mt-10% text-fontsize-brittle'>
                     <TypewriterLabel label="Log in with " />
                     <InputField
                         type="text"
@@ -61,8 +63,9 @@ const LoginScreen = () => {
                         backgroundColor={`var(--text-color-purity)`}
                         textColor={`var(--text-color-dark)`}
                         label="Log in with Google"
-                        onClickHandler={() => console.warn("Singup with google")}
+                        onClickHandler={() => setToastComponent(<Toast statusCode={Math.random()} toastTitle="Login with Google" toastSubtitle="* Features will be available soon." autoDismissable />)}
                     />
+                    {toastComponent && toastComponent}
                 </div>
             </center>
         </div>
