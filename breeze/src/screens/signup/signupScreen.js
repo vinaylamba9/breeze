@@ -86,7 +86,6 @@ const SignupScreen = () => {
                             errorMsg={error["password"]}
                         />
                         {!isLoading && toastComponent}
-                        {/* {!isLoading && <Toast statusCode={200} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />} */}
 
                         <FileUpload
                             type={InputType.FILE}
@@ -100,7 +99,11 @@ const SignupScreen = () => {
                                 backgroundColor={`var(--color-darkTeal)`}
                                 textColor={`var(--text-color-purity)`}
                                 label="Get Set Breeze"
-                                onClickHandler={onSubmitHandler}
+                                onClickHandler={() => {
+                                    onSubmitHandler()
+                                    //TODO:- HANDLE LOGIN and SIGNUP
+                                    console.log(formValues)
+                                }}
                             /> : <Spinner />
                         }
                         <p>Or</p>
