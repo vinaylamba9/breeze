@@ -68,8 +68,6 @@ const useForm = (initialFormValues) => {
 
     const onSubmitHandler = () => {
         validateInputHandler(1);
-        //TODO:- HANDLE LOGIN and SIGNUP
-        console.log(formValues);
     };
 
 

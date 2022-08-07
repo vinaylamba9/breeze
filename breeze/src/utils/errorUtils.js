@@ -1,8 +1,13 @@
-export function errorDebug(error, stackTrace, identityCode) {
+export function errorDebug(error, identityCode) {
+    let err = new Error();
     const message = `
-        Identity Code  🚀 :: ${identityCode}
-        Error ❌:: ${error}
-        StackTrace 📢 :: ${stackTrace}
+        Identity Code  📢 :: ${identityCode}
+        StackTrace 📢 :: ${err.stack}
     `
-    return message;
+    const errorResult = {
+        'error': error,
+        'message': message
+    }
+
+    return errorResult;
 }

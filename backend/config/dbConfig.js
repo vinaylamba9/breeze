@@ -10,9 +10,7 @@ const DB_CONFIG = {
             }
             );
             const dbConnection = mongoose.connection;
-
             /* ================ Binding connection to event (to get notification of connection )  =================*/
-
             dbConnection.on('error', console.error.bind(console, 'DB STATUS :: ERROR: [ ❌ ]'));
             dbConnection.on('connecting', console.info.bind(console, 'DB STATUS :: CONNECTING............. [ 🏃‍♂️ ]'));
             dbConnection.on('connected', console.info.bind(console, '\t 🏃‍♂️  DB STATUS :: CONNECTED [✔️]'.green));

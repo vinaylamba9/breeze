@@ -43,7 +43,7 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     return (
         <div ref={toastRef} key={statusCode} id="toast" className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} >
-            <div div className={`${backgroundColor}  absolute top-2 right-2 shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block mb-3`} id="static-example" role="alert" aria-live="assertive" aria-atomic="true" >
+            <div className={`${backgroundColor}  absolute top-2 right-2 shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block mb-3`} id="static-example" role="alert" aria-live="assertive" aria-atomic="true" >
                 <div style={{ borderBottom: "1px solid white" }} className={`${backgroundColor} flex justify-between items-center py-2 px-3 bg-clip-padding border-b  rounded-t-lg`}>
                     <p className="font-bold text-white flex items-center">
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon={toastIcon} className="w-4 h-4 mr-2 fill-current" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

@@ -10,6 +10,7 @@ import useForm from 'hooks/useForm';
 import TypewriterLabel from 'components/typewriterLabel/typewriterLabel';
 import GoogleIcon from "assets/images/google.png";
 import Toast from 'components/toast/toast';
+import { userAPI } from 'apis/user/userAPI';
 
 
 const LoginScreen = () => {
@@ -55,7 +56,7 @@ const LoginScreen = () => {
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}
                         label="Get Started"
-                        onClickHandler={onSubmitHandler}
+                        onClickHandler={console.log("worked")}
                     />
                     <p>Or</p>
                     <Button

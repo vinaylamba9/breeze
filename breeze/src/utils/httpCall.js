@@ -40,20 +40,20 @@ export class HttpCall {
             const response = await axios.post(
                 this._URL,  // URL Passing
                 this._dataToSend, // Data-Body Passing
-                { // Headers Passing
+                {
                     headers: {
                         'Content-Type': this._contentType,
                         'Authorization': this._isAuthRequired && this._authToken
                     }
                 }
             )
-
+            console.log("---------userapi.sendPostRequest-------", response)
             return {
                 'statusCode': response.status,
                 'responseBody': response.data
             }
         } catch (error) {
-            console.log(errorDebug(error, error.stack || error.stackTrace || "", 'HttpCall.SEND_POST_REQUEST()'))
+            return errorDebug(error.response.data, "httpCall.sendPostRequest()");
         }
     }
 
@@ -67,7 +67,7 @@ export class HttpCall {
         try {
             const response = await axios.get(
                 this._URL,
-                { // Headers Passing
+                {
                     headers: {
                         'Content-Type': this._contentType,
                         'Authorization': this._isAuthRequired && this._authToken
@@ -79,7 +79,7 @@ export class HttpCall {
                 'responseBody': response.data
             }
         } catch (error) {
-            console.log(errorDebug(error, error.stack || error.stackTrace || "", 'HttpCall.SEND_GET_REQUEST()'))
+            return errorDebug(error.response.data, "httpCall.sendGetRequest()");
         }
     }
 
@@ -106,7 +106,7 @@ export class HttpCall {
                 'responseBody': response.data
             }
         } catch (error) {
-            console.log(errorDebug(error, error.stack || error.stackTrace || "", 'HttpCall.SEND_PUT_REQUEST()'))
+            return errorDebug(error.response.data, "httpCall.sendPutRequest()");
         }
     }
 
