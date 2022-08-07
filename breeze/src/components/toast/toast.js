@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     const [backgroundColor, setBackgroundColor] = useState();
-    // const [showToast, setShowToast] = useState(false);
     const [toastIcon, setToastIcon] = useState();
     const toastRef = useRef();
     const timeoutRef = useRef();
@@ -12,19 +11,16 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
     const toastConfigurationSet = useCallback(() => {
         switch (statusCode) {
             case HTTPStatusCode.OK: {
-                // setShowToast(true);
                 setBackgroundColor('bg-color-darkTeal');
                 setToastIcon('info-circle');
                 break;
             }
             case HTTPStatusCode.BAD_REQUEST: {
-                // setShowToast(true);
                 setBackgroundColor('bg-danger-color');
                 setToastIcon("exclamation-triangle");
                 break;
             }
             default: {
-                // setShowToast(true);
                 setBackgroundColor('bg-info-color');
                 setToastIcon("exclamation-triangle");
                 break;
@@ -34,33 +30,16 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     const dismissToast = useCallback(() => toastRef.current.removeChild(toastRef.current.firstElementChild), []);
 
-    /* useEffect(() => {
-        toastConfigurationSet();
-        autoDismissable && setTimeout(() => setShowToast(false), 5000); //Auto-dismmisable
-        return () => {
-            clearTimeout();
-        }
-    }, [autoDismissable, toastConfigurationSet])
-     */
-
     useEffect(() => {
         toastConfigurationSet();
-        console.log('---------TIMEER REF USEEFFECT----------', timeoutRef.current);
         timeoutRef.current = autoDismissable && setTimeout(() => {
-            console.log(typeof toastRef.current, '--------CURRENT----------')
             dismissToast()
         }, 5000);//Auto-dismmisable
-        console.log(timeoutRef.current);
+
         return () => {
-            console.log('---------TIMEER REF CLEANUP----------');
             clearTimeout(timeoutRef.current);
         }
     }, [toastConfigurationSet, autoDismissable, dismissToast])
-
-    // const dismissToast = () => setShowToast(false);
-
-
-
 
     return (
         <div ref={toastRef} key={statusCode} id="toast" className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} >
