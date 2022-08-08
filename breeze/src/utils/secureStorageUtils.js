@@ -5,30 +5,35 @@ import secureLocalStorage from "react-secure-storage";
 export const SecureStorageUtils = {
     readSecuredData: async function (key) {
         try {
-            return key && secureLocalStorage.getItem(key)
+            const result = await secureLocalStorage.getItem(key)
+            return result && result;
         } catch (error) {
             return errorDebug(error, "secureStorageUtils.readSecuredData")
         }
     },
     writeSecuredData: async function (securedData) {
         try {
-            secureLocalStorage.setItem(securedData.key, securedData.data)
+            await secureLocalStorage.setItem(securedData.key, securedData.data)
         } catch (error) {
             return errorDebug(error, "secureStorageUtils.writeSecuredData")
         }
     },
     deleteSecuredData: async function (key) {
         try {
-            secureLocalStorage.removeItem(key)
+            await secureLocalStorage.removeItem(key)
+            return true;
         } catch (error) {
-            return errorDebug(error, "secureStorageUtils.deleteSecuredData")
+            errorDebug(error, "secureStorageUtils.deleteSecuredData")
+            return false;
         }
     },
     deleteAllSecuredData: async function () {
         try {
-            secureLocalStorage.clear();
+            await secureLocalStorage.clear();
+            return true;
         } catch (error) {
-            return errorDebug(error, "secureStorageUtils.deleteAllSecureData")
+            errorDebug(error, "secureStorageUtils.deleteAllSecureData")
+            return false;
         }
     }
 }

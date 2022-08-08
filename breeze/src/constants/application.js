@@ -1,9 +1,16 @@
 
 export const TypeWriterTextList = ["Breeze"]
 export class AccountStatus {
-    static active = 0;
-    static deleted = 1;
-    static disabled = 2;
+    static ACTIVE = 0;
+    static DELETED = 1;
+    static DISABLED = 2;
+}
+export class Emoji {
+    static redCross = '❌';
+    static caution = '⚠️';
+    static shoutOut = "📢";
+    static link = "🔗";
+    static description = "📒";
 }
 
 export class OnboardingType {
@@ -16,9 +23,9 @@ export class AccountInitFrom {
 }
 
 export class SessionType {
-    static expired = 1;
-    static active = 2;
-    static newUser = 3;
+    static EXPIRED = 1;
+    static ACTIVE = 2;
+    static NEWUSER = 3;
 }
 export const PasswordRegEx = {
     digit: "(?=.*[0-9])",
