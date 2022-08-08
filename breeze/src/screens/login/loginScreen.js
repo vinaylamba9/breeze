@@ -56,7 +56,7 @@ const LoginScreen = () => {
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}
                         label="Get Started"
-                        onClickHandler={console.log("worked")}
+                        onClickHandler={onSubmitHandler}
                     />
                     <p>Or</p>
                     <Button

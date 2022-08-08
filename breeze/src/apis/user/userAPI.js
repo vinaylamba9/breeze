@@ -10,7 +10,6 @@ export const userAPI = {
         httpCall.URL = NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.LOGIN;
         try {
             let response = await httpCall.sendPostRequest();
-            console.log("---------userapi.login-------", response)
             return response;
         } catch (error) {
             return errorDebug(error, "userAPI.login()")
