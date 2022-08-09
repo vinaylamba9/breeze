@@ -14,7 +14,6 @@ export const userAPI = {
         } catch (error) {
             return errorDebug(error, "userAPI.login()")
         }
-
     },
     signup: async function () {
 
