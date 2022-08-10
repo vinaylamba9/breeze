@@ -28,7 +28,7 @@ export const UserSessionManagementController = {
      */
     getUserSession: async function () {
         try {
-            const data = await SecureStorageUtils.readSecuredData("userSessionInfo");
+            const data = await SecureStorageUtils.readSecuredData("@secure.s.userSessionInfo");
             return data && data['userSessionInfo'];
         } catch (error) {
             return errorDebug(error, 'UserSessionManagementController.getUserSession');
@@ -104,6 +104,7 @@ export const UserSessionManagementController = {
     getAPIKey: async function () {
         try {
             const data = await SecureStorageUtils.readSecuredData("apiKey")
+            console.log("---data", data)
             return data && data;
         } catch (error) {
             return errorDebug(error, 'UserSessionManagementController.getAPIKey');

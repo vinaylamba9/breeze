@@ -67,6 +67,7 @@ const useForm = (initialFormValues) => {
     }
 
     const onSubmitHandler = () => {
+
         validateInputHandler(1);
     };
 

@@ -48,12 +48,12 @@ const userController = {
                     } else {
                         responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                         responseData = errors;
-                        responseMessage = "FAILED TO CREATE USER."
+                        responseMessage = "Failed to create user. Please try again/"
                     }
                 } else {
                     responseStatusCode = HTTPStatusCode.FORBIDDEN;
                     responseMessage = HTTPStatusCode.FORBIDDEN;
-                    responseData = "USER ALREADY EXISTS."
+                    responseData = "User already exist."
                 }
             }
         } catch (error) {
@@ -85,12 +85,12 @@ const userController = {
                     } else {
                         responseStatusCode = HTTPStatusCode.NOT_FOUND;
                         responseMessage = HTTPStatusCode.NOT_FOUND;
-                        responseData = "PASSWORD DOESN'T MATCH."
+                        responseData = "Password is not matching."
                     }
                 } else {
                     responseStatusCode = HTTPStatusCode.NOT_FOUND;
                     responseMessage = HTTPStatusCode.NOT_FOUND;
-                    responseData = "USER NOT FOUND."
+                    responseData = "User not found."
                 }
             }
         } catch (error) {

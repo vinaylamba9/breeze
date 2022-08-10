@@ -10,7 +10,10 @@ import useForm from 'hooks/useForm';
 import TypewriterLabel from 'components/typewriterLabel/typewriterLabel';
 import GoogleIcon from "assets/images/google.png";
 import Toast from 'components/toast/toast';
-import { userAPI } from 'apis/user/userAPI';
+import { userDAO } from 'core/user/userDAO';
+import { HTTPStatusCode } from 'constants/network';
+import { _isNull } from 'utils/basicUtils';
+
 
 
 const LoginScreen = () => {
@@ -56,7 +59,17 @@ const LoginScreen = () => {
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}
                         label="Get Started"
-                        onClickHandler={onSubmitHandler}
+                        onClickHandler={async () => {
+                            if (!_isNull(formValues.email) || !_isNull(formValues.password)) {
+                                const result = await userDAO.loginDAO(formValues)
+                                result.statusCode === HTTPStatusCode.NOT_FOUND && setToastComponent(<Toast statusCode={HTTPStatusCode.NOT_FOUND} toastTitle="Login" toastSubtitle={result.responseBody} autoDismissable />)
+
+                            } else {
+                                onSubmitHandler();
+                            }
+
+                        }}
+
                     />
                     <p>Or</p>
                     <Button

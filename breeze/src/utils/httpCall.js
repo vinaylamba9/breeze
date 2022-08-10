@@ -47,13 +47,17 @@ export class HttpCall {
                     }
                 }
             )
-            console.log("---------userapi.sendPostRequest-------", response)
             return {
                 'statusCode': response.status,
                 'responseBody': response.data
             }
         } catch (error) {
-            return errorDebug(error.response.data, "httpCall.sendPostRequest()");
+            const errorResult = errorDebug(error.response.data, "httpCall.sendPostRequest()");
+            return {
+                "statusCode": errorResult.statusCode,
+                "responseBody": errorResult.responseBody
+            }
+
         }
     }
 
@@ -79,7 +83,11 @@ export class HttpCall {
                 'responseBody': response.data
             }
         } catch (error) {
-            return errorDebug(error.response.data, "httpCall.sendGetRequest()");
+            const errorResult = errorDebug(error.response.data, "httpCall.sendGetRequest()");
+            return {
+                "statusCode": errorResult.statusCode,
+                "responseBody": errorResult.responseBody
+            }
         }
     }
 
@@ -106,7 +114,11 @@ export class HttpCall {
                 'responseBody': response.data
             }
         } catch (error) {
-            return errorDebug(error.response.data, "httpCall.sendPutRequest()");
+            const errorResult = errorDebug(error.response.data, "httpCall.sendPutRequest()");
+            return {
+                "statusCode": errorResult.statusCode,
+                "responseBody": errorResult.responseBody
+            }
         }
     }
 

@@ -6,14 +6,14 @@ export const SecureStorageUtils = {
     readSecuredData: async function (key) {
         try {
             const result = await secureLocalStorage.getItem(key)
-            return result && result;
+            return result;
         } catch (error) {
             return errorDebug(error, "secureStorageUtils.readSecuredData")
         }
     },
     writeSecuredData: async function (securedData) {
         try {
-            await secureLocalStorage.setItem(securedData.key, securedData.data)
+            await secureLocalStorage.setItem(securedData.key, securedData.value)
         } catch (error) {
             return errorDebug(error, "secureStorageUtils.writeSecuredData")
         }

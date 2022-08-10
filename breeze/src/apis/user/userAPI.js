@@ -6,7 +6,6 @@ export const userAPI = {
     login: async function (userData) {
         let httpCall = new HttpCall();
         httpCall.dataToSend = userData;
-        httpCall.setAuthRequired = false;
         httpCall.URL = NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.LOGIN;
         try {
             let response = await httpCall.sendPostRequest();
@@ -15,7 +14,16 @@ export const userAPI = {
             return errorDebug(error, "userAPI.login()")
         }
     },
-    signup: async function () {
-
+    signup: async function (userData) {
+        let httpCall = new HttpCall();
+        httpCall.dataToSend = userData;
+        httpCall.setAuthRequired = false;
+        httpCall.URL = NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.SIGNUP
+        try {
+            let response = await httpCall.sendPostRequest()
+            return response;
+        } catch (error) {
+            return errorDebug(error, 'userAPI.signup()')
+        }
     }
 }

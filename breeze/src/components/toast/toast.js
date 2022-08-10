@@ -20,6 +20,11 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
                 setToastIcon("exclamation-triangle");
                 break;
             }
+            case HTTPStatusCode.NOT_FOUND: {
+                setBackgroundColor('bg-danger-color');
+                setToastIcon("times-circle");
+                break;
+            }
             default: {
                 setBackgroundColor('bg-info-color');
                 setToastIcon("exclamation-triangle");
@@ -32,9 +37,11 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
 
     useEffect(() => {
         toastConfigurationSet();
+    })
+    useEffect(() => {
         timeoutRef.current = autoDismissable && setTimeout(() => {
             dismissToast()
-        }, 5000);//Auto-dismmisable
+        }, 3000);//Auto-dismmisable
 
         return () => {
             clearTimeout(timeoutRef.current);

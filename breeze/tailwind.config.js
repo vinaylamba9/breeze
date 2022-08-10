@@ -114,7 +114,7 @@ module.exports = {
       animation: {
         'fadeIn': 'fadeIn 1s',
         'fadeOut': 'fadeOut 1s',
-        'fadeInOut': 'fadeInOut 5s',
+        'fadeInOut': 'fadeInOut 3s',
         'slideLeft': 'slideLeft 5s'
       },
       keyframes: {
