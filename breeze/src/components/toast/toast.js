@@ -25,6 +25,11 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
                 setToastIcon("times-circle");
                 break;
             }
+            case HTTPStatusCode.UNAUTHORIZED: {
+                setBackgroundColor('bg-danger-color');
+                setToastIcon("times-circle");
+                break;
+            }
             default: {
                 setBackgroundColor('bg-info-color');
                 setToastIcon("exclamation-triangle");

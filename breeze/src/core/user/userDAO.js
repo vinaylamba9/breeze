@@ -26,7 +26,11 @@ export const userDAO = {
         }
     },
     signupDAO: async function () {
+        try {
 
+        } catch (error) {
+            return errorDebug(error, 'userDAO.signupDAO')
+        }
     }
 
 }

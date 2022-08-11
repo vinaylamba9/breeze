@@ -62,7 +62,12 @@ const LoginScreen = () => {
                         onClickHandler={async () => {
                             if (!_isNull(formValues.email) || !_isNull(formValues.password)) {
                                 const result = await userDAO.loginDAO(formValues)
-                                result.statusCode === HTTPStatusCode.NOT_FOUND && setToastComponent(<Toast statusCode={HTTPStatusCode.NOT_FOUND} toastTitle="Login" toastSubtitle={result.responseBody} autoDismissable />)
+                                if (result.statusCode === HTTPStatusCode.NOT_FOUND || result.statusCode === HTTPStatusCode.UNAUTHORIZED) {
+                                    setToastComponent(<Toast statusCode={result.statusCode} toastTitle="Login" toastSubtitle={result.responseBody} autoDismissable />)
+                                    return;
+                                } else {
+                                    //TODO:- Navigate To Home
+                                }
 
                             } else {
                                 onSubmitHandler();

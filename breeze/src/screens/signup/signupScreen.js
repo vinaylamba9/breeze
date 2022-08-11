@@ -30,6 +30,7 @@ const SignupScreen = () => {
             data.append("cloud_name", process.env.REACT_APP_CLOUDNAME)
             const response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
             setIsLoading(false);
+            console.log(response)
             setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />)
             return;
         }

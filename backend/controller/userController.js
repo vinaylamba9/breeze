@@ -83,8 +83,8 @@ const userController = {
                         responseMessage = HTTPStatusCode.OK;
                         responseData = dbResponse
                     } else {
-                        responseStatusCode = HTTPStatusCode.NOT_FOUND;
-                        responseMessage = HTTPStatusCode.NOT_FOUND;
+                        responseStatusCode = HTTPStatusCode.UNAUTHORIZED;
+                        responseMessage = HTTPStatusCode.UNAUTHORIZED;
                         responseData = "Password is not matching."
                     }
                 } else {
