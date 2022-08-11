@@ -20,3 +20,7 @@ const UsernameRegEx = {
 const PasswordRegEx = {
     length: "(?=.{3,15})"
 }
+const TimeInMs = {
+    H24: (24 * (60 * (60 * 1000))),
+    MIN5: ((5 * (60 * 1000))),
+}

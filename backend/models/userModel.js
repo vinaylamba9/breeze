@@ -42,6 +42,12 @@ const userModel = mongoose.Schema({
     accountStatus: {
         type: Number
     },
+    otp: {
+        type: String
+    },
+    otpValidTill: {
+        type: Date
+    },
     token: {
         type: String,
     },
