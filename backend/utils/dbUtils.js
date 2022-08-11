@@ -25,6 +25,19 @@ const DB_UTILS = {
             return { msg: error, status: "NOT_FOUND" }
         }
     },
+    updateOneById: async function (modelName, id, updatedDataObject) {
+        try {
+            let dbResponse = await modelName.findOneAndUpdate(
+                {
+                    '_id': id
+                }, updatedDataObject,
+                { new: true }
+            ).exec()
+            return dbResponse
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    }
 }
 
 module.exports = { DB_UTILS }

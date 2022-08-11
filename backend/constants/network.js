@@ -1,13 +1,3 @@
-const TimeInMs = {
-    h24: (24 * (60 * (60 * 1000))),
-    Min5: ((5 * (60 * 1000))),
-}
-const AccountStatus = {
-    active: 0,
-    blocked: 1,
-    deleted: 2
-}
-
 class HTTPStatusCode {
     static OK = 200;
     static CREATED = 201;
@@ -29,7 +19,6 @@ class HTTPStatusCode {
 Object.freeze(HTTPStatusCode);
 
 module.exports = {
-    TimeInMs,
-    AccountStatus,
+
     HTTPStatusCode
 }

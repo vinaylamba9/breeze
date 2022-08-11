@@ -57,5 +57,6 @@ module.exports = {
     generateRandomString,
     notNull,
     _isNotEmpty,
-    _isNull
+    _isNull,
+    otpGenrator
 }

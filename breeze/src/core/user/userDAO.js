@@ -9,7 +9,6 @@ export const userDAO = {
     loginDAO: async function (userData) {
         try {
             const loginResult = await userAPI.login(userData);
-
             if (loginResult) {
                 const statusCode = loginResult['statusCode'];
                 if (statusCode === HTTPStatusCode.OK) {

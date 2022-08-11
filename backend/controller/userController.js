@@ -18,6 +18,7 @@ const { HTTPStatusCode } = require("../constants/network");
 
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
+const { TimeInMs } = require('../constants/application');
 
 
 const userController = {
@@ -80,11 +81,30 @@ const userController = {
                 if (dbResponse) {
                     const isPasswordMatched = await bcrypt.compare(req.body.password, dbResponse.password);
                     if (isPasswordMatched) {
-                        const token = await dbResponse.createToken();              // CREATE TOKEN
-                        dbResponse.token = token;                         // ASSIGNING JWT TOKEN
-                        responseStatusCode = HTTPStatusCode.OK;
-                        responseMessage = HTTPStatusCode.OK;
-                        responseData = dbResponse
+
+                        //TODO:- check if user is verified
+
+                        if (dbResponse.isVerified) { // IF User is Verified
+                            const token = await dbResponse.createToken();              // CREATE TOKEN
+                            dbResponse.token = token;                         // ASSIGNING JWT TOKEN
+                            responseStatusCode = HTTPStatusCode.OK;
+                            responseMessage = HTTPStatusCode.OK;
+                            responseData = dbResponse
+                        } else {
+                            // a) We will create a six digit OTP using random function()
+                            // b) We will send the OTP to the registered email ID with expired time.
+                            // c)
+                            const updatedObject = {
+                                'otp': BASIC_UTILS.otpGenrator(6),
+                                'otpValidTill': Date.now() + TimeInMs.MIN5
+                            }
+
+                            const userUpdated = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedObject)
+                            console.log("----------------------dbResponse----", userUpdated)
+
+                            responseStatusCode = 300
+                        }
+
                     } else {
                         responseStatusCode = HTTPStatusCode.UNAUTHORIZED;
                         responseMessage = HTTPStatusCode.UNAUTHORIZED;

@@ -24,3 +24,11 @@ const TimeInMs = {
     H24: (24 * (60 * (60 * 1000))),
     MIN5: ((5 * (60 * 1000))),
 }
+
+module.exports = {
+    AccountStatus,
+    AccountLoggedStatus,
+    UsernameRegEx,
+    PasswordRegEx,
+    TimeInMs
+}
