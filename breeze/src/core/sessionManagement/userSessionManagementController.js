@@ -28,8 +28,8 @@ export const UserSessionManagementController = {
      */
     getUserSession: async function () {
         try {
-            const data = await SecureStorageUtils.readSecuredData("@secure.s.userSessionInfo");
-            return data && data['userSessionInfo'];
+            const data = await SecureStorageUtils.readSecuredData("userSessionInfo");
+            return data && data;
         } catch (error) {
             return errorDebug(error, 'UserSessionManagementController.getUserSession');
         }

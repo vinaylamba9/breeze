@@ -1,14 +1,15 @@
 class AccountStatus {
-    static active = "active";
-    static deleted = "deleted";
-    static disabled = "deactive";
+    static ACTIVE = 0;
+    static DELETED = 1;
+    static DISABLED = 2;
 }
 
 Object.freeze(AccountStatus)
 
 class AccountLoggedStatus {
-    static login = 0;
-    static logout = 1;
+    static LOGIN = 0;
+    static LOGOUT = 1;
+    static SIGNUP = 2;
 }
 Object.freeze(AccountLoggedStatus)
 

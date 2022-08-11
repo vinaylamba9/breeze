@@ -9,17 +9,19 @@ import { ValidateInput } from 'constants/inputValidators';
 import useForm from 'hooks/useForm';
 import TypewriterLabel from 'components/typewriterLabel/typewriterLabel';
 import GoogleIcon from "assets/images/google.png";
-import { InputType } from 'constants/application';
+import { AccountInitFrom, AccountStatus, AccountVerified, InputType } from 'constants/application';
 import Toast from 'components/toast/toast';
 import Spinner from 'components/spinner/spinner';
 import axios from 'axios';
 import FileUpload from 'components/fileUpload/fileUpload';
+import { userDAO } from 'core/user/userDAO';
 
 
 const SignupScreen = () => {
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [isLoading, setIsLoading] = useState(false);
     const [toastComponent, setToastComponent] = useState("");
+    const [profileImage, setProfileImage] = useState('');
 
     const profileImageUpload = async (pics) => {
         setIsLoading(true);
@@ -30,7 +32,7 @@ const SignupScreen = () => {
             data.append("cloud_name", process.env.REACT_APP_CLOUDNAME)
             const response = await axios.post(process.env.REACT_APP_APICLOUDINARYURL.toString(), data)
             setIsLoading(false);
-            console.log(response)
+            setProfileImage(response.data.url);
             setToastComponent(<Toast statusCode={response.status} toastTitle="Avatar Upload" toastSubtitle={` Avatar uploaded successfully.`} autoDismissable />)
             return;
         }
@@ -100,10 +102,14 @@ const SignupScreen = () => {
                                 backgroundColor={`var(--color-darkTeal)`}
                                 textColor={`var(--text-color-purity)`}
                                 label="Get Set Breeze"
-                                onClickHandler={() => {
+                                onClickHandler={async () => {
                                     onSubmitHandler()
-                                    //TODO:- HANDLE LOGIN and SIGNUP
-                                    console.log(formValues)
+                                    formValues['profileImage'] = profileImage
+                                    formValues['isVerified'] = AccountVerified.NOT_VERIFIED
+                                    formValues['accountInItFrom'] = AccountInitFrom.SELF
+                                    formValues['accountStatus'] = AccountStatus.ACTIVE
+                                    let result = await userDAO.signupDAO(formValues)
+                                    console.log(result)
                                 }}
                             /> : <Spinner />
                         }

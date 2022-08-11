@@ -33,6 +33,15 @@ const userModel = mongoose.Schema({
         required: true,
         default: "https://t4.ftcdn.net/jpg/03/46/93/61/360_F_346936114_RaxE6OQogebgAWTalE1myseY1Hbb5qPM.jpg"
     },
+    isVerified: {
+        type: Boolean
+    },
+    accountInItFrom: {
+        type: Number
+    },
+    accountStatus: {
+        type: Number
+    },
     token: {
         type: String,
     },
@@ -58,7 +67,7 @@ userModel.methods.createToken = async function () {
             name: this.name,
             password: this.password,
             email: this.email,
-            profileImage: this.profileImage,
+            profileImage: this.profileImage
         }
         const token = "Bearer " + jwt.sign(
             payload,

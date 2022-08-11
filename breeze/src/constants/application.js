@@ -18,15 +18,27 @@ export class OnboardingType {
     static SIGNUP = "SIGNUP";
 }
 export class AccountInitFrom {
-    static self = -1;
-    static google = 0;
+    static SELF = 0;
+    static GOOGLE = 1;
+}
+export class AccountVerified {
+    static NOT_VERIFIED = 0;
+    static VERIFIED = 1;
+}
+export class NotificationStatus {
+    static UNREAD = 0;
+    static READ = 1;
+}
+export class SessionType {
+    static EXPIRED = 0;
+    static ACTIVE = 1;
+    static NEWUSER = 2;
+}
+export class VerificationType {
+    static ACCOUNT_VERIFICATION = 0;
+    static FORGOT_PASSWORD = 1;
 }
 
-export class SessionType {
-    static EXPIRED = 1;
-    static ACTIVE = 2;
-    static NEWUSER = 3;
-}
 export const PasswordRegEx = {
     digit: "(?=.*[0-9])",
     lowercaseLetter: "(?=.*[a-z])",

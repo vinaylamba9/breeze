@@ -37,6 +37,9 @@ const userController = {
                         "password": req.body.password,
                         "profileImage": req.body.profileImage,
                         "name": req.body.name,
+                        "isVerified": req.body.isVerified,
+                        "accountInItFrom": req.body.accountInItFrom,
+                        "accountStatus": req.body.accountStatus
                     };
                     let signedUpResponse = await DB_UTILS.createUser(userModel, signupData);
                     if (signedUpResponse) {
@@ -48,7 +51,7 @@ const userController = {
                     } else {
                         responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                         responseData = errors;
-                        responseMessage = "Failed to create user. Please try again/"
+                        responseMessage = "Failed to create user. Please try again."
                     }
                 } else {
                     responseStatusCode = HTTPStatusCode.FORBIDDEN;
