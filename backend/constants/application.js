@@ -13,22 +13,33 @@ class AccountLoggedStatus {
 }
 Object.freeze(AccountLoggedStatus)
 
-const UsernameRegEx = {
-    length: "(?=.{3,15})"
-}
-
-const PasswordRegEx = {
-    length: "(?=.{3,15})"
-}
 const TimeInMs = {
     H24: (24 * (60 * (60 * 1000))),
     MIN5: ((5 * (60 * 1000))),
 }
 
+
+class VerificationType {
+    static ACCOUNT_VERIFICATION = 0
+    static FORGOT_PASSWORD = 1
+}
+
+class MasterConstantsStatus {
+    static ACTIVE = 0
+    static DELETED = 1
+}
+Object.freeze(MasterConstantsStatus);
+
+class MasterConstantsCategory {
+    static USERACCOUNS = 0
+}
+
+Object.freeze(MasterConstantsCategory)
 module.exports = {
     AccountStatus,
     AccountLoggedStatus,
-    UsernameRegEx,
-    PasswordRegEx,
-    TimeInMs
+    VerificationType,
+    TimeInMs,
+    MasterConstantsStatus,
+    MasterConstantsCategory
 }

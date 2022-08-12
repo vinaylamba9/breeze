@@ -19,6 +19,7 @@ const { HTTPStatusCode } = require("../constants/network");
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
 const { TimeInMs } = require('../constants/application');
+const { EMAIL_SERVICES } = require('../services/email/emailService');
 
 
 const userController = {
@@ -101,8 +102,16 @@ const userController = {
 
                             const userUpdated = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedObject)
                             console.log("----------------------dbResponse----", userUpdated)
-
-                            responseStatusCode = 300
+                            if (userUpdated) {
+                                let emailResponse = await EMAIL_SERVICES.sendEmailVerification(userUpdated)
+                                console.log(emailResponse, '----------EmailResponse------------')
+                                responseStatusCode = 300
+                            }
+                            else {
+                                responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                                responseMessage = HTTPStatusCode.BAD_REQUEST;
+                                responseData = "Unable to send OTP to the email."
+                            }
                         }
 
                     } else {
