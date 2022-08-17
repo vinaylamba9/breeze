@@ -94,7 +94,7 @@ const userController = {
                         } else {
                             // a) We will create a six digit OTP using random function()
                             // b) We will send the OTP to the registered email ID with expired time.
-                            // c)
+                            // c) 
                             const updatedObject = {
                                 'otp': BASIC_UTILS.otpGenrator(6),
                                 'otpValidTill': Date.now() + TimeInMs.MIN5
@@ -102,10 +102,15 @@ const userController = {
                             const userUpdated = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedObject)
                             if (userUpdated) {
                                 let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated)
-                                console.log("----------------------dbResponse----", emailResponse)
-                                responseMessage = HTTPStatusCode.OK
-                                responseStatusCode = HTTPStatusCode.OK
-                                responseData = emailResponse
+                                if (emailResponse) {
+                                    responseMessage = HTTPStatusCode.OK
+                                    responseStatusCode = HTTPStatusCode.OK
+                                    responseData = "OTP sent successfully.Please verify it."
+                                } else {
+                                    responseMessage = HTTPStatusCode.BAD_REQUEST
+                                    responseStatusCode = HTTPStatusCode.BAD_REQUEST
+                                    responseData = emailResponse
+                                }
                             }
                             else {
                                 responseStatusCode = HTTPStatusCode.BAD_REQUEST;
@@ -132,7 +137,34 @@ const userController = {
         } finally {
             return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
         }
+    },
+    verifyOTP: async function (req, res) {
+        let responseStatusCode, responseMessage, responseData;
+        try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                responseData = errors;
+                responseMessage = HTTPStatusCode.BAD_REQUEST
+            } else {
+                const dbResponse = await DB_UTILS.findByEmail(req.body.email)
+                if (dbResponse) {
+                    const isOnTime = BASIC_UTILS.timeOn.isTimeLimitAvailable(Date.now(), new Date(dbResponse.otpValidTill).getTime())
+                    console.log(isOnTime)
+                }
+                responseStatusCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK
+                responseData = dbResponse
+            }
+        } catch (error) {
+            responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        } finally {
+            return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+        }
     }
+
 }
 
 module.exports = userController;

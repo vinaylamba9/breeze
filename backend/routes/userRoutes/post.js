@@ -31,4 +31,10 @@ router.post(
     userController.loginUser
 );
 
+router.post(
+    '/verifyotp', [
+    check("email").notEmpty().withMessage("Email is Required.").trim().isEmail().withMessage("Please enter a valid Email."),
+], userController.verifyOTP
+);
+
 module.exports = router;

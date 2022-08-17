@@ -53,10 +53,57 @@ const otpGenrator = function (length) {
     }
     return result;
 }
+
+const timeON = {
+    timeDiffrenceInMin: function (newDate, oldDate) {
+        let diff = (newDate.getTime() - oldDate.getTime()) / 1000;
+        diff /= 60;
+        return Math.abs(Math.round(diff));
+    },
+    minToHrs: function (timeInMin) {
+        return Math.abs(Math.round(timeInMin / 60));
+    },
+    isTimeLimitAvailable: function (lowerLimit, upperLimit) {
+        if (lowerLimit < upperLimit) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    minuteToMilliseconds: function (minute) {
+        return minute * 60000;
+    },
+    addTimeInMin: function (min) {
+        return new Date(Date.now() + this.minuteToMilliseconds(min));
+    }
+
+}
+
+const cleanUserModel = function (user) {
+    try {
+        user = user.toObject();
+        if (!_isNull(user.password)) {
+            delete user.password;
+        }
+        if (!_isNull(user.token)) {
+            delete user.token;
+        }
+        if (!_isNull(user.tokenValidTill)) {
+            delete user.tokenValidTill;
+        }
+        return user;
+    } catch (e) {
+        throw (e);
+    }
+}
+
 module.exports = {
     generateRandomString,
     notNull,
     _isNotEmpty,
     _isNull,
-    otpGenrator
+    otpGenrator,
+    timeOn,
+    cleanUserModel
+
 }
