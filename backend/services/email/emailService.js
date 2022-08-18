@@ -89,7 +89,7 @@ const EMAIL_SERVICES = {
                             <center>
                             <img
                                 style="border-radius: 0.5rem"
-                                src="https://s-media-cache-ak0.pinimg.com/originals/97/56/c2/9756c2a05e2dd85309fe4b3bc5d62357.gif"
+                                src="https://res.cloudinary.com/dtjqyp0r2/image/upload/v1660747839/feuykwlnojxfedehwtoc.gif"
                                 height="70px"
                                 width="90px"
                             />

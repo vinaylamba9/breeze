@@ -5,11 +5,7 @@ const FileUpload = ({ type, name, onChangeHandler, value, accept }) => {
 
     const fileRef = useRef();
 
-    /*  const fileUploadConfiguration = () => {
-         console.log(fileRef.current.value, '---INNERHTML--------');
-     }
- 
-     useEffect(fileUploadConfiguration); */
+
 
     return (
         <Fragment>

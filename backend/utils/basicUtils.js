@@ -103,7 +103,7 @@ module.exports = {
     _isNotEmpty,
     _isNull,
     otpGenrator,
-    timeOn,
+    timeON,
     cleanUserModel
 
 }

@@ -25,7 +25,7 @@ const SignupScreen = () => {
 
     const profileImageUpload = async (pics) => {
         setIsLoading(true);
-        if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
+        if (pics.type === 'image/jpeg' || pics.type === 'image/png' || pics.type === 'image/gif') {
             const data = new FormData();
             data.append("file", pics);
             data.append("upload_preset", process.env.REACT_APP_NAME)
