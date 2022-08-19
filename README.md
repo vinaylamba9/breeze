@@ -7,5 +7,6 @@ This app is created using:-
  d) MongoDB
  e) TailwindCSS
  f) Swagger
- g) TailwindCSS
+ g) Axios
+ h) CI/CD
  
