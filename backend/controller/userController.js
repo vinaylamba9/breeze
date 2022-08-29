@@ -18,7 +18,7 @@ const { HTTPStatusCode } = require("../constants/network");
 
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
-const { TimeInMs, OTPExpired } = require('../constants/application');
+const { TimeInMs, OTPExpired, AccountStatus, AccountInitFrom } = require('../constants/application');
 const { EMAIL_SERVICES } = require('../services/email/emailService');
 
 
@@ -39,17 +39,43 @@ const userController = {
                         "password": req.body.password,
                         "profileImage": req.body.profileImage,
                         "name": req.body.name,
-                        "isVerified": req.body.isVerified,
+                        "isVerified": AccountInitFrom.SELF != req.body.accountInItFrom,
                         "accountInItFrom": req.body.accountInItFrom,
-                        "accountStatus": req.body.accountStatus
+                        "accountStatus": AccountStatus.ACTIVE
                     };
                     let signedUpResponse = await DB_UTILS.createUser(userModel, signupData);
                     if (signedUpResponse) {
-                        const token = await signedUpResponse.createToken();
-                        signedUpResponse.token = token;
-                        responseStatusCode = HTTPStatusCode.CREATED;
-                        responseMessage = HTTPStatusCode.CREATED;
-                        responseData = signedUpResponse
+                        if (signedUpResponse.isVerified) {
+                            const token = await signedUpResponse.createToken();
+                            signedUpResponse.token = token;
+                            responseStatusCode = HTTPStatusCode.CREATED;
+                            responseMessage = HTTPStatusCode.CREATED;
+                            responseData = signedUpResponse
+                        } else {
+                            //TODO:- MOVE THIS IN UTILS AS IT IS ALSO GETTING USED IN LOGIN API.
+                            const updatedObject = {
+                                'otp': BASIC_UTILS.otpGenrator(6),
+                                'otpValidTill': Date.now() + TimeInMs.MIN5
+                            }
+                            const userUpdated = await DB_UTILS.updateOneById(userModel, signedUpResponse['_id'], updatedObject)
+                            if (userUpdated) {
+                                let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated)
+                                if (emailResponse) {
+                                    responseMessage = HTTPStatusCode.OK
+                                    responseStatusCode = HTTPStatusCode.OK
+                                    responseData = "OTP sent successfully.Please verify it."
+                                } else {
+                                    responseMessage = HTTPStatusCode.BAD_REQUEST
+                                    responseStatusCode = HTTPStatusCode.BAD_REQUEST
+                                    responseData = emailResponse
+                                }
+                            } else {
+                                responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                                responseMessage = HTTPStatusCode.BAD_REQUEST;
+                                responseData = "Unable to send OTP to the email."
+                            }
+                        }
+
                     } else {
                         responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                         responseData = errors;
@@ -82,19 +108,13 @@ const userController = {
                 if (dbResponse) {
                     const isPasswordMatched = await bcrypt.compare(req.body.password, dbResponse.password);
                     if (isPasswordMatched) {
-
-                        //TODO:- check if user is verified
-
-                        if (dbResponse.isVerified) { // IF User is Verified
+                        if (dbResponse.isVerified) { // CHECK WHETHER USER IS VERIFIED IS NOT
                             const token = await dbResponse.createToken();              // CREATE TOKEN
                             dbResponse.token = token;                         // ASSIGNING JWT TOKEN
                             responseStatusCode = HTTPStatusCode.OK;
                             responseMessage = HTTPStatusCode.OK;
                             responseData = dbResponse
                         } else {
-                            // a) We will create a six digit OTP using random function()
-                            // b) We will send the OTP to the registered email ID with expired time.
-                            // c) 
                             const updatedObject = {
                                 'otp': BASIC_UTILS.otpGenrator(6),
                                 'otpValidTill': Date.now() + TimeInMs.MIN5
@@ -118,7 +138,6 @@ const userController = {
                                 responseData = "Unable to send OTP to the email."
                             }
                         }
-
                     } else {
                         responseStatusCode = HTTPStatusCode.UNAUTHORIZED;
                         responseMessage = HTTPStatusCode.UNAUTHORIZED;
@@ -195,6 +214,9 @@ const userController = {
         } finally {
             return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
         }
+    },
+    forgotPassword: async function (req, res) {
+        return null;
     }
 
 }

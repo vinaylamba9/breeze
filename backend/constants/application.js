@@ -5,7 +5,11 @@ class AccountStatus {
 }
 
 Object.freeze(AccountStatus)
-
+class AccountInitFrom {
+    static SELF = 0;
+    static GOOGLE = 1;
+}
+Object.freeze(AccountInitFrom)
 class AccountLoggedStatus {
     static LOGIN = 0;
     static LOGOUT = 1;
@@ -46,6 +50,7 @@ Object.freeze(OTPExpired)
 module.exports = {
     AccountStatus,
     AccountLoggedStatus,
+    AccountInitFrom,
     VerificationType,
     TimeInMs,
     MasterConstantsStatus,
