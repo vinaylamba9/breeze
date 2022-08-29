@@ -31,15 +31,24 @@ class MasterConstantsStatus {
 Object.freeze(MasterConstantsStatus);
 
 class MasterConstantsCategory {
-    static USERACCOUNS = 0
+    static USERACCOUNTS = 0
 }
 
 Object.freeze(MasterConstantsCategory)
+
+class OTPExpired {
+    static EXPIREDVALUE = -1000;
+    static TOKENVALIDTILL = 0;
+}
+
+Object.freeze(OTPExpired)
+
 module.exports = {
     AccountStatus,
     AccountLoggedStatus,
     VerificationType,
     TimeInMs,
     MasterConstantsStatus,
-    MasterConstantsCategory
+    MasterConstantsCategory,
+    OTPExpired
 }

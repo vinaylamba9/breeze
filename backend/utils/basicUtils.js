@@ -56,9 +56,9 @@ const otpGenrator = function (length) {
 
 const timeON = {
     timeDiffrenceInMin: function (newDate, oldDate) {
-        let diff = (newDate.getTime() - oldDate.getTime()) / 1000;
-        diff /= 60;
-        return Math.abs(Math.round(diff));
+        let timeDifference = (newDate.getTime() - oldDate.getTime()) / 1000;
+        timeDifference /= 60;
+        return Math.abs(Math.round(timeDifference));
     },
     minToHrs: function (timeInMin) {
         return Math.abs(Math.round(timeInMin / 60));
@@ -85,11 +85,11 @@ const cleanUserModel = function (user) {
         if (!_isNull(user.password)) {
             delete user.password;
         }
-        if (!_isNull(user.token)) {
-            delete user.token;
+        if (!_isNull(user.otp)) {
+            delete user.otp;
         }
-        if (!_isNull(user.tokenValidTill)) {
-            delete user.tokenValidTill;
+        if (!_isNull(user.otpValidTill)) {
+            delete user.otpValidTill;
         }
         return user;
     } catch (e) {

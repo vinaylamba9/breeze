@@ -18,7 +18,7 @@ const { HTTPStatusCode } = require("../constants/network");
 
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
-const { TimeInMs } = require('../constants/application');
+const { TimeInMs, OTPExpired } = require('../constants/application');
 const { EMAIL_SERVICES } = require('../services/email/emailService');
 
 
@@ -149,12 +149,44 @@ const userController = {
             } else {
                 const dbResponse = await DB_UTILS.findByEmail(req.body.email)
                 if (dbResponse) {
-                    const isOnTime = BASIC_UTILS.timeOn.isTimeLimitAvailable(Date.now(), new Date(dbResponse.otpValidTill).getTime())
-                    console.log(isOnTime)
+                    let isOnTime = BASIC_UTILS.timeON.isTimeLimitAvailable(
+                        Date.now(),
+                        new Date(dbResponse.otpValidTill).getTime()
+                    ) // CHECK WHETHER OTP IS EXPIRED OR NOT
+                    if (isOnTime) {
+                        if (req.body.otp === dbResponse.otp) {
+                            let updatedUserResponse = await DB_UTILS.updateOneById(userModel, dbResponse.id, {
+                                isVerified: true,
+                                otp: OTPExpired.EXPIREDVALUE,
+                                otpValidTill: OTPExpired.TOKENVALIDTILL
+                            })
+                            updatedUserResponse = BASIC_UTILS.cleanUserModel(updatedUserResponse)
+                            if (updatedUserResponse) {
+                                const token = await dbResponse.createToken()
+                                updatedUserResponse.token = token
+                                responseStatusCode = HTTPStatusCode.OK;
+                                responseMessage = HTTPStatusCode.OK;
+                                responseData = updatedUserResponse
+                            } else {
+                                responseStatusCode = HTTPStatusCode.FORBIDDEN;
+                                responseMessage = HTTPStatusCode.FORBIDDEN;
+                                responseData = "Unable to clean trash."
+                            }
+                        } else {
+                            responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                            responseMessage = HTTPStatusCode.BAD_REQUEST;
+                            responseData = "OTP is not matched."
+                        }
+                    } else {
+                        responseStatusCode = HTTPStatusCode.FORBIDDEN;
+                        responseMessage = HTTPStatusCode.FORBIDDEN;
+                        responseData = "OTP is expired.Please use the new OTP."
+                    }
+                } else {
+                    responseStatusCode = HTTPStatusCode.FORBIDDEN;
+                    responseMessage = HTTPStatusCode.FORBIDDEN;
+                    responseData = "User not found."
                 }
-                responseStatusCode = HTTPStatusCode.OK
-                responseMessage = HTTPStatusCode.OK
-                responseData = dbResponse
             }
         } catch (error) {
             responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
