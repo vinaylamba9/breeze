@@ -271,19 +271,37 @@ const userController = {
             } else {
                 const dbResponse = await DB_UTILS.findByEmail(req.body.email)
                 if (dbResponse) {
-                    const updatedPassword = {
-                        'password': await bcrypt.hash(req.body.password, 8),
-                    }
-                    let updatedUserResponse = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedPassword)
-                    updatedUserResponse = updatedUserResponse.toJSON()
-                    if (updatedUserResponse) {
-                        responseStatusCode = HTTPStatusCode.OK
-                        responseMessage = HTTPStatusCode.OK
-                        responseData = "Your password has been updated."
+                    let isOnTime = BASIC_UTILS.timeON.isTimeLimitAvailable(
+                        Date.now(),
+                        new Date(dbResponse.otpValidTill).getTime()
+                    )
+                    if (isOnTime) {
+                        if (req.body.otp === dbResponse.otp) {
+                            const updatedData = {
+                                'otp': OTPExpired.EXPIREDVALUE,
+                                'otpValidTill': OTPExpired.TOKENVALIDTILL,
+                                'password': await bcrypt.hash(req.body.password, 8),
+                            }
+                            let updatedUserResponse = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedData)
+                            updatedUserResponse = BASIC_UTILS.cleanUserModel(updatedUserResponse)
+                            if (updatedUserResponse) {
+                                responseStatusCode = HTTPStatusCode.OK
+                                responseMessage = HTTPStatusCode.OK
+                                responseData = "Your password has been updated."
+                            } else {
+                                responseStatusCode = HTTPStatusCode.FORBIDDEN;
+                                responseMessage = HTTPStatusCode.FORBIDDEN;
+                                responseData = "Unable to update password."
+                            }
+                        } else {
+                            responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                            responseMessage = HTTPStatusCode.BAD_REQUEST;
+                            responseData = "OTP is not matched."
+                        }
                     } else {
                         responseStatusCode = HTTPStatusCode.FORBIDDEN;
                         responseMessage = HTTPStatusCode.FORBIDDEN;
-                        responseData = "Unable to update password."
+                        responseData = "OTP is expired.Please use the new OTP."
                     }
                 } else {
                     responseStatusCode = HTTPStatusCode.NOT_FOUND;

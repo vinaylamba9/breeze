@@ -47,7 +47,8 @@ router.post(
 router.post(
     "/updatepassword", [
     check("email").notEmpty().withMessage("Email is required.").trim().isEmail().withMessage("Please enter a valid Email."),
-    check("password").notEmpty().withMessage("Password is required.").trim().isLength({ min: 6 }).withMessage("Password must be at least 6 characters long.")
+    check("password").notEmpty().withMessage("Password is required.").trim().isLength({ min: 6 }).withMessage("Password must be at least 6 characters long."),
+    check("otp").notEmpty().withMessage("OTP is required").trim().isLength({ min: 6, max: 6 }).withMessage("OTP must be of length 6 characters long.")
 ],
     userController.updatePassword
 )
