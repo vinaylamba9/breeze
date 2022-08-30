@@ -27,7 +27,7 @@ class VerificationType {
     static ACCOUNT_VERIFICATION = 0
     static FORGOT_PASSWORD = 1
 }
-
+Object.freeze(VerificationType)
 class MasterConstantsStatus {
     static ACTIVE = 0
     static DELETED = 1

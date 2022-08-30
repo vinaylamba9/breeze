@@ -89,9 +89,9 @@ userModel.methods.createToken = async function () {
 }
 
 userModel.pre('save', async function (next) {
-    const user = this;
 
-    if (user.isModified('password')) {
+    const user = this;
+    if (user.password && user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
 

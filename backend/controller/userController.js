@@ -18,8 +18,9 @@ const { HTTPStatusCode } = require("../constants/network");
 
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
-const { TimeInMs, OTPExpired, AccountStatus, AccountInitFrom } = require('../constants/application');
+const { TimeInMs, OTPExpired, AccountStatus, AccountInitFrom, VerificationType } = require('../constants/application');
 const { EMAIL_SERVICES } = require('../services/email/emailService');
+const { MailSubject } = require('../constants/mail');
 
 
 const userController = {
@@ -121,7 +122,7 @@ const userController = {
                             }
                             const userUpdated = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedObject)
                             if (userUpdated) {
-                                let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated)
+                                let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated, MailSubject.ACCOUNT_VERIFICATION)
                                 if (emailResponse) {
                                     responseMessage = HTTPStatusCode.OK
                                     responseStatusCode = HTTPStatusCode.OK
@@ -131,8 +132,7 @@ const userController = {
                                     responseStatusCode = HTTPStatusCode.BAD_REQUEST
                                     responseData = emailResponse
                                 }
-                            }
-                            else {
+                            } else {
                                 responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                                 responseMessage = HTTPStatusCode.BAD_REQUEST;
                                 responseData = "Unable to send OTP to the email."
@@ -181,8 +181,7 @@ const userController = {
                             })
                             updatedUserResponse = BASIC_UTILS.cleanUserModel(updatedUserResponse)
                             if (updatedUserResponse) {
-                                const token = await dbResponse.createToken()
-                                updatedUserResponse.token = token
+                                updatedUserResponse.token = req.body.verificationType === VerificationType.ACCOUNT_VERIFICATION && await dbResponse.createToken()
                                 responseStatusCode = HTTPStatusCode.OK;
                                 responseMessage = HTTPStatusCode.OK;
                                 responseData = updatedUserResponse
@@ -216,7 +215,89 @@ const userController = {
         }
     },
     forgotPassword: async function (req, res) {
-        return null;
+        let responseStatusCode, responseMessage, responseData;
+        try {
+            const validationError = validationResult(req);
+            if (!validationError.isEmpty()) {
+                responseStatusCode = HTTPStatusCode.BAD_REQUEST,
+                    responseMessage = HTTPStatusCode.BAD_REQUEST,
+                    responseData = validationError
+            } else {
+                const dbResponse = await DB_UTILS.findByEmail(req.body.email)
+                if (dbResponse) {
+                    const updatedObject = {
+                        'otp': BASIC_UTILS.otpGenrator(6),
+                        'otpValidTill': Date.now() + TimeInMs.MIN5
+                    }
+                    const userUpdated = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedObject)
+                    if (userUpdated) {
+                        const emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated, MailSubject.FORGOT_PASSWORD,)
+                        if (emailResponse) {
+                            responseMessage = HTTPStatusCode.OK
+                            responseStatusCode = HTTPStatusCode.OK
+                            responseData = "OTP sent successfully.Please verify it."
+                        } else {
+                            responseMessage = HTTPStatusCode.BAD_REQUEST
+                            responseStatusCode = HTTPStatusCode.BAD_REQUEST
+                            responseData = emailResponse
+                        }
+                    } else {
+                        responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                        responseMessage = HTTPStatusCode.BAD_REQUEST;
+                        responseData = "Unable to send OTP to the email."
+                    }
+                } else {
+                    responseStatusCode = HTTPStatusCode.NOT_FOUND;
+                    responseMessage = HTTPStatusCode.NOT_FOUND;
+                    responseData = "User not found."
+                }
+            }
+        } catch (error) {
+            responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = error.toString()
+        } finally {
+            return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+        }
+    },
+    updatePassword: async function (req, res) {
+        let responseStatusCode, responseMessage, responseData
+        try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                responseStatusCode = HTTPStatusCode.BAD_REQUEST,
+                    responseMessage = HTTPStatusCode.BAD_REQUEST,
+                    responseMessage = errors
+            } else {
+                const dbResponse = await DB_UTILS.findByEmail(req.body.email)
+                if (dbResponse) {
+                    const updatedPassword = {
+                        'password': await bcrypt.hash(req.body.password, 8),
+                    }
+                    let updatedUserResponse = await DB_UTILS.updateOneById(userModel, dbResponse['_id'], updatedPassword)
+                    updatedUserResponse = updatedUserResponse.toJSON()
+                    if (updatedUserResponse) {
+                        responseStatusCode = HTTPStatusCode.OK
+                        responseMessage = HTTPStatusCode.OK
+                        responseData = "Your password has been updated."
+                    } else {
+                        responseStatusCode = HTTPStatusCode.FORBIDDEN;
+                        responseMessage = HTTPStatusCode.FORBIDDEN;
+                        responseData = "Unable to update password."
+                    }
+                } else {
+                    responseStatusCode = HTTPStatusCode.NOT_FOUND;
+                    responseMessage = HTTPStatusCode.NOT_FOUND;
+                    responseData = "User not found."
+                }
+            }
+        } catch (error) {
+            responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseData = error.toString()
+        } finally {
+            return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+        }
     }
 
 }

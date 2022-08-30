@@ -7,9 +7,9 @@ const { EMAIL_DB_UTILS } = require("../../utils/dbUtils");
 const { EMAIL_UTILS } = require("../../utils/emailUtils");
 
 const EMAIL_SERVICES = {
-    sendOTPVerification: async function (userUpdated) {
+    sendOTPVerification: async function (userUpdated, verificationType) {
         try {
-            let response = await EMAIL_SERVICES.sendEmail(userUpdated, MailSubject.ACCOUNT_VERIFICATION, [])
+            let response = await EMAIL_SERVICES.sendEmail(userUpdated, verificationType, [])
             return response;
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }
@@ -17,7 +17,7 @@ const EMAIL_SERVICES = {
     },
     sendEmail: async function (userUpdated, subject, attachements) {
         try {
-            const transporter = nodeMailer.createTransport({
+            /* const transporter = nodeMailer.createTransport({
                 host: process.env.EMAIL_AUTH_HOST,
                 port: process.env.EMAIL_AUTH_PORT,
                 secure: true,
@@ -26,7 +26,8 @@ const EMAIL_SERVICES = {
                     user: process.env.EMAIL_AUTH_USER,
                     pass: process.env.EMAIL_AUTH_PASSWORD
                 }
-            })
+            }) */
+            const transporter = await EMAIL_SERVICES.createTransporterObject()
             let response = await transporter.sendMail(
                 {
                     from: process.env.EMAIL_AUTH_USER,
@@ -138,63 +139,24 @@ const EMAIL_SERVICES = {
             return { msg: error, status: "NOT_FOUND" }
         }
     },
-    sendEmailVerification: async function (sendTo) {
+    createTransporterObject: async function () {
         try {
-            let replacerData = [];
-            let emailTemplate = await EMAIL_UTILS.getByTitle(MailTemplateTitle.ACCOUNT_VERIFICATION, { title: 1, body: 1 })
-            console.log("------EMAIL TEMPLATE------", emailTemplate)
-            replacerData.push(sendTo.name)
-            replacerData.push(sendTo.token)
-
-            let emailBody = EMAIL_UTILS.mailParser(emailTemplate.data.body, replacerData)
-            console.log("-----------EMAILBODY------", emailBody)
-            let response = await EMAIL_SERVICES.sendMail(sendTo.email, MailSubject.ACCOUNT_VERIFICATION, emailBody, [])
-            return response;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    sendMail: async function (to, subject, body, attachements) {
-        let response;
-        try {
-            let emailInfo = await EMAIL_SERVICES.getTransportObject()
-            let transporter = nodeMailer.createTransport(emailInfo.transport)
-
-            let mailConfig = {
-                from: emailInfo.from, // SENDER EMAIL ADDRESS
-                to: to.toString(),    // RECEIVERS LIST
-                subject: subject,
-                html: body,
-                attachements: attachements
-            }
-
-            let mailResponse = await transporter.sendMail(mailConfig, (err, info) => {
-                if (error) {
-                    new Error("Error SENDING MAIL" + error);
-                    response = { success: false };
-                    console.error(`Error Sending Mail : ${error}`.error);
-                } else {
-                    response = { success: true };
-                    console.log(` ✔️  Mail Sent To :- ${to}`);
-
+            const transporter = nodeMailer.createTransport({
+                host: process.env.EMAIL_AUTH_HOST,
+                port: process.env.EMAIL_AUTH_PORT,
+                secure: true,
+                service: process.env.EMAIL_SERVICE,
+                auth: {
+                    user: process.env.EMAIL_AUTH_USER,
+                    pass: process.env.EMAIL_AUTH_PASSWORD
                 }
             })
-            return response;
+            return transporter;
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }
         }
     },
-    getTransportObject: async function () {
-        try {
-            let emailInfo = await EMAIL_DB_UTILS.findTitle('email_credentials', {})
-            if (emailInfo) {
-                let decryptedData = CRYPTO_SECRET.decrypt(emailInfo.data)
-                return JSON.parse(decryptedData)
-            }
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    }
+
 }
 
 module.exports = {
