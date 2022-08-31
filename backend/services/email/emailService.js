@@ -40,7 +40,7 @@ const EMAIL_SERVICES = {
                     <head>
                         <meta charset="utf-8" />
                         <meta name="viewport" content="width=device-width" />
-                        <title>Emaail Template</title>
+                        <title>Email Template</title>
                         <link
                         href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
                         rel="stylesheet"
@@ -66,6 +66,12 @@ const EMAIL_SERVICES = {
                             border-top-left-radius: 1rem;
                             border-top-right-radius: 1rem;
                         }
+                        @media only screen and (max-width: 600px) {
+                            .logo{
+                                height:150px !important;
+                                width:200px !important;
+                            }
+                            }
                         </style>
                     </head>
 
@@ -73,7 +79,7 @@ const EMAIL_SERVICES = {
                         <div class="main">
                         <div class="header">
                             <center>
-                            <img
+                            <img class="logo"
                                 src="https://res.cloudinary.com/dtjqyp0r2/image/upload/v1660643211/bkisv2kflru4pcnp5alk.png"
                                 height="250px"
                                 width="320px"
