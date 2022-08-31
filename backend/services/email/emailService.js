@@ -17,7 +17,24 @@ const EMAIL_SERVICES = {
     },
     sendEmail: async function (userUpdated, subject, attachements) {
         try {
-            /* const transporter = nodeMailer.createTransport({
+            const transporter = await EMAIL_SERVICES.createTransporterObject()
+            let response = await transporter.sendMail(
+                {
+                    from: process.env.EMAIL_AUTH_USER,
+                    to: userUpdated.email,
+                    subject: subject,
+                    text: `This is the OTP for ${MailSubject.ACCOUNT_VERIFICATION}. Please dont share with others.`,
+                    html: await EMAIL_SERVICES.getEmailTemplate(userUpdated),
+                }
+            )
+            return response;
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    createTransporterObject: async function () {
+        try {
+            const transporter = nodeMailer.createTransport({
                 host: process.env.EMAIL_AUTH_HOST,
                 port: process.env.EMAIL_AUTH_PORT,
                 secure: true,
@@ -26,16 +43,15 @@ const EMAIL_SERVICES = {
                     user: process.env.EMAIL_AUTH_USER,
                     pass: process.env.EMAIL_AUTH_PASSWORD
                 }
-            }) */
-            const transporter = await EMAIL_SERVICES.createTransporterObject()
-            let response = await transporter.sendMail(
-                {
-                    from: process.env.EMAIL_AUTH_USER,
-                    to: userUpdated.email,
-                    subject: subject,
-                    text: `This is the OTP for ${MailSubject.ACCOUNT_VERIFICATION}. Please dont share with others.`,
-                    html: `
-                    <!DOCTYPE html>
+            })
+            return transporter;
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    getEmailTemplate: async function (userUpdated) {
+        return `
+            <!DOCTYPE html>
                     <html>
                     <head>
                         <meta charset="utf-8" />
@@ -52,7 +68,7 @@ const EMAIL_SERVICES = {
                             font-family: "Ubuntu", sans-serif;
                         }
                         .main {
-                            
+
                             box-shadow: 0px 0px 20px 1px rgba(153, 151, 151, 0.25),
                             0px 0px 20px 1px rgba(114, 112, 112, 0.22);
                             width: 70%;
@@ -136,32 +152,8 @@ const EMAIL_SERVICES = {
                     </html>
 
 
-                    `,
-
-                }
-            )
-            return response;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    createTransporterObject: async function () {
-        try {
-            const transporter = nodeMailer.createTransport({
-                host: process.env.EMAIL_AUTH_HOST,
-                port: process.env.EMAIL_AUTH_PORT,
-                secure: true,
-                service: process.env.EMAIL_SERVICE,
-                auth: {
-                    user: process.env.EMAIL_AUTH_USER,
-                    pass: process.env.EMAIL_AUTH_PASSWORD
-                }
-            })
-            return transporter;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
+        `
+    }
 
 }
 
