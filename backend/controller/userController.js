@@ -271,6 +271,7 @@ const userController = {
             } else {
                 const dbResponse = await DB_UTILS.findByEmail(req.body.email)
                 if (dbResponse) {
+
                     let isOnTime = BASIC_UTILS.timeON.isTimeLimitAvailable(
                         Date.now(),
                         new Date(dbResponse.otpValidTill).getTime()
