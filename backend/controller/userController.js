@@ -53,14 +53,13 @@ const userController = {
                             responseMessage = HTTPStatusCode.CREATED;
                             responseData = signedUpResponse
                         } else {
-                            //TODO:- MOVE THIS IN UTILS AS IT IS ALSO GETTING USED IN LOGIN API.
                             const updatedObject = {
                                 'otp': BASIC_UTILS.otpGenrator(6),
                                 'otpValidTill': Date.now() + TimeInMs.MIN5
                             }
                             const userUpdated = await DB_UTILS.updateOneById(userModel, signedUpResponse['_id'], updatedObject)
                             if (userUpdated) {
-                                let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated)
+                                let emailResponse = await EMAIL_SERVICES.sendOTPVerification(userUpdated, MailSubject.ACCOUNT_VERIFICATION)
                                 if (emailResponse) {
                                     responseMessage = HTTPStatusCode.OK
                                     responseStatusCode = HTTPStatusCode.OK
