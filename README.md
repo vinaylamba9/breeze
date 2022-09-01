@@ -1,7 +1,7 @@
 ### Breeze Chat Application 
 
 This app is created using:-
- a) React Js
+ \na) React Js
  b) Node.Js
  c) Socket.IO
  d) MongoDB
