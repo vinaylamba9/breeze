@@ -30,6 +30,8 @@
     "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19",
     "path": "^0.12.7",
-    "pm2": "^5.2.0"
+    "pm2": "^5.2.0",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0"
   }
 }
