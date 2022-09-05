@@ -13,6 +13,7 @@ const { check, validationResult } = require('express-validator')
 /* ================ CONTROLLER  FILES  =================*/
 const userController = require("../../controller/userController");
 
+
 router.post(
     "/signup",
     [

@@ -1,7 +1,8 @@
 import { useLocation } from "react-router-dom"
+import ForgotPasswordScreen from "screens/forgotPassword/forgotPassword";
+import OTPScreen from "screens/otp/otpScreen";
 import Routes from "../../constants/routes";
 import LoginScreen from "../login/loginScreen";
-import OTPScreen from "../otp/otpScreen";
 import SignupScreen from "../signup/signupScreen";
 
 const HomeScreen = () => {
@@ -17,13 +18,10 @@ const HomeScreen = () => {
                 </span>
             </div>
             <div className="w-6/12" >
-                {
-                    location.pathname === Routes.SIGNUPROUTE ?
-                        <SignupScreen /> :
-                        location.pathname === Routes.OTPVERIFICATION ?
-                            <OTPScreen /> :
-                            <LoginScreen />
-                }
+                {location.pathname === Routes.SIGNUPROUTE && <SignupScreen />}
+                {location.pathname === Routes.LOGINROUTE && <LoginScreen />}
+                {location.pathname === Routes.FORGOTPASSWORDROUTE && <ForgotPasswordScreen />}
+                {location.pathname === Routes.OTPVERIFICATIONROUTE && <OTPScreen />}
             </div>
         </div>
     )

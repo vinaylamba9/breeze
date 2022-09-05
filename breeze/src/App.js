@@ -13,7 +13,8 @@ function App() {
       <Route path="/chats" component={ChatScreen} exact />
       <Route path={Routes.SIGNUPROUTE} component={HomeScreen} exact />
       <Route path={Routes.LOGINROUTE} component={HomeScreen} exact />
-
+      <Route path={Routes.FORGOTPASSWORDROUTE} component={HomeScreen} exact />
+      <Route path={Routes.OTPVERIFICATIONROUTE} component={HomeScreen} exact />
     </div>
   );
 }

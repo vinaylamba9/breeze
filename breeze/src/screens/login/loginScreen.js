@@ -13,17 +13,22 @@ import Toast from 'components/toast/toast';
 import { userDAO } from 'core/user/userDAO';
 import { HTTPStatusCode } from 'constants/network';
 import { _isNull } from 'utils/basicUtils';
-
+import { useHistory } from 'react-router-dom';
 
 
 const LoginScreen = () => {
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [toastComponent, setToastComponent] = useState("");
+    const history = useHistory()
 
     const userLoginInfo = useRef({
         "email": "",
         "password": ""
     });
+
+    const onForgotPasswordClickHandler = () => {
+        history.push(Routes.FORGOTPASSWORDROUTE)
+    }
 
     const { inputChangeHandler, formValues, error, onSubmitHandler } = useForm(userLoginInfo.current);
     return (
@@ -52,7 +57,7 @@ const LoginScreen = () => {
                         validators={[ValidateInput.required, ValidateInput.password]}
                         errorMsg={error["password"]}
                     />
-                    <div className="cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal ml-40% mb-5%">
+                    <div onClick={onForgotPasswordClickHandler} className="cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal ml-40% mb-5%">
                         <p><b>* Forgot Password?</b> </p>
                     </div>
                     <Button
