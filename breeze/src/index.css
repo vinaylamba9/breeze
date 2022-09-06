@@ -8,7 +8,7 @@
   --warning-color: #ff9500;
   --danger-color: #fe0000;
   --danger-colorWithOpacity: #fdf2f3;
-  --info-color: #1d4d79;
+  --info-color: #12507d;
   --muted-color: #6c757d;
   --success-color: #28a745;
   --text-color-purity: #fff;
@@ -62,4 +62,8 @@ code {
   color: var(--color-darkTeal);
   font-weight: 600;
   background-color: var(--color-champagne);
+}
+
+input[type="file"] {
+  display: none;
 }
