@@ -21,7 +21,7 @@ const EmailConfirm = () => {
             <center>
                 <div className='mt-10% text-fontsize-brittle'>
                     <TypewriterLabel label="Forgot Password? " />
-                    <span className="text-background-color-metal ">Don't worry! It happens. <br />Please enter the email associated with your account.</span>
+                    <span className="text-background-color-metal font-thin ">Don't worry! It happens. <br />Please enter the email associated with your account.</span>
                     <br />  <br />
                     <InputField
                         type={InputType.EMAIL}
