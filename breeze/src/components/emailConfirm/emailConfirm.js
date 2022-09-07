@@ -10,10 +10,12 @@ import { ValidateInput } from "constants/inputValidators";
 import { _isNull } from "utils/basicUtils";
 import { userDAO } from "core/user/userDAO";
 import Toast from "components/toast/toast";
+import Spinner from "components/spinner/spinner";
 
 
 const EmailConfirm = () => {
     const [toastComponent, setToastComponent] = useState("")
+    const [isLoading, setIsLoading] = useState(false);
     const userEmailConfirmInfo = useRef({
         "email": ""
     })
@@ -38,20 +40,26 @@ const EmailConfirm = () => {
                         value={formValues["email"]}
                     />
                     <br />
-                    <Button
-                        label="Confirm with Breeze"
-                        backgroundColor={`var(--color-darkTeal)`}
-                        textColor={`var(--text-color-purity)`}
-                        onClickHandler={async () => {
-                            if (!_isNull(formValues.email)) {
-                                const result = await userDAO.forgotPasswordDAO(formValues)
-                                setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody.data} autoDismissable />)
+                    {
+                        !isLoading ? <Button
+                            label="Confirm with Breeze"
+                            backgroundColor={`var(--color-darkTeal)`}
+                            textColor={`var(--text-color-purity)`}
+                            onClickHandler={async () => {
+                                setIsLoading(true)
 
-                            } else {
-                                onSubmitHandler()
-                            }
-                        }}
-                    />
+                                if (!_isNull(formValues.email)) {
+                                    const result = await userDAO.forgotPasswordDAO(formValues)
+                                    setIsLoading(false)
+                                    setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody.data} autoDismissable />)
+                                    formValues["email"] = ""
+                                } else {
+                                    onSubmitHandler()
+                                    setIsLoading(false)
+                                }
+                            }}
+                        /> : <Spinner />
+                    }
                     {toastComponent && toastComponent}
                 </div>
             </center>

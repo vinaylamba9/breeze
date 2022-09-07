@@ -44,7 +44,6 @@ export const userDAO = {
                     return signupResult
                 }
             }
-
             return signupResult
         } catch (error) {
             return errorDebug(error, 'userDAO.signupDAO')
