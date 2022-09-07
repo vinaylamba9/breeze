@@ -17,7 +17,7 @@ export class MethodType {
 export class UserAPI {
     static LOGIN = "/login";
     static SIGNUP = "/signup";
-    static FORGOTPASSWORD = "forgotPassword";
+    static FORGOTPASSWORD = "/forgotpassword";
 }
 
 export class HTTPStatusCode {

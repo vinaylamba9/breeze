@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import InputField from "components/inputField/inputField"
 import ToggleOnBoard from "components/toggleOnboard/toggleOnBoard"
 import TypewriterLabel from "components/typewriterLabel/typewriterLabel"
@@ -7,13 +7,18 @@ import Button from "components/button/button"
 import { InputType } from "constants/application"
 import useForm from "hooks/useForm";
 import { ValidateInput } from "constants/inputValidators";
+import { _isNull } from "utils/basicUtils";
+import { userDAO } from "core/user/userDAO";
+import Toast from "components/toast/toast";
 
 
 const EmailConfirm = () => {
-
+    const [toastComponent, setToastComponent] = useState("")
     const userEmailConfirmInfo = useRef({
         "email": ""
     })
+
+
     const { inputChangeHandler, formValues, error, onSubmitHandler } = useForm(userEmailConfirmInfo.current);
     return (
         <div className='flex flex-col animate-fadeIn'>
@@ -37,8 +42,17 @@ const EmailConfirm = () => {
                         label="Confirm with Breeze"
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}
-                        onClickHandler={() => onSubmitHandler()}
+                        onClickHandler={async () => {
+                            if (!_isNull(formValues.email)) {
+                                const result = await userDAO.forgotPasswordDAO(formValues)
+                                setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody.data} autoDismissable />)
+
+                            } else {
+                                onSubmitHandler()
+                            }
+                        }}
                     />
+                    {toastComponent && toastComponent}
                 </div>
             </center>
         </div>

@@ -25,5 +25,17 @@ export const userAPI = {
         } catch (error) {
             return errorDebug(error, 'userAPI.signup()')
         }
+    },
+    forgotPassword: async function (userData) {
+        let httpCall = new HttpCall();
+        httpCall.dataToSend = userData;
+        httpCall.setAuthRequired = false;
+        httpCall.URL = NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.FORGOTPASSWORD
+        try {
+            let response = await httpCall.sendPostRequest()
+            return response;
+        } catch (error) {
+            return errorDebug(error, 'userAPI.forgotpassword()')
+        }
     }
 }

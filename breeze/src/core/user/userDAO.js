@@ -49,6 +49,22 @@ export const userDAO = {
         } catch (error) {
             return errorDebug(error, 'userDAO.signupDAO')
         }
+    },
+    forgotPasswordDAO: async function (userData) {
+        try {
+            const forgotPasswordResult = await userAPI.forgotPassword(userData)
+            if (forgotPasswordResult) {
+                const statusCode = forgotPasswordResult['statusCode']
+                if (statusCode === HTTPStatusCode.OK) {
+                    return forgotPasswordResult
+                } else if (statusCode === HTTPStatusCode.FORBIDDEN) {
+                    return forgotPasswordResult;
+                }
+            }
+        } catch (error) {
+            return errorDebug(error, 'userDAO.forgotPasswordDAO')
+        }
     }
+
 
 }
