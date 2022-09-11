@@ -47,7 +47,6 @@ const EmailConfirm = () => {
                             textColor={`var(--text-color-purity)`}
                             onClickHandler={async () => {
                                 setIsLoading(true)
-
                                 if (!_isNull(formValues.email)) {
                                     const result = await userDAO.forgotPasswordDAO(formValues)
                                     setIsLoading(false)

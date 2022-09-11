@@ -1,9 +1,11 @@
+import UpdatePassword from "screens/updatePassword/updatePassword";
 import { useLocation } from "react-router-dom"
 import ForgotPasswordScreen from "screens/forgotPassword/forgotPassword";
 import OTPScreen from "screens/otp/otpScreen";
 import Routes from "../../constants/routes";
 import LoginScreen from "../login/loginScreen";
 import SignupScreen from "../signup/signupScreen";
+import UpdatePasswordScreen from "screens/updatePassword/updatePassword";
 
 const HomeScreen = () => {
     const location = useLocation();
@@ -22,6 +24,7 @@ const HomeScreen = () => {
                 {location.pathname === Routes.LOGINROUTE && <LoginScreen />}
                 {location.pathname === Routes.FORGOTPASSWORDROUTE && <ForgotPasswordScreen />}
                 {location.pathname === Routes.OTPVERIFICATIONROUTE && <OTPScreen />}
+                {location.pathname === Routes.UPDATEPASSWORDROUTE && <UpdatePasswordScreen />}
             </div>
         </div>
     )

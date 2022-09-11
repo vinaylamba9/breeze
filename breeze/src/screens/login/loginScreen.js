@@ -59,7 +59,7 @@ const LoginScreen = () => {
                     />
                     <div onClick={onForgotPasswordClickHandler} className="cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal ml-40% mb-5%">
                         <p><b>* Forgot Password?</b> </p>
-                    </div>
+                        /</div>
                     <Button
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}

@@ -54,9 +54,13 @@ export const EmailRegEx = {
 export const UsernameRegEx = {
     length: "(?=.{8,15})"
 }
+export const OTPRegEx = {
+    length: "(?=.{6,6})"
+}
 
 export class InputType {
     static TEXT = "text";
+    static NUMBER = "number";
     static PASSWORD = "password";
     static BUTTON = "button";
     static FILE = "file";

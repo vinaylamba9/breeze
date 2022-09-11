@@ -55,6 +55,26 @@ const useForm = (initialFormValues) => {
                         tempError["password"] = b.errorMsg;
                     break;
                 }
+            case "updatedPassword":
+                {
+                    let a = ValidateInput.required(value);
+                    let b = ValidateInput.password(value);
+                    if (a.errorMsg)
+                        tempError["updatedPassword"] = a.errorMsg;
+                    else
+                        tempError["updatedPassword"] = b.errorMsg;
+                    break;
+                }
+            case "otp":
+                {
+                    let a = ValidateInput.required(value);
+                    let b = ValidateInput.OTP(value);
+                    if (a.errorMsg)
+                        tempError["otp"] = a.errorMsg;
+                    else
+                        tempError["otp"] = b.errorMsg;
+                    break;
+                }
             default:
                 break;
         }

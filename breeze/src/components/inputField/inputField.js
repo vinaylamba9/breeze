@@ -3,7 +3,7 @@ import { Fragment, useEffect } from 'react';
 import { useRef, useState } from 'react';
 
 
-const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators }) => {
+const InputField = ({ type, name, maxLength, placeholder, onChangeHandler, value, errorMsg, trailingIcon, onIconToggleHandler, validators }) => {
 
     const inputRef = useRef();
     const [error, setError] = useState(errorMsg);
@@ -42,6 +42,7 @@ const InputField = ({ type, name, placeholder, onChangeHandler, value, errorMsg,
                     placeholder={placeholder}
                     value={value}
                     onChange={onChangeHandler}
+                    maxLength={maxLength}
                 />
                 {
                     trailingIcon && <div style={{ cursor: "pointer", position: "absolute", right: "12%" }}

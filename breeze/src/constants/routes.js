@@ -8,6 +8,7 @@ export default class Routes {
     static LOGINROUTE = "/login";
     static HOMEROUTE = "/home";
     static FORGOTPASSWORDROUTE = "/forgotpassword";
+    static UPDATEPASSWORDROUTE = "/updatepassword";
     static OTPVERIFICATIONROUTE = "/otp";
     static CHATROUTE = "/chats";
     static PAGENOTFOUNDROUTE = "/pagenotfound";

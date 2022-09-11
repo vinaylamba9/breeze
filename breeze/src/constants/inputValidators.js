@@ -1,4 +1,4 @@
-import { EmailRegEx, PasswordRegEx, UsernameRegEx } from "./application";
+import { EmailRegEx, OTPRegEx, PasswordRegEx, UsernameRegEx } from "./application";
 
 export class ValidateInput {
 
@@ -16,7 +16,19 @@ export class ValidateInput {
         }
     }
 
-
+    static OTP(value) {
+        if (!new RegExp(OTPRegEx.length).test(value)) {
+            return {
+                "isError": true,
+                "errorMsg": "OTP should be of length 6."
+            }
+        } else {
+            return {
+                "isError": false,
+                "errorMsg": ""
+            }
+        }
+    }
     static username(value) {
         if (!new RegExp(UsernameRegEx.length).test(value)) {
             return {
