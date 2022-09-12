@@ -14,7 +14,7 @@ function App() {
       <Route path={Routes.SIGNUPROUTE} component={HomeScreen} exact />
       <Route path={Routes.LOGINROUTE} component={HomeScreen} exact />
       <Route path={Routes.FORGOTPASSWORDROUTE} component={HomeScreen} exact />
-      <Route path={Routes.OTPVERIFICATIONROUTE} component={HomeScreen} exact />
+      {/* <Route path={Routes.OTPVERIFICATIONROUTE} component={HomeScreen} exact /> */}
       <Route path={Routes.UPDATEPASSWORDROUTE} component={HomeScreen} exact />
     </div>
   );

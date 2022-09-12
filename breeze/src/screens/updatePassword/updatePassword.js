@@ -14,10 +14,12 @@ import Spinner from "components/spinner/spinner";
 import useIconToggle from "hooks/useIconToggle";
 
 import { PasswordIconAiFillEye, PasswordIconAiFillEyeInvisible } from 'utils/utilsIcon';
+
 const UpdatePasswordScreen = () => {
     const [toastComponent, setToastComponent] = useState("")
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [isLoading, setIsLoading] = useState(false);
+
 
     const updatePasswordInfo = useRef({
         "otp": "",

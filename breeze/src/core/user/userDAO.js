@@ -63,6 +63,19 @@ export const userDAO = {
         } catch (error) {
             return errorDebug(error, 'userDAO.forgotPasswordDAO')
         }
+    },
+    updatePasswordDAO: async function (userData) {
+        try {
+            const updatePasswordResult = await userAPI.updatePassword(userData)
+            if (updatePasswordResult) {
+                const statusCode = updatePasswordResult['statusCode']
+                if (statusCode === HTTPStatusCode.OK) {
+                    return updatePasswordResult
+                }
+            }
+        } catch (error) {
+            return errorDebug(error, 'userDAO.updatePasswordDAO')
+        }
     }
 
 

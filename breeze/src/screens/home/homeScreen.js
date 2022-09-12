@@ -22,9 +22,9 @@ const HomeScreen = () => {
             <div className="w-6/12" >
                 {location.pathname === Routes.SIGNUPROUTE && <SignupScreen />}
                 {location.pathname === Routes.LOGINROUTE && <LoginScreen />}
-                {location.pathname === Routes.FORGOTPASSWORDROUTE && <ForgotPasswordScreen />}
+                {/* {location.pathname === Routes.FORGOTPASSWORDROUTE && <ForgotPasswordScreen />} */}
                 {location.pathname === Routes.OTPVERIFICATIONROUTE && <OTPScreen />}
-                {location.pathname === Routes.UPDATEPASSWORDROUTE && <UpdatePasswordScreen />}
+                {location.pathname === Routes.UPDATEPASSWORDROUTE && <ForgotPasswordScreen />}
             </div>
         </div>
     )
