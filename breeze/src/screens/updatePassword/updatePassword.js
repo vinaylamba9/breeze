@@ -14,16 +14,21 @@ import Spinner from "components/spinner/spinner";
 import useIconToggle from "hooks/useIconToggle";
 
 import { PasswordIconAiFillEye, PasswordIconAiFillEyeInvisible } from 'utils/utilsIcon';
+import { useHistory } from "react-router-dom";
+import { HTTPStatusCode } from "constants/network";
 
-const UpdatePasswordScreen = () => {
+const UpdatePasswordScreen = ({ email }) => {
+
     const [toastComponent, setToastComponent] = useState("")
     const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
     const [isLoading, setIsLoading] = useState(false);
+    const history = useHistory();
+
 
 
     const updatePasswordInfo = useRef({
         "otp": "",
-        "updatedPassword": ""
+        "password": ""
     })
 
     const { inputChangeHandler, formValues, error, onSubmitHandler } = useForm(updatePasswordInfo.current);
@@ -47,34 +52,37 @@ const UpdatePasswordScreen = () => {
                     />
                     <InputField
                         type={togglePasswordVisibility ? InputType.PASSWORD : InputType.TEXT}
-                        name="updatedPassword"
-                        value={formValues["updatedPassword"]}
+                        name="password"
+                        value={formValues["password"]}
                         placeholder="* New Password"
                         onChangeHandler={inputChangeHandler}
                         trailingIcon={togglePasswordVisibility ? <PasswordIconAiFillEyeInvisible /> : <PasswordIconAiFillEye />}
                         onIconToggleHandler={onTogglePassword}
                         validators={[ValidateInput.required, ValidateInput.password]}
-                        errorMsg={error["updatedPassword"]}
+                        errorMsg={error["password"]}
                     />
 
                     <br />
-                    <Button
+                    {!isLoading ? <Button
                         label="Update Password"
                         backgroundColor={`var(--color-darkTeal)`}
                         textColor={`var(--text-color-purity)`}
                         onClickHandler={async () => {
                             setIsLoading(true)
-                            if (!_isNull(formValues.email)) {
-                                const result = await userDAO.forgotPasswordDAO(formValues)
+                            if (!_isNull(formValues.otp) || !_isNull(formValues.password)) {
+                                formValues["email"] = email
+                                const result = await userDAO.updatePasswordDAO(formValues)
                                 setIsLoading(false)
-                                setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody.data} autoDismissable />)
-                                formValues["email"] = ""
+                                setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody} autoDismissable />)
+                                if (result.statusCode === HTTPStatusCode.OK) {
+                                    history.push(Routes.LOGINROUTE)
+                                }
                             } else {
                                 onSubmitHandler()
                                 setIsLoading(false)
                             }
                         }}
-                    />
+                    /> : <Spinner />}
                     {toastComponent && toastComponent}
                 </div>
             </center>

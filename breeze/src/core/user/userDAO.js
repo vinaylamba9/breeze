@@ -70,6 +70,13 @@ export const userDAO = {
             if (updatePasswordResult) {
                 const statusCode = updatePasswordResult['statusCode']
                 if (statusCode === HTTPStatusCode.OK) {
+                    return {
+                        "statusCode": statusCode,
+                        "responseBody": updatePasswordResult.responseBody.data
+                    }
+                } else if (statusCode === HTTPStatusCode.FORBIDDEN) {
+                    return updatePasswordResult
+                } else if (statusCode === HTTPStatusCode.BAD_REQUEST) {
                     return updatePasswordResult
                 }
             }

@@ -17,6 +17,7 @@ import UpdatePasswordScreen from "screens/updatePassword/updatePassword";
 
 const ForgotPasswordScreen = () => {
     const [toastComponent, setToastComponent] = useState("")
+    const [email, setEmail] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [isResponseAvailable, setIsResponseAvailable] = useState(false);
     const userEmailConfirmInfo = useRef({
@@ -56,6 +57,7 @@ const ForgotPasswordScreen = () => {
                                         setIsResponseAvailable(true)
                                         setIsLoading(false)
                                         setToastComponent(<Toast statusCode={result.statusCode} toastTitle="OTP" toastSubtitle={result.responseBody.data} autoDismissable />)
+                                        setEmail(formValues["email"])
                                         formValues["email"] = ""
                                     }
 
@@ -69,7 +71,7 @@ const ForgotPasswordScreen = () => {
                     {toastComponent && toastComponent}
                 </div>
             </center>
-        </div> : <UpdatePasswordScreen />
+        </div> : <UpdatePasswordScreen email={email} />
     )
 }
 
