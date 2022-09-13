@@ -55,9 +55,14 @@ export const userDAO = {
             if (forgotPasswordResult) {
                 const statusCode = forgotPasswordResult['statusCode']
                 if (statusCode === HTTPStatusCode.OK) {
-                    return forgotPasswordResult
+                    return {
+                        "statusCode": statusCode,
+                        "responseBody": forgotPasswordResult.responseBody.data
+                    }
                 } else if (statusCode === HTTPStatusCode.FORBIDDEN) {
                     return forgotPasswordResult;
+                } else if (statusCode === HTTPStatusCode.BAD_REQUEST) {
+                    return forgotPasswordResult
                 }
             }
         } catch (error) {
