@@ -24,9 +24,14 @@ export const userDAO = {
                         }
                         //TODO:- Redirect to OTP Screen
                     }
-                    return _userAccount
+                    return {
+                        "statusCode": statusCode,
+                        "responseBody": _userAccount
+                    }
                 } else if (statusCode === HTTPStatusCode.NOT_FOUND) {
-                    return loginResult
+                    return loginResult;
+                } else if (statusCode === HTTPStatusCode.BAD_REQUEST) {
+                    return loginResult;
                 }
             }
         } catch (error) {

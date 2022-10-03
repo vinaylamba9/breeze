@@ -17,7 +17,6 @@ const useForm = (initialFormValues) => {
                 switchValidator(key, value, tempError)
             })
         } if (flag === 0) {
-
             switchValidator(name, value, tempError)
         }
         setError(tempError)

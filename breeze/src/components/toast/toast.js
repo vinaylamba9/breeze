@@ -38,11 +38,13 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
         }
     }, [statusCode])
 
+
     const dismissToast = useCallback(() => toastRef.current.removeChild(toastRef.current.firstElementChild), []);
 
     useEffect(() => {
         toastConfigurationSet();
     })
+
     useEffect(() => {
         timeoutRef.current = autoDismissable && setTimeout(() => {
             dismissToast()
@@ -52,6 +54,7 @@ const Toast = ({ statusCode, toastTitle, toastSubtitle, autoDismissable }) => {
             clearTimeout(timeoutRef.current);
         }
     }, [toastConfigurationSet, autoDismissable, dismissToast])
+
 
     return (
         <div ref={toastRef} key={statusCode} id="toast" className={`shadow-lg ${autoDismissable ? 'animate-fadeInOut' : 'animate-fadeIn'} flex flex- col justify-center`} >

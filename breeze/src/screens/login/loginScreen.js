@@ -29,7 +29,7 @@ const LoginScreen = () => {
     const onForgotPasswordClickHandler = () => {
         history.push(Routes.UPDATEPASSWORDROUTE)
     }
-
+    console.log(toastComponent);
     const { inputChangeHandler, formValues, error, onSubmitHandler } = useForm(userLoginInfo.current);
     return (
         <div className='flex flex-col animate-fadeIn'>
@@ -67,10 +67,13 @@ const LoginScreen = () => {
                         onClickHandler={async () => {
                             if (!_isNull(formValues.email) || !_isNull(formValues.password)) {
                                 const result = await userDAO.loginDAO(formValues)
+                                console.log(result)
                                 if (result.statusCode === HTTPStatusCode.NOT_FOUND || result.statusCode === HTTPStatusCode.UNAUTHORIZED) {
-                                    setToastComponent(<Toast statusCode={result.statusCode} toastTitle="Login" toastSubtitle={result.responseBody} autoDismissable />)
+                                    setToastComponent(<Toast statusCode={result.statusCode} toastTitle="Login" toastSubtitle={"ERROR"} autoDismissable />)
                                     return;
                                 } else {
+                                    setToastComponent(<Toast statusCode={result.statusCode} toastTitle="Login" toastSubtitle={"User is Logged In."} autoDismissable />)
+                                    return;
                                     //TODO:- Navigate To Home
                                 }
 
