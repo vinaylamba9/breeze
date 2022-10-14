@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const cors = require('cors');
-const { chats } = require("./data/data");
+
 const PORT = process.env.PORT
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json")

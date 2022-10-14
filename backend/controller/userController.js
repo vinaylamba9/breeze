@@ -316,6 +316,31 @@ const userController = {
         } finally {
             return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
         }
+    },
+
+    //API():- /api/user/get?search=shekhar
+    getAllUsers: async function (req, res) {
+        let responseStatusCode, responseMessage, responseData;
+        try {
+            const keyword = req.query.search
+                ? {
+                    $or: [
+                        { name: { $regex: req.query.search, $options: "i" } },
+                        { email: { $regex: req.query.search, $options: "i" } }
+                    ]
+                } : {}
+
+            const users = await DB_UTILS.findByAny(userModel, keyword, req.user._id)
+            console.log(users, '----users')
+            res.send(users)
+
+        } catch (error) {
+            // responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            // responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseData = error.toString()
+        } finally {
+            // return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+        }
     }
 
 }

@@ -81,7 +81,9 @@ const timeON = {
 
 const cleanUserModel = function (user) {
     try {
-        user = user.toObject();
+        console.log(user, '--user12')
+        user = user.toObject()
+        console.log(user, '--user2')
         if (!_isNull(user.password)) {
             delete user.password;
         }
@@ -97,6 +99,15 @@ const cleanUserModel = function (user) {
     }
 }
 
+const cleanPassword = function (user) {
+    try {
+        if (!_isNull(user.password)) delete user.password
+        return user;
+    } catch (error) {
+        throw (error)
+    }
+}
+
 module.exports = {
     generateRandomString,
     notNull,
@@ -104,6 +115,7 @@ module.exports = {
     _isNull,
     otpGenrator,
     timeON,
-    cleanUserModel
+    cleanUserModel,
+    cleanPassword
 
 }

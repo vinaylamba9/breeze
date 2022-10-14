@@ -13,13 +13,13 @@ const router = express.Router();
 /* ================ UTILS FILES  =================*/
 const BASIC_UTILS = require("../../utils/basicUtils");
 const DB = require("../../utils/dbUtils");
+const auth = require("../../middleware/userAuth");
 
 /* ================ CONSTANTS  FILES  =================*/
 const { HTTPStatusCode } = require("../../constants/network");
+const userController = require("../../controller/userController");
 
 
-router.get("/", (req, res) => {
-
-});
+router.get("/getallusers", auth.userAuth.isLoggedIn, userController.getAllUsers);
 
 module.exports = router;
