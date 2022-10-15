@@ -24,6 +24,7 @@ const { MailSubject } = require('../constants/mail');
 
 
 const userController = {
+
     registerUser: async function (req, res) {
         let responseStatusCode, responseMessage, responseData;
         try {
@@ -322,24 +323,29 @@ const userController = {
     getAllUsers: async function (req, res) {
         let responseStatusCode, responseMessage, responseData;
         try {
-            const keyword = req.query.search
-                ? {
+            if (BASIC_UTILS._isNull(req.query.search) || req.query.search === "") {
+                responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+                responseMessage = HTTPStatusCode.BAD_REQUEST;
+                responseMessage = "PLEASE ENTER THE KEYWORD."
+
+            } else {
+                const keyword = {
                     $or: [
                         { name: { $regex: req.query.search, $options: "i" } },
                         { email: { $regex: req.query.search, $options: "i" } }
                     ]
-                } : {}
-            const users = await userModel.find(keyword).find({ _id: { $ne: req.user._id } })
-            // const users = await DB_UTILS.findByAny(userModel, keyword, req.user._id)
-            console.log(users, '----users')
-            res.send(users)
-
+                }
+                const users = await DB_UTILS.findByAny(userModel, keyword, req.user.userId)
+                responseStatusCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK
+                responseData = users
+            }
         } catch (error) {
-            // responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
-            // responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
             responseData = error.toString()
         } finally {
-            // return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+            return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
         }
     }
 

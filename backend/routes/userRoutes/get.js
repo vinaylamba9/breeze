@@ -20,6 +20,10 @@ const { HTTPStatusCode } = require("../../constants/network");
 const userController = require("../../controller/userController");
 
 
-router.get("/getallusers", auth.userAuth.isLoggedIn, userController.getAllUsers);
+router.get(
+    "/getallusers",
+    auth.userAuth.isLoggedIn,
+    userController.getAllUsers
+);
 
 module.exports = router;
