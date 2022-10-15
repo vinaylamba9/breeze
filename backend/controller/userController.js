@@ -329,8 +329,8 @@ const userController = {
                         { email: { $regex: req.query.search, $options: "i" } }
                     ]
                 } : {}
-
-            const users = await DB_UTILS.findByAny(userModel, keyword, req.user._id)
+            const users = await userModel.find(keyword).find({ _id: { $ne: req.user._id } })
+            // const users = await DB_UTILS.findByAny(userModel, keyword, req.user._id)
             console.log(users, '----users')
             res.send(users)
 

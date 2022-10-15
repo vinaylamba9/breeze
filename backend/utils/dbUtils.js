@@ -45,7 +45,8 @@ const DB_UTILS = {
     findByAny: async function (modelName, keyword, loggedInUserID) {
         try {
 
-            let dbResponse = await modelName.find(keyword).find({ _id: { $nin: loggedInUserID } })
+            let dbResponse = await modelName.find(keyword).find({ _id: { $ne: loggedInUserID } })
+            console.log(dbResponse)
             return dbResponse
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }

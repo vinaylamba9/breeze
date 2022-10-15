@@ -1,5 +1,6 @@
 
 const jwt = require("jsonwebtoken");
+const userModel = require("../models/userModel");
 require("dotenv").config();
 const BASIC_UTILS = require("../utils/basicUtils")
 
@@ -12,7 +13,7 @@ const userAuth = {
                 const profileData = await jwt.verify(token, process.env.PRIVATE_TOKEN);
                 const data = BASIC_UTILS.cleanPassword(profileData)
                 req.token = token;
-                req.user = data;
+                req.user = data
 
                 next();
             }
