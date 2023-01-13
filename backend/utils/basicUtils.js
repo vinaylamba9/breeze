@@ -16,7 +16,7 @@ const notNull = function (input) {
 }
 
 const _isNull = function (value) {
-    if (value == null || value == undefined) return true;
+    if (value === null || value === undefined || value === "") return true;
     else return false;
 }
 
@@ -44,6 +44,9 @@ const _isNotEmpty = function (value) {
     }
 }
 
+const hasWhiteSpace = (s) => {
+    return /\s/g.test(s);
+}
 const otpGenrator = function (length) {
     var result = '';
     var characters = '0123456789';
@@ -116,6 +119,7 @@ module.exports = {
     otpGenrator,
     timeON,
     cleanUserModel,
-    cleanPassword
+    cleanPassword,
+    hasWhiteSpace
 
 }

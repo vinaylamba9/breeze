@@ -5,6 +5,7 @@ const { EmailStatus } = require('../constants/mail');
 const emailModel = require('../models/emailModel');
 const masterConstantModel = require('../models/masterConstantModel');
 const userModel = require("../models/userModel");
+const chatModel = require('../models/chatModel');
 
 const DB_UTILS = {
     findByEmail: async function (email) {
@@ -46,7 +47,6 @@ const DB_UTILS = {
         try {
 
             let dbResponse = await modelName.find(keyword).find({ _id: { $ne: loggedInUserID } })
-
             return dbResponse
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }
@@ -116,5 +116,45 @@ const MASTER_CONSTANTS_DB_UTILS = {
         }
     }
 }
+const CHAT_DB_UTILS = {
+    findOneToOne: async function (userID, loggedInUseID) {
+        try {
+            let dbResponse = await chatModel.find({
+                isGroupChat: false,
+                $and: [
+                    { users: { $elemMatch: { $eq: loggedInUseID } } },
+                    { users: { $elemMatch: { $eq: userID } } }
 
-module.exports = { DB_UTILS, EMAIL_DB_UTILS, MASTER_CONSTANTS_DB_UTILS }
+                ]
+            }).populate("users", '-password').populate("recentMessage")
+
+            dbResponse = await userModel.populate(dbResponse, {
+                path: "recentMessage.sender",
+                select: "name email profileImage"
+            })
+
+            return dbResponse;
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    createChat: async function (chatData) {
+        try {
+            let dbResponse = await chatModel.create(chatData)
+            return dbResponse
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    findOneByID: async function (chatID) {
+        try {
+            let dbResponse = await chatModel.findOne({
+                _id: chatID
+            }).populate("users", "-password")
+            return dbResponse
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    }
+}
+module.exports = { DB_UTILS, EMAIL_DB_UTILS, MASTER_CONSTANTS_DB_UTILS, CHAT_DB_UTILS }

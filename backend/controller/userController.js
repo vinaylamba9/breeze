@@ -323,22 +323,29 @@ const userController = {
     getAllUsers: async function (req, res) {
         let responseStatusCode, responseMessage, responseData;
         try {
-            if (BASIC_UTILS._isNull(req.query.search) || req.query.search === "") {
+            if (BASIC_UTILS._isNull(req.query.search) || BASIC_UTILS.hasWhiteSpace(req.query.search)) {
                 responseStatusCode = HTTPStatusCode.BAD_REQUEST;
                 responseMessage = HTTPStatusCode.BAD_REQUEST;
                 responseMessage = "PLEASE ENTER THE KEYWORD."
-
             } else {
-                const keyword = {
+                const keyword = req.query.search && {
                     $or: [
                         { name: { $regex: req.query.search, $options: "i" } },
                         { email: { $regex: req.query.search, $options: "i" } }
                     ]
                 }
                 const users = await DB_UTILS.findByAny(userModel, keyword, req.user.userId)
-                responseStatusCode = HTTPStatusCode.OK
-                responseMessage = HTTPStatusCode.OK
-                responseData = users
+                if (users.length === 0) {
+                    responseStatusCode = HTTPStatusCode.OK
+                    responseMessage = HTTPStatusCode.OK
+                    responseData = 'NO USERS FOUND.'
+                }
+                else {
+
+                    responseStatusCode = HTTPStatusCode.OK
+                    responseMessage = HTTPStatusCode.OK
+                    responseData = users
+                }
             }
         } catch (error) {
             responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
