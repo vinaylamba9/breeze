@@ -19,6 +19,6 @@ const postRouter = require("./post");
 const updateRouter = require("./update");
 const deleteRouter = require("./delete");
 
-// router.use("/get", getRouter);
+router.use("/get", getRouter);
 router.use("/post", postRouter);
 module.exports = router;

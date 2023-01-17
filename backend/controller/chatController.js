@@ -30,7 +30,7 @@ const { TimeInMs, OTPExpired, AccountStatus, AccountInitFrom, VerificationType }
 
 
 const chatController = {
-  /** This Function will be used for creating and fetching chats. */
+  /** This Function will be used for creating chats. */
   createChat: async function (req, res) {
     let responseStatusCode, responseMessage, responseData;
     try {
@@ -40,14 +40,19 @@ const chatController = {
         responseMessage = HTTPStatusCode.BAD_REQUEST
         responseData = "Please provide userID."
       } else {
-
+        const checkUserIdExist = await DB_UTILS.findByID(userID)
         if (userID === req.user.userId) {
           responseStatusCode = HTTPStatusCode.BAD_REQUEST
           responseMessage = HTTPStatusCode.BAD_REQUEST
           responseData = "Chat cannot be created."
+        } else if (checkUserIdExist?.status === "NOT_FOUND") {
+          responseStatusCode = HTTPStatusCode.NOT_FOUND
+          responseMessage = HTTPStatusCode.NOT_FOUND
+          responseData = "User not found."
         }
         else {
-          let chat = await CHAT_DB_UTILS.findOneToOne(userID, req.user.userId)
+          let chat = await CHAT_DB_UTILS.findOneToOne(userID, req.user.userId, userModel)
+          // console.log(chat, '-chat')
           if (chat.length > 0) {
             responseStatusCode = HTTPStatusCode.OK
             responseMessage = HTTPStatusCode.OK
@@ -59,7 +64,7 @@ const chatController = {
               users: [req.user.userId, userID]
             }
             const createdChat = await CHAT_DB_UTILS.createChat(chatData);
-            const completeChat = await CHAT_DB_UTILS.findOneByID(createdChat._id)
+            const completeChat = await CHAT_DB_UTILS.findChatByID(createdChat._id)
             responseStatusCode = HTTPStatusCode.OK
             responseMessage = HTTPStatusCode.OK
             responseData = completeChat
@@ -75,8 +80,27 @@ const chatController = {
     }
 
   },
+  /**
+   * @Function FetchChats()
+   * @param {*} req 
+   * @param {*} res 
+   * @returns the chat that particular user is a part of.
+   */
   fetchChats: async function (req, res) {
-
+    let responseStatusCode, responseMessage, responseData;
+    try {
+      const { loggedInUserID } = req.user.userId;
+      const findChat = await CHAT_DB_UTILS.findByID(loggedInUserID)
+      responseStatusCode = HTTPStatusCode.OK
+      responseMessage = HTTPStatusCode.OK
+      responseData = findChat
+    } catch (error) {
+      responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+      responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+      responseData = error.toString()
+    } finally {
+      return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
+    }
   },
   createGroupChat: async function (req, res) {
 

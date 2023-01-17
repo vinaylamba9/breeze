@@ -106,6 +106,7 @@ const userController = {
                 responseMessage = HTTPStatusCode.BAD_REQUEST
             } else {
                 let dbResponse = await DB_UTILS.findByEmail(req.body.email);
+                console.log(dbResponse)
                 if (dbResponse) {
                     const isPasswordMatched = await bcrypt.compare(req.body.password, dbResponse.password);
                     if (isPasswordMatched) {

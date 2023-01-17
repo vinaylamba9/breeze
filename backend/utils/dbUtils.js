@@ -6,6 +6,7 @@ const emailModel = require('../models/emailModel');
 const masterConstantModel = require('../models/masterConstantModel');
 const userModel = require("../models/userModel");
 const chatModel = require('../models/chatModel');
+const messageModel = require('../models/messageModel');
 
 const DB_UTILS = {
     findByEmail: async function (email) {
@@ -18,6 +19,27 @@ const DB_UTILS = {
                 }).exec();
 
             return dbResponse;
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    findByID: async function (id) {
+        try {
+            let dbResponse = await userModel.findOne(
+                {
+                    $or: [
+                        { "_id": id },
+                    ],
+                    /*  users: {
+                         $elemMatch: { $eq: id }
+                     } */
+                }).select({
+                    name: 1,
+                    email: 1,
+                    profileImage: 1
+                });
+
+            return dbResponse ? dbResponse : null;
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }
         }
@@ -45,7 +67,6 @@ const DB_UTILS = {
     },
     findByAny: async function (modelName, keyword, loggedInUserID) {
         try {
-
             let dbResponse = await modelName.find(keyword).find({ _id: { $ne: loggedInUserID } })
             return dbResponse
         } catch (error) {
@@ -54,6 +75,74 @@ const DB_UTILS = {
     }
 }
 
+
+const CHAT_DB_UTILS = {
+    findOneToOne: async function (userID, loggedInUseID, modelName) {
+        try {
+            let dbResponse = await chatModel.find({
+                isGroupChat: false,
+                $and: [
+                    { users: { $elemMatch: { $eq: loggedInUseID } } },
+                    { users: { $elemMatch: { $eq: userID } } }
+
+                ]
+            }).populate("users", '-password').populate("recentMessage")
+
+
+            dbResponse = await modelName.populate(dbResponse, {
+                path: 'recentMessage.sender',
+                model: modelName,
+                select: {
+                    'name': 0,
+                    'email': 0
+                }
+            })
+
+            return dbResponse;
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    createChat: async function (chatData) {
+        try {
+            let dbResponse = await chatModel.create(chatData)
+            return dbResponse
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    findChatByID: async function (chatID) {
+        try {
+            let dbResponse = await chatModel.findOne({
+                _id: chatID
+            }).populate("users", "-password")
+            return dbResponse
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    },
+    findByID: async function (loggedInID) {
+        try {
+            let dbResponse = await chatModel.find({
+                users: {
+                    $elemMatch: loggedInID
+                }
+            })
+                .populate("users", "-password")
+                .populate("groupAdmin", '-password')
+                .populate('recentMessage')
+                .sort({ updatedAt: -1 })
+
+            /*  dbResponse = await userModel.populate(dbResponse, {
+                 path: 'recentMessage.sender',
+                 select: 'name email profileImage'
+             }) */
+            return dbResponse ? dbResponse : null
+        } catch (error) {
+            return { msg: error, status: "NOT_FOUND" }
+        }
+    }
+}
 const EMAIL_DB_UTILS = {
     findTitle: async function (title, select, status = EmailStatus.ACTIVE) {
         try {
@@ -116,45 +205,5 @@ const MASTER_CONSTANTS_DB_UTILS = {
         }
     }
 }
-const CHAT_DB_UTILS = {
-    findOneToOne: async function (userID, loggedInUseID) {
-        try {
-            let dbResponse = await chatModel.find({
-                isGroupChat: false,
-                $and: [
-                    { users: { $elemMatch: { $eq: loggedInUseID } } },
-                    { users: { $elemMatch: { $eq: userID } } }
 
-                ]
-            }).populate("users", '-password').populate("recentMessage")
-
-            dbResponse = await userModel.populate(dbResponse, {
-                path: "recentMessage.sender",
-                select: "name email profileImage"
-            })
-
-            return dbResponse;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    createChat: async function (chatData) {
-        try {
-            let dbResponse = await chatModel.create(chatData)
-            return dbResponse
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    findOneByID: async function (chatID) {
-        try {
-            let dbResponse = await chatModel.findOne({
-                _id: chatID
-            }).populate("users", "-password")
-            return dbResponse
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    }
-}
 module.exports = { DB_UTILS, EMAIL_DB_UTILS, MASTER_CONSTANTS_DB_UTILS, CHAT_DB_UTILS }
