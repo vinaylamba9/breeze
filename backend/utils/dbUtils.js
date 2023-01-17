@@ -125,7 +125,7 @@ const CHAT_DB_UTILS = {
         try {
             let dbResponse = await chatModel.find({
                 users: {
-                    $elemMatch: loggedInID
+                    $elemMatch: { $eq: loggedInID }
                 }
             })
                 .populate("users", "-password")
@@ -133,10 +133,10 @@ const CHAT_DB_UTILS = {
                 .populate('recentMessage')
                 .sort({ updatedAt: -1 })
 
-            /*  dbResponse = await userModel.populate(dbResponse, {
-                 path: 'recentMessage.sender',
-                 select: 'name email profileImage'
-             }) */
+            dbResponse = await userModel.populate(dbResponse, {
+                path: 'recentMessage.sender',
+                select: 'name email profileImage'
+            })
             return dbResponse ? dbResponse : null
         } catch (error) {
             return { msg: error, status: "NOT_FOUND" }

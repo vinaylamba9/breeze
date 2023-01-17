@@ -89,11 +89,17 @@ const chatController = {
   fetchChats: async function (req, res) {
     let responseStatusCode, responseMessage, responseData;
     try {
-      const { loggedInUserID } = req.user.userId;
-      const findChat = await CHAT_DB_UTILS.findByID(loggedInUserID)
-      responseStatusCode = HTTPStatusCode.OK
-      responseMessage = HTTPStatusCode.OK
-      responseData = findChat
+      const findChat = await CHAT_DB_UTILS.findByID(req.user.userId)
+
+      if (findChat.length === 0) {
+        responseStatusCode = HTTPStatusCode.NOT_FOUND
+        responseMessage = HTTPStatusCode.NOT_FOUND
+        responseData = "No chat found"
+      } else {
+        responseStatusCode = HTTPStatusCode.OK
+        responseMessage = HTTPStatusCode.OK
+        responseData = findChat
+      }
     } catch (error) {
       responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
       responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
@@ -101,6 +107,7 @@ const chatController = {
     } finally {
       return res.status(responseStatusCode).send({ message: responseMessage, data: responseData })
     }
+
   },
   createGroupChat: async function (req, res) {
 
