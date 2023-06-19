@@ -1,18 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import Layout from './screens/Layout/layout';
+import Layout from "./screens/Layout/layout";
+import ChatProvider from "context/chatProvider";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Layout><App /></Layout>
-    </BrowserRouter>
-  </React.StrictMode>
+	<ChatProvider>
+		<BrowserRouter>
+			{/* <Layout>
+				<App />
+			</Layout> */}
+			<App />
+		</BrowserRouter>
+	</ChatProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
