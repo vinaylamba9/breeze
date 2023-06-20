@@ -1,0 +1,52 @@
+{
+	"name": "frontend",
+	"version": "1.0.0",
+	"scripts": {
+		"build": " env-cmd -f .env webpack --mode production",
+		"build:dev": " env-cmd -f .env webpack --mode development",
+		"build:start": " env-cmd -f .env cd dist && PORT=3000 npx serve",
+		"start": " env-cmd -f .env webpack serve --open --mode development",
+		"start:live": "webpack serve --open --mode development --live-reload --hot"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Shekhar S",
+		"email": "shekhar8897@gmail.com"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.15.8",
+		"@babel/plugin-transform-runtime": "^7.15.8",
+		"@babel/preset-env": "^7.15.8",
+		"@babel/preset-react": "^7.14.5",
+		"autoprefixer": "^10.1.0",
+		"babel-loader": "^8.2.2",
+		"css-loader": "^6.3.0",
+		"html-webpack-plugin": "^5.3.2",
+		"postcss": "^8.2.1",
+		"postcss-loader": "^4.1.0",
+		"style-loader": "^3.3.0",
+		"tailwindcss": "^2.0.2",
+		"webpack": "^5.57.1",
+		"webpack-cli": "^4.10.0",
+		"webpack-dev-server": "^4.3.1"
+	},
+	"dependencies": {
+		"@babel/runtime": "^7.13.10",
+		"@svgr/webpack": "^8.0.1",
+		"axios": "^1.4.0",
+		"classnames": "^2.3.2",
+		"dotenv": "^16.3.1",
+		"env-cmd": "^10.1.0",
+		"file-loader": "^6.2.0",
+		"lodash": "^4.17.21",
+		"moment": "^2.29.4",
+		"nanoid": "^4.0.2",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-hook-form": "^7.45.0",
+		"react-icons": "^4.9.0",
+		"react-router-dom": "^6.13.0",
+		"react-simple-typewriter": "^5.0.1",
+		"react-toastify": "^9.1.3"
+	}
+}
