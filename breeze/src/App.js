@@ -7,15 +7,15 @@ import Layout from "screens/Layout/layout";
 function App() {
 	return (
 		<div>
+			<Route path='/' exact>
+				<Redirect to={Routes.LOGINROUTE} />
+			</Route>
 			<Route
 				path={Routes.CHATROUTE}
 				element={<ProtectedRoutes Component={Layout} />}>
 				{Object.entries(navigateToComponent).map(([path, component]) => {
 					return <Route exact key={path} element={component} path={path} />;
 				})}
-			</Route>
-			<Route path='/' exact>
-				<Redirect to={Routes.LOGINROUTE} />
 			</Route>
 
 			<Route path={Routes.SIGNUPROUTE} component={HomeScreen} exact />

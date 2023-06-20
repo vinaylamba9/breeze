@@ -10,7 +10,7 @@ const ChatProvider = ({ children }) => {
 	const history = useHistory();
 	useEffect(() => {
 		const userInfo = UserSessionManagementController.getUserSession();
-		if (!userInfo) history.push(Routes.LANDINGROUTE);
+		if (!userInfo) history?.push(Routes.LANDINGROUTE);
 		else setUser(userInfo);
 	}, [history]);
 	return (

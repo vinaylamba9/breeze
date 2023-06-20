@@ -78,11 +78,11 @@ const LoginScreen = () => {
 			});
 		}
 	};
-	const navigate = useHistory();
+
 	useEffect(() => {
-		let login = UserSessionManagementController.getAPIKey();
-		if (login) navigate.push(Routes.CHATROUTE);
-	}, [navigate]);
+		let login = UserSessionManagementController.getUserSession();
+		if (!_isNull(login)) history.push(Routes.CHATROUTE);
+	}, [history]);
 
 	return (
 		<div className='flex flex-col animate-fadeIn'>

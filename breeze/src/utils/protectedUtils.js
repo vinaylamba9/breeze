@@ -10,6 +10,7 @@ export const ProtectedRoutes = ({ Component }) => {
 	useEffect(() => {
 		const checkStatus = async () => {
 			let login = UserSessionManagementController.getAPIKey();
+			console.log(login, "-login");
 			if (!login) {
 				let deletedResponse =
 					UserSessionManagementController.deleteAllSession();
