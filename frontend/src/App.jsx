@@ -14,9 +14,9 @@ const App = () => (
 				element={<Navigate replace to={BreezeRoutes.LOGINROUTE} />}
 			/>
 			<Route path={BreezeRoutes.LANDINGROUTE} element={<OnboardingLayout />}>
-				{Object.entries(preOnboardingRoutes)?.map(([path, component]) => {
-					return <Route exact key={path} element={component} path={path} />;
-				})}
+				{Object.entries(preOnboardingRoutes)?.map(([path, component]) => (
+					<Route exact key={path} element={component} path={path} />
+				))}
 			</Route>
 		</Routes>
 	</div>

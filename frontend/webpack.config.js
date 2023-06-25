@@ -52,6 +52,11 @@ module.exports = (_, argv) => ({
 				},
 			},
 			{
+				test: /\.(jpe?g|gif|png|svg)$/i,
+				use: ["url-loader"],
+			},
+
+			{
 				test: /\.svg$/,
 				use: ["@svgr/webpack", "file-loader"],
 			},

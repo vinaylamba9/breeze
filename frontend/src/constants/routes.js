@@ -25,3 +25,5 @@ export const preOnboardingRoutes = {
 	[BreezeRoutes.OTPVERIFICATIONROUTE]: <OTP />,
 	[BreezeRoutes.UPDATEPASSWORDROUTE]: <VerifyPassword />,
 };
+
+export const postOnboardingRoutes = {};

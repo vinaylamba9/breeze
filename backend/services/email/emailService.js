@@ -1,5 +1,5 @@
-require('dotenv').config();
-const nodeMailer = require('nodemailer')
+require("dotenv").config();
+const nodeMailer = require("nodemailer");
 const { replace } = require("node-emoji");
 const { MailTemplateTitle, MailSubject } = require("../../constants/mail");
 const { CRYPTO_SECRET } = require("../../crypto/cryptoSecret");
@@ -7,50 +7,52 @@ const { EMAIL_DB_UTILS } = require("../../utils/dbUtils");
 const { EMAIL_UTILS } = require("../../utils/emailUtils");
 
 const EMAIL_SERVICES = {
-    sendOTPVerification: async function (userUpdated, verificationType) {
-        try {
-            let response = await EMAIL_SERVICES.sendEmail(userUpdated, verificationType, [])
-            return response;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    sendEmail: async function (userUpdated, subject, attachements) {
-        try {
-            const transporter = await EMAIL_SERVICES.createTransporterObject()
-            let response = await transporter.sendMail(
-                {
-                    from: process.env.EMAIL_AUTH_USER,
-                    to: userUpdated.email,
-                    subject: subject,
-                    text: `This is the OTP for ${MailSubject.ACCOUNT_VERIFICATION}. Please dont share with others.`,
-                    html: await EMAIL_SERVICES.getEmailTemplate(userUpdated),
-                }
-            )
-            return response;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    createTransporterObject: async function () {
-        try {
-            const transporter = nodeMailer.createTransport({
-                host: process.env.EMAIL_AUTH_HOST,
-                port: process.env.EMAIL_AUTH_PORT,
-                secure: true,
-                service: process.env.EMAIL_SERVICE,
-                auth: {
-                    user: process.env.EMAIL_AUTH_USER,
-                    pass: process.env.EMAIL_AUTH_PASSWORD
-                }
-            })
-            return transporter;
-        } catch (error) {
-            return { msg: error, status: "NOT_FOUND" }
-        }
-    },
-    getEmailTemplate: async function (userUpdated) {
-        return `
+	sendOTPVerification: async function (userUpdated, verificationType) {
+		try {
+			let response = await EMAIL_SERVICES.sendEmail(
+				userUpdated,
+				verificationType,
+				[]
+			);
+			return response;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	sendEmail: async function (userUpdated, subject, attachements) {
+		try {
+			const transporter = await EMAIL_SERVICES.createTransporterObject();
+			let response = await transporter.sendMail({
+				from: process.env.EMAIL_AUTH_USER,
+				to: userUpdated.email,
+				subject: subject,
+				text: `This is the OTP for ${MailSubject.ACCOUNT_VERIFICATION}. Please dont share with others.`,
+				html: await EMAIL_SERVICES.getEmailTemplate(userUpdated),
+			});
+			return response;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	createTransporterObject: async function () {
+		try {
+			const transporter = nodeMailer.createTransport({
+				host: process.env.EMAIL_AUTH_HOST,
+				port: process.env.EMAIL_AUTH_PORT,
+				secure: true,
+				service: process.env.EMAIL_SERVICE,
+				auth: {
+					user: process.env.EMAIL_AUTH_USER,
+					pass: process.env.EMAIL_AUTH_PASSWORD,
+				},
+			});
+			return transporter;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	getEmailTemplate: async function (userUpdated) {
+		return `
             <!DOCTYPE html>
                     <html>
                     <head>
@@ -112,7 +114,7 @@ const EMAIL_SERVICES = {
                             <center>
                             <img
                                 style="border-radius: 0.5rem"
-                                src="https://res.cloudinary.com/dtjqyp0r2/image/upload/v1660747839/feuykwlnojxfedehwtoc.gif"
+                                src="https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687718317/9756c2a05e2dd85309fe4b3bc5d62357_rujtem.gif"
                                 height="70px"
                                 width="90px"
                             />
@@ -152,11 +154,10 @@ const EMAIL_SERVICES = {
                     </html>
 
 
-        `
-    }
-
-}
+        `;
+	},
+};
 
 module.exports = {
-    EMAIL_SERVICES
-}
+	EMAIL_SERVICES,
+};

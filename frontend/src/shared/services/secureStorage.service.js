@@ -1,33 +1,33 @@
 import { errorDebug } from "@Shared/utils/error.utils.js";
 
 export const BreezeStorageService = {
-	readSecuredData: async function (key) {
+	readSecuredData: function (key) {
 		try {
-			const result = await localStorage.getItem(key);
+			const result = localStorage.getItem(key);
 			return result;
 		} catch (error) {
 			return errorDebug(error, "BreezeStorageService.readSecuredData");
 		}
 	},
-	writeSecuredData: async function (securedData) {
+	writeSecuredData: function (securedData) {
 		try {
-			await localStorage.setItem(securedData.key, securedData.value);
+			localStorage.setItem(securedData.key, securedData.value);
 		} catch (error) {
 			return errorDebug(error, "BreezeStorageService.writeSecuredData");
 		}
 	},
-	deleteSecuredData: async function (key) {
+	deleteSecuredData: function (key) {
 		try {
-			await localStorage.removeItem(key);
+			localStorage.removeItem(key);
 			return true;
 		} catch (error) {
 			errorDebug(error, "BreezeStorageService.deleteSecuredData");
 			return false;
 		}
 	},
-	deleteAllSecuredData: async function () {
+	deleteAllSecuredData: function () {
 		try {
-			await localStorage.clear();
+			localStorage.clear();
 			return true;
 		} catch (error) {
 			errorDebug(error, "BreezeStorageService.deleteAllSecureData");

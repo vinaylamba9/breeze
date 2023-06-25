@@ -1,8 +1,8 @@
 module.exports = {
 	mode: "jit",
-	purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+	purge: ["./src/**/*.{js,jsx,ts,tsx}", "./src/index.html"],
 	darkMode: false,
-	content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
+	content: ["./src/**/*.{js,jsx,ts,tsx}", "./src/index.html"],
 	theme: {
 		extend: {
 			screens: {
@@ -17,7 +17,7 @@ module.exports = {
 				"secondary-color": "var(--secondary-color)",
 				"warning-color": "var(--warning-color)",
 				"danger-color": "var(--danger-color)",
-				dangerColorWithOpacity: "var(--danger-colorWithOpacity)",
+				"danger-colorWithOpacity": "var(--danger-colorWithOpacity)",
 				"info-color": "var(--info-color)",
 				"muted-color": "var(--muted-color)",
 				"success-color": "var(--success-color)",
@@ -45,9 +45,7 @@ module.exports = {
 				"fontsize-virgin": "var(--fontsize-virgin)",
 				"fontsize-brittle": "var(--fontsize-brittle)",
 			},
-			backgroundImage: {
-				"hero-image": "url('./assets/images/home.png')",
-			},
+
 			backgroundSize: {
 				auto: "auto",
 				cover: "cover",

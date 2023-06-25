@@ -7,9 +7,9 @@ export const BreezeSessionManagement = {
 	 * @params {*} userAccount
 	 * @returns Write data in Secured Storage
 	 */
-	setUserSession: async function (userAccount) {
+	setUserSession: function (userAccount) {
 		try {
-			await BreezeStorageService.writeSecuredData({
+			BreezeStorageService.writeSecuredData({
 				key: "userSessionInfo",
 				value: userAccount,
 			});
@@ -22,11 +22,9 @@ export const BreezeSessionManagement = {
 	 * @Function getUserSession()
 	 * @returns SecuredStorage data
 	 */
-	getUserSession: async function () {
+	getUserSession: function () {
 		try {
-			const data = await BreezeStorageService.readSecuredData(
-				"userSessionInfo"
-			);
+			const data = BreezeStorageService.readSecuredData("userSessionInfo");
 			return data && data;
 		} catch (error) {
 			return errorDebug(error, "BreezeSessionManagement.getUserSession");
@@ -38,11 +36,10 @@ export const BreezeSessionManagement = {
 	 * @returns isSessionDeleted\
 	 * @returnType bool
 	 */
-	deleteUserSession: async function () {
+	deleteUserSession: function () {
 		try {
-			const isUserSessionDeleted = await BreezeStorageService.deleteSecuredData(
-				"userSessionInfo"
-			);
+			const isUserSessionDeleted =
+				BreezeStorageService.deleteSecuredData("userSessionInfo");
 			if (isUserSessionDeleted) this.setSessionStatus(SessionType.EXPIRED);
 			return isUserSessionDeleted;
 		} catch (error) {
@@ -56,9 +53,9 @@ export const BreezeSessionManagement = {
 	 * @param {*} sessionStatus
 	 * @returns Write sessionStatus in Secured Storage
 	 */
-	setSessionStatus: async function (sessionStatus) {
+	setSessionStatus: function (sessionStatus) {
 		try {
-			await BreezeStorageService.writeSecuredData({
+			BreezeStorageService.writeSecuredData({
 				key: "sessionStatus",
 				value: sessionStatus,
 			});
@@ -71,9 +68,9 @@ export const BreezeSessionManagement = {
 	 * @Function getSessionStatus()
 	 * @returns sessionStatusData
 	 */
-	getSessionStatus: async function () {
+	getSessionStatus: function () {
 		try {
-			const data = await BreezeStorageService.readSecuredData("sessionStatus");
+			const data = BreezeStorageService.readSecuredData("sessionStatus");
 			return data && data;
 		} catch (error) {
 			return errorDebug(error, "BreezeSessionManagement.getSessionStatus");
@@ -85,9 +82,9 @@ export const BreezeSessionManagement = {
 	 * @param {*} accessKey
 	 * @returns Write apiKey data in secured storage
 	 */
-	setAPIKey: async function (accessKey) {
+	setAPIKey: function (accessKey) {
 		try {
-			await BreezeStorageService.writeSecuredData({
+			BreezeStorageService.writeSecuredData({
 				key: "apiKey",
 				value: accessKey,
 			});
@@ -100,9 +97,9 @@ export const BreezeSessionManagement = {
 	 * @Function getAPIKey()
 	 * @returns apiKey securedStorage Data
 	 */
-	getAPIKey: async function () {
+	getAPIKey: function () {
 		try {
-			const data = await BreezeStorageService.readSecuredData("apiKey");
+			const data = BreezeStorageService.readSecuredData("apiKey");
 			console.log("---data", data);
 			return data && data;
 		} catch (error) {
