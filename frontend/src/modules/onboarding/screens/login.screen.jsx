@@ -1,4 +1,8 @@
 import { useCallback, useState, useEffect } from "react";
+import { MdEmail } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import BreezeButton from "@Components/breezeButton/breezeButton.components.jsx";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
 import BreezeToggleOnboard from "@Components/breezeToggleOnboard/breezeToggleOnboard.components.jsx";
@@ -7,19 +11,14 @@ import {
 	PasswordIconAiFillEye,
 	PasswordIconAiFillEyeInvisible,
 } from "@Shared/utils/toggleIcon.utils.js";
-
 import TypewriterLabel from "@Components/breezeTypewriter/breezeTypewriterLabel.components.jsx";
 import { userDAO } from "@Modules/onboarding/core/onboardingDAO.js";
 import { HTTPStatusCode } from "@Constants/network";
-import { useForm } from "react-hook-form";
 import { EmailRegEx, InputType } from "@Constants/application";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import BreezeRoutes from "@Constants/routes";
-import { MdEmail } from "react-icons/md";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
-import UserAccountModel from "@/models/userAccount.model";
+
 const Login = () => {
 	const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
 	const [toastComponent, setToastComponent] = useState(null);

@@ -1,23 +1,21 @@
-import { useEffect } from "react";
-import BreezeRoutes from "constants/routes";
-import { UserSessionManagementController } from "core/sessionManagement/userSessionManagementController";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BreezeRoutes from "@Constants/routes";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service.js";
 
 export const ProtectedRoutes = ({ Component }) => {
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		const checkStatus = async () => {
-			let login = UserSessionManagementController.getAPIKey();
-			if (!login) {
-				let deletedResponse =
-					UserSessionManagementController.deleteAllSession();
-				if (deletedResponse) {
-					navigate(BreezeRoutes.LOGINROUTE);
-				}
+	const checkStatus = useCallback(async () => {
+		let login = BreezeSessionManagement.getAPIKey();
+		if (!login) {
+			let deletedResponse = BreezeSessionManagement.deleteAllSession();
+			if (deletedResponse) {
+				navigate(BreezeRoutes.LOGINROUTE);
 			}
-		};
-		checkStatus();
+		}
 	}, [navigate]);
+	useEffect(() => {
+		checkStatus();
+	}, [checkStatus]);
 	return <Component />;
 };

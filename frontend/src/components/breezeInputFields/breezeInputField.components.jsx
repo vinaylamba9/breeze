@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Fragment } from "react";
 
 const BreezeInputField = ({

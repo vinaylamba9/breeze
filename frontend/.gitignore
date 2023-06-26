@@ -72,6 +72,9 @@ web_modules/
 .env
 .env.test
 
+# Eslint file
+.eslintrc.json
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

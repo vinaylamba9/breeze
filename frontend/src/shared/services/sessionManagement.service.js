@@ -106,4 +106,19 @@ export const BreezeSessionManagement = {
 			return errorDebug(error, "BreezeSessionManagement.getAPIKey");
 		}
 	},
+	/**
+	 * @Function deleteAllSession()
+	 * @returns delete securedStorage Data
+	 */
+	deleteAllSession: function () {
+		try {
+			const data = BreezeStorageService.deleteAllSecuredData();
+			return data && data;
+		} catch (error) {
+			return errorDebug(
+				error,
+				"UserSessionManagementController.deleteAllSession"
+			);
+		}
+	},
 };
