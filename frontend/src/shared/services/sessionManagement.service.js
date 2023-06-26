@@ -100,7 +100,6 @@ export const BreezeSessionManagement = {
 	getAPIKey: function () {
 		try {
 			const data = BreezeStorageService.readSecuredData("apiKey");
-			console.log("---data", data);
 			return data && data;
 		} catch (error) {
 			return errorDebug(error, "BreezeSessionManagement.getAPIKey");

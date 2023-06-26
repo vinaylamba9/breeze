@@ -24,19 +24,26 @@ export class AccountVerified {
 	static NOT_VERIFIED = 0;
 	static VERIFIED = 1;
 }
+Object.freeze(AccountVerified);
+
 export class NotificationStatus {
 	static UNREAD = 0;
 	static READ = 1;
 }
+Object.freeze(NotificationStatus);
+
 export class SessionType {
 	static EXPIRED = 0;
 	static ACTIVE = 1;
 	static NEWUSER = 2;
 }
+Object.freeze(SessionType);
+
 export class VerificationType {
 	static ACCOUNT_VERIFICATION = 0;
 	static FORGOT_PASSWORD = 1;
 }
+Object.freeze(VerificationType);
 
 export const PasswordRegEx = {
 	digit: "(?=.*[0-9])",
@@ -46,16 +53,22 @@ export const PasswordRegEx = {
 	length: "(?=.{8,15})",
 };
 
+Object.freeze(PasswordRegEx);
+
 export const EmailRegEx = {
 	email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
+Object.freeze(EmailRegEx);
 
 export const UsernameRegEx = {
 	length: "(?=.{8,15})",
 };
+Object.freeze(UsernameRegEx);
+
 export const OTPRegEx = {
 	length: "(?=.{6,6})",
 };
+Object.freeze(OTPRegEx);
 
 export class InputType {
 	static TEXT = "text";
@@ -64,4 +77,7 @@ export class InputType {
 	static BUTTON = "button";
 	static FILE = "file";
 	static EMAIL = "email";
+	static SEARCH = "search";
 }
+
+Object.freeze(InputType);

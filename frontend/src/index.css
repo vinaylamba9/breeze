@@ -9,9 +9,10 @@
 	--danger-color: #fe0000;
 	--danger-colorWithOpacity: #fdf2f3;
 	--info-color: #12507d;
-	--muted-color: #6c757d;
+	--muted-color: #f8f7f7;
 	--success-color: #28a745;
 	--text-color-purity: #fff;
+	--straw-color: #fcadac;
 	--text-color-dark: #000;
 	--background-color-light: #fff;
 	--background-color-dark: #000;
@@ -22,6 +23,7 @@
 	--background-color-leather: #0b0705;
 	--background-color-pulp: #f7edc9;
 	--color-darkTeal: #005459;
+	--color-notified: #f1a984;
 	--color-TealWithOpacity: #f5fcf9;
 	--color-champagne: #ffe2b4;
 	--color-pearl: #fff2dd;
@@ -32,6 +34,8 @@
 	--fontsize-glossy: 20px;
 	--fontsize-virgin: 18px;
 	--fontsize-brittle: 16px;
+	--fontsize-smart: 12px;
+	--fontsize-small: 10px;
 }
 
 * {

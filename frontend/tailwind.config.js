@@ -19,6 +19,7 @@ module.exports = {
 				"danger-color": "var(--danger-color)",
 				"danger-colorWithOpacity": "var(--danger-colorWithOpacity)",
 				"info-color": "var(--info-color)",
+				"straw-color": "var(--straw-color)",
 				"muted-color": "var(--muted-color)",
 				"success-color": "var(--success-color)",
 				"text-color-purity": "var(--text-color-purity)",
@@ -34,6 +35,7 @@ module.exports = {
 				"color-darkTeal": "var(--color-darkTeal)",
 				"color-champagne": "var(--color-champagne)",
 				"color-TealWithOpacity": "var(--color-TealWithOpacity)",
+				"color-notified": "var(--color-notified)",
 			},
 
 			fontSize: {
@@ -44,6 +46,8 @@ module.exports = {
 				"fontsize-glossy": "var(--fontsize-glossy)",
 				"fontsize-virgin": "var(--fontsize-virgin)",
 				"fontsize-brittle": "var(--fontsize-brittle)",
+				"fontsize-smart": "var(--fontsize-smart)",
+				"fontsize-small": "var(--fontsize-small)",
 			},
 
 			backgroundSize: {
@@ -59,6 +63,19 @@ module.exports = {
 				"90%": "90%",
 			},
 			width: {
+				"10%": "10%",
+				"20%": "20%",
+				"30%": "30%",
+				"40%": "40%",
+				"50%": "50%",
+				"60%": "60%",
+				"70%": "70%",
+				"80%": "80%",
+				"90%": "90%",
+				"95%": "95%",
+				"100%": "100%",
+			},
+			height: {
 				"10%": "10%",
 				"20%": "20%",
 				"30%": "30%",
