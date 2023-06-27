@@ -36,6 +36,10 @@ module.exports = {
 				"color-champagne": "var(--color-champagne)",
 				"color-TealWithOpacity": "var(--color-TealWithOpacity)",
 				"color-notified": "var(--color-notified)",
+				"color-poppedUp": "var(--color-poppedUp)",
+				"color-soil": "var(--color-soil)",
+				"color-tanz": "var(--color-tanz)",
+				"color-slate": "var(--color-slate)",
 			},
 
 			fontSize: {
@@ -65,6 +69,7 @@ module.exports = {
 			width: {
 				"10%": "10%",
 				"20%": "20%",
+				"25%": "25%",
 				"30%": "30%",
 				"40%": "40%",
 				"50%": "50%",

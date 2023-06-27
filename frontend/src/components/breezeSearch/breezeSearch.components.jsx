@@ -13,10 +13,6 @@ const BreezeSearch = ({
 	return (
 		<Fragment>
 			<div
-				// style={{
-				// 	boxShadow:
-				// 		"0 3px 6px rgba(0,0,0,0.0006), 0 3px 6px rgba(0,0,0,0.103)",
-				// }}
 				className='flex items-center justify-start
                     bg-background-color-light gap-2  
                     px-2   
