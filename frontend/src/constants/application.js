@@ -88,6 +88,14 @@ export class InputType {
 
 Object.freeze(InputType);
 
+export class profileMenuType {
+	static PROFILE = "PROFILE";
+	static SETTINGS = "SETTINGS";
+	static GUIDE = "GUIDE";
+	static HELP_CENTER = "HELP_CENTER";
+	static LOGOUT = "LOGOUT";
+}
+Object.freeze(profileMenuType);
 export const profileDropdown = [
 	{
 		id: 0,

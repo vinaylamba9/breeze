@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
@@ -11,9 +11,13 @@ import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
-import { profileDropdown } from "@Constants/application";
+import { profileDropdown, profileMenuType } from "@Constants/application";
+import { userDAO } from "@/modules/onboarding/core/onboardingDAO";
+import { useNavigate } from "react-router-dom";
+import BreezeRoutes from "@/constants/routes";
 
 const ChatScreen = () => {
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -141,6 +145,11 @@ const ChatScreen = () => {
 		],
 		[]
 	);
+
+	const onLogoutHandler = useCallback(() => {
+		const res = userDAO.logoutDAO();
+		if (res) navigate(BreezeRoutes.LOGINROUTE);
+	}, [navigate]);
 	return (
 		<div className='flex gap-5'>
 			<div className='sm:w-100% md:w-40% lg:w-30%'>
@@ -232,7 +241,14 @@ const ChatScreen = () => {
 					<BreezeDropdown
 						listItems={profileDropdown}
 						menuAction={(e, key) => {
-							console.log(key);
+							switch (key) {
+								case profileMenuType.LOGOUT:
+									onLogoutHandler();
+									break;
+
+								default:
+									break;
+							}
 						}}
 						isIcon={true}
 						children={
@@ -242,7 +258,9 @@ const ChatScreen = () => {
 									data-tooltip-content={user?.name}>
 									<BreezeAvatar
 										imgBackgroundColor={"bg-straw-color"}
-										profileImage={user?.profileImage}
+										profileImage={
+											"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801318/Zw_iezt0o.png"
+										}
 										isGrouped={false}
 										isActive={true}
 									/>

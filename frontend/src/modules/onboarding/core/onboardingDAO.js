@@ -112,4 +112,12 @@ export const userDAO = {
 			return errorDebug(error, "userDAO.updatePasswordDAO");
 		}
 	},
+	logoutDAO: async function () {
+		try {
+			let response = BreezeSessionManagement.deleteAllSession();
+			return response && response;
+		} catch (error) {
+			return errorDebug(error, "UserDAO.logoutDAO");
+		}
+	},
 };

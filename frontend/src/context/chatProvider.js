@@ -10,7 +10,7 @@ const ChatProvider = ({ children }) => {
 	const navigate = useNavigate();
 	useEffect(() => {
 		let userInfo = BreezeSessionManagement.getUserSession();
-		if (!userInfo || userInfo === null) navigate(BreezeRoutes.LANDINGROUTE);
+		if (!userInfo) navigate(BreezeRoutes.LOGINROUTE);
 		else setUser(userInfo);
 	}, [navigate]);
 	return (
