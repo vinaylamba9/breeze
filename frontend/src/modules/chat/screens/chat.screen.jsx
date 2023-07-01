@@ -2,11 +2,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
-import { FaRegUser } from "react-icons/fa";
-import { LuSettings } from "react-icons/lu";
-import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import { BiHelpCircle } from "react-icons/bi";
-import { TbLogout } from "react-icons/tb";
+
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
@@ -15,6 +11,7 @@ import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
+import { profileDropdown } from "@Constants/application";
 
 const ChatScreen = () => {
 	const {
@@ -233,68 +230,10 @@ const ChatScreen = () => {
 			<div className='sm:w-100% md:w-40% lg:w-70%'>
 				<div className='flex justify-end items-center'>
 					<BreezeDropdown
-						menuItem={[
-							{
-								id: 0,
-								label: "Profile",
-								key: "PROFILE",
-								icon: (
-									<FaRegUser
-										style={{
-											fontSize: `var(--fontsize-virgin)`,
-										}}
-									/>
-								),
-							},
-							{
-								id: 1,
-								label: "Settings",
-								key: "SETTINGS",
-								icon: (
-									<LuSettings
-										style={{
-											fontSize: `var(--fontsize-virgin)`,
-										}}
-									/>
-								),
-							},
-							{
-								id: 2,
-								label: "Guide",
-								key: "GUIDE",
-								icon: (
-									<HiOutlineClipboardDocumentCheck
-										style={{
-											fontSize: `var(--fontsize-virgin)`,
-										}}
-									/>
-								),
-							},
-							{
-								id: 3,
-								label: "Help Center",
-								key: "HELP_CENTER",
-								icon: (
-									<BiHelpCircle
-										style={{
-											fontSize: `var(--fontsize-virgin)`,
-										}}
-									/>
-								),
-							},
-							{
-								id: 4,
-								label: "Logout",
-								key: "LOGOUT",
-								icon: (
-									<TbLogout
-										style={{
-											fontSize: `var(--fontsize-virgin)`,
-										}}
-									/>
-								),
-							},
-						]}
+						listItems={profileDropdown}
+						menuAction={(e, key) => {
+							console.log(key);
+						}}
 						isIcon={true}
 						children={
 							<BreezeTooltip id={"profileImage"}>

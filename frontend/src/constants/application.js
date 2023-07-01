@@ -1,3 +1,9 @@
+import { FaRegUser } from "react-icons/fa";
+import { LuSettings } from "react-icons/lu";
+import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { BiHelpCircle } from "react-icons/bi";
+import { TbLogout } from "react-icons/tb";
+
 export const TypeWriterTextList = ["Breeze"];
 export class AccountStatus {
 	static ACTIVE = 0;
@@ -81,3 +87,62 @@ export class InputType {
 }
 
 Object.freeze(InputType);
+
+export const profileDropdown = [
+	{
+		id: 0,
+		label: "Profile",
+		key: "PROFILE",
+		icon: <FaRegUser />,
+	},
+	{
+		id: 1,
+		label: "Settings",
+		key: "SETTINGS",
+		icon: (
+			<LuSettings
+				style={{
+					fontSize: `var(--fontsize-virgin)`,
+				}}
+			/>
+		),
+	},
+	{
+		id: 2,
+		label: "Guide",
+		key: "GUIDE",
+		icon: (
+			<HiOutlineClipboardDocumentCheck
+				style={{
+					fontSize: `var(--fontsize-virgin)`,
+				}}
+			/>
+		),
+	},
+	{
+		id: 3,
+		label: "Help Center",
+		key: "HELP_CENTER",
+		icon: (
+			<BiHelpCircle
+				style={{
+					fontSize: `var(--fontsize-virgin)`,
+				}}
+			/>
+		),
+	},
+	{
+		id: 4,
+		label: "Logout",
+		key: "LOGOUT",
+		icon: (
+			<TbLogout
+				style={{
+					fontSize: `var(--fontsize-virgin)`,
+				}}
+			/>
+		),
+	},
+];
+
+Object.freeze(profileDropdown);

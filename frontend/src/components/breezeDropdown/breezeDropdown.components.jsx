@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 
-const BreezeDropdown = ({ children, menuItem, isIcon }) => {
+const BreezeDropdown = ({ children, listItems, isIcon, menuAction }) => {
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef();
 	const itemRef = useRef();
@@ -30,14 +30,19 @@ const BreezeDropdown = ({ children, menuItem, isIcon }) => {
 				{open && (
 					<div
 						ref={menuRef}
-						className='z-10 rounded-2xl  backdrop-blur-lg p-4 shadow-lg absolute mt-14 animate-fadeIn '>
+						className={`${
+							open
+								? "z-10 rounded-2xl  backdrop-blur-lg p-4 shadow-lg absolute mt-14 animate-fadeIn"
+								: " animate-fadeOut"
+						} `}>
 						<ul>
-							{menuItem?.map((item, index) => {
+							{listItems?.map((item, index) => {
 								return (
 									<>
 										<li
-											onClick={null}
-											key={index}
+											data-index={item?.key}
+											onClick={(e) => menuAction(e, item?.key)}
+											key={item?.key}
 											className={
 												item?.isDisabled
 													? "flex justify-start items-center py-2 cursor-not-allowed opacity-30"
@@ -45,12 +50,13 @@ const BreezeDropdown = ({ children, menuItem, isIcon }) => {
 											}>
 											{isIcon && (
 												<>
-													<span>{item?.icon}</span> &nbsp;&nbsp;&nbsp;
+													<span key={item?.key}>{item?.icon}</span>{" "}
+													&nbsp;&nbsp;&nbsp;
 												</>
 											)}
-											<span>{item?.label}</span>
+											<span key={item?.key}>{item?.label}</span>
 										</li>
-										{index <= menuItem?.length - 2 && <BreezeDivider />}
+										{index <= listItems?.length - 2 && <BreezeDivider />}
 									</>
 								);
 							})}
