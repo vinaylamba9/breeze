@@ -7,7 +7,7 @@ export const ProtectedRoutes = ({ Component }) => {
 	const navigate = useNavigate();
 	const checkStatus = useCallback(async () => {
 		let login = BreezeSessionManagement.getAPIKey();
-		if (!login) {
+		if (!login || login === null) {
 			let deletedResponse = BreezeSessionManagement.deleteAllSession();
 			if (deletedResponse) {
 				navigate(BreezeRoutes.LOGINROUTE);

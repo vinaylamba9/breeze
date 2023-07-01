@@ -2,9 +2,9 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 import { userAPI } from "@API/user/user.API.js";
 import { AccountVerified, SessionType } from "@Constants/application.js";
 import { HTTPStatusCode } from "@Constants/network.js";
-// import Routes from "@Constants/routes.js";
 import UserAccountModel from "@Models/userAccount.model.js";
 import { errorDebug } from "@Shared/utils/error.utils.js";
+import BreezeRoutes from "@Constants/routes";
 
 export const userDAO = {
 	loginDAO: async function (userData) {
@@ -15,7 +15,18 @@ export const userDAO = {
 				const statusCode = loginResult["statusCode"];
 				if (statusCode === HTTPStatusCode.OK) {
 					const tempResult = loginResult.responseBody;
-					let _userAccount = new UserAccountModel(tempResult.data);
+
+					let _userAccount = new UserAccountModel({
+						userId: tempResult?.data?._id,
+						name: tempResult?.data?.name,
+						email: tempResult?.data?.email,
+						profileImage: tempResult?.data?.profileImage,
+						isVerified: tempResult?.data?.isVerified,
+						accountInItFrom: tempResult?.data?.accountInItFrom,
+						accountStatus: tempResult?.data?.accountStatus,
+						token: tempResult?.data?.token,
+					});
+
 					if (_userAccount.isVerified === AccountVerified.NOT_VERIFIED) {
 						return {
 							statusCode: HTTPStatusCode.UNAUTHORIZED,
@@ -23,7 +34,9 @@ export const userDAO = {
 						};
 						//TODO:- Redirect to OTP Screen
 					} else {
-						await BreezeSessionManagement.setUserSession(_userAccount);
+						await BreezeSessionManagement.setUserSession(
+							JSON.stringify(_userAccount.toJSON())
+						);
 						await BreezeSessionManagement.setSessionStatus(SessionType.ACTIVE);
 						await BreezeSessionManagement.setAPIKey(_userAccount["token"]);
 						return {
@@ -32,7 +45,8 @@ export const userDAO = {
 						};
 					}
 				} else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
-					return loginResult;
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
 				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
 					return loginResult;
 				} else if (statusCode === HTTPStatusCode.BAD_REQUEST) {

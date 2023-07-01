@@ -25,7 +25,7 @@ export const BreezeSessionManagement = {
 	getUserSession: function () {
 		try {
 			const data = BreezeStorageService.readSecuredData("userSessionInfo");
-			return data && data;
+			return data && JSON.parse(data);
 		} catch (error) {
 			return errorDebug(error, "BreezeSessionManagement.getUserSession");
 		}
@@ -111,8 +111,8 @@ export const BreezeSessionManagement = {
 	 */
 	deleteAllSession: function () {
 		try {
-			const data = BreezeStorageService.deleteAllSecuredData();
-			return data && data;
+			BreezeStorageService.deleteAllSecuredData();
+			return true;
 		} catch (error) {
 			return errorDebug(
 				error,

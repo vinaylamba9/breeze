@@ -9,15 +9,11 @@ import BreezeRoutes, {
 import OnboardingLayout from "@Layout/onboarding.layout.jsx";
 import PostOnboardingLayout from "@Layout/postOnboarding.layout";
 import { ProtectedRoutes } from "@Shared/services/protectedRoutes.service";
+import ChatProvider from "@Context/chatProvider";
 
 const App = () => (
 	<div>
 		<Routes>
-			<Route
-				exact
-				path={BreezeRoutes.LANDINGROUTE}
-				element={<Navigate replace to={BreezeRoutes.LOGINROUTE} />}
-			/>
 			<Route
 				path={BreezeRoutes.LANDINGROUTE}
 				element={<ProtectedRoutes Component={OnboardingLayout} />}>
@@ -25,6 +21,7 @@ const App = () => (
 					<Route exact key={path} element={component} path={path} />
 				))}
 			</Route>
+
 			<Route
 				path={BreezeRoutes.CHATROUTE}
 				element={<ProtectedRoutes Component={PostOnboardingLayout} />}>
@@ -32,12 +29,19 @@ const App = () => (
 					<Route exact key={path} element={component} path={path} />
 				))}
 			</Route>
+			<Route
+				exact
+				path={BreezeRoutes.LANDINGROUTE}
+				element={<Navigate replace to={BreezeRoutes.LOGINROUTE} />}
+			/>
 		</Routes>
 	</div>
 );
 ReactDOM.render(
 	<BrowserRouter>
-		<App />
+		<ChatProvider>
+			<App />
+		</ChatProvider>
 	</BrowserRouter>,
 	document.getElementById("app")
 );

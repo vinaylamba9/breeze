@@ -2,12 +2,19 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
+import { FaRegUser } from "react-icons/fa";
+import { LuSettings } from "react-icons/lu";
+import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { BiHelpCircle } from "react-icons/bi";
+import { TbLogout } from "react-icons/tb";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
+import { ChatState } from "@Context/chatProvider";
+import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 
 const ChatScreen = () => {
 	const {
@@ -25,6 +32,8 @@ const ChatScreen = () => {
 	const closeModal = () => {
 		setIsOpen(false);
 	};
+
+	const { user } = ChatState();
 
 	const getChatListMemo = useMemo(
 		() => [
@@ -159,7 +168,7 @@ const ChatScreen = () => {
 							<button
 								onClick={openModal}
 								title='Contact Sale'
-								class='
+								className='
                                 cursor-pointer
                                 bg-color-darkTeal
                                 w-10 h-10
@@ -203,9 +212,9 @@ const ChatScreen = () => {
 							minHeight: "78vh",
 							overflowY: "scroll",
 						}}>
-						{getChatListMemo?.map((item) => {
+						{getChatListMemo?.map((item, index) => {
 							return (
-								<div>
+								<div key={`tile_item_${index}`}>
 									<BreezeTile chatItem={item} />
 									<hr
 										style={{
@@ -223,16 +232,88 @@ const ChatScreen = () => {
 			</div>
 			<div className='sm:w-100% md:w-40% lg:w-70%'>
 				<div className='flex justify-end items-center'>
-					<BreezeAvatar
-						imgBackgroundColor={"bg-straw-color"}
-						profileImage={
-							"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801344/Zw_rq0d0u.png"
+					<BreezeDropdown
+						menuItem={[
+							{
+								id: 0,
+								label: "Profile",
+								key: "PROFILE",
+								icon: (
+									<FaRegUser
+										style={{
+											fontSize: `var(--fontsize-virgin)`,
+										}}
+									/>
+								),
+							},
+							{
+								id: 1,
+								label: "Settings",
+								key: "SETTINGS",
+								icon: (
+									<LuSettings
+										style={{
+											fontSize: `var(--fontsize-virgin)`,
+										}}
+									/>
+								),
+							},
+							{
+								id: 2,
+								label: "Guide",
+								key: "GUIDE",
+								icon: (
+									<HiOutlineClipboardDocumentCheck
+										style={{
+											fontSize: `var(--fontsize-virgin)`,
+										}}
+									/>
+								),
+							},
+							{
+								id: 3,
+								label: "Help Center",
+								key: "HELP_CENTER",
+								icon: (
+									<BiHelpCircle
+										style={{
+											fontSize: `var(--fontsize-virgin)`,
+										}}
+									/>
+								),
+							},
+							{
+								id: 4,
+								label: "Logout",
+								key: "LOGOUT",
+								icon: (
+									<TbLogout
+										style={{
+											fontSize: `var(--fontsize-virgin)`,
+										}}
+									/>
+								),
+							},
+						]}
+						isIcon={true}
+						children={
+							<BreezeTooltip id={"profileImage"}>
+								<div
+									data-tooltip-id='profileImage'
+									data-tooltip-content={user?.name}>
+									<BreezeAvatar
+										imgBackgroundColor={"bg-straw-color"}
+										profileImage={user?.profileImage}
+										isGrouped={false}
+										isActive={true}
+									/>
+								</div>
+							</BreezeTooltip>
 						}
-						isGrouped={false}
-						isActive={true}
 					/>
 				</div>
 				<br />
+
 				<div
 					className='bg-background-color-light px-2 rounded-3xl'
 					style={{
