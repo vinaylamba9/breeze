@@ -1,10 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
-import BreezeTile from "@/components/breezeTile/breezeTile.components";
-import ChatModel from "@/models/chat.model";
+import { BsPlusLg } from "react-icons/bs";
+import BreezeTile from "@Components/breezeTile/breezeTile.components";
+import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
+import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
+import BreezeModal from "@Components/breezeModal/breezeModal.components";
+
 const ChatScreen = () => {
 	const {
 		register,
@@ -13,6 +17,14 @@ const ChatScreen = () => {
 		watch,
 		formState: { errors },
 	} = useForm({});
+
+	const [isOpen, setIsOpen] = useState(false);
+	const openModal = () => {
+		setIsOpen(true);
+	};
+	const closeModal = () => {
+		setIsOpen(false);
+	};
 
 	const getChatListMemo = useMemo(
 		() => [
@@ -126,19 +138,58 @@ const ChatScreen = () => {
 	return (
 		<div className='flex gap-5'>
 			<div className='sm:w-100% md:w-40% lg:w-30%'>
-				<BreezeSearch
-					placeholder={"Search or start new chat"}
-					leadingIcon={
-						<BiSearch
-							style={{
-								color: `var(--color-darkTeal)`,
-								fontSize: `var(--fontsize-glossy)`,
-							}}
+				<div className=' flex items-center justify-between'>
+					<div className='w-70%'>
+						<BreezeSearch
+							placeholder={"Search chat"}
+							leadingIcon={
+								<BiSearch
+									style={{
+										color: `var(--color-darkTeal)`,
+										fontSize: `var(--fontsize-glossy)`,
+									}}
+								/>
+							}
+							register={register}
+							name='searchUser'
 						/>
-					}
-					register={register}
-					name='searchUser'
-				/>
+					</div>
+					<div>
+						<BreezeTooltip id={"createChat"}>
+							<button
+								onClick={openModal}
+								title='Contact Sale'
+								class='
+                                cursor-pointer
+                                bg-color-darkTeal
+                                w-10 h-10
+                                rounded-full 
+                                flex justify-center items-center
+                            text-white text-4xl 
+                                '>
+								<span
+									data-tooltip-id='createChat'
+									data-tooltip-content='Create Chat'>
+									<BsPlusLg
+										style={{
+											color: `var(--background-color-light)`,
+											fontSize: `var(--fontsize-trim)`,
+											fontWeight: 900,
+										}}
+									/>
+								</span>
+							</button>
+						</BreezeTooltip>
+						{isOpen && (
+							<BreezeModal
+								children={<h1>Hello</h1>}
+								isModalOpen={isOpen}
+								openModal={openModal}
+								closeModal={closeModal}
+							/>
+						)}
+					</div>
+				</div>
 				<br />
 				<div
 					className='bg-background-color-light px-2 rounded-3xl'
