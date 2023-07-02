@@ -15,6 +15,7 @@ import { profileDropdown, profileMenuType } from "@Constants/application";
 import { userDAO } from "@/modules/onboarding/core/onboardingDAO";
 import { useNavigate } from "react-router-dom";
 import BreezeRoutes from "@/constants/routes";
+import BreezeSideDrawer from "@/components/breezeSidedrawer/breezeSidedrawer.components";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -195,13 +196,16 @@ const ChatScreen = () => {
 								</span>
 							</button>
 						</BreezeTooltip>
-						{isOpen && (
+						{/* {isOpen && (
 							<BreezeModal
 								children={<h1>Hello</h1>}
 								isModalOpen={isOpen}
 								openModal={openModal}
 								closeModal={closeModal}
 							/>
+						)} */}
+						{isOpen && (
+							<BreezeSideDrawer isOpen={isOpen} onClose={closeModal} />
 						)}
 					</div>
 				</div>

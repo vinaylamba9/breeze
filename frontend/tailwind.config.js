@@ -71,6 +71,7 @@ module.exports = {
 				"20%": "20%",
 				"25%": "25%",
 				"30%": "30%",
+				"35%": "35%",
 				"40%": "40%",
 				"50%": "50%",
 				"60%": "60%",
@@ -138,7 +139,8 @@ module.exports = {
 				fadeIn: "fadeIn 1s",
 				fadeOut: "fadeOut 1s",
 				fadeInOut: "fadeInOut 3s",
-				slideLeft: "slideLeft 5s",
+				slideIn: "slideIn 0.5s ease-in-out",
+				slideOut: "slideOut 0.5s ease-in-out",
 			},
 			keyframes: {
 				fadeIn: {
@@ -174,12 +176,20 @@ module.exports = {
 						opacity: "0",
 					},
 				},
-				slideLeft: {
+				slideIn: {
 					from: {
-						marginLeft: "100%",
+						width: "0%",
 					},
 					to: {
-						marginLeft: "0%",
+						width: "35%",
+					},
+				},
+				slideOut: {
+					from: {
+						width: "35%",
+					},
+					to: {
+						width: "0%",
 					},
 				},
 			},

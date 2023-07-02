@@ -15,9 +15,7 @@ const BreezeDropdown = ({ children, listItems, isIcon, menuAction }) => {
 				setOpen(false);
 			}
 		};
-
 		window.addEventListener("click", handleDropdownClick);
-
 		return () => {
 			window.removeEventListener("click", handleDropdownClick);
 		};
@@ -32,7 +30,7 @@ const BreezeDropdown = ({ children, listItems, isIcon, menuAction }) => {
 						ref={menuRef}
 						className={`${
 							open
-								? "z-10 rounded-2xl  backdrop-blur-lg p-4 shadow-lg absolute mt-14 animate-fadeIn"
+								? "z-10 rounded-2xl  backdrop-blur-lg p-4 shadow-lg  absolute mt-14 animate-fadeIn"
 								: " animate-fadeOut"
 						} `}>
 						<ul>
