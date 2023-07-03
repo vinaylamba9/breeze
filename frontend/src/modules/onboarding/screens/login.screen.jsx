@@ -12,7 +12,7 @@ import {
 	PasswordIconAiFillEyeInvisible,
 } from "@Shared/utils/toggleIcon.utils.js";
 import TypewriterLabel from "@Components/breezeTypewriter/breezeTypewriterLabel.components.jsx";
-import { userDAO } from "@Modules/onboarding/core/onboardingDAO.js";
+import { userDAO } from "@/modules/onboarding/core/userDAO.js";
 import { HTTPStatusCode } from "@Constants/network";
 import { EmailRegEx, InputType } from "@Constants/application";
 import { useNavigate } from "react-router-dom";

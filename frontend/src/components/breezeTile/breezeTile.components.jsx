@@ -1,31 +1,44 @@
 import moment from "moment";
 import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
+import useAvatarColorGenerator from "@Shared/hooks/useAvatarColorGenerator";
 
-const BreezeTile = ({ chatItem, onClickHandler }) => {
+const BreezeTile = ({
+	title,
+	imgBackgroundColor,
+	profileImage,
+	isGrouped,
+	isActive,
+	msg,
+	bio,
+	isNotification,
+	onClickHandler,
+	styleClass,
+}) => {
+	const [hexColor, textColor] = useAvatarColorGenerator(title);
+
+	console.log(hexColor, "----", textColor);
 	return (
 		<Fragment>
 			<div
 				onClick={onClickHandler}
-				className='flex my-4 cursor-pointer 
-                    justify-start items-center bg-transparent '
+				className={`flex my-4 cursor-pointer 
+                    justify-start items-center ${styleClass}`}
 				style={{ maxHeight: "80px", overflowY: "auto" }}>
 				<div className=' m-auto w-95% flex items-center  '>
 					<div
 						className='flex w-90% items-center justify-start
                     gap-2 '>
 						<BreezeAvatar
-							imgBackgroundColor={chatItem?.imgBackgroundColor}
-							profileImage={chatItem?.profileImage}
-							isGrouped={chatItem?.isGrouped}
-							isActive={chatItem?.isActive}
+							imgBackgroundColor={hexColor || "bg-straw-color"}
+							profileImage={profileImage}
+							isGrouped={isGrouped}
+							isActive={isActive}
 						/>
 						<div className=' grid grid-row-2 gap-1 w-70%'>
-							<h3 className='truncate font-black text-sm '>
-								{chatItem?.chatTitle}
-							</h3>
+							<h3 className='truncate font-black text-sm '>{title}</h3>
 							<p className=' truncate text-fontsize-smart text-background-color-metal'>
-								{chatItem?.msg}
+								{msg || bio}
 							</p>
 						</div>
 					</div>
@@ -33,7 +46,7 @@ const BreezeTile = ({ chatItem, onClickHandler }) => {
 						<p className='font-black text-fontsize-small text-color-darkTeal'>
 							{moment().format("hh:mm")}
 						</p>
-						{chatItem?.isNotification && (
+						{isNotification && (
 							<p className='text-fontsize-small font-black text-text-color-purity text-center bg-color-notified rounded-full'>
 								1
 							</p>

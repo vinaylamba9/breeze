@@ -7,6 +7,7 @@ import {
 
 import { errorDebug } from "@Shared/utils/error.utils.js";
 import { BreezeHttpService } from "@Shared/services/http.service.js";
+import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
 
 export const userAPI = {
 	login: async function (userData) {
@@ -64,6 +65,23 @@ export const userAPI = {
 			return response;
 		} catch (error) {
 			return errorDebug(error, "userAPI.updatePassword()");
+		}
+	},
+	getAllUsers: async function () {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.USER +
+			MethodType.GET +
+			UserAPI.GET_ALL_USERS;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		try {
+			let response = await httpCall.sendGetRequest();
+
+			return response;
+		} catch (error) {
+			return errorDebug(error, "userAPI.getAllUsers()");
 		}
 	},
 };

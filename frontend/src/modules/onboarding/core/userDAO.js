@@ -25,6 +25,7 @@ export const userDAO = {
 						accountInItFrom: tempResult?.data?.accountInItFrom,
 						accountStatus: tempResult?.data?.accountStatus,
 						token: tempResult?.data?.token,
+						bio: tempResult?.data?.bio,
 					});
 
 					if (_userAccount.isVerified === AccountVerified.NOT_VERIFIED) {
@@ -110,6 +111,34 @@ export const userDAO = {
 			}
 		} catch (error) {
 			return errorDebug(error, "userDAO.updatePasswordDAO");
+		}
+	},
+	getAllUsersDAO: async function () {
+		try {
+			const allUserResponse = await userAPI.getAllUsers();
+			if (allUserResponse) {
+				const statusCode = allUserResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = allUserResponse.responseBody?.data;
+					return {
+						statusCode: statusCode,
+						responseBody: tempResult,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return allUserResponse;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return allUserResponse;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "userDAO.getAllUsersDAO()");
 		}
 	},
 	logoutDAO: async function () {

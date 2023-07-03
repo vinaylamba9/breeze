@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 const BreezeSideDrawer = ({ children, isOpen, onClose, position = "left" }) => {
 	const sideDrawerRef = useRef();
+	const [showContent, setShowContent] = useState(false);
 
 	useEffect(() => {
 		const handleSideDrawerClick = (event) => {
@@ -15,18 +16,28 @@ const BreezeSideDrawer = ({ children, isOpen, onClose, position = "left" }) => {
 			window.removeEventListener("mousedown", handleSideDrawerClick);
 		};
 	}, [onClose]);
-	const drawerClasses = `fixed inset-y-0 ${position}-0 z-50 w-30% bg-color-slate  shadow-2xl transform transition-transform ease-in-out duration-300 ${
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setShowContent(isOpen);
+		}, 500);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [isOpen]);
+
+	const drawerClasses = `fixed inset-y-0 ${position}-0 z-50 w-30% bg-color-slate shadow-2xl    ${
 		isOpen ? "animate-slideIn" : "animate-slideOut"
 	}`;
 
 	return (
-		//
 		<main
 			className={
-				" fixed overflow-hidden z-10 bg-gray-900 bg-opacity-25 inset-0 transform ease-in-out " +
+				"fixed overflow-hidden z-10 backdrop-blur-md  inset-0 transform ease-in " +
 				(isOpen
-					? " transition-opacity opacity-100 duration-500 translate-x-0  "
-					: " transition-all delay-500 opacity-0 translate-x-full  ")
+					? "transition-opacity opacity-100 duration-500 translate-x-0"
+					: "transition-all opacity-0 translate-x-full")
 			}>
 			<div
 				ref={sideDrawerRef}
@@ -44,10 +55,10 @@ const BreezeSideDrawer = ({ children, isOpen, onClose, position = "left" }) => {
 						onClick={onClose}
 					/>
 				</div>
-				<div className='p-4'>{children}</div>
+				{showContent && <div className='animate-fadeIn p-4'>{children}</div>}
 			</div>
 			<section
-				className=' w-screen h-full cursor-pointer '
+				className='w-screen h-full cursor-pointer'
 				onClick={onClose}></section>
 		</main>
 	);

@@ -12,7 +12,7 @@ import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
-import { userDAO } from "@Modules/onboarding/core/onboardingDAO";
+import { userDAO } from "@/modules/onboarding/core/userDAO";
 
 import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
@@ -189,6 +189,7 @@ const ChatScreen = () => {
 									data-tooltip-content='Create Chat'>
 									<BsPlusLg
 										style={{
+											cursor: "pointer",
 											color: `var(--background-color-light)`,
 											fontSize: `var(--fontsize-trim)`,
 											fontWeight: 900,
@@ -210,6 +211,7 @@ const ChatScreen = () => {
 								isOpen={isOpen}
 								onClose={closeModal}
 								children={<BreezeSideDrawerBody />}
+								position='left'
 							/>
 						)}
 					</div>
@@ -230,7 +232,15 @@ const ChatScreen = () => {
 						{getChatListMemo?.map((item, index) => {
 							return (
 								<div key={`tile_item_${index}`}>
-									<BreezeTile chatItem={item} />
+									<BreezeTile
+										title={item?.chatTitle}
+										imgBackgroundColor={item?.imgBackgroundColor}
+										msg={item?.msg}
+										isActive={item?.isActive}
+										isGrouped={item?.isGrouped}
+										profileImage={item?.profileImage}
+										isNotification={item?.isNotification}
+									/>
 									<hr
 										style={{
 											width: "95%",

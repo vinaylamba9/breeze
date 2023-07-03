@@ -8,6 +8,7 @@ export default class UserAccountModel {
 		this.accountInItFrom = data.accountInItFrom;
 		this.accountStatus = data.accountStatus;
 		this.token = data.token;
+		this.bio = data.bio;
 	}
 
 	toJSON() {
@@ -20,6 +21,7 @@ export default class UserAccountModel {
 			accountInItFrom: this.accountInItFrom,
 			accountStatus: this.accountStatus,
 			token: this.token,
+			bio: this.bio,
 		};
 	}
 }

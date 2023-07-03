@@ -9,6 +9,7 @@ const DB_CONFIG = {
 				useUnifiedTopology: true,
 			});
 			const dbConnection = mongoose.connection;
+
 			/* ================ Binding connection to event (to get notification of connection )  =================*/
 			dbConnection.on(
 				"error",

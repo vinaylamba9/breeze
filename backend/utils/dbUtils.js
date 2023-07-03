@@ -28,7 +28,7 @@ const DB_UTILS = {
 				.findOne({
 					$or: [{ _id: id }],
 					/*  users: {
-                         $elemMatch: { $eq: id }
+                        $elemMatch: { $eq: id }
                      } */
 				})
 				.select({
@@ -78,7 +78,12 @@ const DB_UTILS = {
 	},
 	findAll: async function (modelName, loggedInUserID) {
 		try {
-			let dbResponse = await modelName.find({ _id: { $ne: loggedInUserID } });
+			let dbResponse = await modelName
+				.find({ _id: { $ne: loggedInUserID } })
+				.select(
+					" -accountInItFrom  -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+
 			return dbResponse;
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };
