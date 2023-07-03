@@ -181,12 +181,12 @@ module.exports = {
 						width: "0%",
 					},
 					to: {
-						width: "35%",
+						width: "30%",
 					},
 				},
 				slideOut: {
 					from: {
-						width: "35%",
+						width: "30%",
 					},
 					to: {
 						width: "0%",

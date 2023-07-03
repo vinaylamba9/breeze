@@ -76,6 +76,14 @@ const DB_UTILS = {
 			return { msg: error, status: "NOT_FOUND" };
 		}
 	},
+	findAll: async function (modelName, loggedInUserID) {
+		try {
+			let dbResponse = await modelName.find({ _id: { $ne: loggedInUserID } });
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
 };
 
 const CHAT_DB_UTILS = {

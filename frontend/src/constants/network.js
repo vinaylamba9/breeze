@@ -20,6 +20,7 @@ export class UserAPI {
 	static SIGNUP = "/signup";
 	static FORGOTPASSWORD = "/forgotpassword";
 	static UPDATEPASSWORD = "/updatepassword";
+	static GET_ALL_USERS = "/getall";
 }
 
 export class HTTPStatusCode {

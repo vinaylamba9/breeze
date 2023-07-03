@@ -2,7 +2,7 @@ import { useMemo, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
-
+import { useNavigate } from "react-router-dom";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
@@ -12,10 +12,11 @@ import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
-import { userDAO } from "@/modules/onboarding/core/onboardingDAO";
-import { useNavigate } from "react-router-dom";
-import BreezeRoutes from "@/constants/routes";
-import BreezeSideDrawer from "@/components/breezeSidedrawer/breezeSidedrawer.components";
+import { userDAO } from "@Modules/onboarding/core/onboardingDAO";
+
+import BreezeRoutes from "@Constants/routes";
+import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
+import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -205,13 +206,17 @@ const ChatScreen = () => {
 							/>
 						)} */}
 						{isOpen && (
-							<BreezeSideDrawer isOpen={isOpen} onClose={closeModal} />
+							<BreezeSideDrawer
+								isOpen={isOpen}
+								onClose={closeModal}
+								children={<BreezeSideDrawerBody />}
+							/>
 						)}
 					</div>
 				</div>
 				<br />
 				<div
-					className='bg-background-color-light px-2 rounded-3xl'
+					className='bg-white px-2 rounded-3xl'
 					style={{
 						minHeight: "80vh",
 					}}>
@@ -240,7 +245,7 @@ const ChatScreen = () => {
 				</div>
 				<br />
 			</div>
-			<div className='sm:w-100% md:w-40% lg:w-70%'>
+			<div className='sm:w-100% md:w-60% lg:w-70%'>
 				<div className='flex justify-end items-center'>
 					<BreezeDropdown
 						listItems={profileDropdown}

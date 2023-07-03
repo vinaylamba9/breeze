@@ -121,7 +121,7 @@ const userController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				let dbResponse = await DB_UTILS.findByEmail(req.body.email);
-				console.log(dbResponse);
+
 				if (dbResponse) {
 					const isPasswordMatched = await bcrypt.compare(
 						req.body.password,
@@ -377,7 +377,6 @@ const userController = {
 	getAllUsers: async function (req, res) {
 		let responseStatusCode, responseMessage, responseData;
 		try {
-			console.log(req.query.search, "-search");
 			if (
 				BASIC_UTILS._isNull(req.query.search) &&
 				BASIC_UTILS.hasWhiteSpace(req.query.search)
@@ -406,6 +405,29 @@ const userController = {
 					responseMessage = HTTPStatusCode.OK;
 					responseData = users;
 				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	getAll: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const users = await DB_UTILS.findAll(userModel, req.user.userId);
+			if (users.length === 0) {
+				responseStatusCode = HTTPStatusCode.OK;
+				responseMessage = HTTPStatusCode.OK;
+				responseData = "NO USERS FOUND.";
+			} else {
+				responseStatusCode = HTTPStatusCode.OK;
+				responseMessage = HTTPStatusCode.OK;
+				responseData = users;
 			}
 		} catch (error) {
 			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;

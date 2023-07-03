@@ -15,7 +15,7 @@ const BreezeSearch = ({
 			<div
 				className='flex items-center justify-start
                     bg-background-color-light gap-2  
-                    px-2   
+                    px-2 
                     rounded-3xl '>
 				<span className='ml-2'>{leadingIcon}</span>
 				<input

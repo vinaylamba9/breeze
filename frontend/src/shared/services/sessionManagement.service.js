@@ -111,8 +111,8 @@ export const BreezeSessionManagement = {
 	 */
 	deleteAllSession: function () {
 		try {
-			BreezeStorageService.deleteAllSecuredData();
-			return true;
+			const res = BreezeStorageService.deleteAllSecuredData();
+			return res && res;
 		} catch (error) {
 			return errorDebug(
 				error,

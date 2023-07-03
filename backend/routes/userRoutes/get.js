@@ -25,4 +25,6 @@ router.get(
 	userController.getAllUsers
 );
 
+router.get("/getall", auth.userAuth.isLoggedIn, userController.getAll);
+
 module.exports = router;

@@ -6,10 +6,10 @@ const BASIC_UTILS = require("../utils/basicUtils");
 const userAuth = {
 	isLoggedIn: async function (req, res, next) {
 		try {
-			let token = req.headers.authorization.split(" ")[1]; //SPLITTING THE BEARER TOKEN
-			if (!token)
+			let token = req?.headers?.authorization?.split(" ")[1]; //SPLITTING THE BEARER TOKEN
+			if (!token || token === undefined)
 				return res
-					.status(400)
+					.status(401)
 					.json({ error: "TOKEN REQUIRED FOR AUTHENTICATION." });
 			else {
 				const profileData = await jwt.verify(token, process.env.PRIVATE_TOKEN);

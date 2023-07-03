@@ -1,5 +1,6 @@
 import axios from "axios";
 import { errorDebug } from "@Shared/utils/error.utils.js";
+import { HTTPStatusCode } from "@/constants/network";
 
 export class BreezeHttpService {
 	_contentType = "application/json; charset=UTF-8";
@@ -47,8 +48,8 @@ export class BreezeHttpService {
 				}
 			);
 			return {
-				statusCode: response.status,
-				responseBody: response.data,
+				statusCode: response?.status,
+				responseBody: response?.data,
 			};
 		} catch (error) {
 			const errorResult = errorDebug(
@@ -76,18 +77,25 @@ export class BreezeHttpService {
 					Authorization: this._isAuthRequired && this._authToken,
 				},
 			});
+
 			return {
-				statusCode: response.status,
-				responseBody: response.data,
+				statusCode: response?.status,
+				responseBody: response?.data,
 			};
 		} catch (error) {
+			if (error?.response?.status === HTTPStatusCode.UNAUTHORIZED) {
+				return {
+					statusCode: error?.response?.status,
+					responseBody: error.response.data?.error,
+				};
+			}
 			const errorResult = errorDebug(
-				error.response.data,
+				error?.response?.data,
 				"httpCall.sendGetRequest()"
 			);
 			return {
-				statusCode: errorResult.statusCode,
-				responseBody: errorResult.responseBody,
+				statusCode: errorResult?.statusCode,
+				responseBody: errorResult?.responseBody,
 			};
 		}
 	}
