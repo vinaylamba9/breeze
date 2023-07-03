@@ -27,14 +27,22 @@ const useAvatarColorGenerator = (
 		const color = (hash & 0x00ffffff).toString(16);
 		return `#${"00000".substring(0, 6 - color.length) + color}`;
 	};
+	const isColorDark = (color) => {
+		const hex = color.replace("#", "");
+		const r = parseInt(hex.substr(0, 2), 16);
+		const g = parseInt(hex.substr(2, 2), 16);
+		const b = parseInt(hex.substr(4, 2), 16);
+		const brightness = (r * 299 + g * 587 + b * 114) / 1000;
 
+		return brightness < 128;
+	};
 	const updateColor = useCallback(() => {
-		const textColor = lightness > 50 ? "#000" : "#fff";
 		const hexColor = stringToHexColor(name);
-
+		const isDark = isColorDark(hexColor);
+		const textColor = isDark ? "#ffffff" : "#000000";
 		setHexColor(hexColor);
 		setTextColor(textColor);
-	}, [name, lightness]);
+	}, [name]);
 
 	useEffect(() => {
 		updateColor();

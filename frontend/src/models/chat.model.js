@@ -9,7 +9,6 @@ export default class ChatModel {
 		this.notificationCount = data?.notificationCount;
 		this.isGrouped = data?.isGrouped;
 		this.isActive = data?.isActive;
-		this.imgBackgroundColor = data?.imgBackgroundColor;
 	}
 
 	getChatList(chatList) {
@@ -24,7 +23,6 @@ export default class ChatModel {
 				notificationCount: item?.notificationCount,
 				isGrouped: item?.isGrouped,
 				isActive: item?.isActive,
-				imgBackgroundColor: item?.imgBackgroundColor,
 			};
 		});
 	}

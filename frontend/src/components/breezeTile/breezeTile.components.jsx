@@ -1,11 +1,9 @@
 import moment from "moment";
 import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import useAvatarColorGenerator from "@Shared/hooks/useAvatarColorGenerator";
 
 const BreezeTile = ({
 	title,
-	imgBackgroundColor,
 	profileImage,
 	isGrouped,
 	isActive,
@@ -15,9 +13,6 @@ const BreezeTile = ({
 	onClickHandler,
 	styleClass,
 }) => {
-	const [hexColor, textColor] = useAvatarColorGenerator(title);
-
-	console.log(hexColor, "----", textColor);
 	return (
 		<Fragment>
 			<div
@@ -30,10 +25,10 @@ const BreezeTile = ({
 						className='flex w-90% items-center justify-start
                     gap-2 '>
 						<BreezeAvatar
-							imgBackgroundColor={hexColor || "bg-straw-color"}
 							profileImage={profileImage}
 							isGrouped={isGrouped}
 							isActive={isActive}
+							title={title}
 						/>
 						<div className=' grid grid-row-2 gap-1 w-70%'>
 							<h3 className='truncate font-black text-sm '>{title}</h3>

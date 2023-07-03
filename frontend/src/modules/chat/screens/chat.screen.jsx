@@ -8,18 +8,17 @@ import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
-import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
 import { userDAO } from "@/modules/onboarding/core/userDAO";
-
 import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
+	const { user } = ChatState();
 	const {
 		register,
 		handleSubmit,
@@ -36,8 +35,6 @@ const ChatScreen = () => {
 		setIsOpen(false);
 	};
 
-	const { user } = ChatState();
-
 	const getChatListMemo = useMemo(
 		() => [
 			new ChatModel({
@@ -49,7 +46,6 @@ const ChatScreen = () => {
 				isNotification: false,
 				isGrouped: false,
 				isActive: true,
-				imgBackgroundColor: "bg-color-poppedUp",
 			}),
 			new ChatModel({
 				chatID: "chat2",
@@ -59,7 +55,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-straw-color",
 			}),
 			new ChatModel({
 				chatID: "chat3",
@@ -70,7 +65,6 @@ const ChatScreen = () => {
 				isNotification: true,
 				isGrouped: false,
 				isActive: true,
-				imgBackgroundColor: "bg-color-slate",
 			}),
 			new ChatModel({
 				chatID: "chat4",
@@ -80,7 +74,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-color-tanz",
 			}),
 			new ChatModel({
 				chatID: "chat5",
@@ -90,7 +83,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801318/Zw_iezt0o.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-color-soil",
 			}),
 			new ChatModel({
 				chatID: "chat1",
@@ -100,7 +92,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-color-poppedUp",
 			}),
 			new ChatModel({
 				chatID: "chat2",
@@ -110,7 +101,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-straw-color",
 			}),
 			new ChatModel({
 				chatID: "chat3",
@@ -121,7 +111,6 @@ const ChatScreen = () => {
 				isNotification: true,
 				isGrouped: false,
 				isActive: true,
-				imgBackgroundColor: "bg-color-slate",
 			}),
 			new ChatModel({
 				chatID: "chat4",
@@ -131,7 +120,6 @@ const ChatScreen = () => {
 					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801408/Zw_prtnxj.png",
 				isNotification: true,
 				isGrouped: false,
-				imgBackgroundColor: "bg-color-tanz",
 			}),
 			new ChatModel({
 				chatID: "chat5",
@@ -142,7 +130,6 @@ const ChatScreen = () => {
 				isNotification: true,
 				isGrouped: false,
 				isActive: true,
-				imgBackgroundColor: "bg-color-soil",
 			}),
 		],
 		[]
@@ -152,6 +139,7 @@ const ChatScreen = () => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
 	}, [navigate]);
+
 	return (
 		<div className='flex gap-5'>
 			<div className='sm:w-100% md:w-40% lg:w-30%'>
@@ -198,14 +186,7 @@ const ChatScreen = () => {
 								</span>
 							</button>
 						</BreezeTooltip>
-						{/* {isOpen && (
-							<BreezeModal
-								children={<h1>Hello</h1>}
-								isModalOpen={isOpen}
-								openModal={openModal}
-								closeModal={closeModal}
-							/>
-						)} */}
+
 						{isOpen && (
 							<BreezeSideDrawer
 								isOpen={isOpen}
@@ -276,12 +257,10 @@ const ChatScreen = () => {
 									data-tooltip-id='profileImage'
 									data-tooltip-content={user?.name}>
 									<BreezeAvatar
-										imgBackgroundColor={"bg-straw-color"}
-										profileImage={
-											"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801318/Zw_iezt0o.png"
-										}
+										profileImage={user?.profileImage}
 										isGrouped={false}
 										isActive={true}
+										title={"Shekhar Shashank"}
 									/>
 								</div>
 							</BreezeTooltip>
