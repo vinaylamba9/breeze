@@ -30,7 +30,8 @@ const userModel = mongoose.Schema(
 		},
 		profileImage: {
 			type: String,
-			required: true,
+			// required: true,
+			// default:''
 		},
 		bio: {
 			type: String,

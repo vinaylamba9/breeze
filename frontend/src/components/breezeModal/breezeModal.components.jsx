@@ -15,9 +15,7 @@ const BreezeModal = ({
 		const handleModalClick = (event) => {
 			if (!modalRef?.current?.contains(event?.target)) closeModal();
 		};
-
 		window.addEventListener("mousedown", handleModalClick);
-
 		return () => {
 			window.removeEventListener("mousedown", handleModalClick);
 		};

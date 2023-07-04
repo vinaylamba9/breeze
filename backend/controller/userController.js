@@ -65,16 +65,19 @@ const userController = {
 								otp: BASIC_UTILS.otpGenrator(6),
 								otpValidTill: Date.now() + TimeInMs.MIN5,
 							};
+
 							const userUpdated = await DB_UTILS.updateOneById(
 								userModel,
 								signedUpResponse["_id"],
 								updatedObject
 							);
+							console.log(userUpdated, "-userUpdated");
 							if (userUpdated) {
 								let emailResponse = await EMAIL_SERVICES.sendOTPVerification(
 									userUpdated,
 									MailSubject.ACCOUNT_VERIFICATION
 								);
+								console.log(emailResponse, "-emailResponse");
 								if (emailResponse) {
 									responseMessage = HTTPStatusCode.OK;
 									responseStatusCode = HTTPStatusCode.OK;
