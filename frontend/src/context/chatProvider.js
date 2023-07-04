@@ -7,6 +7,8 @@ const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
+	const [selectedChat, setSelectedChat] = useState(null);
+	const [chats, setChats] = useState([]);
 	const navigate = useNavigate();
 	useEffect(() => {
 		let userInfo = BreezeSessionManagement.getUserSession();
@@ -14,7 +16,8 @@ const ChatProvider = ({ children }) => {
 		else setUser(userInfo);
 	}, [navigate]);
 	return (
-		<ChatContext.Provider value={{ user, setUser }}>
+		<ChatContext.Provider
+			value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}>
 			{children}
 		</ChatContext.Provider>
 	);

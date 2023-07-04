@@ -1,10 +1,9 @@
-import { useMemo, useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
-import ChatModel from "@Models/chat.model";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
@@ -15,10 +14,14 @@ import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
+import { ChatDAO } from "../core/chatDAO";
+import { HTTPStatusCode } from "@/constants/network";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
-	const { user } = ChatState();
+	const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
+		ChatState();
+
 	const {
 		register,
 		handleSubmit,
@@ -35,111 +38,20 @@ const ChatScreen = () => {
 		setIsOpen(false);
 	};
 
-	const getChatListMemo = useMemo(
-		() => [
-			new ChatModel({
-				chatID: "chat1",
-				chatTitle: "Martin Luther",
-				msg: "Lorem ipsum no way",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
-				isNotification: false,
-				isGrouped: false,
-				isActive: true,
-			}),
-			new ChatModel({
-				chatID: "chat2",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat3",
-				chatTitle: "John Wick",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801424/Zw_xjexrz.png",
-				isNotification: true,
-				isGrouped: false,
-				isActive: true,
-			}),
-			new ChatModel({
-				chatID: "chat4",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat5",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801318/Zw_iezt0o.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat1",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat2",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801430/Zw_dxdyvy.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat3",
-				chatTitle: "John Wick",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801318/Zw_iezt0o.png",
-				isNotification: true,
-				isGrouped: false,
-				isActive: true,
-			}),
-			new ChatModel({
-				chatID: "chat4",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801408/Zw_prtnxj.png",
-				isNotification: true,
-				isGrouped: false,
-			}),
-			new ChatModel({
-				chatID: "chat5",
-				chatTitle: "John Doe",
-				msg: "Lorem ipsum randomdasdsdasdsadsaadsada",
-				profileImage:
-					"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687801421/Zw_g9sey2.png",
-				isNotification: true,
-				isGrouped: false,
-				isActive: true,
-			}),
-		],
-		[]
-	);
-
+	const onFetchChatHandler = useCallback(async () => {
+		const response = await ChatDAO.fetchChatDAO(user?._id);
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			setChats(response?.responseBody);
+		}
+	}, [setChats, user?._id]);
 	const onLogoutHandler = useCallback(() => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
 	}, [navigate]);
 
+	useEffect(() => {
+		onFetchChatHandler();
+	}, [onFetchChatHandler]);
 	return (
 		<div className='flex gap-5'>
 			<div className='sm:w-100% md:w-40% lg:w-30%'>
@@ -163,7 +75,7 @@ const ChatScreen = () => {
 						<BreezeTooltip id={"createChat"}>
 							<button
 								onClick={openModal}
-								title='Contact Sale'
+								title='Create Chat'
 								className='
                                 cursor-pointer
                                 bg-color-darkTeal
@@ -191,35 +103,34 @@ const ChatScreen = () => {
 							<BreezeSideDrawer
 								isOpen={isOpen}
 								onClose={closeModal}
-								children={<BreezeSideDrawerBody />}
+								children={<BreezeSideDrawerBody onClose={closeModal} />}
 							/>
 						)}
 					</div>
 				</div>
 				<br />
 				<div
-					className='bg-white px-2 rounded-3xl'
+					className='bg-white px-2 rounded-2xl'
 					style={{
-						minHeight: "80vh",
+						maxHeight: "80vh",
 					}}>
 					<div
-						className='my-2'
+						className='my-2 rounded-2xl'
 						style={{
 							maxHeight: "78vh",
 							minHeight: "78vh",
 							overflowY: "scroll",
 						}}>
-						{getChatListMemo?.map((item, index) => {
+						{chats?.map((item, index) => {
 							return (
 								<div key={`tile_item_${index}`}>
 									<BreezeTile
-										title={item?.chatTitle}
-										imgBackgroundColor={item?.imgBackgroundColor}
-										msg={item?.msg}
-										isActive={item?.isActive}
-										isGrouped={item?.isGrouped}
-										profileImage={item?.profileImage}
-										isNotification={item?.isNotification}
+										title={item?.users?.[1]?.name}
+										msg={item?.users?.[1]?.bio}
+										isActive={true}
+										isGrouped={item?.isGroupChat}
+										profileImage={item?.users?.[1]?.profileImage}
+										isNotification={false}
 									/>
 									<hr
 										style={{
@@ -268,7 +179,7 @@ const ChatScreen = () => {
 				<br />
 
 				<div
-					className='bg-background-color-light px-2 rounded-3xl'
+					className='bg-background-color-light px-2 rounded-2xl'
 					style={{
 						minHeight: "80vh",
 					}}>

@@ -2,7 +2,7 @@ import {
 	APIType,
 	MethodType,
 	NetworkInfo,
-	UserAPI,
+	UserType,
 } from "@Constants/network.js";
 
 import { errorDebug } from "@Shared/utils/error.utils.js";
@@ -14,7 +14,7 @@ export const userAPI = {
 		let httpCall = new BreezeHttpService();
 		httpCall.dataToSend = userData;
 		httpCall.URL =
-			NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.LOGIN;
+			NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserType.LOGIN;
 		try {
 			let response = await httpCall.sendPostRequest();
 			return response;
@@ -27,7 +27,10 @@ export const userAPI = {
 		httpCall.dataToSend = userData;
 		httpCall.setAuthRequired = false;
 		httpCall.URL =
-			NetworkInfo.networkInfo + APIType.USER + MethodType.POST + UserAPI.SIGNUP;
+			NetworkInfo.networkInfo +
+			APIType.USER +
+			MethodType.POST +
+			UserType.SIGNUP;
 		try {
 			let response = await httpCall.sendPostRequest();
 			return response;
@@ -43,7 +46,7 @@ export const userAPI = {
 			NetworkInfo.networkInfo +
 			APIType.USER +
 			MethodType.POST +
-			UserAPI.FORGOTPASSWORD;
+			UserType.FORGOTPASSWORD;
 		try {
 			let response = await BreezeHttpService.sendPostRequest();
 			return response;
@@ -59,7 +62,7 @@ export const userAPI = {
 			NetworkInfo.networkInfo +
 			APIType.USER +
 			MethodType.POST +
-			UserAPI.UPDATEPASSWORD;
+			UserType.UPDATEPASSWORD;
 		try {
 			let response = await httpCall.sendPostRequest();
 			return response;
@@ -73,7 +76,7 @@ export const userAPI = {
 			NetworkInfo.networkInfo +
 			APIType.USER +
 			MethodType.GET +
-			UserAPI.GET_ALL_USERS;
+			UserType.GET_ALL_USERS;
 		httpCall.setAuthRequired = true;
 		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
 		try {

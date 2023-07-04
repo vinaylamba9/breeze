@@ -6,8 +6,19 @@ import { HTTPStatusCode } from "@Constants/network";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
+import { ChatDAO } from "@Modules/chat/core/chatDAO";
+import { ChatState } from "@Context/chatProvider";
 
-const BreezeSideDrawerBody = () => {
+const BreezeSideDrawerBody = ({ onClose }) => {
+	const {
+		setSelectedChat,
+		user,
+		notification,
+		setNotification,
+		chats,
+		setChats,
+	} = ChatState();
+
 	const [isGroupChat, setGroupChat] = useState(false);
 	const [userList, setUserList] = useState([]);
 	const [isLoading, setLoading] = useState(false);
@@ -19,6 +30,7 @@ const BreezeSideDrawerBody = () => {
 		formState: { errors },
 	} = useForm({});
 
+	/** Getting All Users list  */
 	const getAllUsers = useCallback(async () => {
 		setLoading(true);
 		const response = await userDAO.getAllUsersDAO();
@@ -28,6 +40,21 @@ const BreezeSideDrawerBody = () => {
 		}
 	}, []);
 
+	/** Creating Chat from Sidebar  */
+	const onCreateChatHandler = useCallback(
+		async (id) => {
+			setLoading(true);
+			const response = await ChatDAO.createChatDAO({ userID: id });
+			if (response?.statusCode === HTTPStatusCode.OK) {
+				const data = response?.responseBody;
+				if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+				setSelectedChat(data);
+				setLoading(false);
+				onClose();
+			}
+		},
+		[chats, onClose, setChats, setSelectedChat]
+	);
 	useEffect(() => {
 		getAllUsers();
 	}, [getAllUsers]);
@@ -55,21 +82,24 @@ const BreezeSideDrawerBody = () => {
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />
 				) : (
-					userList?.map((item) => (
-						<BreezeTile
-							title={item?.name}
-							imgBackgroundColor={item?.imgBackgroundColor}
-							msg={item?.msg}
-							isActive={item?.isActive}
-							isGrouped={item?.isGrouped}
-							profileImage={item?.profileImage}
-							isNotification={item?.isNotification}
-							bio={item?.bio}
-							styleClass={
-								"bg-white py-4 rounded-3xl transform hover:scale-105  hover:shadow-sm transition duration-300 ease-in-out"
-							}
-						/>
-					))
+					userList?.map((item) => {
+						return (
+							<BreezeTile
+								onClickHandler={() => onCreateChatHandler(item?._id)}
+								title={item?.name}
+								imgBackgroundColor={item?.imgBackgroundColor}
+								msg={item?.msg}
+								isActive={item?.isActive}
+								isGrouped={item?.isGrouped}
+								profileImage={item?.profileImage}
+								isNotification={item?.isNotification}
+								bio={item?.bio}
+								styleClass={
+									"bg-white py-4 rounded-2xl transform hover:scale-105  hover:shadow-sm transition duration-300 ease-in-out"
+								}
+							/>
+						);
+					})
 				)}
 			</div>
 		</div>

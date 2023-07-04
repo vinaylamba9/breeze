@@ -32,6 +32,7 @@ module.exports = {
 				"background-color-raven": "var(--background-color-raven)",
 				"background-color-leather": "var(--background-color-leather)",
 				"background-color-pulp": "var(--background-color-pulp)",
+				"color-lightTeal": "var(--color-lightTeal)",
 				"color-darkTeal": "var(--color-darkTeal)",
 				"color-champagne": "var(--color-champagne)",
 				"color-TealWithOpacity": "var(--color-TealWithOpacity)",
@@ -90,10 +91,12 @@ module.exports = {
 				"60%": "60%",
 				"70%": "70%",
 				"80%": "80%",
+				"85%": "85%",
 				"90%": "90%",
 				"95%": "95%",
 				"100%": "100%",
 			},
+
 			flexBasis: {
 				"10%": "10%",
 				"20%": "20%",

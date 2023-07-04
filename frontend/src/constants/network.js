@@ -8,6 +8,7 @@ export class NetworkInfo {
 
 export class APIType {
 	static USER = "/user";
+	static CHAT = "/chat";
 }
 export class MethodType {
 	static GET = "/get";
@@ -15,12 +16,18 @@ export class MethodType {
 	static PUT = "/update";
 	static DELETE = "/delete";
 }
-export class UserAPI {
+export class UserType {
 	static LOGIN = "/login";
 	static SIGNUP = "/signup";
 	static FORGOTPASSWORD = "/forgotpassword";
 	static UPDATEPASSWORD = "/updatepassword";
 	static GET_ALL_USERS = "/getall";
+}
+
+export class ChatType {
+	static FETCH_CHAT = "/fetchChat";
+	static CREATE_CHAT = "/createChat";
+	static CREATE_GROUP_CHAT = "/createGroupChat";
 }
 
 export class HTTPStatusCode {
