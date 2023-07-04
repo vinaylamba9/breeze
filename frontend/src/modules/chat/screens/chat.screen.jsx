@@ -17,10 +17,12 @@ import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerB
 import { ChatDAO } from "../core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
+import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
+	const [isLoading, setLoading] = useState(false);
 	const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
 		ChatState();
 
@@ -41,9 +43,11 @@ const ChatScreen = () => {
 	};
 
 	const onFetchChatHandler = useCallback(async () => {
+		setLoading(true);
 		const response = await ChatDAO.fetchChatDAO(user?._id);
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setChats(response?.responseBody);
+			setLoading(false);
 		}
 	}, [setChats, user?._id]);
 	const onLogoutHandler = useCallback(() => {
@@ -123,34 +127,38 @@ const ChatScreen = () => {
 							minHeight: "78vh",
 							overflowY: "scroll",
 						}}>
-						{chats?.map((item, index) => {
-							return (
-								<div key={`tile_item_${index}`}>
-									<BreezeTile
-										title={
-											item?.isGroupChat
-												? item?.chatName
-												: CHAT_UTILS?.getOtherSideUserName(user, item?.users)
-										}
-										msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
-										isActive={true}
-										isGrouped={item?.isGroupChat}
-										profileImage={
-											!item?.isGroupChat &&
-											CHAT_UTILS?.getOtherSideProfileImage(user, item?.users)
-										}
-										isNotification={false}
-									/>
-									<hr
-										style={{
-											width: "95%",
-											margin: "0 auto",
-											borderTop: "1px solid var(--muted-color)",
-										}}
-									/>
-								</div>
-							);
-						})}
+						{isLoading ? (
+							<BreezeTileSkeleton tileLength={7} />
+						) : (
+							chats?.map((item, index) => {
+								return (
+									<div key={`tile_item_${index}`}>
+										<BreezeTile
+											title={
+												item?.isGroupChat
+													? item?.chatName
+													: CHAT_UTILS?.getOtherSideUserName(user, item?.users)
+											}
+											msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+											isActive={true}
+											isGrouped={item?.isGroupChat}
+											profileImage={
+												!item?.isGroupChat &&
+												CHAT_UTILS?.getOtherSideProfileImage(user, item?.users)
+											}
+											isNotification={false}
+										/>
+										<hr
+											style={{
+												width: "95%",
+												margin: "0 auto",
+												borderTop: "1px solid var(--muted-color)",
+											}}
+										/>
+									</div>
+								);
+							})
+						)}
 					</div>
 				</div>
 				<br />

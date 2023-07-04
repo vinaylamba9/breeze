@@ -11,7 +11,7 @@ const BreezeAvatar = ({ profileImage, isGrouped, isActive, title }) => {
 				className={
 					!!profileImage
 						? `  rounded-full p-1 `
-						: `p-1 mr-2 h-10 w-10 relative flex justify-center items-center rounded-full  text-xl uppercase`
+						: `p-1  h-12 w-12 relative flex justify-center items-center rounded-full  text-xl uppercase`
 				}
 				style={{
 					backgroundColor: hexColor,
