@@ -10,7 +10,7 @@ const BreezeAvatar = ({ profileImage, isGrouped, isActive, title }) => {
 			<div
 				className={
 					!!profileImage
-						? `  rounded-full p-1 `
+						? `rounded-full p-1 `
 						: `p-1  h-12 w-12 relative flex justify-center items-center rounded-full  text-xl uppercase`
 				}
 				style={{

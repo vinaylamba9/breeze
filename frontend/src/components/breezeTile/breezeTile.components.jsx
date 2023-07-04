@@ -4,11 +4,12 @@ import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 
 const BreezeTile = ({
 	title,
+	bio,
 	profileImage,
 	isGrouped,
 	isActive,
 	msg,
-	bio,
+
 	isNotification,
 	onClickHandler,
 	styleClass,

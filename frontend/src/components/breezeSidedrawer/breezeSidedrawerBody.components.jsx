@@ -30,7 +30,7 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 		formState: { errors },
 	} = useForm({});
 
-	/** Getting All Users list  */
+	/** Getting All Users list from Chat API */
 	const getAllUsers = useCallback(async () => {
 		setLoading(true);
 		const response = await userDAO.getAllUsersDAO();
