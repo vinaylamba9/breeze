@@ -15,7 +15,9 @@ import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 import { ChatDAO } from "../core/chatDAO";
-import { HTTPStatusCode } from "@/constants/network";
+import { HTTPStatusCode } from "@Constants/network";
+import { CHAT_UTILS } from "@Shared/utils/chat.utils";
+import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -128,13 +130,14 @@ const ChatScreen = () => {
 										title={
 											item?.isGroupChat
 												? item?.chatName
-												: item?.users?.[1]?.name
+												: CHAT_UTILS?.getOtherSideUserName(user, item?.users)
 										}
-										msg={item?.users?.[1]?.bio}
+										msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
 										isActive={true}
 										isGrouped={item?.isGroupChat}
 										profileImage={
-											!item?.isGroupChat && item?.users?.[1]?.profileImage
+											!item?.isGroupChat &&
+											CHAT_UTILS?.getOtherSideProfileImage(user, item?.users)
 										}
 										isNotification={false}
 									/>
@@ -175,7 +178,7 @@ const ChatScreen = () => {
 										profileImage={user?.profileImage}
 										isGrouped={false}
 										isActive={true}
-										title={"Shekhar Shashank"}
+										title={BreezeSessionManagement?.getUserSession()?.name}
 									/>
 								</div>
 							</BreezeTooltip>

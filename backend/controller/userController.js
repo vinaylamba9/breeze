@@ -71,13 +71,13 @@ const userController = {
 								signedUpResponse["_id"],
 								updatedObject
 							);
-							console.log(userUpdated, "-userUpdated");
+
 							if (userUpdated) {
 								let emailResponse = await EMAIL_SERVICES.sendOTPVerification(
 									userUpdated,
 									MailSubject.ACCOUNT_VERIFICATION
 								);
-								console.log(emailResponse, "-emailResponse");
+
 								if (emailResponse) {
 									responseMessage = HTTPStatusCode.OK;
 									responseStatusCode = HTTPStatusCode.OK;
