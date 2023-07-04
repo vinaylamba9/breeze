@@ -4,11 +4,12 @@ import useAvatarInitials from "@Shared/hooks/useAvatarInitials";
 const BreezeAvatar = ({ profileImage, isGrouped, isActive, title }) => {
 	const [hexColor, textColor] = useAvatarColorGenerator(title);
 	const initials = useAvatarInitials(title);
+
 	return (
 		<div className='relative cursor-pointer'>
 			<div
 				className={
-					profileImage
+					!!profileImage
 						? `  rounded-full p-1 `
 						: `p-1 mr-2 h-10 w-10 relative flex justify-center items-center rounded-full  text-xl uppercase`
 				}
@@ -16,7 +17,7 @@ const BreezeAvatar = ({ profileImage, isGrouped, isActive, title }) => {
 					backgroundColor: hexColor,
 					color: textColor,
 				}}>
-				{profileImage ? (
+				{!!profileImage ? (
 					<img
 						className='h-10 w-10 rounded-full'
 						src={profileImage}

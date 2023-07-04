@@ -11,7 +11,7 @@ import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import { ChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
-import { userDAO } from "@/modules/onboarding/core/userDAO";
+import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
@@ -192,7 +192,6 @@ const ChatScreen = () => {
 								isOpen={isOpen}
 								onClose={closeModal}
 								children={<BreezeSideDrawerBody />}
-								position='left'
 							/>
 						)}
 					</div>
@@ -245,7 +244,6 @@ const ChatScreen = () => {
 								case profileMenuType.LOGOUT:
 									onLogoutHandler();
 									break;
-
 								default:
 									break;
 							}

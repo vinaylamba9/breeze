@@ -81,9 +81,7 @@ const timeON = {
 
 const cleanUserModel = function (user) {
 	try {
-		console.log(user, "--user12");
 		user = user.toObject();
-		console.log(user, "--user2");
 		if (!_isNull(user.password)) {
 			delete user.password;
 		}
