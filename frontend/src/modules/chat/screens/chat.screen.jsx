@@ -125,11 +125,17 @@ const ChatScreen = () => {
 							return (
 								<div key={`tile_item_${index}`}>
 									<BreezeTile
-										title={item?.users?.[1]?.name}
+										title={
+											item?.isGroupChat
+												? item?.chatName
+												: item?.users?.[1]?.name
+										}
 										msg={item?.users?.[1]?.bio}
 										isActive={true}
 										isGrouped={item?.isGroupChat}
-										profileImage={item?.users?.[1]?.profileImage}
+										profileImage={
+											!item?.isGroupChat && item?.users?.[1]?.profileImage
+										}
 										isNotification={false}
 									/>
 									<hr
