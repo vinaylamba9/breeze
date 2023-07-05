@@ -18,6 +18,7 @@ import { ChatDAO } from "../core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
+import ChatNotFound from "@Modules/misc/screens/chatNotFound.screen";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -62,9 +63,9 @@ const ChatScreen = () => {
 	}, [onFetchChatHandler]);
 
 	return (
-		<div className='flex gap-5'>
-			<div className='sm:w-100% md:w-40% lg:w-30%'>
-				<div className=' flex items-center justify-between'>
+		<div className='mt-5'>
+			<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  py-2'>
+				<div className='xs:w-80% sm:w-80% md:w-70% lg:w-50% xl:w-30% flex items-center justify-between '>
 					<div className='w-70%'>
 						<BreezeSearch
 							placeholder={"Search chat"}
@@ -80,139 +81,146 @@ const ChatScreen = () => {
 							name='searchUser'
 						/>
 					</div>
-					<div>
-						<BreezeTooltip id={"createChat"}>
-							<button
-								onClick={openModal}
-								title='Create Chat'
-								className='
-                                cursor-pointer
-                                bg-color-darkTeal
-                                w-10 h-10
-                                rounded-full 
-                                flex justify-center items-center
-                            text-white text-4xl 
-                                '>
-								<span
-									data-tooltip-id='createChat'
-									data-tooltip-content='Create Chat'>
-									<BsPlusLg
-										style={{
-											cursor: "pointer",
-											color: `var(--background-color-light)`,
-											fontSize: `var(--fontsize-trim)`,
-											fontWeight: 900,
-										}}
-									/>
-								</span>
-							</button>
-						</BreezeTooltip>
-
-						{isOpen && (
-							<BreezeSideDrawer
-								isOpen={isOpen}
-								onClose={closeModal}
-								children={<BreezeSideDrawerBody onClose={closeModal} />}
-							/>
-						)}
-					</div>
+					<BreezeTooltip id={"createChat"}>
+						<button
+							onClick={openModal}
+							title='Create Chat'
+							className='
+									cursor-pointer
+									bg-color-darkTeal
+									w-10 h-10
+									outline-none
+									rounded-full 
+									flex justify-center items-center
+									text-white text-4xl relative
+								'>
+							<span
+								data-tooltip-id='createChat'
+								data-tooltip-content='Create Chat'>
+								<BsPlusLg
+									style={{
+										cursor: "pointer",
+										color: `var(--background-color-light)`,
+										fontSize: `var(--fontsize-trim)`,
+										fontWeight: 900,
+									}}
+								/>
+							</span>
+						</button>
+					</BreezeTooltip>
+					{isOpen && (
+						<BreezeSideDrawer
+							isOpen={isOpen}
+							onClose={closeModal}
+							children={<BreezeSideDrawerBody onClose={closeModal} />}
+						/>
+					)}
 				</div>
-				<br />
-				<div
-					className='bg-white px-2 rounded-2xl'
-					style={{
-						maxHeight: "80vh",
-					}}>
-					<div
-						className='my-2 rounded-2xl'
-						style={{
-							maxHeight: "78vh",
-							minHeight: "78vh",
-							overflowY: "scroll",
-						}}>
-						{isLoading ? (
-							<BreezeTileSkeleton tileLength={7} />
-						) : (
-							chats?.map((item, index) => {
-								return (
-									<div key={`tile_item_${index}`}>
-										<BreezeTile
-											title={
-												item?.isGroupChat
-													? item?.chatName
-													: CHAT_UTILS?.getOtherSideUserName(user, item?.users)
-											}
-											msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+				<div className='xs:w-20% sm:w-20% md:w-30% lg:w-50% xl:w-70% '>
+					<div className='flex justify-end items-center'>
+						<BreezeDropdown
+							listItems={profileDropdown}
+							menuAction={(e, key) => {
+								switch (key) {
+									case profileMenuType.LOGOUT:
+										onLogoutHandler();
+										break;
+									default:
+										break;
+								}
+							}}
+							isIcon={true}
+							children={
+								<BreezeTooltip id={"profileImage"}>
+									<div
+										data-tooltip-id='profileImage'
+										data-tooltip-content={user?.name}>
+										<BreezeAvatar
+											profileImage={user?.profileImage}
+											isGrouped={false}
 											isActive={true}
-											isGrouped={item?.isGroupChat}
-											profileImage={
-												!item?.isGroupChat &&
-												CHAT_UTILS?.getOtherSideProfileImage(user, item?.users)
-											}
-											isNotification={false}
-										/>
-										<hr
-											style={{
-												width: "95%",
-												margin: "0 auto",
-												borderTop: "1px solid var(--muted-color)",
-											}}
+											title={user?.name}
 										/>
 									</div>
-								);
-							})
-						)}
+								</BreezeTooltip>
+							}
+						/>
 					</div>
 				</div>
-				<br />
 			</div>
-			<div className='sm:w-100% md:w-60% lg:w-70%'>
-				<div className='flex justify-end items-center'>
-					<BreezeDropdown
-						listItems={profileDropdown}
-						menuAction={(e, key) => {
-							switch (key) {
-								case profileMenuType.LOGOUT:
-									onLogoutHandler();
-									break;
-								default:
-									break;
-							}
-						}}
-						isIcon={true}
-						children={
-							<BreezeTooltip id={"profileImage"}>
-								<div
-									data-tooltip-id='profileImage'
-									data-tooltip-content={user?.name}>
-									<BreezeAvatar
-										profileImage={user?.profileImage}
-										isGrouped={false}
-										isActive={true}
-										title={user?.name}
-									/>
-								</div>
-							</BreezeTooltip>
-						}
-					/>
-				</div>
-				<br />
-
-				<div
-					className='bg-background-color-light px-2 rounded-2xl'
-					style={{
-						minHeight: "80vh",
-					}}>
+			{chats?.length === 0 ? (
+				<ChatNotFound />
+			) : (
+				<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  gap-2 py-2'>
+					<div className='xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30% '>
+						<div
+							className='bg-white px-2 rounded-2xl'
+							style={{
+								maxHeight: "80vh",
+							}}>
+							<div
+								className='my-2 rounded-2xl'
+								style={{
+									maxHeight: "78vh",
+									minHeight: "78vh",
+									overflowY: "scroll",
+								}}>
+								{isLoading ? (
+									<BreezeTileSkeleton tileLength={7} />
+								) : (
+									chats?.map((item, index) => {
+										return (
+											<div key={`tile_item_${index}`}>
+												<BreezeTile
+													title={
+														item?.isGroupChat
+															? item?.chatName
+															: CHAT_UTILS?.getOtherSideUserName(
+																	user,
+																	item?.users
+															  )
+													}
+													msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													isActive={true}
+													isGrouped={item?.isGroupChat}
+													profileImage={
+														!item?.isGroupChat &&
+														CHAT_UTILS?.getOtherSideProfileImage(
+															user,
+															item?.users
+														)
+													}
+													isNotification={false}
+												/>
+												<hr
+													style={{
+														width: "95%",
+														margin: "0 auto",
+														borderTop: "1px solid var(--muted-color)",
+													}}
+												/>
+											</div>
+										);
+									})
+								)}
+							</div>
+						</div>
+					</div>
 					<div
-						className='my-2'
+						className='xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% bg-background-color-light px-2 rounded-2xl'
 						style={{
-							maxHeight: "78vh",
-							minHeight: "78vh",
-							overflowY: "scroll",
-						}}></div>
+							minHeight: "80vh",
+						}}>
+						<div
+							className='my-2'
+							style={{
+								maxHeight: "78vh",
+								minHeight: "78vh",
+								overflowY: "scroll",
+							}}></div>
+					</div>
 				</div>
-				<br />
-			</div>
+			)}
 		</div>
 	);
 };

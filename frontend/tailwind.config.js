@@ -6,11 +6,12 @@ module.exports = {
 	theme: {
 		extend: {
 			screens: {
-				sm: "640px",
-				md: "768px",
-				lg: "1024px",
-				xl: "1280px",
-				"2xl": "1536px",
+				xs: { min: "0px", max: "400px" },
+				sm: { min: "401px", max: "600px" },
+				md: { min: "601px", max: "1000px" },
+				lg: { min: "1001px", max: "1300px" },
+				xl: "1301px",
+				"2xl": "1551px",
 			},
 			colors: {
 				primaryColorWithOpacity: "var(--primary-colorWithOpacity)",
@@ -41,6 +42,9 @@ module.exports = {
 				"color-soil": "var(--color-soil)",
 				"color-tanz": "var(--color-tanz)",
 				"color-slate": "var(--color-slate)",
+				"color-cyan": "var(--color-cyan)",
+				"color-purple": "var(--color-purple)",
+				"color-pearl": "var(--color-pearl)",
 			},
 
 			fontSize: {
@@ -59,6 +63,7 @@ module.exports = {
 				auto: "auto",
 				cover: "cover",
 				contain: "contain",
+				"30%": "30%",
 				"40%": "40%",
 				"50%": "50%",
 				"60%": "60%",
@@ -114,6 +119,8 @@ module.exports = {
 				"2%": "2%",
 				"5%": "5%",
 				"10%": "10%",
+				"15%": "15%",
+				"18%": "18%",
 				"20%": "20%",
 				"30%": "30%",
 				"40%": "40%",

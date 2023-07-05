@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
+import { BsPlusLg } from "react-icons/bs";
+import { MdInfo } from "react-icons/md";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import { HTTPStatusCode } from "@Constants/network";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
@@ -8,6 +10,7 @@ import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { useChatState } from "@Context/chatProvider";
+import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 
 const BreezeSideDrawerBody = ({ onClose }) => {
 	const {
@@ -60,9 +63,47 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 	}, [getAllUsers]);
 	return (
 		<div className='p-2'>
-			<h2 className='text-fontsize-pearl text-color-darkTeal font-bold m-4'>
-				Create chat
-			</h2>
+			<div className='flex mt-10 w-100% items-center justify-between px-4'>
+				<div>
+					<h2 className='text-fontsize-pearl text-color-darkTeal font-bold'>
+						Create chat
+					</h2>
+
+					<div className='text-sm text-gray-400 tracking-normal flex items-center gap-1'>
+						<span>
+							<MdInfo />{" "}
+						</span>
+						<span>Click on users to create chat.</span>
+					</div>
+				</div>
+				<BreezeTooltip id={"createGroupChat"}>
+					<button
+						// onClick={openModal}
+						title='Group Chat'
+						className='
+									cursor-pointer
+									bg-color-darkTeal
+									w-10 h-10
+									outline-none
+									rounded-full 
+									flex justify-center items-center
+									text-white text-4xl relative
+								'>
+						<span
+							data-tooltip-id='createGroupChat'
+							data-tooltip-content='Create Group Chat'>
+							<BsPlusLg
+								style={{
+									cursor: "pointer",
+									color: `var(--background-color-light)`,
+									fontSize: `var(--fontsize-trim)`,
+									fontWeight: 900,
+								}}
+							/>
+						</span>
+					</button>
+				</BreezeTooltip>
+			</div>
 			<div className='w-100% mt-10 px-4'>
 				<BreezeSearch
 					placeholder={"Search user"}
@@ -78,28 +119,40 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 					name='searchUser'
 				/>
 			</div>
-			<div className='w-100% mt-10 px-4'>
+			<div
+				className='w-100% mt-5 px-4 '
+				style={{
+					minHeight: "75vh",
+				}}>
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />
 				) : (
-					userList?.map((item) => {
-						return (
-							<BreezeTile
-								onClickHandler={() => onCreateChatHandler(item?._id)}
-								title={item?.name}
-								imgBackgroundColor={item?.imgBackgroundColor}
-								msg={item?.msg}
-								isActive={item?.isActive}
-								isGrouped={item?.isGrouped}
-								profileImage={item?.profileImage}
-								isNotification={item?.isNotification}
-								bio={item?.bio}
-								styleClass={
-									"bg-white py-4 rounded-2xl transform hover:scale-105  hover:shadow-sm transition duration-300 ease-in-out"
-								}
-							/>
-						);
-					})
+					<div
+						className='my-2 rounded-2xl'
+						style={{
+							maxHeight: "75vh",
+							minHeight: "75vh",
+							overflowY: "scroll",
+						}}>
+						{userList?.map((item) => {
+							return (
+								<BreezeTile
+									onClickHandler={() => onCreateChatHandler(item?._id)}
+									title={item?.name}
+									imgBackgroundColor={item?.imgBackgroundColor}
+									msg={item?.msg}
+									isActive={item?.isActive}
+									isGrouped={item?.isGrouped}
+									profileImage={item?.profileImage}
+									isNotification={item?.isNotification}
+									bio={item?.bio}
+									styleClass={
+										"bg-white py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity hover:shadow-md transition duration-300 ease-in-out"
+									}
+								/>
+							);
+						})}
+					</div>
 				)}
 			</div>
 		</div>

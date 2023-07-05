@@ -34,7 +34,7 @@ const BreezeSideDrawer = ({ children, isOpen, onClose, position = "left" }) => {
 	return (
 		<main
 			className={
-				"fixed overflow-hidden z-10 backdrop-blur-md  inset-0 transform ease-in " +
+				"fixed overflow-hidden z-20 backdrop-blur-md  inset-0 transform ease-in " +
 				(isOpen
 					? "transition-opacity opacity-100 duration-500 translate-x-0"
 					: "transition-all opacity-0 translate-x-full")
@@ -55,7 +55,7 @@ const BreezeSideDrawer = ({ children, isOpen, onClose, position = "left" }) => {
 						onClick={onClose}
 					/>
 				</div>
-				{showContent && <div className='animate-fadeIn p-4'>{children}</div>}
+				{showContent && <div className='animate-fadeIn p-4 '>{children}</div>}
 			</div>
 			<section
 				className='w-screen h-full cursor-pointer'
