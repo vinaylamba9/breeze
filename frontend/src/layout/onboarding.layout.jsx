@@ -10,7 +10,7 @@ const OnboardingLayout = ({ children }) => {
 						backgroundImage:
 							"url('https://res.cloudinary.com/dtjqyp0r2/image/upload/v1660643211/bkisv2kflru4pcnp5alk.png')",
 					}}>
-					<h1 className='ml-10% mt-5% text-2xl text-color-darkTeal font-bold text-fontsize-pearl first-letter:text-3xl'>
+					<h1 className='ml-10% mt-5% text-3xl text-color-darkTeal font-bold text-fontsize-pearl first-letter:text-4xl'>
 						Breeze
 					</h1>
 				</span>
