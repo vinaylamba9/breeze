@@ -46,11 +46,10 @@ const ChatScreen = () => {
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
 		const response = await ChatDAO.fetchChatDAO(user?._id);
-		console.log(response, "--response");
-		if (response?.statusCode === HTTPStatusCode.OK) {
+		if (response?.statusCode === HTTPStatusCode.OK)
 			setChats(response?.responseBody);
-			setLoading(false);
-		}
+		else setChats([]);
+		setLoading(false);
 	}, [setChats, user?._id]);
 
 	const onLogoutHandler = useCallback(() => {
