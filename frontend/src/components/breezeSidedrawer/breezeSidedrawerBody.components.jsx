@@ -7,7 +7,7 @@ import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleto
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
-import { ChatState } from "@Context/chatProvider";
+import { useChatState } from "@Context/chatProvider";
 
 const BreezeSideDrawerBody = ({ onClose }) => {
 	const {
@@ -17,7 +17,7 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 		setNotification,
 		chats,
 		setChats,
-	} = ChatState();
+	} = useChatState();
 
 	const [isGroupChat, setGroupChat] = useState(false);
 	const [userList, setUserList] = useState([]);

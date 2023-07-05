@@ -7,7 +7,7 @@ import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
-import { ChatState } from "@Context/chatProvider";
+import { useChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
@@ -17,14 +17,13 @@ import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerB
 import { ChatDAO } from "../core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isLoading, setLoading] = useState(false);
 	const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
-		ChatState();
+		useChatState();
 
 	const {
 		register,
@@ -35,9 +34,11 @@ const ChatScreen = () => {
 	} = useForm({});
 
 	const [isOpen, setIsOpen] = useState(false);
+
 	const openModal = () => {
 		setIsOpen(true);
 	};
+
 	const closeModal = () => {
 		setIsOpen(false);
 	};
@@ -45,11 +46,13 @@ const ChatScreen = () => {
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
 		const response = await ChatDAO.fetchChatDAO(user?._id);
+		console.log(response, "--response");
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setChats(response?.responseBody);
 			setLoading(false);
 		}
 	}, [setChats, user?._id]);
+
 	const onLogoutHandler = useCallback(() => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
@@ -58,6 +61,7 @@ const ChatScreen = () => {
 	useEffect(() => {
 		onFetchChatHandler();
 	}, [onFetchChatHandler]);
+
 	return (
 		<div className='flex gap-5'>
 			<div className='sm:w-100% md:w-40% lg:w-30%'>
@@ -186,7 +190,7 @@ const ChatScreen = () => {
 										profileImage={user?.profileImage}
 										isGrouped={false}
 										isActive={true}
-										title={BreezeSessionManagement?.getUserSession()?.name}
+										title={user?.name}
 									/>
 								</div>
 							</BreezeTooltip>
