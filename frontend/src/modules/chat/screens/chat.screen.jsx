@@ -19,15 +19,23 @@ import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
 import ChatNotFound from "@Modules/misc/screens/chatNotFound.screen";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
-import BreezeImageUpload from "@/components/breezeImageUpload/breezeImageUpload.components";
+import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.components";
 import { ChatDAO } from "../core/chatDAO";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
-	const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
-		useChatState();
+	const {
+		user,
+		setUser,
+		selectedChat,
+		setSelectedChat,
+		chats,
+		setChats,
+		userList,
+		setUserList,
+	} = useChatState();
 
 	const {
 		register,
@@ -240,10 +248,12 @@ const ChatScreen = () => {
 			)}
 			{isGroupChatModal && (
 				<BreezeModal
+					backgroundColor={"bg-color-slate"}
+					width={"w-70%"}
 					closeModal={closeGroupModal}
 					isModalOpen={isGroupChatModal}
 					key={"Group_chat_modal"}
-					children={<BreezeImageUpload />}
+					children={<BreezeGroupChat userList={userList} />}
 					isDismissible={true}
 				/>
 			)}

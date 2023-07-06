@@ -8,6 +8,7 @@ const BreezeModal = ({
 	isDismissible = true,
 	width,
 	children,
+	backgroundColor,
 }) => {
 	const modalRef = useRef();
 
@@ -28,7 +29,7 @@ const BreezeModal = ({
 					<div className='fixed inset-0 bg-background-color-dark opacity-50'></div>
 					<div
 						ref={modalRef}
-						className={`relative bg-white rounded-2xl p-6 z-50 animate-fadeIn ${
+						className={`relative ${backgroundColor} rounded-2xl p-6 z-50 animate-fadeIn ${
 							width || "w-50%"
 						}`}>
 						<div className='flex ml-auto mr-auto'>

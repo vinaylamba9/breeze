@@ -140,6 +140,7 @@ const Login = () => {
 						</p>
 					</div>
 					<BreezeButton
+						buttonClass={"mx-4 my-4 px-8 py-4"}
 						backgroundColor={`var(--color-darkTeal)`}
 						textColor={`var(--text-color-purity)`}
 						label='Get Started'
@@ -147,6 +148,7 @@ const Login = () => {
 					/>
 					<p>Or</p>
 					<BreezeButton
+						buttonClass={"mx-4 my-4 px-8 py-4"}
 						icon={
 							"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687718507/google_w2quk4.png"
 						}
