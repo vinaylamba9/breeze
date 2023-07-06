@@ -14,14 +14,17 @@ import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
-import { ChatDAO } from "../core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
 import ChatNotFound from "@Modules/misc/screens/chatNotFound.screen";
+import BreezeModal from "@Components/breezeModal/breezeModal.components";
+import BreezeImageUpload from "@/components/breezeImageUpload/breezeImageUpload.components";
+import { ChatDAO } from "../core/chatDAO";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
+	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
 		useChatState();
@@ -34,14 +37,22 @@ const ChatScreen = () => {
 		formState: { errors },
 	} = useForm({});
 
-	const [isOpen, setIsOpen] = useState(false);
+	const [isSidebar, setSidebar] = useState(false);
 
-	const openModal = () => {
-		setIsOpen(true);
+	const openSideBar = () => {
+		setSidebar(true);
 	};
 
-	const closeModal = () => {
-		setIsOpen(false);
+	const closeSideBar = () => {
+		setSidebar(false);
+	};
+
+	const openGroupModal = () => {
+		setGroupChatModal(true);
+		setSidebar(false);
+	};
+	const closeGroupModal = () => {
+		setGroupChatModal(false);
 	};
 
 	const onFetchChatHandler = useCallback(async () => {
@@ -83,7 +94,7 @@ const ChatScreen = () => {
 					</div>
 					<BreezeTooltip id={"createChat"}>
 						<button
-							onClick={openModal}
+							onClick={openSideBar}
 							title='Create Chat'
 							className='
 									cursor-pointer
@@ -108,11 +119,17 @@ const ChatScreen = () => {
 							</span>
 						</button>
 					</BreezeTooltip>
-					{isOpen && (
+					{isSidebar && (
 						<BreezeSideDrawer
-							isOpen={isOpen}
-							onClose={closeModal}
-							children={<BreezeSideDrawerBody onClose={closeModal} />}
+							isOpen={isSidebar}
+							onClose={closeSideBar}
+							children={
+								<BreezeSideDrawerBody
+									onModalOpen={openGroupModal}
+									onClose={closeSideBar}
+									onModalClose={closeGroupModal}
+								/>
+							}
 						/>
 					)}
 				</div>
@@ -220,6 +237,15 @@ const ChatScreen = () => {
 							}}></div>
 					</div>
 				</div>
+			)}
+			{isGroupChatModal && (
+				<BreezeModal
+					closeModal={closeGroupModal}
+					isModalOpen={isGroupChatModal}
+					key={"Group_chat_modal"}
+					children={<BreezeImageUpload />}
+					isDismissible={true}
+				/>
 			)}
 		</div>
 	);

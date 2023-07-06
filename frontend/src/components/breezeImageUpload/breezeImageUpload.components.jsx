@@ -1,0 +1,99 @@
+import { useRef, useState, useEffect } from "react";
+import { ImUpload } from "react-icons/im";
+import { MdInfo } from "react-icons/md";
+import { InputType } from "@Constants/application";
+import BreezeButton from "@Components/breezeButton/breezeButton.components";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const BreezeImageUpload = () => {
+	const uploadedImageRef = useRef(null);
+	const [imagePreview, setImagePreview] = useState(null);
+	const [toastComponent, setToastComponent] = useState(null);
+	const handleImageChange = (e) => {
+		const selectedFile = e.target.files[0];
+		// Check if selected file is of type PNG or JPEG
+		if (
+			selectedFile &&
+			(selectedFile.type === "image/png" || selectedFile.type === "image/jpeg")
+		) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				setImagePreview(reader.result);
+			};
+			reader.readAsDataURL(selectedFile);
+		} else {
+			// Invalid file type, reset the image preview
+			setImagePreview(null);
+			return toast.info("Features is coming soon!.", {
+				transition: Slide,
+				icon: "🚀",
+				style: {
+					borderRadius: "1rem",
+					color: "var(--color-darkTeal)",
+					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+				},
+				progressStyle: { background: "var(--color-darkTeal)" },
+			});
+		}
+	};
+
+	const removeImageHandler = () => {
+		setImagePreview(null);
+	};
+
+	useEffect(() => {
+		return () => {
+			// Clean up the image preview when the component is unmounted
+			setImagePreview(null);
+		};
+	}, []);
+	return (
+		<div className='w-full flex items-center flex-col justify-center'>
+			<input
+				type={InputType.FILE}
+				className='hidden'
+				id='uploadImage'
+				name='avatarImage'
+				onChange={handleImageChange}
+			/>
+			<label
+				htmlFor='uploadImage'
+				className='h-36 w-36 border-2 border-color-darkTeal rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+				{imagePreview ? (
+					<img
+						ref={uploadedImageRef}
+						src={imagePreview}
+						id='photo'
+						alt='preview'
+						className='w-32 h-32 rounded-full bg-no-repeat bg-center cursor-pointer'
+					/>
+				) : (
+					<ImUpload
+						style={{
+							color: `var(--color-darkTeal)`,
+							fontSize: `var(--fontsize-strong)`,
+						}}
+					/>
+				)}
+			</label>
+			<div className='text-sm text-gray-400 tracking-normal flex items-center gap-1 mt-2'>
+				<span>
+					<MdInfo />{" "}
+				</span>
+				<span>Only JPEG / PNG format are allowed.</span>
+			</div>
+			{imagePreview && (
+				<BreezeButton
+					label={"Remove Image"}
+					backgroundColor={`var(--color-darkTeal)`}
+					textColor={`var(--text-color-purity)`}
+					onClickHandler={removeImageHandler}
+				/>
+			)}
+			{toastComponent && toastComponent}
+		</div>
+	);
+};
+
+export default BreezeImageUpload;

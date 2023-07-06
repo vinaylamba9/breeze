@@ -12,7 +12,7 @@ import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { useChatState } from "@Context/chatProvider";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 
-const BreezeSideDrawerBody = ({ onClose }) => {
+const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const {
 		setSelectedChat,
 		user,
@@ -22,7 +22,6 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 		setChats,
 	} = useChatState();
 
-	const [isGroupChat, setGroupChat] = useState(false);
 	const [userList, setUserList] = useState([]);
 	const [isLoading, setLoading] = useState(false);
 	const {
@@ -58,6 +57,7 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 		},
 		[chats, onClose, setChats, setSelectedChat]
 	);
+
 	useEffect(() => {
 		getAllUsers();
 	}, [getAllUsers]);
@@ -78,7 +78,7 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 				</div>
 				<BreezeTooltip id={"createGroupChat"}>
 					<button
-						// onClick={openModal}
+						onClick={onModalOpen}
 						title='Group Chat'
 						className='
 									cursor-pointer
@@ -104,6 +104,7 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 					</button>
 				</BreezeTooltip>
 			</div>
+
 			<div className='w-100% mt-10 px-4'>
 				<BreezeSearch
 					placeholder={"Search user"}
@@ -130,8 +131,8 @@ const BreezeSideDrawerBody = ({ onClose }) => {
 					<div
 						className='my-2 rounded-2xl'
 						style={{
-							maxHeight: "75vh",
-							minHeight: "75vh",
+							maxHeight: "73vh",
+							minHeight: "73vh",
 							overflowY: "scroll",
 						}}>
 						{userList?.map((item) => {
