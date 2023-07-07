@@ -1,8 +1,9 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require("path");
+const webpack = require("webpack");
 const deps = require("./package.json").dependencies;
-
+require("dotenv").config({ path: "./.env" });
 module.exports = (_, argv) => ({
 	output: {
 		publicPath: "http://localhost:3000/",
@@ -83,6 +84,9 @@ module.exports = (_, argv) => ({
 		}),
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
+		}),
+		new webpack.DefinePlugin({
+			"process.env": JSON.stringify(process.env),
 		}),
 	],
 });

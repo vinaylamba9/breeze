@@ -21,7 +21,7 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 
 const Login = () => {
 	const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
-	const [toastComponent, setToastComponent] = useState(null);
+
 	const navigate = useNavigate();
 
 	const {
@@ -61,7 +61,6 @@ const Login = () => {
 			) {
 				return toast.error(response?.responseBody, {
 					transition: Slide,
-
 					style: {
 						borderRadius: "1rem",
 						color: "var(--color-darkTeal)",
@@ -169,7 +168,6 @@ const Login = () => {
 							})
 						}
 					/>
-					{toastComponent && toastComponent}
 				</div>
 			</center>
 		</div>

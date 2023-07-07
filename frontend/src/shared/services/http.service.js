@@ -47,6 +47,7 @@ export class BreezeHttpService {
 					},
 				}
 			);
+
 			return {
 				statusCode: response?.status,
 				responseBody: response?.data,
@@ -132,4 +133,32 @@ export class BreezeHttpService {
 
 	//TODO:- Implementation
 	async sendDeleteRequest() {}
+
+	/**
+	 * @Function SEND_POST_REQUEST()
+	 * @Methods axios.POST()
+	 * @Returns An Object
+	 */
+
+	async sendUploadImagePostRequest() {
+		try {
+			const response = await axios.post(
+				this._URL, // URL Passing
+				this._dataToSend // Data-Body Passing
+			);
+			return {
+				statusCode: response?.status,
+				responseBody: response?.data,
+			};
+		} catch (error) {
+			const errorResult = errorDebug(
+				error.response.data,
+				"httpCall.sendPostRequest()"
+			);
+			return {
+				statusCode: errorResult.statusCode,
+				responseBody: errorResult.responseBody,
+			};
+		}
+	}
 }

@@ -1,16 +1,17 @@
-import { useRef, useState, useEffect, Fragment } from "react";
+import { useRef, useState, useEffect, Fragment, useCallback } from "react";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ImUpload } from "react-icons/im";
 import { MdInfo } from "react-icons/md";
 import { InputType } from "@Constants/application";
 import BreezeButton from "@Components/breezeButton/breezeButton.components";
+import { MiscAPI } from "@/api/misc/misc.API";
 
-const BreezeImageUpload = () => {
+const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
 	const uploadedImageRef = useRef(null);
 	const [imagePreview, setImagePreview] = useState(null);
-	const [toastComponent, setToastComponent] = useState(null);
-	const handleImageChange = (e) => {
+
+	const handleImageChange = useCallback(async (e) => {
 		const selectedFile = e.target.files[0];
 		// Check if selected file is of type PNG or JPEG
 		if (
@@ -18,25 +19,41 @@ const BreezeImageUpload = () => {
 			(selectedFile.type === "image/png" || selectedFile.type === "image/jpeg")
 		) {
 			const reader = new FileReader();
+			const data = new FormData();
+			data?.append("file", selectedFile);
+			data.append("upload_preset", process.env.REACT_APP_NAME);
+			data.append("cloud_name", process.env.REACT_APP_CLOUDNAME);
 			reader.onload = () => {
 				setImagePreview(reader.result);
 			};
 			reader.readAsDataURL(selectedFile);
-		} else {
-			// Invalid file type, reset the image preview
-			setImagePreview(null);
-			return toast.info("Features is coming soon!.", {
+			const response = await MiscAPI.uploadImage(data);
+			setGroupImageURL(response?.responseBody?.url);
+			return toast.success("Image uploaded successfully.", {
 				transition: Slide,
 				icon: "🚀",
 				style: {
-					borderRadius: "1rem",
+					// borderRadius: "1rem",
+					color: "var(--color-darkTeal)",
+					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+				},
+				progressStyle: { background: "var(--color-darkTeal)" },
+			});
+		} else {
+			// Invalid file type, reset the image preview
+			setImagePreview(null);
+			return toast.info("Only PNG/JPEG formats are allowed", {
+				transition: Slide,
+				icon: "🚀",
+				style: {
+					// borderRadius: "1rem",
 					color: "var(--color-darkTeal)",
 					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 				},
 				progressStyle: { background: "var(--color-darkTeal)" },
 			});
 		}
-	};
+	}, []);
 
 	const removeImageHandler = () => {
 		setImagePreview(null);
@@ -50,6 +67,7 @@ const BreezeImageUpload = () => {
 	}, []);
 	return (
 		<Fragment>
+			<ToastContainer />
 			<div className='w-full flex items-center flex-col justify-center'>
 				{imagePreview ? (
 					<div className='h-36 w-36 border-2 border-color-darkTeal rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
@@ -83,7 +101,7 @@ const BreezeImageUpload = () => {
 					</>
 				)}
 
-				<div className='text-sm text-gray-400 tracking-normal flex items-center gap-1 mt-2'>
+				<div className='text-sm  text-gray-400 tracking-normal flex items-center gap-1 mt-2'>
 					<span>
 						<MdInfo />{" "}
 					</span>
@@ -99,8 +117,6 @@ const BreezeImageUpload = () => {
 					/>
 				)}
 			</div>
-
-			{toastComponent && toastComponent}
 		</Fragment>
 	);
 };

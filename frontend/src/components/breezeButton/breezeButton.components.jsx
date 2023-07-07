@@ -5,6 +5,7 @@ const BreezeButton = ({
 	backgroundColor,
 	textColor,
 	buttonClass,
+	width,
 }) => {
 	return (
 		<div
@@ -16,7 +17,7 @@ const BreezeButton = ({
 			}}
 			className={`flex 
 			justify-center
-			w-60% outline-none
+			${width || "w-60%"} outline-none
 			border-none 
 			gap-4
 			items-center
