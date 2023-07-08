@@ -80,66 +80,68 @@ const Login = () => {
 	}, [navigate]);
 
 	return (
-		<div className='flex flex-col animate-fadeIn'>
+		<div className=' flex flex-col animate-fadeIn'>
 			<ToastContainer />
 			<BreezeToggleOnboard label={"Back to "} linkLabel='Signup' />
 			<center>
-				<div className='mt-10% text-fontsize-brittle'>
+				<div className='mt-10% w-60% text-fontsize-brittle mx-auto  '>
 					<TypewriterLabel label='Log in with ' />
-					<BreezeInputField
-						type={InputType.EMAIL}
-						name='email'
-						register={register}
-						trailingIcon={
-							<MdEmail
-								style={{
-									color: `var(--color-darkTeal)`,
-									fontSize: `var(--fontsize-glossy)`,
-								}}
-							/>
-						}
-						errors={errors}
-						validationSchema={{
-							required: "Invalid e-mail .",
-							pattern: {
-								value: EmailRegEx.email,
-								message: "Invalid e-mail format",
-							},
-						}}
-						placeholder='E-mail Address'
-						required
-					/>
-					<BreezeInputField
-						register={register}
-						errors={errors}
-						validationSchema={{
-							required: "Invalid password .",
-						}}
-						name='password'
-						type={
-							togglePasswordVisibility ? InputType.PASSWORD : InputType.TEXT
-						}
-						trailingIcon={
-							togglePasswordVisibility ? (
-								<PasswordIconAiFillEyeInvisible />
-							) : (
-								<PasswordIconAiFillEye />
-							)
-						}
-						iconClickHandler={onTogglePassword}
-						placeholder='Password'
-						required
-					/>
-
+					<div className='my-5'>
+						<BreezeInputField
+							type={InputType.EMAIL}
+							name='email'
+							register={register}
+							trailingIcon={
+								<MdEmail
+									style={{
+										color: `var(--color-darkTeal)`,
+										fontSize: `var(--fontsize-glossy)`,
+									}}
+								/>
+							}
+							errors={errors}
+							validationSchema={{
+								required: "Invalid e-mail .",
+								pattern: {
+									value: EmailRegEx.email,
+									message: "Invalid e-mail format",
+								},
+							}}
+							placeholder='E-mail Address'
+							required
+						/>
+					</div>
+					<div className='my-5'>
+						<BreezeInputField
+							register={register}
+							errors={errors}
+							validationSchema={{
+								required: "Invalid password .",
+							}}
+							name='password'
+							type={
+								togglePasswordVisibility ? InputType.PASSWORD : InputType.TEXT
+							}
+							trailingIcon={
+								togglePasswordVisibility ? (
+									<PasswordIconAiFillEyeInvisible />
+								) : (
+									<PasswordIconAiFillEye />
+								)
+							}
+							iconClickHandler={onTogglePassword}
+							placeholder='Password'
+							required
+						/>
+					</div>
 					<div
 						onClick={onForgotPasswordClickHandler}
-						className='cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal ml-40% mb-5%'>
+						className='mx-2 first-letter:cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal  flex justify-end'>
 						<p>
 							<b>* Forgot Password?</b>{" "}
 						</p>
 					</div>
 					<BreezeButton
-						buttonClass={"mx-4 my-4 px-8 py-4"}
 						backgroundColor={`var(--color-darkTeal)`}
 						textColor={`var(--text-color-purity)`}
 						label='Get Started'
@@ -147,7 +149,6 @@ const Login = () => {
 					/>
 					<p>Or</p>
 					<BreezeButton
-						buttonClass={"mx-4 my-4 px-8 py-4"}
 						icon={
 							"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687718507/google_w2quk4.png"
 						}

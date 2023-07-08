@@ -248,8 +248,8 @@ const ChatScreen = () => {
 			)}
 			{isGroupChatModal && (
 				<BreezeModal
-					backgroundColor={"bg-color-slate"}
-					width={"w-70%"}
+					backgroundColor={"bg-white"}
+					// width={"w-70%"}
 					closeModal={closeGroupModal}
 					isModalOpen={isGroupChatModal}
 					key={"Group_chat_modal"}

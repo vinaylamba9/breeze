@@ -1,5 +1,5 @@
-const BreezeDivider = () => {
-	return <hr className='border  border-gray-100' />;
+const BreezeDivider = ({ borderColor }) => {
+	return <hr className={`border  ${borderColor || "border-gray-100"}`} />;
 };
 
 export default BreezeDivider;

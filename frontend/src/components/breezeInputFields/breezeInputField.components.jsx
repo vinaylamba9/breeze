@@ -15,31 +15,30 @@ const BreezeInputField = ({
 	register,
 	isError,
 	validationSchema,
+	iconStyle,
 }) => {
 	const formatRegister = { ...register(name, required && validationSchema) };
 
 	return (
 		<Fragment>
-			<div className='flex flex-row  content-center justify-center items-center py-2%  '>
+			<div className='flex flex-row content-center justify-center items-center py-2%'>
 				<input
 					className={
 						errors && errors[name]
-							? `rounded-3xl 
+							? ` mx-1 w-100% rounded-3xl 
 						text-background-color-dark
 						bg-danger-colorWithOpacity
-						w-60% px-8 py-4
+						px-8 py-4
 						ease-out duration-300
 						outline-none border-none
 						text-fontsize-brittle
 						focus:outline
-			
 						focus:ring-2 focus:bg-danger-colorWithOpacity  focus:ring-danger-color
 						`
-							: `rounded-3xl 
-							
+							: ` mx-1 rounded-3xl 
                             text-background-color-dark
                             bg-color-TealWithOpacity 
-                            w-60% px-8 py-4
+                            w-100% px-8 py-4
 							ease-out duration-300
 							outline-none border-none
                             text-fontsize-brittle
@@ -72,7 +71,9 @@ const BreezeInputField = ({
 				/>
 				{trailingIcon && (
 					<div
-						style={{ cursor: "pointer", position: "absolute", right: "12%" }}
+						className={`${
+							iconStyle ? iconStyle : "cursor-pointer absolute right-52 "
+						}`}
 						onClick={iconClickHandler}>
 						{trailingIcon}
 					</div>
@@ -82,13 +83,13 @@ const BreezeInputField = ({
 			{required && !disabled
 				? errors &&
 				  errors[name] && (
-						<div className='text-danger-color text-left w-60% flex text-fontsize-brittle  -mt-3 '>
+						<div className='text-danger-color text-left   text-fontsize-brittle  mt-1 mx-1  '>
 							{errors[name]?.message && `* ${errors[name]?.message}`}
 						</div>
 				  )
 				: false}
 			{isError && (
-				<div className='text-danger-color text-left w-60% flex text-fontsize-brittle  -mt-3 '>
+				<div className='text-danger-color text-left  text-fontsize-brittle  mt-1 mx-1'>
 					* {errorMsg}
 				</div>
 			)}

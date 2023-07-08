@@ -5,55 +5,59 @@ import { ImUpload } from "react-icons/im";
 import { MdInfo } from "react-icons/md";
 import { InputType } from "@Constants/application";
 import BreezeButton from "@Components/breezeButton/breezeButton.components";
-import { MiscAPI } from "@/api/misc/misc.API";
+import { MiscAPI } from "@API/misc/misc.API";
 
 const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
 	const uploadedImageRef = useRef(null);
 	const [imagePreview, setImagePreview] = useState(null);
 
-	const handleImageChange = useCallback(async (e) => {
-		const selectedFile = e.target.files[0];
-		// Check if selected file is of type PNG or JPEG
-		if (
-			selectedFile &&
-			(selectedFile.type === "image/png" || selectedFile.type === "image/jpeg")
-		) {
-			const reader = new FileReader();
-			const data = new FormData();
-			data?.append("file", selectedFile);
-			data.append("upload_preset", process.env.REACT_APP_NAME);
-			data.append("cloud_name", process.env.REACT_APP_CLOUDNAME);
-			reader.onload = () => {
-				setImagePreview(reader.result);
-			};
-			reader.readAsDataURL(selectedFile);
-			const response = await MiscAPI.uploadImage(data);
-			setGroupImageURL(response?.responseBody?.url);
-			return toast.success("Image uploaded successfully.", {
-				transition: Slide,
-				icon: "🚀",
-				style: {
-					// borderRadius: "1rem",
-					color: "var(--color-darkTeal)",
-					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-				},
-				progressStyle: { background: "var(--color-darkTeal)" },
-			});
-		} else {
-			// Invalid file type, reset the image preview
-			setImagePreview(null);
-			return toast.info("Only PNG/JPEG formats are allowed", {
-				transition: Slide,
-				icon: "🚀",
-				style: {
-					// borderRadius: "1rem",
-					color: "var(--color-darkTeal)",
-					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-				},
-				progressStyle: { background: "var(--color-darkTeal)" },
-			});
-		}
-	}, []);
+	const handleImageChange = useCallback(
+		async (e) => {
+			const selectedFile = e.target.files[0];
+			// Check if selected file is of type PNG or JPEG
+			if (
+				selectedFile &&
+				(selectedFile.type === "image/png" ||
+					selectedFile.type === "image/jpeg")
+			) {
+				const reader = new FileReader();
+				const data = new FormData();
+				data?.append("file", selectedFile);
+				data.append("upload_preset", process.env.REACT_APP_NAME);
+				data.append("cloud_name", process.env.REACT_APP_CLOUDNAME);
+				reader.onload = () => {
+					setImagePreview(reader.result);
+				};
+				reader.readAsDataURL(selectedFile);
+				const response = await MiscAPI.uploadImage(data);
+				setGroupImageURL(response?.responseBody?.url);
+				return toast.success("Image uploaded successfully.", {
+					transition: Slide,
+					icon: "🚀",
+					style: {
+						// borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--color-darkTeal)" },
+				});
+			} else {
+				// Invalid file type, reset the image preview
+				setImagePreview(null);
+				return toast.info("Only PNG/JPEG formats are allowed", {
+					transition: Slide,
+					icon: "🚀",
+					style: {
+						// borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--color-darkTeal)" },
+				});
+			}
+		},
+		[setGroupImageURL]
+	);
 
 	const removeImageHandler = () => {
 		setImagePreview(null);
@@ -109,7 +113,8 @@ const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
 				</div>
 				{imagePreview && (
 					<BreezeButton
-						buttonClass={"py-2 mt-2"}
+						width={"w-20%"}
+						buttonClass={"py-2 mt-2 mb-2"}
 						label={"Remove Image"}
 						backgroundColor={`var(--color-darkTeal)`}
 						textColor={`var(--text-color-purity)`}

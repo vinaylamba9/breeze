@@ -6,34 +6,37 @@ const BreezeButton = ({
 	textColor,
 	buttonClass,
 	width,
+	isDisabled = false,
 }) => {
 	return (
-		<div
-			onClick={onClickHandler}
-			style={{
-				backgroundColor: backgroundColor,
-				color: textColor,
-				boxShadow: "1px 5px 15px rgba(0, 0, 0, 0.1)",
-			}}
-			className={`flex 
-			justify-center
-			${width || "w-60%"} outline-none
-			border-none 
-			gap-4
-			items-center
-			cursor-pointer 
-			rounded-3xl 
-			text-fontsize-brittle 
-			active:opacity-90 active:bg-primaryColorWithOpacity 
-			active:transition-all ${buttonClass}`}>
-			{icon && (
-				<div className='left-0'>
-					<img src={icon} height='20' width='20' alt='google' />
+		<div className='flex flex-row content-center justify-center items-center py-2%'>
+			<button
+				disabled={isDisabled}
+				onClick={onClickHandler}
+				style={{
+					backgroundColor: !isDisabled && backgroundColor,
+					color: !isDisabled && textColor,
+				}}
+				className={`mx-1 rounded-3xl  drop-shadow
+				text-background-color-dark
+				${isDisabled ? "bg-color-slate" : "bg-color-TealWithOpacity "}
+				w-100% px-8 py-4
+				ease-out duration-300
+				outline-none border-none
+				text-fontsize-brittle
+				focus:outline
+				focus:ring-2 focus:bg-color-TealWithOpacity  focus:ring-color-darkTeal`}>
+				<div className='flex justify-center items-center gap-5'>
+					{icon && (
+						<span className='left-0'>
+							<img src={icon} height='20' width='20' alt='google' />
+						</span>
+					)}
+					<span className='ease-out duration-300 hover:tracking-wide text-base'>
+						{label}
+					</span>
 				</div>
-			)}
-			<div className='ease-out duration-300 hover:tracking-wide text-sm'>
-				{label}
-			</div>
+			</button>
 		</div>
 	);
 };
