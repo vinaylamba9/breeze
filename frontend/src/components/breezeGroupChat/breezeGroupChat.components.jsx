@@ -3,14 +3,9 @@ import { MdInfo } from "react-icons/md";
 import BreezeStepper from "@Components/breezeStepper/breezeStepper.components";
 import StepperOne from "@Components/breezeStepper/stepperOne";
 import StepperTwo from "@Components/breezeStepper/stepperTwo";
+import CreateGroupProvider from "@Context/createGroupProvider";
 
 const BreezeGroupChat = ({ userList }) => {
-	const [formDetails, setFormDetails] = useState({
-		name: null,
-		bio: null,
-		groupImage: null,
-		users: null,
-	});
 	const [currentStep, setCurrentStep] = useState(1);
 
 	const handleNext = () => {
@@ -24,12 +19,7 @@ const BreezeGroupChat = ({ userList }) => {
 		{
 			label: "Step 1",
 			component: (
-				<StepperOne
-					setFormDetails={setFormDetails}
-					formDetails={formDetails}
-					handleNext={handleNext}
-					currentStep={currentStep}
-				/>
+				<StepperOne handleNext={handleNext} currentStep={currentStep} />
 			),
 		},
 		{
@@ -37,8 +27,6 @@ const BreezeGroupChat = ({ userList }) => {
 			component: (
 				<StepperTwo
 					userList={userList}
-					setFormDetails={setFormDetails}
-					formDetails={formDetails}
 					currentStep={currentStep}
 					handlePrev={handlePrev}
 				/>
@@ -60,7 +48,9 @@ const BreezeGroupChat = ({ userList }) => {
 						<span>Click on users to create chat.</span>
 					</div>
 				</div>
-				<BreezeStepper stepperList={stepperMenu} currentStep={currentStep} />
+				<CreateGroupProvider>
+					<BreezeStepper stepperList={stepperMenu} currentStep={currentStep} />
+				</CreateGroupProvider>
 			</div>
 		</>
 	);

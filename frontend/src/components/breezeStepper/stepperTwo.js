@@ -1,5 +1,5 @@
 import { BiSearch } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,18 +7,14 @@ import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezePills from "@Components/breezePills/breezePills.components";
 import BreezeButton from "@Components/breezeButton/breezeButton.components";
-const StepperTwo = ({
-	userList,
-	setFormDetails,
-	formDetails,
-	currentStep,
-	handlePrev,
-}) => {
+import { useCreateGroupState } from "@Context/createGroupProvider";
+const StepperTwo = ({ userList, handlePrev }) => {
 	const [selectedUser, setSelectedUser] = useState([]);
-
+	const { formDetails, setFormDetails } = useCreateGroupState();
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		setError,
 		watch,
 		formState: { errors },
@@ -34,11 +30,27 @@ const StepperTwo = ({
 				progressStyle: { background: "var(--danger-color)" },
 			});
 		}
-		setSelectedUser([...selectedUser, user]);
+		const userToSelect = [...selectedUser, user];
+		setSelectedUser(userToSelect);
+		setFormDetails({
+			...formDetails,
+			users: userToSelect,
+		});
 	};
+
 	const onRemoveSelectedUser = (user) => {
-		setSelectedUser(selectedUser?.filter((item) => item?._id !== user?._id));
+		const removedUser = selectedUser?.filter((item) => item?._id !== user?._id);
+		setSelectedUser(removedUser);
+		setFormDetails({
+			...formDetails,
+			users: removedUser,
+		});
 	};
+
+	useEffect(() => {
+		setSelectedUser(formDetails?.users);
+	}, [formDetails]);
+
 	return (
 		<>
 			<ToastContainer />
@@ -109,12 +121,14 @@ const StepperTwo = ({
 						textColor={`var(--text-color-purity)`}
 						onClickHandler={handlePrev}
 					/>
-					<BreezeButton
-						label={"Create group "}
-						backgroundColor={`var(--color-darkTeal)`}
-						textColor={`var(--text-color-purity)`}
-						// onClickHandler={handlePrev}
-					/>
+					{selectedUser?.length > 0 && (
+						<BreezeButton
+							label={"Create group "}
+							backgroundColor={`var(--color-darkTeal)`}
+							textColor={`var(--text-color-purity)`}
+							onClickHandler={() => console.log(formDetails, "-formDetails")}
+						/>
+					)}
 				</div>
 			</div>
 		</>

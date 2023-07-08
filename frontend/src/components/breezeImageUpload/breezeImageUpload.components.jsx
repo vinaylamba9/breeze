@@ -6,11 +6,12 @@ import { MdInfo } from "react-icons/md";
 import { InputType } from "@Constants/application";
 import BreezeButton from "@Components/breezeButton/breezeButton.components";
 import { MiscAPI } from "@API/misc/misc.API";
+import { useCreateGroupState } from "@Context/createGroupProvider";
 
-const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
+const BreezeImageUpload = ({ setGroupImageURL }) => {
 	const uploadedImageRef = useRef(null);
 	const [imagePreview, setImagePreview] = useState(null);
-
+	const { formDetails, setFormDetails } = useCreateGroupState();
 	const handleImageChange = useCallback(
 		async (e) => {
 			const selectedFile = e.target.files[0];
@@ -27,6 +28,7 @@ const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
 				data.append("cloud_name", process.env.REACT_APP_CLOUDNAME);
 				reader.onload = () => {
 					setImagePreview(reader.result);
+					setFormDetails({ ...formDetails, profileImage: reader?.result });
 				};
 				reader.readAsDataURL(selectedFile);
 				const response = await MiscAPI.uploadImage(data);
@@ -56,19 +58,21 @@ const BreezeImageUpload = ({ setGroupImageURL, groupImageURL }) => {
 				});
 			}
 		},
-		[setGroupImageURL]
+		[formDetails, setFormDetails, setGroupImageURL]
 	);
 
 	const removeImageHandler = () => {
+		setFormDetails({ ...formDetails, profileImage: null });
 		setImagePreview(null);
 	};
 
 	useEffect(() => {
+		setImagePreview(formDetails?.profileImage);
 		return () => {
 			// Clean up the image preview when the component is unmounted
 			setImagePreview(null);
 		};
-	}, []);
+	}, [formDetails]);
 	return (
 		<Fragment>
 			<ToastContainer />
