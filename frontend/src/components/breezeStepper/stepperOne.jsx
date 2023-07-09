@@ -37,6 +37,7 @@ const StepperOne = ({ handleNext }) => {
 		setValue("groupName", formDetails?.name);
 		setValue("groupBio", formDetails?.bio);
 	}, [setValue, formDetails]);
+
 	return (
 		<div className='mt-5 w-60% mx-auto'>
 			<BreezeImageUpload setGroupImageURL={setGroupImageURL} />
@@ -58,6 +59,9 @@ const StepperOne = ({ handleNext }) => {
 						validationSchema={{
 							required: "Please enter group name .",
 						}}
+						onChangeHandler={(e) => {
+							setFormDetails({ ...formDetails, name: e.target.value });
+						}}
 						placeholder='Group name'
 						required
 						iconStyle={"cursor-pointer absolute right-60"}
@@ -76,6 +80,9 @@ const StepperOne = ({ handleNext }) => {
 								}}
 							/>
 						}
+						onChangeHandler={(e) => {
+							setFormDetails({ ...formDetails, bio: e.target.value });
+						}}
 						placeholder='Group bio'
 						iconStyle={"cursor-pointer absolute right-60"}
 					/>

@@ -8,9 +8,23 @@ import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezePills from "@Components/breezePills/breezePills.components";
 import BreezeButton from "@Components/breezeButton/breezeButton.components";
 import { useCreateGroupState } from "@Context/createGroupProvider";
-const StepperTwo = ({ userList, handlePrev }) => {
+import { ChatDAO } from "@/modules/chat/core/chatDAO";
+import { HTTPStatusCode } from "@Constants/network";
+import { useChatState } from "@Context/chatProvider";
+const StepperTwo = ({ handlePrev, closeModal }) => {
 	const [selectedUser, setSelectedUser] = useState([]);
 	const { formDetails, setFormDetails } = useCreateGroupState();
+	const {
+		user,
+		setUser,
+		selectedChat,
+		setSelectedChat,
+		chats,
+		setChats,
+		userList,
+		setUserList,
+	} = useChatState();
+
 	const {
 		register,
 		handleSubmit,
@@ -47,6 +61,21 @@ const StepperTwo = ({ userList, handlePrev }) => {
 		});
 	};
 
+	const onCreateGroupHandler = async () => {
+		delete formDetails?.profileImage;
+		const response = await ChatDAO.createGroupChatDAO(formDetails);
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			setChats([response?.responseBody, ...chats]);
+			setFormDetails({
+				name: null,
+				bio: null,
+				groupImage: null,
+				users: [],
+				profileImage: null,
+			});
+			closeModal();
+		}
+	};
 	useEffect(() => {
 		setSelectedUser(formDetails?.users);
 	}, [formDetails]);
@@ -114,7 +143,7 @@ const StepperTwo = ({ userList, handlePrev }) => {
 						})}
 					</div>
 				</div>
-				<div className='flex items-center justify-center mb-5 '>
+				<div className='flex items-center justify-center  '>
 					<BreezeButton
 						label={"Previous step"}
 						backgroundColor={`var(--color-darkTeal)`}
@@ -126,7 +155,7 @@ const StepperTwo = ({ userList, handlePrev }) => {
 							label={"Create group "}
 							backgroundColor={`var(--color-darkTeal)`}
 							textColor={`var(--text-color-purity)`}
-							onClickHandler={() => console.log(formDetails, "-formDetails")}
+							onClickHandler={onCreateGroupHandler}
 						/>
 					)}
 				</div>

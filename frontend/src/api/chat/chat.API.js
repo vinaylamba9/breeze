@@ -38,4 +38,21 @@ export const ChatAPI = {
 			return errorDebug(error, "ChatAPI.createChat()");
 		}
 	},
+	createGroupChat: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.POST +
+			ChatType.CREATE_GROUP_CHAT;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+		try {
+			let response = await httpCall.sendPostRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.createChat()");
+		}
+	},
 };

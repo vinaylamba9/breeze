@@ -26,14 +26,15 @@ const BreezeImageUpload = ({ setGroupImageURL }) => {
 				data?.append("file", selectedFile);
 				data.append("upload_preset", process.env.REACT_APP_NAME);
 				data.append("cloud_name", process.env.REACT_APP_CLOUDNAME);
+
 				reader.onload = () => {
-					setImagePreview(reader.result);
+					setImagePreview(reader?.result);
 					setFormDetails({ ...formDetails, profileImage: reader?.result });
 				};
 				reader.readAsDataURL(selectedFile);
 				const response = await MiscAPI.uploadImage(data);
 				setGroupImageURL(response?.responseBody?.url);
-				return toast.success("Image uploaded successfully.", {
+				toast.success("Image uploaded successfully.", {
 					transition: Slide,
 					icon: "🚀",
 					style: {

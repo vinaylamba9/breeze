@@ -5,7 +5,7 @@ import StepperOne from "@Components/breezeStepper/stepperOne";
 import StepperTwo from "@Components/breezeStepper/stepperTwo";
 import CreateGroupProvider from "@Context/createGroupProvider";
 
-const BreezeGroupChat = ({ userList }) => {
+const BreezeGroupChat = ({ closeModal }) => {
 	const [currentStep, setCurrentStep] = useState(1);
 
 	const handleNext = () => {
@@ -26,9 +26,9 @@ const BreezeGroupChat = ({ userList }) => {
 			label: "Step 2",
 			component: (
 				<StepperTwo
-					userList={userList}
 					currentStep={currentStep}
 					handlePrev={handlePrev}
+					closeModal={closeModal}
 				/>
 			),
 		},

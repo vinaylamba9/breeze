@@ -61,4 +61,34 @@ export const ChatDAO = {
 			return errorDebug(error, "ChatDAO.fetchChatDAO()");
 		}
 	},
+	createGroupChatDAO: async function (groupChatDetails) {
+		try {
+			const createGroupChatResponse = await ChatAPI.createGroupChat(
+				groupChatDetails
+			);
+			if (createGroupChatResponse) {
+				const statusCode = createGroupChatResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = createGroupChatResponse.responseBody?.data;
+					return {
+						statusCode: statusCode,
+						responseBody: tempResult,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return createGroupChatResponse;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return createGroupChatResponse;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "ChatDAO.createGroupChatDAO()");
+		}
+	},
 };
