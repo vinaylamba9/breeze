@@ -202,6 +202,7 @@ const ChatScreen = () => {
 											return (
 												<div key={`tile_item_${index}`}>
 													<BreezeTile
+														onClickHandler={() => setSelectedChat(item)}
 														title={
 															item?.isGroupChat
 																? item?.chatName
@@ -241,10 +242,14 @@ const ChatScreen = () => {
 							style={{
 								minHeight: "80vh",
 							}}>
-							<BreezeChatBox
-								fetchAgain={fetchAgain}
-								setFetchAgain={setFetchAgain}
-							/>
+							{!selectedChat ? (
+								<ChatNotFound />
+							) : (
+								<BreezeChatBox
+									fetchAgain={fetchAgain}
+									setFetchAgain={setFetchAgain}
+								/>
+							)}
 							{/* <div
 								className='my-2'
 								style={{

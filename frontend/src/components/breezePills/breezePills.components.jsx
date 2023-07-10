@@ -1,12 +1,12 @@
 import useAvatarColorGenerator from "@Shared/hooks/useAvatarColorGenerator";
 
 const BreezePills = ({ title, onRemove }) => {
-	const [hexColor, textColor] = useAvatarColorGenerator("Default");
+	const [hexColor, textColor] = useAvatarColorGenerator(title || "Default");
 
 	return (
 		<span
 			style={{
-				backgroundColor: "#005459",
+				backgroundColor: hexColor,
 				color: textColor || "white",
 			}}
 			id='badge-dismiss-default'
@@ -18,7 +18,7 @@ const BreezePills = ({ title, onRemove }) => {
 				}}
 				onClick={onRemove}
 				type='button'
-				className={`inline-flex items-center p-1 ml-2 text-sm  bg-color-darkTeal  rounded-sm  hover:text-blue-900 `}
+				className={`inline-flex items-center p-1 ml-2 text-sm  ${hexColor}  rounded-sm  hover:text-blue-900 `}
 				data-dismiss-target='#badge-dismiss-default'
 				aria-label='Remove'>
 				<svg
