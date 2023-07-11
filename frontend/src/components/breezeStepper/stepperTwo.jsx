@@ -11,6 +11,7 @@ import { useCreateGroupState } from "@Context/createGroupProvider";
 import { ChatDAO } from "@/modules/chat/core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { useChatState } from "@Context/chatProvider";
+
 const StepperTwo = ({ handlePrev, closeModal }) => {
 	const [selectedUser, setSelectedUser] = useState([]);
 	const { formDetails, setFormDetails } = useCreateGroupState();

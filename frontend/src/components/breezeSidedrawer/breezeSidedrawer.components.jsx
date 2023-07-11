@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { IoClose } from "react-icons/io5";
-
+import { IoClose, IoArrowBackOutline } from "react-icons/io5";
+import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 const BreezeSideDrawer = ({
 	children,
 	isOpen,
@@ -10,7 +10,8 @@ const BreezeSideDrawer = ({
 }) => {
 	const sideDrawerRef = useRef();
 	const [showContent, setShowContent] = useState(false);
-
+	const { selectUserFromGroup, setSelectUserFromGroup } =
+		useSelectUserFomGroupState();
 	useEffect(() => {
 		const handleSideDrawerClick = (event) => {
 			if (!sideDrawerRef?.current?.contains(event?.target)) onClose();
@@ -55,15 +56,37 @@ const BreezeSideDrawer = ({
 					borderTopLeftRadius: position === "right-0" && "1rem",
 					borderBottomLeftRadius: position === "right-0" && "1rem",
 				}}>
-				<div className='right cursor-pointer absolute right-5 top-4'>
-					<IoClose
-						style={{
-							color: `var(--background-color-dark)`,
-							fontSize: `var(--fontsize-trim)`,
-						}}
-						onClick={onClose}
-					/>
-				</div>
+				{selectUserFromGroup ? (
+					<div
+						className={`${
+							position === "left-0" ? "right" : "left"
+						} cursor-pointer absolute ${
+							position === "left-0" ? "right-5" : "left-5"
+						} top-4`}>
+						<IoArrowBackOutline
+							style={{
+								color: `var(--background-color-dark)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+							onClick={() => setSelectUserFromGroup(null)}
+						/>
+					</div>
+				) : (
+					<div
+						className={`${
+							position === "left-0" ? "right" : "left"
+						} cursor-pointer absolute ${
+							position === "left-0" ? "right-5" : "left-5"
+						} top-4`}>
+						<IoClose
+							style={{
+								color: `var(--background-color-dark)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+							onClick={onClose}
+						/>
+					</div>
+				)}
 				{showContent && <div className='animate-fadeIn p-4 '>{children}</div>}
 			</div>
 			<section
