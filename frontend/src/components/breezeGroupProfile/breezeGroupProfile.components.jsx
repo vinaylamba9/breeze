@@ -120,7 +120,11 @@ const BreezeGroupProfile = () => {
 											return (
 												<div key={`tile_item_${index}`}>
 													<BreezeTile
-														onClickHandler={() => onFilterUserFromGroup(item)}
+														onClickHandler={
+															user?.userId !== item?._id
+																? () => onFilterUserFromGroup(item)
+																: null
+														}
 														title={item?.name}
 														msg={item?.bio} // TODO:- FIXES BASED ON MSG || BIO
 														isActive={true}

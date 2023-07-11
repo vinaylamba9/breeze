@@ -16,6 +16,7 @@ const BreezeProfile = ({ onClose }) => {
 	} = useChatState();
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
+
 	return selectUserFromGroup ? (
 		<>
 			<div className=' text-fontsize-glossy font-medium pl-2 relative -mt-0.5 left-10 '>
@@ -71,8 +72,8 @@ const BreezeProfile = ({ onClose }) => {
 							<div
 								className='mt-5 items-center justify-center flex flex-col cursor-pointer'
 								onClick={() => {
+									onClose?.();
 									setSelectedChat(selectUserFromGroup);
-									onClose();
 								}}>
 								<p className='text-color-darkTeal'>Go to chat</p>
 								<div>
