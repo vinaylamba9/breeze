@@ -224,7 +224,7 @@ const BreezeGroupProfile = ({
 									</div>
 								</div>
 							) : (
-								<div className='flex flex-col items-start justify-start border w-80% py-3 mx-auto cursor-pointer'>
+								<div className='flex flex-col items-start justify-start  w-80% py-3 mx-auto cursor-pointer'>
 									<p className='text-fontsize-virgin tracking-wide'>About</p>
 									<p className='text-color-darkTeal'>
 										{selectedChat?.isGroupChat
