@@ -72,7 +72,7 @@ const BreezeProfile = ({ onClose }) => {
 							<div
 								className='mt-5 items-center justify-center flex flex-col cursor-pointer'
 								onClick={() => {
-									onClose?.();
+									onClose();
 									setSelectedChat(selectUserFromGroup);
 								}}>
 								<p className='text-color-darkTeal'>Go to chat</p>

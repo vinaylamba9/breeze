@@ -18,6 +18,7 @@ const BreezeGroupProfile = ({
 	setSelectedChatProfile,
 	fetchAgain,
 	setFetchAgain,
+	onClose,
 }) => {
 	const {
 		register,
@@ -111,7 +112,7 @@ const BreezeGroupProfile = ({
 	return (
 		<div>
 			{selectUserFromGroup ? (
-				<BreezeProfile />
+				<BreezeProfile onClose={() => setSelectedChatProfile(false)} />
 			) : (
 				<>
 					<div className=' text-fontsize-glossy font-medium pl-2 relative -mt-0.5 left-10 '>
