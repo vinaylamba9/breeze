@@ -60,7 +60,11 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 						onClose={() => setSelectedChatProfile(false)}
 						children={
 							selectedChat?.isGroupChat ? (
-								<BreezeGroupProfile />
+								<BreezeGroupProfile
+									setSelectedChatProfile={setSelectedChatProfile}
+									fetchAgain={fetchAgain}
+									setFetchAgain={setFetchAgain}
+								/>
 							) : (
 								<BreezeProfile
 									onClose={() => setSelectedChatProfile?.(false)}

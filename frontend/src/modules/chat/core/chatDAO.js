@@ -91,4 +91,64 @@ export const ChatDAO = {
 			return errorDebug(error, "ChatDAO.createGroupChatDAO()");
 		}
 	},
+	renameGroupChatDAO: async function (groupChatDetails) {
+		try {
+			const renameGroupChatResponse = await ChatAPI.renameGroupChat(
+				groupChatDetails
+			);
+			if (renameGroupChatResponse) {
+				const statusCode = renameGroupChatResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = renameGroupChatResponse.responseBody?.data;
+					return {
+						statusCode: statusCode,
+						responseBody: tempResult,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return renameGroupChatResponse;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return renameGroupChatResponse;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "ChatDAO.renameGroupChatDAO()");
+		}
+	},
+	renameGroupChatBioDAO: async function (groupChatDetails) {
+		try {
+			const renameGroupChatBioResponse = await ChatAPI.renameGroupChatBio(
+				groupChatDetails
+			);
+			if (renameGroupChatBioResponse) {
+				const statusCode = renameGroupChatBioResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = renameGroupChatBioResponse.responseBody?.data;
+					return {
+						statusCode: statusCode,
+						responseBody: tempResult,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return renameGroupChatBioResponse;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return renameGroupChatBioResponse;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "ChatDAO.renameGroupChatBioDAO()");
+		}
+	},
 };

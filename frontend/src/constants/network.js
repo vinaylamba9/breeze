@@ -28,6 +28,8 @@ export class ChatType {
 	static FETCH_CHAT = "/fetchChat";
 	static CREATE_CHAT = "/createChat";
 	static CREATE_GROUP_CHAT = "/createGroupChat";
+	static RENAME_GROUP_CHAT = "/renameGroupChat";
+	static RENAME_GROUP_CHAT_BIO = "/renameGroupChatBio";
 }
 
 export class HTTPStatusCode {

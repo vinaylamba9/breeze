@@ -23,7 +23,7 @@ import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.compone
 import { ChatDAO } from "../core/chatDAO";
 import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
-
+import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -131,17 +131,19 @@ const ChatScreen = () => {
 						</button>
 					</BreezeTooltip>
 					{isSidebar && (
-						<BreezeSideDrawer
-							isOpen={isSidebar}
-							onClose={closeSideBar}
-							children={
-								<BreezeSideDrawerBody
-									onModalOpen={openGroupModal}
-									onClose={closeSideBar}
-									onModalClose={closeGroupModal}
-								/>
-							}
-						/>
+						<SelectUserFromGroupProvider>
+							<BreezeSideDrawer
+								isOpen={isSidebar}
+								onClose={closeSideBar}
+								children={
+									<BreezeSideDrawerBody
+										onModalOpen={openGroupModal}
+										onClose={closeSideBar}
+										onModalClose={closeGroupModal}
+									/>
+								}
+							/>
+						</SelectUserFromGroupProvider>
 					)}
 				</div>
 				<div className='xs:w-20% sm:w-20% md:w-30% lg:w-50% xl:w-70% '>

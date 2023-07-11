@@ -1,12 +1,33 @@
 import { CHAT_UTILS } from "@/shared/utils/chat.utils";
 import { useChatState } from "@Context/chatProvider";
-import { MdBlock, MdReport, MdDelete } from "react-icons/md";
+import { IoIosExit } from "react-icons/io";
+import { MdReportProblem } from "react-icons/md";
+import { FiEdit3, FiCheck } from "react-icons/fi";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
+import { InputType } from "@Constants/application";
+import { ChatDAO } from "@/modules/chat/core/chatDAO";
+import { HTTPStatusCode } from "@/constants/network";
 
-const BreezeGroupProfile = () => {
+const BreezeGroupProfile = ({
+	setSelectedChatProfile,
+	fetchAgain,
+	setFetchAgain,
+}) => {
+	const {
+		register,
+		handleSubmit,
+		setError,
+		watch,
+		setValue,
+		formState: { errors },
+	} = useForm({});
+
 	const {
 		user,
 		setUser,
@@ -18,6 +39,8 @@ const BreezeGroupProfile = () => {
 		setUserList,
 	} = useChatState();
 
+	const [isEditGroupName, setEditGroupName] = useState(false);
+	const [isEditGroupBio, setEditGroupBio] = useState(false);
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
 	const onFilterUserFromGroup = (item) => {
@@ -30,6 +53,61 @@ const BreezeGroupProfile = () => {
 		setSelectUserFromGroup(response?.[0]);
 	};
 
+	const renameGroupNameHandler = useCallback(
+		async (d) => {
+			if (d?.editGroupName !== selectedChat?.chatName) {
+				const response = await ChatDAO.renameGroupChatDAO({
+					chatID: selectedChat?._id,
+					chatName: d?.editGroupName,
+				});
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					isEditGroupName && setEditGroupName(false);
+
+					setSelectedChat(response?.responseData);
+					setFetchAgain(!fetchAgain);
+				}
+			} else {
+				setEditGroupName(false);
+			}
+		},
+		[
+			selectedChat?.chatName,
+			selectedChat?._id,
+			isEditGroupName,
+			setSelectedChat,
+			setFetchAgain,
+			fetchAgain,
+		]
+	);
+	const renameGroupBioHandler = useCallback(
+		async (d) => {
+			if (d?.editGroupBio !== selectedChat?.bio) {
+				const response = await ChatDAO.renameGroupChatBioDAO({
+					chatID: selectedChat?._id,
+					bio: d?.editGroupBio,
+				});
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					isEditGroupBio && setEditGroupBio(false);
+					setSelectedChat(response?.responseData);
+					setFetchAgain(!fetchAgain);
+				}
+			} else {
+				setEditGroupBio(false);
+			}
+		},
+		[
+			selectedChat?.bio,
+			selectedChat?._id,
+			isEditGroupBio,
+			setSelectedChat,
+			setFetchAgain,
+			fetchAgain,
+		]
+	);
+	useEffect(() => {
+		setValue("editGroupName", selectedChat?.chatName);
+		setValue("editGroupBio", selectedChat?.bio);
+	}, [setValue, selectedChat?.chatName, selectedChat?.bio]);
 	return (
 		<div>
 			{selectUserFromGroup ? (
@@ -45,7 +123,7 @@ const BreezeGroupProfile = () => {
 							overflowY: "scroll",
 						}}>
 						<div className='w-100% flex flex-col items-center justify-center mt-5 '>
-							<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
+							<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 								<BreezeAvatar
 									title={
 										selectedChat?.isGroupChat
@@ -67,17 +145,57 @@ const BreezeGroupProfile = () => {
 									isForProfile={true}
 								/>
 
-								<div className='my-5'>
-									<h1 className='text-center uppercase  ease-out duration-300 hover:tracking-wider cursor-pointer '>
-										{selectedChat?.isGroupChat
-											? selectedChat?.chatName
-											: CHAT_UTILS?.getOtherSideUserName(
-													user,
-													selectedChat?.users
-											  )}
-									</h1>
+								<div className='my-5 w-90%'>
+									{isEditGroupName ? (
+										<div className=' flex items-center justify-start gap-5'>
+											<div className='w-90% '>
+												<BreezeInputField
+													type={InputType.EMAIL}
+													name='editGroupName'
+													register={register}
+													errors={errors}
+													validationSchema={{
+														required: "Please enter the name",
+													}}
+													placeholder='Enter group name'
+													required
+												/>
+											</div>
+											<div
+												className='cursor-pointer'
+												onClick={handleSubmit(renameGroupNameHandler)}>
+												<FiCheck
+													style={{
+														color: `var(--color-darkTeal)`,
+														fontSize: `var(--fontsize-pearl)`,
+													}}
+												/>
+											</div>
+										</div>
+									) : (
+										<div className='flex items-center justify-center gap-5'>
+											<div className='text-center uppercase  text-fontsize-pearl ease-out duration-300 hover:tracking-wider cursor-pointer '>
+												{selectedChat?.isGroupChat
+													? selectedChat?.chatName
+													: CHAT_UTILS?.getOtherSideUserName(
+															user,
+															selectedChat?.users
+													  )}
+											</div>
+											<div
+												className='cursor-pointer'
+												onClick={() => setEditGroupName(true)}>
+												<FiEdit3
+													style={{
+														color: `var(--color-darkTeal)`,
+														fontSize: `var(--fontsize-trim)`,
+													}}
+												/>
+											</div>
+										</div>
+									)}
 
-									<p className='mt-1 text-slate-400 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
+									<p className='mt-1 text-center text-slate-400 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
 										Group :{" "}
 										{selectedChat?.isGroupChat && selectedChat?.users?.length}{" "}
 										Members
@@ -85,18 +203,62 @@ const BreezeGroupProfile = () => {
 								</div>
 							</div>
 						</div>
-						<div className='w-100% flex flex-col items-center justify-center my-6 bg-white rounded-2xl'>
-							<div className=' w-90% py-3 mx-auto cursor-pointer'>
-								<p className='text-fontsize-virgin tracking-wide'>About</p>
-								<p className='text-color-darkTeal'>
-									{selectedChat?.isGroupChat
-										? selectedChat?.bio
-										: CHAT_UTILS?.getOtherSideProfileBio(
-												user,
-												selectedChat?.users
-										  )}
-								</p>
-							</div>
+						<div className='w-100% flex items-start justify-center my-6 bg-white rounded-2xl'>
+							{isEditGroupBio ? (
+								<div className=' w-100% '>
+									<div className='w-100% mx-auto  p-3'>
+										<p className='text-fontsize-virgin tracking-wide px-3'>
+											About
+										</p>
+										<BreezeInputField
+											type={InputType.EMAIL}
+											name='editGroupBio'
+											register={register}
+											errors={errors}
+											validationSchema={{
+												required: "Please enter the bio",
+											}}
+											placeholder='Enter bio'
+											required
+										/>
+									</div>
+								</div>
+							) : (
+								<div className='flex flex-col items-start justify-start border w-80% py-3 mx-auto cursor-pointer'>
+									<p className='text-fontsize-virgin tracking-wide'>About</p>
+									<p className='text-color-darkTeal'>
+										{selectedChat?.isGroupChat
+											? selectedChat?.bio
+											: CHAT_UTILS?.getOtherSideProfileBio(
+													user,
+													selectedChat?.users
+											  )}
+									</p>
+								</div>
+							)}
+							{isEditGroupBio ? (
+								<div
+									className='cursor-pointer pt-3 pr-5'
+									onClick={handleSubmit(renameGroupBioHandler)}>
+									<FiCheck
+										style={{
+											color: `var(--color-darkTeal)`,
+											fontSize: `var(--fontsize-pearl)`,
+										}}
+									/>
+								</div>
+							) : (
+								<div
+									className='cursor-pointer pt-3 pr-5'
+									onClick={() => setEditGroupBio(true)}>
+									<FiEdit3
+										style={{
+											color: `var(--color-darkTeal)`,
+											fontSize: `var(--fontsize-trim)`,
+										}}
+									/>
+								</div>
+							)}
 						</div>
 						<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
 							<div className=' w-90% py-3 mx-auto cursor-pointer'>
@@ -147,56 +309,30 @@ const BreezeGroupProfile = () => {
 							</div>
 						</div>
 						<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
-							<div className='w-100% flex flex-col justify-center items-center  py-3'>
+							<div className=' w-100% flex flex-col justify-center items-center  py-3'>
 								<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-									<MdReport
+									<IoIosExit
 										style={{
 											color: `var(--danger-color)`,
 											fontSize: `var(--fontsize-trim)`,
 										}}
 									/>
 									<p className='text-danger-color text-fontsize-brittle'>
-										Block{" "}
-										{selectedChat?.isGroupChat
-											? selectedChat?.chatName
-											: CHAT_UTILS?.getOtherSideUserName(
-													user,
-													selectedChat?.users
-											  )}
+										Exit Group
 									</p>
 								</div>
 							</div>
 							<hr />
 							<div className=' w-100% flex flex-col justify-center items-center  py-3'>
 								<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-									<MdBlock
+									<MdReportProblem
 										style={{
 											color: `var(--danger-color)`,
 											fontSize: `var(--fontsize-trim)`,
 										}}
 									/>
 									<p className='text-danger-color text-fontsize-brittle'>
-										Report{" "}
-										{selectedChat?.isGroupChat
-											? selectedChat?.chatName
-											: CHAT_UTILS?.getOtherSideUserName(
-													user,
-													selectedChat?.users
-											  )}
-									</p>
-								</div>
-							</div>
-							<hr />
-							<div className=' w-100% flex flex-col justify-center items-center  py-3'>
-								<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-									<MdDelete
-										style={{
-											color: `var(--danger-color)`,
-											fontSize: `var(--fontsize-trim)`,
-										}}
-									/>
-									<p className='text-danger-color text-fontsize-brittle'>
-										Clear chat
+										Report Group
 									</p>
 								</div>
 							</div>

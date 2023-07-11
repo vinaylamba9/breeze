@@ -96,6 +96,10 @@ export class profileMenuType {
 	static LOGOUT = "LOGOUT";
 }
 Object.freeze(profileMenuType);
+export class InputFieldStyleType {
+	static UNDERLINE = "UNDERLINE";
+	static BOX = "BOX";
+}
 export const profileDropdown = [
 	{
 		id: 0,

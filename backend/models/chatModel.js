@@ -33,6 +33,7 @@ const chatModel = mongoose.Schema(
 		bio: {
 			type: String,
 			default: "Hey! Let's Breeze.",
+			trim: true,
 		},
 	},
 	{

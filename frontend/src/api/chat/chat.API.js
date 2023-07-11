@@ -35,7 +35,7 @@ export const ChatAPI = {
 			let response = await httpCall.sendGetRequest();
 			return response;
 		} catch (error) {
-			return errorDebug(error, "ChatAPI.createChat()");
+			return errorDebug(error, "ChatAPI.fetchChat()");
 		}
 	},
 	createGroupChat: async function (groupData) {
@@ -52,7 +52,41 @@ export const ChatAPI = {
 			let response = await httpCall.sendPostRequest();
 			return response;
 		} catch (error) {
-			return errorDebug(error, "ChatAPI.createChat()");
+			return errorDebug(error, "ChatAPI.createGroupChat()");
+		}
+	},
+	renameGroupChat: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.PUT +
+			ChatType.RENAME_GROUP_CHAT;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.renameGroupChat()");
+		}
+	},
+	renameGroupChatBio: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.PUT +
+			ChatType.RENAME_GROUP_CHAT_BIO;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.renameGroupChatBio()");
 		}
 	},
 };

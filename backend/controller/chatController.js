@@ -195,7 +195,53 @@ const chatController = {
 				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
 					const updatedChat = await CHAT_DB_UTILS.renameGroupChat(
 						req.body.chatID,
-						req.body.chatName
+						req.body.chatName || req.body.bio
+					);
+
+					if (!updatedChat) {
+						responseStatusCode = HTTPStatusCode.NOT_FOUND;
+						responseMessage = HTTPStatusCode.NOT_FOUND;
+						responseData = "GROUP NOT FOUND.";
+					} else {
+						responseStatusCode = HTTPStatusCode.OK;
+						responseMessage = HTTPStatusCode.OK;
+						responseData = updatedChat;
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.NOT_FOUND;
+					responseMessage = HTTPStatusCode.NOT_FOUND;
+					responseData = "GROUP NOT FOUND.";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	/**
+	 * @Function renameGroupBio()
+	 * @param {*} req
+	 * @param {*} res
+	 * @returns Rename a Group Chat Bio
+	 */
+	renameGroupBio: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseData = errors;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+			} else {
+				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
+					const updatedChat = await CHAT_DB_UTILS.renameGroupChatBio(
+						req.body.chatID,
+						req.body.bio
 					);
 
 					if (!updatedChat) {

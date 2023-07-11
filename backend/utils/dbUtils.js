@@ -206,6 +206,23 @@ const CHAT_DB_UTILS = {
 			return { msg: error, status: "NOT_FOUND" };
 		}
 	},
+	renameGroupChatBio: async function (chatID, bio) {
+		try {
+			let dbResponse = await chatModel
+				.findByIdAndUpdate(chatID, { bio }, { new: true })
+				.populate(
+					"users",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				)
+				.populate(
+					"groupAdmin",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
 	addUserToGroup: async function (chatID, userID) {
 		try {
 			let dbResponse = await chatModel

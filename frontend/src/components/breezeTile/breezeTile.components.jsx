@@ -9,7 +9,7 @@ const BreezeTile = ({
 	isGrouped,
 	isActive,
 	msg,
-
+	isAdmin,
 	isNotification,
 	onClickHandler,
 	styleClass,
