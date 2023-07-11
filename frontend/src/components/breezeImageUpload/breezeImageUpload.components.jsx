@@ -33,7 +33,8 @@ const BreezeImageUpload = ({ setGroupImageURL }) => {
 				};
 				reader.readAsDataURL(selectedFile);
 				const response = await MiscAPI.uploadImage(data);
-				setGroupImageURL(response?.responseBody?.url);
+
+				setGroupImageURL(response?.responseBody?.secure_url);
 				toast.success("Image uploaded successfully.", {
 					transition: Slide,
 					icon: "🚀",

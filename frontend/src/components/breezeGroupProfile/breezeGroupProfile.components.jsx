@@ -11,8 +11,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
 import { InputType } from "@Constants/application";
-import { ChatDAO } from "@/modules/chat/core/chatDAO";
-import { HTTPStatusCode } from "@/constants/network";
+import { ChatDAO } from "@Modules/chat/core/chatDAO";
+import { HTTPStatusCode } from "@Constants/network";
 
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
@@ -137,11 +137,12 @@ const BreezeGroupProfile = ({
 									isActive={true}
 									isGrouped={selectedChat?.isGroupChat}
 									profileImage={
-										!selectedChat?.isGroupChat &&
-										CHAT_UTILS?.getOtherSideProfileImage(
-											user,
-											selectedChat?.users
-										)
+										selectedChat?.isGroupChat
+											? selectedChat?.groupImage
+											: CHAT_UTILS?.getOtherSideProfileImage(
+													user,
+													selectedChat?.users
+											  )
 									}
 									isForProfile={true}
 								/>

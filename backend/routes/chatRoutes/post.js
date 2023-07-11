@@ -23,7 +23,7 @@ router.post(
 		check("users")
 			.notEmpty()
 			.withMessage("Users are required for group creation")
-			.isLength({ min: 2 })
+			.isLength({ min: 1 })
 			.withMessage("Group must contain minimun 2 members."),
 		userAuth.isLoggedIn,
 	],

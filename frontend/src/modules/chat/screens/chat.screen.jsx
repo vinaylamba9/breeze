@@ -217,11 +217,12 @@ const ChatScreen = () => {
 														isActive={true}
 														isGrouped={item?.isGroupChat}
 														profileImage={
-															!item?.isGroupChat &&
-															CHAT_UTILS?.getOtherSideProfileImage(
-																user,
-																item?.users
-															)
+															item?.isGroupChat
+																? item?.groupImage
+																: CHAT_UTILS?.getOtherSideProfileImage(
+																		user,
+																		item?.users
+																  )
 														}
 														isNotification={false}
 													/>

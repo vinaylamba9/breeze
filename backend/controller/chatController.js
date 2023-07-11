@@ -135,7 +135,7 @@ const chatController = {
 				responseData = errors;
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
-				if (req.body.users && req.body.users?.length < 2) {
+				if (req.body.users && req.body.users?.length < 1) {
 					responseStatusCode = HTTPStatusCode.BAD_REQUEST;
 					responseData = {
 						errors: [
@@ -155,6 +155,7 @@ const chatController = {
 						users: groupInclusiveLoggedInUser,
 						isGroupChat: true,
 						groupAdmin: req.user.userId,
+						groupImage: req.body.groupImage,
 					});
 
 					// Fetching Chat from DB and sending it back to user

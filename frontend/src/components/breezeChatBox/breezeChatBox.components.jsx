@@ -39,8 +39,12 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 							isActive={true}
 							isGrouped={selectedChat?.isGroupChat}
 							profileImage={
-								!selectedChat?.isGroupChat &&
-								CHAT_UTILS?.getOtherSideProfileImage(user, selectedChat?.users)
+								selectedChat?.isGroupChat
+									? selectedChat?.groupImage
+									: CHAT_UTILS?.getOtherSideProfileImage(
+											user,
+											selectedChat?.users
+									  )
 							}
 							onClickHandler={() => setSelectedChatProfile(true)}
 						/>

@@ -41,28 +41,26 @@ const BreezeAvatar = ({
 					)}
 				</>
 			) : (
-				<>
-					<div
-						className={
-							!!profileImage
-								? `rounded-full p-1 `
-								: `p-1  h-40 w-40 relative flex justify-center items-center rounded-full  text-xl uppercase`
-						}
-						style={{
-							backgroundColor: hexColor,
-							color: textColor,
-						}}>
-						{!!profileImage ? (
-							<img
-								className='h-36 w-36 rounded-full'
-								src={profileImage}
-								alt='profile'
-							/>
-						) : (
-							initials
-						)}
-					</div>
-				</>
+				<div
+					className={
+						!!profileImage
+							? `rounded-full p-1 `
+							: `p-1 h-40 w-40 relative border-2 border-color-darkTeal flex justify-center items-center rounded-full  text-xl uppercase`
+					}
+					style={{
+						backgroundColor: hexColor,
+						color: textColor,
+					}}>
+					{!!profileImage ? (
+						<img
+							className='w-36 h-36  rounded-full'
+							src={profileImage}
+							alt='profile'
+						/>
+					) : (
+						<div className='text-2xl'>{initials}</div>
+					)}
+				</div>
 			)}
 		</div>
 	);

@@ -13,6 +13,9 @@ const chatModel = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		groupImage: {
+			type: String,
+		},
 		users: [
 			{
 				type: SchemaTypes.ObjectId,
@@ -26,9 +29,6 @@ const chatModel = mongoose.Schema(
 		groupAdmin: {
 			type: SchemaTypes.ObjectId,
 			ref: "User",
-		},
-		groupImage: {
-			type: String,
 		},
 		bio: {
 			type: String,
