@@ -57,7 +57,7 @@ const StepperTwo = ({
 	}, [setUserList]);
 
 	const onSelectUsersHandler = useCallback(
-		(user, index) => {
+		(user) => {
 			if (selectedUser?.findIndex((item) => item?._id === user?._id) !== -1) {
 				return toast.error("Users already selected.", {
 					transition: Slide,
@@ -104,7 +104,6 @@ const StepperTwo = ({
 				});
 			}
 			const userToSelect = [...selectedUser, alreadyExistingUser];
-			console.log(userToSelect, "-userToSelect");
 			const newUser = [...newUsersToAdd, alreadyExistingUser];
 			setSelectedUser(userToSelect);
 			setNewUsersToAdd(newUser);
@@ -146,6 +145,17 @@ const StepperTwo = ({
 		setSelectedChat(response?.responseBody);
 		setFetchAgain(!fetchAgain);
 	};
+
+	const onRemoveUserHandler = useCallback(
+		async (item) => {
+			const response = await ChatDAO.removeUserFromGroupDAO({
+				chatID: selectedChat?._id,
+				userID: item?._id,
+			});
+			console.log(response);
+		},
+		[selectedChat?._id]
+	);
 	useEffect(() => {
 		setSelectedUser(formDetails?.users);
 	}, [formDetails]);
@@ -200,7 +210,14 @@ const StepperTwo = ({
 						<div key={item} className='flex-shrink-0'>
 							<BreezePills
 								title={item?.name}
-								onRemove={() => onRemoveSelectedUser(item)}
+								onRemove={
+									isEditGroup
+										? async () => {
+												onRemoveSelectedUser(item);
+												await onRemoveUserHandler(item);
+										  }
+										: () => onRemoveSelectedUser(item)
+								}
 							/>
 						</div>
 					))}

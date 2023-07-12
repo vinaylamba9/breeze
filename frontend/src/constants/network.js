@@ -31,6 +31,7 @@ export class ChatType {
 	static RENAME_GROUP_CHAT = "/renameGroupChat";
 	static RENAME_GROUP_CHAT_BIO = "/renameGroupChatBio";
 	static ADD_MULTIPLE_USERS_TO_GROUP = "/addMultipleToGroup";
+	static REMOVE_FROM_GROUP = "/removeFromGroup";
 }
 
 export class HTTPStatusCode {
