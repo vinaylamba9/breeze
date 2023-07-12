@@ -152,9 +152,12 @@ const StepperTwo = ({
 				chatID: selectedChat?._id,
 				userID: item?._id,
 			});
-			console.log(response);
+			if (response?.statusCode === HTTPStatusCode.OK)
+				setSelectedUser(
+					selectedUser?.filter((chat) => chat?._id !== item?._id)
+				);
 		},
-		[selectedChat?._id]
+		[selectedChat?._id, selectedUser]
 	);
 	useEffect(() => {
 		setSelectedUser(formDetails?.users);

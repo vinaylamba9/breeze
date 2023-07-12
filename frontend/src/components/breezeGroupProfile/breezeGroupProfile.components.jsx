@@ -110,6 +110,21 @@ const BreezeGroupProfile = ({
 			fetchAgain,
 		]
 	);
+
+	const leaveGroupHandler = useCallback(async () => {
+		const response = await ChatDAO.removeUserFromGroupDAO({
+			chatID: selectedChat?._id,
+			userID: user?.userId,
+		});
+		if (response?.statusCode === HTTPStatusCode.OK) setSelectedChat();
+		setFetchAgain(!fetchAgain);
+	}, [
+		fetchAgain,
+		selectedChat?._id,
+		setFetchAgain,
+		setSelectedChat,
+		user?.userId,
+	]);
 	useEffect(() => {
 		setValue("editGroupName", selectedChat?.chatName);
 		setValue("editGroupBio", selectedChat?.bio);
@@ -333,7 +348,9 @@ const BreezeGroupProfile = ({
 						</div>
 						<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
 							<div className=' w-100% flex flex-col justify-center items-center  py-3'>
-								<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
+								<div
+									className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'
+									onClick={leaveGroupHandler}>
 									<IoIosExit
 										style={{
 											color: `var(--danger-color)`,
