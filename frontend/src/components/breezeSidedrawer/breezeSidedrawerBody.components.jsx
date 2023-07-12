@@ -16,7 +16,6 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const { setSelectedChat, user, userList, setUserList, chats, setChats } =
 		useChatState();
 
-	// const [userList, setUserList] = useState([]);
 	const [isLoading, setLoading] = useState(false);
 	const {
 		register,
@@ -34,7 +33,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 			setUserList(response?.responseBody || []);
 			setLoading(false);
 		}
-	}, []);
+	}, [setUserList]);
 
 	/** Creating Chat from Sidebar  */
 	const onCreateChatHandler = useCallback(

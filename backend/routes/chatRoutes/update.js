@@ -44,6 +44,14 @@ router.put(
 	chatController.addToGroup
 );
 router.put(
+	"/addMultipleToGroup",
+	[
+		userAuth.isLoggedIn,
+		check("chatID").notEmpty().withMessage("Chat ID is required."),
+	],
+	chatController.addMultipleUsersToGroup
+);
+router.put(
 	"/removeFromGroup",
 	[
 		userAuth.isLoggedIn,

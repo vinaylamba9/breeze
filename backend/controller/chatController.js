@@ -294,6 +294,8 @@ const chatController = {
 						req.body.userID
 					);
 
+					console.log(userAlreadyExistInGroup, "-userAlrasdyExistingGropup");
+
 					if (userAlreadyExistInGroup && userAlreadyExistInGroup?.length > 0) {
 						responseStatusCode = HTTPStatusCode.FORBIDDEN;
 						responseMessage = HTTPStatusCode.FORBIDDEN;
@@ -317,6 +319,100 @@ const chatController = {
 					responseStatusCode = HTTPStatusCode.NOT_FOUND;
 					responseMessage = HTTPStatusCode.NOT_FOUND;
 					responseData = "GROUP NOT FOUND.";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	/**
+	 * @Function addMultipleUsersToGroup()
+	 * @param {*} req
+	 * @param {*} res
+	 * @returns Add a user to group
+	 */
+	addMultipleUsersToGroup: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseData = errors;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+			} else {
+				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
+					const response = await CHAT_DB_UTILS?.addMultipleUserInGroup(
+						req.body?.chatID,
+						req?.body?.users
+					);
+
+					if (!response) {
+						responseStatusCode = HTTPStatusCode.NOT_FOUND;
+						responseMessage = HTTPStatusCode.NOT_FOUND;
+						responseData = "GROUP NOT FOUND.";
+					} else {
+						responseStatusCode = HTTPStatusCode.OK;
+						responseMessage = HTTPStatusCode.OK;
+						responseData = response;
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+					responseMessage = HTTPStatusCode.BAD_REQUEST;
+					responseData = "CHAT_ID IS NOT VALID";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	/**
+	 * @Function addRemoveMultipleUsersToGroup()
+	 * @param {*} req
+	 * @param {*} res
+	 * @returns Add a user to group
+	 */
+	addRemoveMultipleUsersToGroup: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseData = errors;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+			} else {
+				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
+					const response = await CHAT_DB_UTILS?.addRemoveMultipleUserInGroup(
+						req.body?.chatID,
+						req?.body?.users
+					);
+
+					if (!response) {
+						responseStatusCode = HTTPStatusCode.NOT_FOUND;
+						responseMessage = HTTPStatusCode.NOT_FOUND;
+						responseData = "GROUP NOT FOUND.";
+					} else {
+						responseStatusCode = HTTPStatusCode.OK;
+						responseMessage = HTTPStatusCode.OK;
+						responseData = response;
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+					responseMessage = HTTPStatusCode.BAD_REQUEST;
+					responseData = "CHAT_ID IS NOT VALID";
 				}
 			}
 		} catch (error) {

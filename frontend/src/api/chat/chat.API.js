@@ -72,6 +72,23 @@ export const ChatAPI = {
 			return errorDebug(error, "ChatAPI.renameGroupChat()");
 		}
 	},
+	addMultipleUsersToGroup: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.PUT +
+			ChatType.ADD_MULTIPLE_USERS_TO_GROUP;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.addMultipleUsersToGroup()");
+		}
+	},
 	renameGroupChatBio: async function (groupData) {
 		let httpCall = new BreezeHttpService();
 		httpCall.URL =

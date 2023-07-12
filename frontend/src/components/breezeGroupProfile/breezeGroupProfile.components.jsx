@@ -3,6 +3,7 @@ import { useChatState } from "@Context/chatProvider";
 import { IoIosExit } from "react-icons/io";
 import { MdReportProblem } from "react-icons/md";
 import { FiEdit3, FiCheck } from "react-icons/fi";
+import { BsPlusLg } from "react-icons/bs";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
@@ -13,6 +14,9 @@ import BreezeInputField from "@Components/breezeInputFields/breezeInputField.com
 import { InputType } from "@Constants/application";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { HTTPStatusCode } from "@Constants/network";
+import BreezeModal from "@Components/breezeModal/breezeModal.components";
+import StepperTwo from "@Components/breezeStepper/stepperTwo";
+import CreateGroupProvider from "@Context/createGroupProvider";
 
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
@@ -42,6 +46,7 @@ const BreezeGroupProfile = ({
 
 	const [isEditGroupName, setEditGroupName] = useState(false);
 	const [isEditGroupBio, setEditGroupBio] = useState(false);
+	const [addMembersModal, setAddMembersModal] = useState(false);
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
 	const onFilterUserFromGroup = (item) => {
@@ -144,7 +149,6 @@ const BreezeGroupProfile = ({
 													selectedChat?.users
 											  )
 									}
-									isForProfile={true}
 								/>
 
 								<div className='my-5 w-90%'>
@@ -263,10 +267,27 @@ const BreezeGroupProfile = ({
 							)}
 						</div>
 						<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
-							<div className=' w-90% py-3 mx-auto cursor-pointer'>
-								<p className='text-color-darkTeal'>
+							<div className=' w-90% py-3 mx-auto cursor-pointer flex justify-between items-center'>
+								<p className='text-color-darkTeal text-lg'>
 									{selectedChat?.users?.length} Members
 								</p>
+								{selectedChat?.groupAdmin?._id === user?.userId && (
+									<div
+										className=' bg-color-cyan shadow-md rounded-md px-5 py-2.5 flex items-center justify-start gap-2'
+										onClick={() => setAddMembersModal(true)}>
+										<span>
+											<BsPlusLg
+												style={{
+													cursor: "pointer",
+													color: `var(--background-color-light)`,
+													fontSize: `var(--fontsize-trim)`,
+													fontWeight: 900,
+												}}
+											/>
+										</span>
+										<span className='text-white'>Add Members</span>
+									</div>
+								)}
 							</div>
 							<div className='w-100%'>
 								<div
@@ -341,6 +362,29 @@ const BreezeGroupProfile = ({
 						</div>
 					</div>
 				</>
+			)}
+			{addMembersModal && (
+				<BreezeModal
+					width={"w-40%"}
+					isModalOpen={addMembersModal}
+					closeModal={() => setAddMembersModal(false)}
+					backgroundColor={"bg-white"}
+					key={"add_members_to_group"}
+					isDismissible={true}
+					children={
+						<CreateGroupProvider>
+							<StepperTwo
+								fetchAgain={fetchAgain}
+								setFetchAgain={setFetchAgain}
+								existingUser={selectedChat?.users?.filter(
+									(item) => user?.userId !== item?._id
+								)}
+								isEditGroup={true}
+								closeModal={() => setAddMembersModal(false)}
+							/>
+						</CreateGroupProvider>
+					}
+				/>
 			)}
 		</div>
 	);

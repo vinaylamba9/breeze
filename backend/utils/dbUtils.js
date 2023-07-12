@@ -152,11 +152,11 @@ const CHAT_DB_UTILS = {
 				})
 				.populate(
 					"users",
-					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+					"-password -accountInItFrom  -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				)
 				.populate(
 					"groupAdmin",
-					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+					"-password -accountInItFrom  -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				)
 				.populate("recentMessage")
 				.sort({ updatedAt: -1 });
@@ -235,6 +235,53 @@ const CHAT_DB_UTILS = {
 					"groupAdmin",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				);
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	addMultipleUserInGroup: async function (chatID, userList) {
+		try {
+			let dbResponse = await chatModel
+				.findOneAndUpdate(
+					{ _id: chatID },
+					{
+						$addToSet: {
+							users: { $each: userList, $nin: { $each: userList } },
+						},
+					},
+					{ upsert: true, new: true }
+				)
+				.populate(
+					"users",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				)
+				.populate(
+					"groupAdmin",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	addRemoveMultipleUserInGroup: async function (chatID, userList) {
+		try {
+			let dbResponse = await chatModel
+				.updateOne(
+					{ _id: chatID },
+					{ $addToSet: { users: { $each: userList } } }
+				)
+				.populate(
+					"users",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				)
+				.populate(
+					"groupAdmin",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+			console.log(dbResponse, "-dbResponse");
 			return dbResponse;
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };

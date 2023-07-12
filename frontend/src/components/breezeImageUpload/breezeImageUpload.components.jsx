@@ -8,7 +8,7 @@ import BreezeButton from "@Components/breezeButton/breezeButton.components";
 import { MiscAPI } from "@API/misc/misc.API";
 import { useCreateGroupState } from "@Context/createGroupProvider";
 
-const BreezeImageUpload = ({ setGroupImageURL }) => {
+const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 	const uploadedImageRef = useRef(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const { formDetails, setFormDetails } = useCreateGroupState();
