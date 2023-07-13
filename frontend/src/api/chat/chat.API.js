@@ -123,4 +123,21 @@ export const ChatAPI = {
 			return errorDebug(error, "ChatAPI.removeUserFromGroup()");
 		}
 	},
+	updateGroupChatImage: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.PUT +
+			ChatType.UPDATE_GROUP_CHAT_IMAGE;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.updateGroupChatImage()");
+		}
+	},
 };

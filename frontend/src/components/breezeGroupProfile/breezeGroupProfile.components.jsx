@@ -17,6 +17,7 @@ import { HTTPStatusCode } from "@Constants/network";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import StepperTwo from "@Components/breezeStepper/stepperTwo";
 import CreateGroupProvider from "@Context/createGroupProvider";
+import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAvatar.components";
 
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
@@ -145,7 +146,10 @@ const BreezeGroupProfile = ({
 						}}>
 						<div className='w-100% flex flex-col items-center justify-center mt-5 '>
 							<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
-								<BreezeAvatar
+								<BreezeProfileAvatar
+									setSelectedChatProfile={setSelectedChatProfile}
+									fetchAgain={fetchAgain}
+									setFetchAgain={setFetchAgain}
 									title={
 										selectedChat?.isGroupChat
 											? selectedChat?.chatName
@@ -154,8 +158,6 @@ const BreezeGroupProfile = ({
 													selectedChat?.users
 											  )
 									}
-									isActive={true}
-									isGrouped={selectedChat?.isGroupChat}
 									profileImage={
 										selectedChat?.isGroupChat
 											? selectedChat?.groupImage

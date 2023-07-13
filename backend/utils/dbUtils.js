@@ -223,6 +223,23 @@ const CHAT_DB_UTILS = {
 			return { msg: error, status: "NOT_FOUND" };
 		}
 	},
+	updateGroupImage: async function (chatID, groupImage) {
+		try {
+			let dbResponse = await chatModel
+				.findByIdAndUpdate(chatID, { groupImage }, { new: true })
+				.populate(
+					"users",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				)
+				.populate(
+					"groupAdmin",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
 	addUserToGroup: async function (chatID, userID) {
 		try {
 			let dbResponse = await chatModel

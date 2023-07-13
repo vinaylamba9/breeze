@@ -31,6 +31,7 @@ const BreezeProfile = ({ onClose }) => {
 				<div className='w-100% flex flex-col items-center justify-center my-6'>
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
 						<BreezeAvatar
+							isProfileMode={true}
 							title={
 								selectUserFromGroup?.isGroupChat
 									? selectUserFromGroup?.chatName
@@ -48,7 +49,7 @@ const BreezeProfile = ({ onClose }) => {
 									selectUserFromGroup?.users
 								)
 							}
-							isForProfile={true}
+
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 
@@ -172,6 +173,7 @@ const BreezeProfile = ({ onClose }) => {
 				<div className='w-100% flex flex-col items-center justify-center my-6'>
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
 						<BreezeAvatar
+							isProfileMode={true}
 							title={
 								selectedChat?.isGroupChat
 									? selectedChat?.chatName
@@ -183,7 +185,7 @@ const BreezeProfile = ({ onClose }) => {
 								!selectedChat?.isGroupChat &&
 								CHAT_UTILS?.getOtherSideProfileImage(user, selectedChat?.users)
 							}
-							isForProfile={true}
+
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 

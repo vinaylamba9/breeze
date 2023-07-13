@@ -7,11 +7,37 @@ const BreezeAvatar = ({
 	isGrouped,
 	isActive,
 	title,
+	isProfileMode,
 }) => {
 	const [hexColor, textColor] = useAvatarColorGenerator(title);
 	const initials = useAvatarInitials(title);
 
-	return (
+	return isProfileMode ? (
+		<div className='relative cursor-pointer' onClick={onClickHandler}>
+			<>
+				<div
+					className={
+						!!profileImage
+							? `rounded-full p-1 `
+							: `p-1  h-36 w-36 relative flex justify-center items-center rounded-full  text-xl uppercase`
+					}
+					style={{
+						backgroundColor: hexColor,
+						color: textColor,
+					}}>
+					{!!profileImage ? (
+						<img
+							className='h-32 w-32 rounded-full'
+							src={profileImage}
+							alt='profile'
+						/>
+					) : (
+						initials
+					)}
+				</div>
+			</>
+		</div>
+	) : (
 		<div className='relative cursor-pointer' onClick={onClickHandler}>
 			<>
 				<div

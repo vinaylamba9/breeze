@@ -34,6 +34,15 @@ router.put(
 	chatController.renameGroupBio
 );
 router.put(
+	"/updateGroupChatImage",
+	[
+		userAuth.isLoggedIn,
+		// check("groupImage").notEmpty().withMessage("Group bio is required.").trim(),
+		check("chatID").notEmpty().withMessage("Chat ID is required."),
+	],
+	chatController.updateGroupChatImage
+);
+router.put(
 	"/addToGroup",
 	[
 		userAuth.isLoggedIn,
