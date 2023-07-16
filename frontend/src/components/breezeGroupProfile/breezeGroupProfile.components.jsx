@@ -1,15 +1,14 @@
-import { CHAT_UTILS } from "@/shared/utils/chat.utils";
-import { useChatState } from "@Context/chatProvider";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { IoIosExit } from "react-icons/io";
 import { MdReportProblem } from "react-icons/md";
 import { FiEdit3, FiCheck } from "react-icons/fi";
 import { BsPlusLg } from "react-icons/bs";
-import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
+import { CHAT_UTILS } from "@Shared/utils/chat.utils";
+import { useChatState } from "@Context/chatProvider";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
 import { InputType } from "@Constants/application";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
@@ -69,7 +68,6 @@ const BreezeGroupProfile = ({
 				});
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					isEditGroupName && setEditGroupName(false);
-
 					setSelectedChat(response?.responseData);
 					setFetchAgain(!fetchAgain);
 				}
