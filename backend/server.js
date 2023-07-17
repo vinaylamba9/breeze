@@ -51,7 +51,7 @@ app.get("/api/chat/:id", (req, res) => {
 // app.use("/", index)              // INDEX ROUTES
 app.use("/api/user", users); // USERS ROUTES
 app.use("/api/chat", chats); // CHATS ROUTES
-app.use("/api/message"); // MESSAGE ROUTES
+// app.use("/api/message"); // MESSAGE ROUTES
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //TODO:-
