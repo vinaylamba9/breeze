@@ -23,8 +23,8 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 
 	return (
 		<>
-			<div className='w-100%'>
-				<div className='w-98%  rounded-2xl border mx-auto flex items-center justify-between py-2'>
+			<div className='w-100% bg-color-TealWithOpacity'>
+				<div className='w-98%  rounded-2xl  mx-auto flex items-center justify-between py-2'>
 					<div
 						className='flex items-center gap-2 justify-start cursor-pointer'
 						onClick={() => {

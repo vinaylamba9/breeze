@@ -316,9 +316,9 @@ const userController = {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				(responseStatusCode = HTTPStatusCode.BAD_REQUEST),
-					(responseMessage = HTTPStatusCode.BAD_REQUEST),
-					(responseMessage = errors);
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+				responseMessage = errors;
 			} else {
 				const dbResponse = await DB_UTILS.findByEmail(req.body.email);
 				if (dbResponse) {
@@ -343,26 +343,69 @@ const userController = {
 							if (updatedUserResponse) {
 								responseStatusCode = HTTPStatusCode.OK;
 								responseMessage = HTTPStatusCode.OK;
-								responseData = "Your password has been updated.";
+								responseData = "YOUR PASSWORD HAS BEEN UPDATED.";
 							} else {
 								responseStatusCode = HTTPStatusCode.FORBIDDEN;
 								responseMessage = HTTPStatusCode.FORBIDDEN;
-								responseData = "Unable to update password.";
+								responseData = "UNABLE TO UPDATE PASSWORD.";
 							}
 						} else {
 							responseStatusCode = HTTPStatusCode.BAD_REQUEST;
-							responseMessage = HTTPStatusCode.BAD_REQUEST;
-							responseData = "OTP is not matched.";
+							responseData = "OTP IS NOT MATCHED.";
 						}
 					} else {
 						responseStatusCode = HTTPStatusCode.FORBIDDEN;
 						responseMessage = HTTPStatusCode.FORBIDDEN;
-						responseData = "OTP is expired.Please use the new OTP.";
+						responseData = "OTP IS EXPIRED. PLEASE USE THE UPDATED ONE.";
 					}
 				} else {
 					responseStatusCode = HTTPStatusCode.NOT_FOUND;
 					responseMessage = HTTPStatusCode.NOT_FOUND;
-					responseData = "User not found.";
+					responseData = "USER NOT FOUND.";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	updateUserDetails: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+				responseMessage = errors;
+			} else {
+				const isUserExist = await DB_UTILS.findByID(req.body.userID);
+
+				if (isUserExist) {
+					let updatedUserResponse = await DB_UTILS.updateOneById(
+						userModel,
+						req.body.userID,
+						req.body.updatedData
+					);
+					console.log(updatedUserResponse, "-updatedUserResponse");
+					updatedUserResponse = BASIC_UTILS.cleanUserModel(updatedUserResponse);
+					if (updatedUserResponse) {
+						responseStatusCode = HTTPStatusCode.OK;
+						responseMessage = HTTPStatusCode.OK;
+						responseData = "USER DETAILS HAS BEEN UPDATED.";
+					} else {
+						responseStatusCode = HTTPStatusCode.FORBIDDEN;
+						responseMessage = HTTPStatusCode.FORBIDDEN;
+						responseData = "UNABLE TO UPDATE THE DETAILS.";
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.NOT_FOUND;
+					responseMessage = HTTPStatusCode.NOT_FOUND;
+					responseData = "USER NOT FOUND.";
 				}
 			}
 		} catch (error) {

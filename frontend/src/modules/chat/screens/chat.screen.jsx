@@ -24,6 +24,7 @@ import { ChatDAO } from "../core/chatDAO";
 import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
+import BreezeSelfProfile from "@/components/breezeSelfProfile/breezeSelfProfile.components";
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -49,6 +50,7 @@ const ChatScreen = () => {
 	} = useForm({});
 
 	const [isSidebar, setSidebar] = useState(false);
+	const [isProfile, setProfile] = useState(false);
 
 	const openSideBar = () => {
 		setSidebar(true);
@@ -155,6 +157,9 @@ const ChatScreen = () => {
 									case profileMenuType.LOGOUT:
 										onLogoutHandler();
 										break;
+									case profileMenuType.PROFILE:
+										setProfile(true);
+										break;
 									default:
 										break;
 								}
@@ -183,18 +188,14 @@ const ChatScreen = () => {
 				{chats?.length === 0 ? (
 					<ChatNotFound isLoading={isLoading} />
 				) : (
-					<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  gap-2 py-2'>
+					<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  gap-5 py-2'>
 						<div className='xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30% '>
-							<div
-								className='bg-white px-2 rounded-2xl'
-								style={{
-									maxHeight: "80vh",
-								}}>
+							<div className='bg-white px-2 rounded-2xl'>
 								<div
 									className='my-2 rounded-2xl'
 									style={{
-										maxHeight: "78vh",
-										minHeight: "78vh",
+										maxHeight: "80vh",
+										minHeight: "80vh",
 										overflowY: "scroll",
 									}}>
 									{isLoading ? (
@@ -240,26 +241,23 @@ const ChatScreen = () => {
 								</div>
 							</div>
 						</div>
-						<div
-							className='xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% bg-background-color-light px-2 rounded-2xl'
-							style={{
-								minHeight: "80vh",
-							}}>
-							{!selectedChat ? (
-								<ChatNotFound />
-							) : (
-								<BreezeChatBox
-									fetchAgain={fetchAgain}
-									setFetchAgain={setFetchAgain}
-								/>
-							)}
-							{/* <div
-								className='my-2'
+						<div className='xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '>
+							<div
+								className=' bg-white my-2 rounded-2xl'
 								style={{
-									maxHeight: "78vh",
-									minHeight: "78vh",
+									maxHeight: "80vh",
+									minHeight: "80vh",
 									overflowY: "scroll",
-								}}></div> */}
+								}}>
+								{!selectedChat ? (
+									<ChatNotFound />
+								) : (
+									<BreezeChatBox
+										fetchAgain={fetchAgain}
+										setFetchAgain={setFetchAgain}
+									/>
+								)}
+							</div>
 						</div>
 					</div>
 				)}
@@ -273,6 +271,23 @@ const ChatScreen = () => {
 					children={<BreezeGroupChat closeModal={closeGroupModal} />}
 					isDismissible={true}
 				/>
+			)}
+			{isProfile && (
+				<SelectUserFromGroupProvider>
+					<BreezeSideDrawer
+						backgroundColor='bg-color-slate'
+						isOpen={isProfile}
+						onClose={() => setProfile(false)}
+						position='right-0'
+						children={
+							<BreezeSelfProfile
+								fetchAgain={fetchAgain}
+								setFetchAgain={setFetchAgain}
+								onClose={() => setProfile(false)}
+							/>
+						}
+					/>
+				</SelectUserFromGroupProvider>
 			)}
 		</div>
 	);

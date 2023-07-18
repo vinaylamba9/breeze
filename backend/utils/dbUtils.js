@@ -15,6 +15,7 @@ const DB_UTILS = {
 				.findOne({
 					$or: [{ email: email }],
 				})
+				.select("-createdAt -updatedAt -otp -otpValidTill")
 				.exec();
 
 			return dbResponse;

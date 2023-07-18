@@ -135,7 +135,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 									title={item?.name}
 									imgBackgroundColor={item?.imgBackgroundColor}
 									msg={item?.msg}
-									isActive={item?.isActive}
+									isActive={true}
 									isGrouped={item?.isGrouped}
 									profileImage={item?.profileImage}
 									isNotification={item?.isNotification}
