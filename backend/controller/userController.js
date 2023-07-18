@@ -18,6 +18,7 @@ const { HTTPStatusCode } = require("../constants/network");
 
 /* ================ MODELS FILES  =================*/
 const userModel = require("../models/userModel");
+const { RegEx } = require("../constants/application");
 const {
 	TimeInMs,
 	OTPExpired,
@@ -383,24 +384,30 @@ const userController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 				responseMessage = errors;
 			} else {
-				const isUserExist = await DB_UTILS.findByID(req.body.userID);
-
-				if (isUserExist) {
-					let updatedUserResponse = await DB_UTILS.updateOneById(
-						userModel,
-						req.body.userID,
-						req.body.updatedData
-					);
-					console.log(updatedUserResponse, "-updatedUserResponse");
-					updatedUserResponse = BASIC_UTILS.cleanUserModel(updatedUserResponse);
-					if (updatedUserResponse) {
-						responseStatusCode = HTTPStatusCode.OK;
-						responseMessage = HTTPStatusCode.OK;
-						responseData = "USER DETAILS HAS BEEN UPDATED.";
+				if (req.body.userID.match(RegEx.OBJECT_ID)) {
+					const isUserExist = await DB_UTILS.findByID(req.body.userID);
+					if (isUserExist) {
+						let updatedUserResponse = await DB_UTILS.updateOneById(
+							userModel,
+							req.body.userID,
+							req.body.updatedData
+						);
+						console.log(updatedUserResponse, "-updatedUserResponse");
+						updatedUserResponse =
+							BASIC_UTILS.cleanUserModel(updatedUserResponse);
+						if (updatedUserResponse) {
+							responseStatusCode = HTTPStatusCode.OK;
+							responseMessage = HTTPStatusCode.OK;
+							responseData = "USER DETAILS HAS BEEN UPDATED.";
+						} else {
+							responseStatusCode = HTTPStatusCode.FORBIDDEN;
+							responseMessage = HTTPStatusCode.FORBIDDEN;
+							responseData = "UNABLE TO UPDATE THE DETAILS.";
+						}
 					} else {
-						responseStatusCode = HTTPStatusCode.FORBIDDEN;
-						responseMessage = HTTPStatusCode.FORBIDDEN;
-						responseData = "UNABLE TO UPDATE THE DETAILS.";
+						responseStatusCode = HTTPStatusCode.NOT_FOUND;
+						responseMessage = HTTPStatusCode.NOT_FOUND;
+						responseData = "USER NOT FOUND.";
 					}
 				} else {
 					responseStatusCode = HTTPStatusCode.NOT_FOUND;

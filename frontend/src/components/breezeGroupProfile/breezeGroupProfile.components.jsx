@@ -232,7 +232,7 @@ const BreezeGroupProfile = ({
 											About
 										</p>
 										<BreezeInputField
-											type={InputType.EMAIL}
+											type={InputType.TEXT}
 											name='editGroupBio'
 											register={register}
 											errors={errors}

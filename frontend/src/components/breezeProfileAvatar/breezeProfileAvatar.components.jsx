@@ -11,6 +11,7 @@ import useAvatarInitials from "@Shared/hooks/useAvatarInitials";
 import { ChatDAO } from "@/modules/chat/core/chatDAO";
 
 const BreezeProfileAvatar = ({
+	isIndividual,
 	profileImage,
 	setSelectedChatProfile,
 	title,
@@ -108,7 +109,12 @@ const BreezeProfileAvatar = ({
 			<ToastContainer />
 			<div className='w-full flex items-center flex-col justify-center'>
 				{imagePreview || profileImage ? (
-					<div className='h-36 w-36 border-2 border-color-darkTeal rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+					<div
+						style={{
+							backgroundColor: hexColor,
+							color: textColor,
+						}}
+						className='h-36 w-36  rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 						<img
 							src={imagePreview || profileImage}
 							id='photo'
@@ -127,7 +133,7 @@ const BreezeProfileAvatar = ({
 						/>
 						<label
 							htmlFor='uploadImage'
-							className='h-36 w-36 border-2 border-color-darkTeal rounded-full  cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+							className='h-36 w-36  rounded-full  cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 							<div
 								className={
 									!!profileImage
