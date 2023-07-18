@@ -20,7 +20,7 @@ const { HTTPStatusCode } = require("../../constants/network");
 const userController = require("../../controller/userController");
 
 router.put(
-	"/updateUserByUserID/:userID",
+	"/updateUserByUserID",
 	[
 		userAuth.isLoggedIn,
 		check("userID").notEmpty().withMessage("User_Id is required."),

@@ -70,6 +70,23 @@ export const userAPI = {
 			return errorDebug(error, "userAPI.updatePassword()");
 		}
 	},
+	updateUserDetails: async function (userData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.dataToSend = userData;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.USER +
+			MethodType.PUT +
+			UserType.UPDATE_USER_BY_USERID;
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "userAPI.updateUserDetails()");
+		}
+	},
 	getAllUsers: async function () {
 		let httpCall = new BreezeHttpService();
 		httpCall.URL =

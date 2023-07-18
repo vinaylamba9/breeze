@@ -3,11 +3,14 @@ import { FiEdit3, FiCheck } from "react-icons/fi";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useForm } from "react-hook-form";
 import { useChatState } from "@Context/chatProvider";
-import { MdBlock, MdReport, MdDelete, MdOutlineMail } from "react-icons/md";
+import { MdOutlineMail } from "react-icons/md";
 import { InputType } from "@Constants/application";
-import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
+
 import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAvatar.components";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
+import { userDAO } from "@/modules/onboarding/core/userDAO";
+import { HTTPStatusCode } from "@/constants/network";
+import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
 const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		register,
@@ -28,11 +31,47 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 		userList,
 		setUserList,
 	} = useChatState();
-	const { selectUserFromGroup, setSelectUserFromGroup } =
-		useSelectUserFomGroupState();
+
 	const [isEditProfileName, setEditProfileName] = useState(false);
 	const [isEditProfileBio, setEditProfileBio] = useState(false);
-	const renameGroupNameHandler = useCallback(async (d) => {}, []);
+	const renameProfileNameHandler = useCallback(
+		async (d) => {
+			if (d?.editProfileName !== user?.name) {
+				const response = await userDAO.updateUserDetailsDAO({
+					userID: user?.userId,
+					updatedData: {
+						name: d?.editProfileName,
+					},
+				});
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					isEditProfileName && setEditProfileName(false);
+					let userInfo = BreezeSessionManagement.getUserSession();
+					setUser(userInfo);
+				}
+			} else setEditProfileName(false);
+		},
+		[isEditProfileName, setUser, user?.name, user?.userId]
+	);
+	const renameProfileBioHandler = useCallback(
+		async (d) => {
+			if (d?.editProfileBio !== user?.bio) {
+				const response = await userDAO.updateUserDetailsDAO({
+					userID: user?.userId,
+					updatedData: {
+						bio: d?.editProfileBio,
+					},
+				});
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					isEditProfileBio && setEditProfileBio(false);
+					let userInfo = BreezeSessionManagement.getUserSession();
+					setUser(userInfo);
+				}
+			} else {
+				setEditProfileBio(false);
+			}
+		},
+		[isEditProfileBio, setUser, user?.bio, user?.userId]
+	);
 
 	useEffect(() => {
 		setValue("editProfileName", user?.name);
@@ -77,7 +116,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 									</div>
 									<div
 										className='cursor-pointer'
-										onClick={handleSubmit(renameGroupNameHandler)}>
+										onClick={handleSubmit(renameProfileNameHandler)}>
 										<FiCheck
 											style={{
 												color: `var(--color-darkTeal)`,
@@ -144,8 +183,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 					{isEditProfileBio ? (
 						<div
 							className='cursor-pointer pt-3 pr-5'
-							// onClick={handleSubmit(renameGroupBioHandler)}
-						>
+							onClick={handleSubmit(renameProfileBioHandler)}>
 							<FiCheck
 								style={{
 									color: `var(--color-darkTeal)`,

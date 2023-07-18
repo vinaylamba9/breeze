@@ -38,18 +38,13 @@ const BreezeProfileAvatar = ({
 				chatID: selectedChat?._id,
 				groupImage: url,
 			});
-			setSelectedChatProfile(true);
+
 			setSelectedChat(response?.responseData);
 			setFetchAgain(!fetchAgain);
 		},
-		[
-			fetchAgain,
-			selectedChat?._id,
-			setFetchAgain,
-			setSelectedChat,
-			setSelectedChatProfile,
-		]
+		[fetchAgain, selectedChat?._id, setFetchAgain, setSelectedChat]
 	);
+
 	const handleImageChange = useCallback(
 		async (e) => {
 			const selectedFile = e.target.files[0];

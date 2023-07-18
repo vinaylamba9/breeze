@@ -141,6 +141,50 @@ export const userDAO = {
 			return errorDebug(error, "userDAO.getAllUsersDAO()");
 		}
 	},
+	updateUserDetailsDAO: async function (userDetails) {
+		try {
+			const updatedUserResponse = await userAPI.updateUserDetails(userDetails);
+			if (updatedUserResponse) {
+				const statusCode = updatedUserResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = updatedUserResponse.responseBody?.data;
+
+					let _userAccount = new UserAccountModel({
+						userId: tempResult?._id,
+						name: tempResult?.name,
+						email: tempResult?.email,
+						profileImage: tempResult?.profileImage,
+						isVerified: tempResult?.isVerified,
+						accountInItFrom: tempResult?.accountInItFrom,
+						accountStatus: tempResult?.accountStatus,
+						token: tempResult?.token,
+						bio: tempResult?.bio,
+					});
+
+					await BreezeSessionManagement.deleteUserSession();
+					await BreezeSessionManagement.setUserSession(
+						JSON.stringify(_userAccount.toJSON())
+					);
+					return {
+						statusCode: statusCode,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return updatedUserResponse;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return updatedUserResponse;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "UserDAO.updateUserDetailsDAO()");
+		}
+	},
 	logoutDAO: async function () {
 		try {
 			let response = BreezeSessionManagement.deleteAllSession();

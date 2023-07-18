@@ -22,6 +22,7 @@ export class UserType {
 	static FORGOTPASSWORD = "/forgotpassword";
 	static UPDATEPASSWORD = "/updatepassword";
 	static GET_ALL_USERS = "/getall";
+	static UPDATE_USER_BY_USERID = "/updateUserByUserID";
 }
 
 export class ChatType {

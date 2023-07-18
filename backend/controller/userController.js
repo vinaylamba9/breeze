@@ -392,13 +392,12 @@ const userController = {
 							req.body.userID,
 							req.body.updatedData
 						);
-						console.log(updatedUserResponse, "-updatedUserResponse");
 						updatedUserResponse =
 							BASIC_UTILS.cleanUserModel(updatedUserResponse);
 						if (updatedUserResponse) {
 							responseStatusCode = HTTPStatusCode.OK;
 							responseMessage = HTTPStatusCode.OK;
-							responseData = "USER DETAILS HAS BEEN UPDATED.";
+							responseData = updatedUserResponse;
 						} else {
 							responseStatusCode = HTTPStatusCode.FORBIDDEN;
 							responseMessage = HTTPStatusCode.FORBIDDEN;
