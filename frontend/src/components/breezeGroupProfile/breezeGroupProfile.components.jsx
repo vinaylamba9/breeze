@@ -49,6 +49,7 @@ const BreezeGroupProfile = ({
 	const [addMembersModal, setAddMembersModal] = useState(false);
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
+
 	const onFilterUserFromGroup = (item) => {
 		const response = chats?.filter(
 			(chat) =>
@@ -58,7 +59,6 @@ const BreezeGroupProfile = ({
 		);
 		setSelectUserFromGroup(response?.[0]);
 	};
-
 	const renameGroupNameHandler = useCallback(
 		async (d) => {
 			if (d?.editGroupName !== selectedChat?.chatName) {
@@ -109,7 +109,6 @@ const BreezeGroupProfile = ({
 			fetchAgain,
 		]
 	);
-
 	const leaveGroupHandler = useCallback(async () => {
 		const response = await ChatDAO.removeUserFromGroupDAO({
 			chatID: selectedChat?._id,
@@ -124,6 +123,7 @@ const BreezeGroupProfile = ({
 		setSelectedChat,
 		user?.userId,
 	]);
+
 	useEffect(() => {
 		setValue("editGroupName", selectedChat?.chatName);
 		setValue("editGroupBio", selectedChat?.bio);
@@ -327,10 +327,12 @@ const BreezeGroupProfile = ({
 														}
 														title={item?.name}
 														msg={item?.bio} // TODO:- FIXES BASED ON MSG || BIO
-														isActive={true}
 														isGrouped={item?.isGroupChat}
 														profileImage={item?.profileImage}
 														isNotification={false}
+														isAdmin={
+															selectedChat?.groupAdmin?._id === item?._id
+														}
 													/>
 													<hr
 														style={{

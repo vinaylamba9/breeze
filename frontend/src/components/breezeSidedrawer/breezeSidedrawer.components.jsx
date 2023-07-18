@@ -34,14 +34,14 @@ const BreezeSideDrawer = ({
 		};
 	}, [isOpen]);
 
-	const drawerClasses = `fixed inset-y-0 ${position} z-50 w-30% ${backgroundColor} shadow-2xl    ${
+	const drawerClasses = ` mx-auto fixed inset-y-0 ${position} z-50 w-28% ${backgroundColor} shadow-2xl    ${
 		isOpen ? "animate-slideIn" : "animate-slideOut"
 	}`;
 
 	return (
 		<main
 			className={
-				"fixed z-20 backdrop-blur-md  inset-0 transform ease-in " +
+				"fixed z-20 backdrop-blur-md  inset-0 transform ease-in  " +
 				(isOpen
 					? "transition-opacity opacity-100 duration-500 translate-x-0"
 					: "transition-all opacity-0 translate-x-full")

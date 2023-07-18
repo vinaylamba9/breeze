@@ -11,6 +11,7 @@
 	--info-color: #12507d;
 	--muted-color: #f8f7f7;
 	--success-color: #28a745;
+	--admin-color: #afdaad;
 	--text-color-purity: #fff;
 	--straw-color: #fcadac;
 	--text-color-dark: #000;
@@ -47,7 +48,7 @@
 }
 
 * {
-	overflow: hidden;
+	/* overflow: hidden; */
 	word-wrap: break-word;
 	user-select: none;
 }

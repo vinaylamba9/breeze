@@ -13,17 +13,18 @@ const BreezeTile = ({
 	isNotification,
 	onClickHandler,
 	styleClass,
+	isLastTimeActive,
 }) => {
 	return (
 		<Fragment>
 			<div
 				onClick={onClickHandler}
-				className={`flex my-4 cursor-pointer 
+				className={`flex  my-4 cursor-pointer 
                     justify-start items-center ${styleClass}`}
 				style={{ maxHeight: "80px", overflowY: "auto" }}>
-				<div className=' m-auto w-95% flex items-center  '>
+				<div className=' m-auto w-95% flex items-center'>
 					<div
-						className='flex w-90% items-center justify-start
+						className='flex w-80% items-center justify-start 
                     gap-2 '>
 						<BreezeAvatar
 							profileImage={profileImage}
@@ -38,10 +39,17 @@ const BreezeTile = ({
 							</p>
 						</div>
 					</div>
-					<div className='grid grid-row-2 gap-1'>
-						<p className='font-black text-fontsize-small text-color-darkTeal'>
-							{moment().format("hh:mm")}
-						</p>
+					<div className='grid grid-row-2 gap-1 '>
+						{isAdmin && (
+							<div className='px-4 py-1 text-xs bg-color-admin rounded-2xl text-color-darkTeal font-medium ease-in-out duration-300 hover:tracking-wider'>
+								Admin
+							</div>
+						)}
+						{isLastTimeActive && (
+							<p className='font-black text-fontsize-small text-color-darkTeal'>
+								{moment().format("hh:mm")}
+							</p>
+						)}
 						{isNotification && (
 							<p className='text-fontsize-small font-black text-text-color-purity text-center bg-color-notified rounded-full'>
 								1

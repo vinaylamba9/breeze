@@ -14,17 +14,17 @@ const BreezeSearch = ({
 		<Fragment>
 			<div
 				className='flex items-center justify-start
-				bg-color-TealWithOpacity gap-2  
+				bg-color-TealWithOpacity gap-2  ring-2 ring-color-darkTeal
                     px-2 
                     rounded-3xl '>
 				<span className='ml-2'>{leadingIcon}</span>
 				<input
 					className={`  bg-color-TealWithOpacity
                             text-background-color-dark
-                            px-2 py-3 w-100%
+                            px-2 py-3 w-100% rounded-3xl 
 							ease-out duration-300 
 							outline-none border-none
-                            text-fontsize-brittle
+                            text-fontsize-brittle 
                             `}
 					type={InputType.TEXT}
 					name={name}

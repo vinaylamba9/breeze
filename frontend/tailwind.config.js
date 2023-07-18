@@ -45,6 +45,7 @@ module.exports = {
 				"color-cyan": "var(--color-cyan)",
 				"color-purple": "var(--color-purple)",
 				"color-pearl": "var(--color-pearl)",
+				"color-admin": "var(--admin-color)",
 			},
 
 			fontSize: {
@@ -77,6 +78,7 @@ module.exports = {
 				"10%": "10%",
 				"20%": "20%",
 				"25%": "25%",
+				"28%": "28%",
 				"30%": "30%",
 				"35%": "35%",
 				"40%": "40%",
@@ -217,12 +219,12 @@ module.exports = {
 						width: "0%",
 					},
 					to: {
-						width: "30%",
+						width: "28%",
 					},
 				},
 				slideOut: {
 					from: {
-						width: "30%",
+						width: "28%",
 					},
 					to: {
 						width: "0%",
