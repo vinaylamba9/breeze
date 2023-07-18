@@ -240,6 +240,16 @@ const CHAT_DB_UTILS = {
 			return { msg: error, status: "NOT_FOUND" };
 		}
 	},
+	updateLatestMessage: async function (chatID, message) {
+		try {
+			let dbResponse = await chatModel.findByIdAndUpdate(chatID, {
+				recentMessage: message,
+			});
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
 	addUserToGroup: async function (chatID, userID) {
 		try {
 			let dbResponse = await chatModel
@@ -298,7 +308,7 @@ const CHAT_DB_UTILS = {
 					"groupAdmin",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				);
-			console.log(dbResponse, "-dbResponse");
+
 			return dbResponse;
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };
@@ -316,6 +326,34 @@ const CHAT_DB_UTILS = {
 					"groupAdmin",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				);
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+};
+
+const MESSAGE_DB_UTILS = {
+	createMessage: async function (dataObject) {
+		try {
+			let dbResponse = await messageModel.create(dataObject);
+			dbResponse = await dbResponse.populate("sender", "name profileImage");
+			dbResponse = await dbResponse.populate("chat");
+			dbResponse = await userModel.populate(dbResponse, {
+				path: "chat.users",
+				select: "name email profileImage",
+			});
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	findMessageByChatID: async function (chatID) {
+		try {
+			let dbResponse = await messageModel
+				.find({ chat: chatID })
+				.populate("sender", "name email profileImage")
+				.populate("chat");
 			return dbResponse;
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };
@@ -404,4 +442,5 @@ module.exports = {
 	EMAIL_DB_UTILS,
 	MASTER_CONSTANTS_DB_UTILS,
 	CHAT_DB_UTILS,
+	MESSAGE_DB_UTILS,
 };

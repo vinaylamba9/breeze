@@ -25,6 +25,7 @@ const App = () => (
 					<Route exact key={path} element={component} path={path} />
 				))}
 			</Route>
+			{console.log(preOnboardingRoutes)}
 
 			<Route
 				path={BreezeRoutes.CHATROUTE}

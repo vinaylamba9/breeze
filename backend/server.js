@@ -17,6 +17,7 @@ const swaggerDocs = require("./swagger.json");
 const { DB_CONFIG } = require("./config/dbConfig");
 const users = require("./routes/userRoutes/index");
 const chats = require("./routes/chatRoutes/index");
+const message = require("./routes/messageRoutes/index");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -51,7 +52,7 @@ app.get("/api/chat/:id", (req, res) => {
 // app.use("/", index)              // INDEX ROUTES
 app.use("/api/user", users); // USERS ROUTES
 app.use("/api/chat", chats); // CHATS ROUTES
-// app.use("/api/message"); // MESSAGE ROUTES
+app.use("/api/message", message); // MESSAGE ROUTES
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //TODO:-
