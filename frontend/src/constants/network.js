@@ -9,6 +9,7 @@ export class NetworkInfo {
 export class APIType {
 	static USER = "/user";
 	static CHAT = "/chat";
+	static MESSAGES = "/message";
 }
 export class MethodType {
 	static GET = "/get";
@@ -34,6 +35,11 @@ export class ChatType {
 	static ADD_MULTIPLE_USERS_TO_GROUP = "/addMultipleToGroup";
 	static REMOVE_FROM_GROUP = "/removeFromGroup";
 	static UPDATE_GROUP_CHAT_IMAGE = "/updateGroupChatImage";
+}
+
+export class MessageType {
+	static CREATE_MSG = "/createMessage";
+	static GET_MSG_BY_CHATID = "/getMessageByChatID";
 }
 
 export class HTTPStatusCode {

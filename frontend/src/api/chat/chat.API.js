@@ -1,4 +1,4 @@
-import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import { APIType, ChatType, MethodType, NetworkInfo } from "@Constants/network";
 import { BreezeHttpService } from "@Shared/services/http.service";
 import { errorDebug } from "@Shared/utils/error.utils";

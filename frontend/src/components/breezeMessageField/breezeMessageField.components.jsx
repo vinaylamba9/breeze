@@ -1,10 +1,43 @@
+import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
+import { useCallback, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
 	MdOutlineEmojiEmotions,
 	MdOutlineKeyboardArrowUp,
 	MdOutlineAttachFile,
 } from "react-icons/md";
-const BreezeMessageFields = () => {
+import { useChatState } from "@Context/chatProvider";
+
+const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
+	const {
+		user,
+		setUser,
+		selectedChat,
+		setSelectedChat,
+		chats,
+		setChats,
+		userList,
+		setUserList,
+	} = useChatState();
+	const { register } = useForm({});
+
+	const messageBox = useRef(null);
+
+	const typingIndicatorHandler = () => {};
+	const sendMessageHandler = useCallback(
+		async (e) => {
+			if (!e?.shiftKey && e?.which === 13) {
+				const response = await MessageDAO.createMessageDAO({
+					content: e?.target?.innerText,
+					chatID: selectedChat?._id,
+				});
+				setNewMessages([...newMessages, response?.responseBody]);
+				console.log(response);
+			}
+		},
+		[newMessages, selectedChat?._id, setNewMessages]
+	);
 	return (
 		<div className='rounded-bl-2xl drop-shadow-md bg-color-TealWithOpacity py-2 rounded-br-2xl w-100% '>
 			<div className=' w-98% mx-auto flex justify-start items-start '>
@@ -25,14 +58,19 @@ const BreezeMessageFields = () => {
 					</BreezeTooltip>
 				</div>
 				<div
+					{...register("messageBox")}
+					ref={messageBox}
+					id='messageBox'
 					style={{
 						wordBreak: "break-word",
 						minHeight: "40px",
 						maxHeight: "70px",
 						userSelect: "text",
 					}}
+					onKeyDown={sendMessageHandler}
+					onChange={typingIndicatorHandler}
 					className='  bg-white text-md w-100%  rounded-2xl 
-		mx-auto px-4 py-1.5 overflow-y-auto'
+						mx-auto px-4 py-1.5 overflow-y-auto'
 					contentEditable
 					suppressContentEditableWarning
 					placeholder='Type a message'
