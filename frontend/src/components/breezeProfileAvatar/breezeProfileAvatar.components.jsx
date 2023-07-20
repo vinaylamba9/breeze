@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, Fragment, useCallback } from "react";
+import { useState, Fragment, useCallback } from "react";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useChatState } from "@Context/chatProvider";
@@ -8,7 +8,10 @@ import BreezeButton from "@Components/breezeButton/breezeButton.components";
 import { MiscAPI } from "@API/misc/misc.API";
 import useAvatarColorGenerator from "@Shared/hooks/useAvatarColorGenerator";
 import useAvatarInitials from "@Shared/hooks/useAvatarInitials";
-import { ChatDAO } from "@/modules/chat/core/chatDAO";
+import { ChatDAO } from "@Modules/chat/core/chatDAO";
+import { userDAO } from "@Modules/onboarding/core/userDAO";
+import { HTTPStatusCode } from "@Constants/network";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 
 const BreezeProfileAvatar = ({
 	isIndividual,
@@ -45,6 +48,22 @@ const BreezeProfileAvatar = ({
 		[fetchAgain, selectedChat?._id, setFetchAgain, setSelectedChat]
 	);
 
+	const onUpdatePersonalImageHandler = useCallback(
+		async (url) => {
+			const response = await userDAO.updateUserDetailsDAO({
+				userID: user?.userId,
+				updatedData: {
+					profileImage: url,
+				},
+			});
+			if (response?.statusCode === HTTPStatusCode.OK) {
+				let userInfo = BreezeSessionManagement.getUserSession();
+				setUser(userInfo);
+			}
+		},
+		[setUser, user?.userId]
+	);
+
 	const handleImageChange = useCallback(
 		async (e) => {
 			const selectedFile = e.target.files[0];
@@ -65,7 +84,9 @@ const BreezeProfileAvatar = ({
 				};
 				reader.readAsDataURL(selectedFile);
 				const response = await MiscAPI.uploadImage(data);
-				onUpdateGroupImageHandler(response?.responseBody?.secure_url);
+				isIndividual
+					? onUpdatePersonalImageHandler(response?.responseBody?.secure_url)
+					: onUpdateGroupImageHandler(response?.responseBody?.secure_url);
 
 				toast.success("Image uploaded successfully.", {
 					transition: Slide,
@@ -92,12 +113,14 @@ const BreezeProfileAvatar = ({
 				});
 			}
 		},
-		[onUpdateGroupImageHandler]
+		[isIndividual, onUpdateGroupImageHandler, onUpdatePersonalImageHandler]
 	);
-	const removeImageHandler = () => {
+	const removeImageHandler = useCallback(() => {
 		setImagePreview(null);
-		onUpdateGroupImageHandler("");
-	};
+		isIndividual
+			? onUpdatePersonalImageHandler("")
+			: onUpdateGroupImageHandler("");
+	}, [isIndividual, onUpdateGroupImageHandler, onUpdatePersonalImageHandler]);
 
 	return (
 		<Fragment>
@@ -162,7 +185,7 @@ const BreezeProfileAvatar = ({
 				{(imagePreview || profileImage) && (
 					<BreezeButton
 						width={"w-20%"}
-						buttonClass={"py-0 mt-2 mb-2"}
+						buttonClass={"py-1.5"}
 						label={"Remove Image"}
 						backgroundColor={`var(--color-darkTeal)`}
 						textColor={`var(--text-color-purity)`}

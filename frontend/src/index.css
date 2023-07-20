@@ -131,3 +131,7 @@ input[type="number"] {
 	color: #ffffff;
 	animation: pulse-fast 0.5s alternate infinite;
 }
+
+[contenteditable] {
+	outline: 0px solid transparent;
+}

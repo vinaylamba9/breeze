@@ -6,8 +6,8 @@ const BreezePills = ({ title, onRemove }) => {
 	return (
 		<span
 			style={{
-				backgroundColor: hexColor,
-				color: textColor || "white",
+				backgroundColor: `var(--color-cyan)`,
+				color: "balck",
 			}}
 			id='badge-dismiss-default'
 			className={`flex items-center px-4 py-2  text-sm font-medium rounded-2xl cursor-pointer `}>

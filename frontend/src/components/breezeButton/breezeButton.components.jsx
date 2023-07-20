@@ -25,7 +25,7 @@ const BreezeButton = ({
 				outline-none border-none
 				text-fontsize-brittle
 				focus:outline
-				focus:ring-2 focus:bg-color-TealWithOpacity  focus:ring-color-darkTeal`}>
+				focus:ring-2 focus:bg-color-TealWithOpacity  focus:ring-color-darkTeal ${buttonClass}	`}>
 				<div className='flex justify-center items-center gap-5'>
 					{icon && (
 						<span className='left-0'>

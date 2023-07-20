@@ -87,7 +87,7 @@ const ChatScreen = () => {
 	}, [onFetchChatHandler, fetchAgain]);
 
 	return (
-		<div className='mt-5'>
+		<div>
 			<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  py-2'>
 				<div className='xs:w-80% sm:w-80% md:w-70% lg:w-50% xl:w-30% flex items-center justify-between '>
 					<div className='w-70%'>
@@ -188,67 +188,59 @@ const ChatScreen = () => {
 				{chats?.length === 0 ? (
 					<ChatNotFound isLoading={isLoading} />
 				) : (
-					<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  gap-5 py-2'>
-						<div className='xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30% '>
-							<div className='bg-white px-2 rounded-2xl'>
-								<div
-									className='my-2 rounded-2xl'
-									style={{
-										maxHeight: "80vh",
-										minHeight: "80vh",
-										overflowY: "scroll",
-									}}>
-									{isLoading ? (
-										<BreezeTileSkeleton tileLength={7} />
-									) : (
-										chats?.map((item, index) => {
-											return (
-												<div key={`tile_item_${index}`}>
-													<BreezeTile
-														onClickHandler={() => setSelectedChat(item)}
-														title={
-															item?.isGroupChat
-																? item?.chatName
-																: CHAT_UTILS?.getOtherSideUserName(
-																		user,
-																		item?.users
-																  )
-														}
-														msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
-														isActive={true}
-														isGrouped={item?.isGroupChat}
-														profileImage={
-															item?.isGroupChat
-																? item?.groupImage
-																: CHAT_UTILS?.getOtherSideProfileImage(
-																		user,
-																		item?.users
-																  )
-														}
-														isNotification={false}
-													/>
-													<hr
-														style={{
-															width: "95%",
-															margin: "0 auto",
-															borderTop: "1px solid var(--muted-color)",
-														}}
-													/>
-												</div>
-											);
-										})
-									)}
-								</div>
-							</div>
-						</div>
-						<div className='xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '>
+					<div
+						className='  flex xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%'
+						style={{ height: "calc(100vh - 140px)" }}>
+						<div
+							className='flex w-100%  rounded-2xl  justify-between gap-5 items-center my-auto mx-auto'
+							style={{ height: "calc(100vh - 160px)" }}>
 							<div
-								className=' bg-white my-2 rounded-2xl'
-								style={{
-									maxHeight: "80vh",
-									minHeight: "80vh",
-									overflowY: "scroll",
-								}}>
+								className='bg-white rounded-2xl overflow-y-auto xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30%'
+								style={{ height: "calc(100vh - 170px)" }}>
+								{isLoading ? (
+									<BreezeTileSkeleton tileLength={7} />
+								) : (
+									chats?.map((item, index) => {
+										return (
+											<div key={`tile_item_${index}`}>
+												<BreezeTile
+													onClickHandler={() => setSelectedChat(item)}
+													title={
+														item?.isGroupChat
+															? item?.chatName
+															: CHAT_UTILS?.getOtherSideUserName(
+																	user,
+																	item?.users
+															  )
+													}
+													msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													isActive={true}
+													isGrouped={item?.isGroupChat}
+													profileImage={
+														item?.isGroupChat
+															? item?.groupImage
+															: CHAT_UTILS?.getOtherSideProfileImage(
+																	user,
+																	item?.users
+															  )
+													}
+													isNotification={false}
+												/>
+												<hr
+													style={{
+														width: "95%",
+														margin: "0 auto",
+														borderTop: "1px solid var(--muted-color)",
+													}}
+												/>
+											</div>
+										);
+									})
+								)}
+							</div>
+							<div
+								className='bg-white rounded-2xl overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
+								style={{ height: "calc(100vh - 170px)" }}>
 								{!selectedChat ? (
 									<ChatNotFound />
 								) : (
@@ -262,6 +254,7 @@ const ChatScreen = () => {
 					</div>
 				)}
 			</BreezeLoader>
+
 			{isGroupChatModal && (
 				<BreezeModal
 					backgroundColor={"bg-white"}
