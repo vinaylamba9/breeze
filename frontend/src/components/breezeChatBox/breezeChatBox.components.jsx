@@ -5,14 +5,13 @@ import {
 	MdOutlineAttachFile,
 } from "react-icons/md";
 import { useChatState } from "@Context/chatProvider";
-
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
-import BreezeTooltip from "../breezeTooltip/breezeTooltip.components";
+import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 
 const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const {
@@ -104,7 +103,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 						placeholder='Type a message'
 						title='Type a message'
 						tabIndex={10}
-						dataLexicalEditor
+						datalexicaleditor
 						spellCheck></div>
 					<div className=' py-2 mx-1  cursor-pointer text-center flex items-end'>
 						<BreezeTooltip id={"editor"}>

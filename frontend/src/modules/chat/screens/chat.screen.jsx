@@ -24,7 +24,8 @@ import { ChatDAO } from "../core/chatDAO";
 import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
-import BreezeSelfProfile from "@/components/breezeSelfProfile/breezeSelfProfile.components";
+import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
+
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
