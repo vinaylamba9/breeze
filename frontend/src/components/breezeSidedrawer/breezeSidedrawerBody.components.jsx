@@ -58,7 +58,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 		<div className='p-2 '>
 			<div className='flex mt-10 w-95% mx-auto items-center justify-between px-4'>
 				<div>
-					<h2 className='text-fontsize-pearl text-color-darkTeal font-bold'>
+					<h2 className=' drop-shadow-md text-fontsize-pearl text-color-darkTeal font-bold'>
 						Create chat
 					</h2>
 
@@ -98,7 +98,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 				</BreezeTooltip>
 			</div>
 
-			<div className='w-95% mx-auto  mt-10 px-4'>
+			<div className='w-95% mx-auto drop-shadow-md mt-10 px-4'>
 				<BreezeSearch
 					placeholder={"Search user"}
 					leadingIcon={
@@ -141,7 +141,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 									isNotification={item?.isNotification}
 									bio={item?.bio}
 									styleClass={
-										"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity hover:shadow-md transition duration-300 ease-in-out"
+										"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity transition duration-300 ease-in-out"
 									}
 								/>
 							);

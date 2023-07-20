@@ -14,7 +14,7 @@ const BreezeSearch = ({
 		<Fragment>
 			<div
 				className='flex items-center justify-start
-				bg-color-TealWithOpacity gap-2  ring-2 ring-color-darkTeal
+				bg-color-TealWithOpacity gap-2 
                     px-2 
                     rounded-3xl '>
 				<span className='ml-2'>{leadingIcon}</span>

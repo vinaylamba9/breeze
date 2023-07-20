@@ -13,13 +13,13 @@ const BreezeAvatar = ({
 	const initials = useAvatarInitials(title);
 
 	return isProfileMode ? (
-		<div className='relative cursor-pointer' onClick={onClickHandler}>
+		<div className='relative cursor-pointer ' onClick={onClickHandler}>
 			<>
 				<div
 					className={
 						!!profileImage
-							? `rounded-full p-1 `
-							: `p-1  h-36 w-36 relative flex justify-center items-center rounded-full  text-xl uppercase`
+							? `rounded-full p-2 `
+							: `p-2  h-36 w-36 relative flex justify-center items-center rounded-full  text-xl uppercase`
 					}
 					style={{
 						backgroundColor: hexColor,
@@ -27,7 +27,7 @@ const BreezeAvatar = ({
 					}}>
 					{!!profileImage ? (
 						<img
-							className='h-32 w-32 rounded-full'
+							className='h-32 w-32  rounded-full'
 							src={profileImage}
 							alt='profile'
 						/>
@@ -38,13 +38,13 @@ const BreezeAvatar = ({
 			</>
 		</div>
 	) : (
-		<div className='relative cursor-pointer' onClick={onClickHandler}>
+		<div className='relative cursor-pointer ' onClick={onClickHandler}>
 			<>
 				<div
 					className={
 						!!profileImage
 							? `rounded-full p-1 `
-							: `p-1  h-12 w-12 relative flex justify-center items-center rounded-full  text-xl uppercase`
+							: `p-2  h-12 w-12 relative flex justify-center items-center rounded-full  text-xl uppercase`
 					}
 					style={{
 						backgroundColor: hexColor,

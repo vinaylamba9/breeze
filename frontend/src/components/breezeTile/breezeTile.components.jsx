@@ -41,7 +41,7 @@ const BreezeTile = ({
 					</div>
 					<div className='grid grid-row-2 gap-1 '>
 						{isAdmin && (
-							<div className='px-4 py-1 text-xs bg-color-admin rounded-2xl text-color-darkTeal font-medium ease-in-out duration-300 hover:tracking-wider'>
+							<div className='drop-shadow-md px-4 py-1 text-xs bg-color-admin rounded-2xl text-color-darkTeal font-medium ease-in-out duration-300 hover:tracking-wider'>
 								Admin
 							</div>
 						)}

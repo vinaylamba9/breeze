@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import { useChatState } from "@Context/chatProvider";
-
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
@@ -21,36 +19,38 @@ const BreezeMessageHeader = ({ fetchAgain, setFetchAgain }) => {
 	} = useChatState();
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	return (
-		<div className=' w-100% bg-color-TealWithOpacity '>
-			<div className='w-98% mx-auto flex items-center justify-between py-2'>
-				<div
-					className='flex items-center gap-2 justify-start cursor-pointer'
-					onClick={() => {
-						setSelectedChatProfile(true);
-					}}>
-					<BreezeAvatar
-						title={
-							selectedChat?.isGroupChat
+		<>
+			<div className=' drop-shadow-md w-100% bg-color-TealWithOpacity'>
+				<div className='w-98%  mx-auto flex items-center justify-between py-2'>
+					<div
+						className='flex items-center gap-2 justify-start cursor-pointer'
+						onClick={() => {
+							setSelectedChatProfile(true);
+						}}>
+						<BreezeAvatar
+							title={
+								selectedChat?.isGroupChat
+									? selectedChat?.chatName
+									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)
+							}
+							isActive={true}
+							isGrouped={selectedChat?.isGroupChat}
+							profileImage={
+								selectedChat?.isGroupChat
+									? selectedChat?.groupImage
+									: CHAT_UTILS?.getOtherSideProfileImage(
+											user,
+											selectedChat?.users
+									  )
+							}
+							onClickHandler={() => setSelectedChatProfile(true)}
+						/>
+						<h1 className='text-fontsize-brittle uppercase font-medium'>
+							{selectedChat?.isGroupChat
 								? selectedChat?.chatName
-								: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)
-						}
-						isActive={true}
-						isGrouped={selectedChat?.isGroupChat}
-						profileImage={
-							selectedChat?.isGroupChat
-								? selectedChat?.groupImage
-								: CHAT_UTILS?.getOtherSideProfileImage(
-										user,
-										selectedChat?.users
-								  )
-						}
-						onClickHandler={() => setSelectedChatProfile(true)}
-					/>
-					<h1 className='text-fontsize-brittle uppercase font-medium'>
-						{selectedChat?.isGroupChat
-							? selectedChat?.chatName
-							: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
-					</h1>
+								: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+						</h1>
+					</div>
 				</div>
 			</div>
 			{isSelectedChatProfile && (
@@ -75,7 +75,7 @@ const BreezeMessageHeader = ({ fetchAgain, setFetchAgain }) => {
 					/>
 				</SelectUserFromGroupProvider>
 			)}
-		</div>
+		</>
 	);
 };
 

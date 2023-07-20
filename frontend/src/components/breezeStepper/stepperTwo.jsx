@@ -190,7 +190,10 @@ const StepperTwo = ({
 						</div>
 					</div>
 				)}
-				<div className={`mt-10 ${isEditGroup ? "w-100%" : "w-70%"} mx-auto`}>
+				<div
+					className={`mt-10 ${
+						isEditGroup ? "w-100%" : "w-70%"
+					} mx-auto drop-shadow-md`}>
 					<BreezeSearch
 						placeholder={"Search user"}
 						leadingIcon={
@@ -258,7 +261,7 @@ const StepperTwo = ({
 											isNotification={item?.isNotification}
 											bio={item?.bio}
 											styleClass={
-												"bg-white drop-shadow mx-2 py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity transition duration-300 ease-in-out"
+												"bg-white  mx-2 py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity transition duration-300 ease-in-out"
 											}
 										/>
 									</div>

@@ -91,7 +91,9 @@ const ChatScreen = () => {
 		<div>
 			<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-center justify-between  py-2'>
 				<div className='xs:w-80% sm:w-80% md:w-70% lg:w-50% xl:w-30% flex items-center justify-between '>
-					<div className='w-70%'>
+					<div
+						className='w-70% drop-shadow-md
+					'>
 						<BreezeSearch
 							placeholder={"Search chat"}
 							leadingIcon={
@@ -258,7 +260,7 @@ const ChatScreen = () => {
 
 			{isGroupChatModal && (
 				<BreezeModal
-					backgroundColor={"bg-white"}
+					backgroundColor={"bg-color-slate"}
 					closeModal={closeGroupModal}
 					isModalOpen={isGroupChatModal}
 					key={"Group_chat_modal"}
