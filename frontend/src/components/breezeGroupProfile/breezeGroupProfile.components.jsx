@@ -57,6 +57,7 @@ const BreezeGroupProfile = ({
 				(chat?.users?.[0]?._id === item?._id ||
 					chat?.users?.[1]?._id === item?._id)
 		);
+
 		setSelectUserFromGroup(response?.[0]);
 	};
 	const renameGroupNameHandler = useCallback(

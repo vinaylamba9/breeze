@@ -4,8 +4,8 @@ import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHe
 import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
-import { CHAT_UTILS } from "@/shared/utils/chat.utils";
-import BreezeAvatar from "../breezeAvatar/breezeAvatar.components";
+import { CHAT_UTILS } from "@Shared/utils/chat.utils";
+import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		user,
@@ -29,7 +29,6 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		}
 	}, [selectedChat]);
 
-	console.log(selectedChat);
 	useEffect(() => {
 		getMessageByChatIDHandler();
 	}, [getMessageByChatIDHandler]);
