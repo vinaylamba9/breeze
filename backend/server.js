@@ -11,6 +11,7 @@ const cors = require("cors");
 const PORT = process.env.PORT;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json");
+const { Server } = require("socket.io");
 
 /* ================ Configuring UTILITY PACKAGES START  =================*/
 
@@ -18,6 +19,7 @@ const { DB_CONFIG } = require("./config/dbConfig");
 const users = require("./routes/userRoutes/index");
 const chats = require("./routes/chatRoutes/index");
 const message = require("./routes/messageRoutes/index");
+const DevConfig = require("./config/devConfig");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -76,6 +78,35 @@ const bootstrapMessage = () => {
 	);
 };
 
-app.listen(PORT).on("listening", onListening);
+const server = app.listen(PORT).on("listening", onListening);
 
 /* ================ Connecting with the PORT ENDS  =================*/
+
+/** ================== SOCKET.IO CONNECTION STARTS ================== */
+const io = new Server(server, {
+	pingTimeout: DevConfig.pingTimeout,
+	cors: DevConfig.corsOrigin,
+});
+
+io.on("connection", (socket) => {
+	console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
+
+	socket.on("bootstrapSocket", (userDetails) => {
+		socket.join(userDetails?.userId);
+		socket.emit("conected");
+	});
+	socket.on("joinChat", (room) => {
+		socket.join(room);
+	});
+
+	socket.on("newMessage", (newMsgRecieved) => {
+		console.log(newMsgRecieved);
+		const chat = newMsgRecieved?.chat;
+		if (!chat?.users) return console.log("NO CHATS DEFINED");
+		chat?.users?.forEach((user) => {
+			console.log(user, "-user");
+			if (user?._id === newMsgRecieved?.sender?._id) return;
+			socket.in(user?._id).emit("messageRecieved", newMsgRecieved);
+		});
+	});
+});

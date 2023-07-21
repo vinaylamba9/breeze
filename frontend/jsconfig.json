@@ -13,7 +13,8 @@
 			"@Models/*": ["src/models/*"],
 			"@Core/*": ["src/core/*"],
 			"@Constants/*": ["src/constants/*"],
-			"@Context/*": ["src/context/*"]
+			"@Context/*": ["src/context/*"],
+			"@Socket/*": ["src/socket/*"]
 		}
 	}
 }

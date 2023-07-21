@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import BreezeMessageFields from "@Components/breezeMessageField/breezeMessageField.components";
 import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHeader.components";
 import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
-import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
+import { socket } from "@Socket/socket";
+import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
+
 const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		user,
@@ -18,7 +19,9 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		setUserList,
 	} = useChatState();
 
+	const [prevChat, setPrevChat] = useState(selectedChat);
 	const [newMessages, setNewMessages] = useState([]);
+	const [socketConnection, setSocketConnection] = useState(false);
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({
@@ -26,12 +29,35 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		});
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
+
+			socket.emit("joinChat", selectedChat?._id);
 		}
 	}, [selectedChat]);
 
 	useEffect(() => {
 		getMessageByChatIDHandler();
 	}, [getMessageByChatIDHandler]);
+
+	useEffect(() => {
+		socket.connect();
+		socket.emit("bootstrapSocket", user);
+		socket.on("connection", () => setSocketConnection(true));
+
+		return () => {
+			socket.disconnect();
+		};
+	}, [user]);
+
+	useEffect(() => {
+		socket.on("messageRecieved", (newMsgRecieved) => {
+			if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
+				// FOR NOTIFICATION
+			} else {
+				setNewMessages([...newMessages, newMsgRecieved]);
+			}
+		});
+	});
+
 	return (
 		<>
 			<div
@@ -41,60 +67,9 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
 				/>
-				<div
-					className='w-100% bg-transparent overflow-y-auto'
-					style={{ height: "calc(100vh - 280px)" }}>
-					<div className='w-98% mx-auto '>
-						{newMessages?.length > 0 &&
-							newMessages?.map((msg, index) => (
-								<div className='flex items-center justify-start'>
-									{(CHAT_UTILS?.isSameSenderOfMsg(
-										newMessages,
-										msg,
-										index,
-										user?.userId
-									) ||
-										CHAT_UTILS?.isLastMessages(
-											newMessages,
-											index,
-											user?.userId
-										)) &&
-										selectedChat?.isGroupChat && (
-											<BreezeAvatar
-												title={msg?.sender?.name}
-												isActive={true}
-												isGrouped={selectedChat?.isGroupChat}
-												profileImage={CHAT_UTILS?.getOtherSideProfileImage(
-													user,
-													msg?.sender?.profileImage
-												)}
-												// onClickHandler={() => setSelectedChatProfile(true)}
-											/>
-										)}
-									<span
-										style={{
-											maxWidth: "75%",
-											marginLeft: CHAT_UTILS?.msgMargin(
-												newMessages,
-												msg,
-												index,
-												user?.userId
-											),
-											marginTop: CHAT_UTILS?.isSameUser(newMessages, msg, index)
-												? 10
-												: 15,
-										}}
-										className={`${
-											msg?.sender?._id === user?.userId
-												? "bg-color-champagne"
-												: "bg-color-admin"
-										} rounded-2xl px-6 py-2 text-sm `}>
-										{msg?.content}
-									</span>
-								</div>
-							))}
-					</div>
-				</div>
+				<BreezeScrollableFeed newMessages={newMessages} />
+				{/* <BreezeChat newMessages={newMessages} /> */}
+
 				<BreezeMessageFields
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}

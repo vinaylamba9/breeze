@@ -9,6 +9,7 @@ import {
 } from "react-icons/md";
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
+import { socket } from "@Socket/socket";
 
 const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 	const {
@@ -40,6 +41,7 @@ const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 				});
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					setNewMessages([...newMessages, response?.responseBody]);
+					socket.emit("newMessage", response?.responseBody);
 				}
 			}
 		},
