@@ -22,6 +22,8 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const [prevChat, setPrevChat] = useState(selectedChat);
 	const [newMessages, setNewMessages] = useState([]);
 	const [socketConnection, setSocketConnection] = useState(false);
+	const [typing, setTyping] = useState(false);
+	const [isTyping, setIsTyping] = useState(false);
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({
@@ -41,7 +43,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	useEffect(() => {
 		socket.connect();
 		socket.emit("bootstrapSocket", user);
-		socket.on("connection", () => setSocketConnection(true));
+		socket.on("connected", () => setSocketConnection(true));
 
 		return () => {
 			socket.disconnect();
@@ -67,10 +69,15 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
 				/>
-				<BreezeScrollableFeed newMessages={newMessages} />
-				{/* <BreezeChat newMessages={newMessages} /> */}
+				<BreezeScrollableFeed newMessages={newMessages} isTyping={isTyping} />
 
 				<BreezeMessageFields
+					isTyping={isTyping}
+					setIsTyping={setIsTyping}
+					typing={typing}
+					setTyping={setTyping}
+					setSocketConnection={setSocketConnection}
+					socketConnection={socketConnection}
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}
 				/>

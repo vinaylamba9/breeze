@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import { useChatState } from "@Context/chatProvider";
-const BreezeScrollableFeed = ({ newMessages }) => {
+const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
 	const { selectedChat } = useChatState();
 	const chatContainerRef = useRef(null);
 
@@ -23,7 +23,9 @@ const BreezeScrollableFeed = ({ newMessages }) => {
 	return (
 		<div
 			className='w-full bg-transparent'
-			style={{ height: "calc(100vh - 280px)" }}>
+			style={{
+				height: isTyping ? "calc(100vh - 320px)" : "calc(100vh - 290px)",
+			}}>
 			<div
 				className='w-98% mx-auto overflow-y-auto'
 				style={{ maxHeight: "100%" }}

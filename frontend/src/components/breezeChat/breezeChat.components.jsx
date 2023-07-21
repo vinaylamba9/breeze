@@ -39,14 +39,14 @@ const BreezeChat = ({ newMessages }) => {
 									user?.userId
 								),
 								marginTop: CHAT_UTILS?.isSameUser(newMessages, msg, index)
-									? 10
-									: 15,
+									? 5
+									: 10,
 							}}
 							className={`${
 								msg?.sender?._id === user?.userId
 									? "bg-color-champagne"
 									: "bg-color-admin"
-							} rounded-2xl px-6 py-2 text-sm `}>
+							} rounded-2xl px-6 py-2 text-sm mb-5`}>
 							{msg?.content}
 						</span>
 					</div>

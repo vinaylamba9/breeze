@@ -43,6 +43,7 @@ module.exports = (_, argv) => ({
 					fullySpecified: false,
 				},
 			},
+
 			{
 				test: /\.(css|s[ac]ss)$/i,
 				use: ["style-loader", "css-loader", "postcss-loader"],

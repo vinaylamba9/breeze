@@ -93,20 +93,27 @@ io.on("connection", (socket) => {
 
 	socket.on("bootstrapSocket", (userDetails) => {
 		socket.join(userDetails?.userId);
-		socket.emit("conected");
+		socket.emit("connected");
 	});
 	socket.on("joinChat", (room) => {
 		socket.join(room);
 	});
 
+	socket.on("typing", (room) => {
+		socket.in(room).emit("typing");
+	});
+	socket.on("stopTyping", (room) => socket.in(room).emit("stopTyping"));
 	socket.on("newMessage", (newMsgRecieved) => {
-		console.log(newMsgRecieved);
 		const chat = newMsgRecieved?.chat;
 		if (!chat?.users) return console.log("NO CHATS DEFINED");
 		chat?.users?.forEach((user) => {
-			console.log(user, "-user");
 			if (user?._id === newMsgRecieved?.sender?._id) return;
 			socket.in(user?._id).emit("messageRecieved", newMsgRecieved);
 		});
+	});
+
+	socket.off("bootstrapSocket", () => {
+		console.log("USER DISCONNECTED");
+		socket.leave(userDetails?.userId);
 	});
 });
