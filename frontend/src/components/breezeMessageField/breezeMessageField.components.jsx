@@ -24,9 +24,13 @@ const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 	const { register } = useForm({});
 
 	const typingIndicatorHandler = (e) => {};
+	function isShiftKeyOrSpace(e) {
+		return e.shiftKey || e.code === "Space";
+	}
 	const sendMessageHandler = useCallback(
 		async (e) => {
-			let msg = e?.target?.innerText;
+			let msg = e?.target?.innerText?.trim();
+			if (msg === "" || isShiftKeyOrSpace(msg)) return;
 			if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
 				e.preventDefault();
 				e.target.innerText = "";

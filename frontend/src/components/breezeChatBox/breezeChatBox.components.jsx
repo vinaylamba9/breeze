@@ -45,7 +45,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 				<div
 					className='w-100% bg-transparent overflow-y-auto'
 					style={{ height: "calc(100vh - 280px)" }}>
-					<div className='w-98% mx-auto'>
+					<div className='w-98% mx-auto '>
 						{newMessages?.length > 0 &&
 							newMessages?.map((msg, index) => (
 								<div className='flex items-center justify-start'>
