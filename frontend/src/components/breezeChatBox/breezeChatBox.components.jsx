@@ -4,6 +4,8 @@ import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHe
 import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
+import { CHAT_UTILS } from "@/shared/utils/chat.utils";
+import BreezeAvatar from "../breezeAvatar/breezeAvatar.components";
 const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		user,
@@ -16,19 +18,18 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		setUserList,
 	} = useChatState();
 
-	const [newMessages, setNewMessages] = useState(null);
+	const [newMessages, setNewMessages] = useState([]);
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({
 			chatID: selectedChat?._id,
 		});
-		if (response?.statuCode === HTTPStatusCode.OK) {
+		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
 		}
-
-		console.log(response);
 	}, [selectedChat]);
 
+	console.log(selectedChat);
 	useEffect(() => {
 		getMessageByChatIDHandler();
 	}, [getMessageByChatIDHandler]);
@@ -43,7 +44,58 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 				/>
 				<div
 					className='w-100% bg-transparent overflow-y-auto'
-					style={{ height: "calc(100vh - 280px)" }}></div>
+					style={{ height: "calc(100vh - 280px)" }}>
+					<div className='w-98% mx-auto'>
+						{newMessages?.length > 0 &&
+							newMessages?.map((msg, index) => (
+								<div className='flex items-center justify-start'>
+									{(CHAT_UTILS?.isSameSenderOfMsg(
+										newMessages,
+										msg,
+										index,
+										user?.userId
+									) ||
+										CHAT_UTILS?.isLastMessages(
+											newMessages,
+											index,
+											user?.userId
+										)) &&
+										selectedChat?.isGroupChat && (
+											<BreezeAvatar
+												title={msg?.sender?.name}
+												isActive={true}
+												isGrouped={selectedChat?.isGroupChat}
+												profileImage={CHAT_UTILS?.getOtherSideProfileImage(
+													user,
+													msg?.sender?.profileImage
+												)}
+												// onClickHandler={() => setSelectedChatProfile(true)}
+											/>
+										)}
+									<span
+										style={{
+											maxWidth: "75%",
+											marginLeft: CHAT_UTILS?.msgMargin(
+												newMessages,
+												msg,
+												index,
+												user?.userId
+											),
+											marginTop: CHAT_UTILS?.isSameUser(newMessages, msg, index)
+												? 10
+												: 15,
+										}}
+										className={`${
+											msg?.sender?._id === user?.userId
+												? "bg-color-champagne"
+												: "bg-color-admin"
+										} rounded-2xl px-6 py-2 text-sm `}>
+										{msg?.content}
+									</span>
+								</div>
+							))}
+					</div>
+				</div>
 				<BreezeMessageFields
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}

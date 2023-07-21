@@ -8,6 +8,7 @@ import {
 	MdOutlineAttachFile,
 } from "react-icons/md";
 import { useChatState } from "@Context/chatProvider";
+import { HTTPStatusCode } from "@Constants/network";
 
 const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 	const {
@@ -22,18 +23,20 @@ const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 	} = useChatState();
 	const { register } = useForm({});
 
-	const messageBox = useRef(null);
-
-	const typingIndicatorHandler = () => {};
+	const typingIndicatorHandler = (e) => {};
 	const sendMessageHandler = useCallback(
 		async (e) => {
-			if (!e?.shiftKey && e?.which === 13) {
+			let msg = e?.target?.innerText;
+			if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
+				e.preventDefault();
+				e.target.innerText = "";
 				const response = await MessageDAO.createMessageDAO({
-					content: e?.target?.innerText,
+					content: msg,
 					chatID: selectedChat?._id,
 				});
-				setNewMessages([...newMessages, response?.responseBody]);
-				console.log(response);
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					setNewMessages([...newMessages, response?.responseBody]);
+				}
 			}
 		},
 		[newMessages, selectedChat?._id, setNewMessages]
@@ -59,7 +62,6 @@ const BreezeMessageFields = ({ newMessages, setNewMessages }) => {
 				</div>
 				<div
 					{...register("messageBox")}
-					ref={messageBox}
 					id='messageBox'
 					style={{
 						wordBreak: "break-word",
