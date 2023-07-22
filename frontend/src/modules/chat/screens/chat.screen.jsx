@@ -25,12 +25,14 @@ import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
+import { socket } from "@/socket/socket";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
+
 	const {
 		user,
 		setUser,
@@ -207,7 +209,10 @@ const ChatScreen = () => {
 										return (
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
-													onClickHandler={() => setSelectedChat(item)}
+													onClickHandler={() => {
+														setSelectedChat(item);
+														socket.emit("leaveChat", selectedChat?._id);
+													}}
 													title={
 														item?.isGroupChat
 															? item?.chatName

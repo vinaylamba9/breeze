@@ -99,9 +99,7 @@ io.on("connection", (socket) => {
 		socket.join(room);
 	});
 
-	socket.on("typing", (room) => {
-		socket.in(room).emit("typing");
-	});
+	socket.on("typing", (room) => socket.in(room).emit("typing"));
 	socket.on("stopTyping", (room) => socket.in(room).emit("stopTyping"));
 	socket.on("newMessage", (newMsgRecieved) => {
 		const chat = newMsgRecieved?.chat;
@@ -112,8 +110,11 @@ io.on("connection", (socket) => {
 		});
 	});
 
+	socket.on("leaveChat", (room) => {
+		socket.leave(room);
+	});
+
 	socket.off("bootstrapSocket", () => {
-		console.log("USER DISCONNECTED");
 		socket.leave(userDetails?.userId);
 	});
 });

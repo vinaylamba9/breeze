@@ -200,11 +200,13 @@ const userController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				const dbResponse = await DB_UTILS.findByEmail(req.body.email);
+
 				if (dbResponse) {
 					let isOnTime = BASIC_UTILS.timeON.isTimeLimitAvailable(
 						Date.now(),
 						new Date(dbResponse.otpValidTill).getTime()
 					); // CHECK WHETHER OTP IS EXPIRED OR NOT
+
 					if (isOnTime) {
 						if (req.body.otp === dbResponse.otp) {
 							let updatedUserResponse = await DB_UTILS.updateOneById(

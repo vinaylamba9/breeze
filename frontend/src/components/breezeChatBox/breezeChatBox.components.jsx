@@ -31,7 +31,6 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		});
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
-
 			socket.emit("joinChat", selectedChat?._id);
 		}
 	}, [selectedChat]);
@@ -44,6 +43,8 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		socket.connect();
 		socket.emit("bootstrapSocket", user);
 		socket.on("connected", () => setSocketConnection(true));
+		socket.on("typing", () => setIsTyping(true));
+		socket.on("stopTyping", () => setIsTyping(false));
 
 		return () => {
 			socket.disconnect();
@@ -58,7 +59,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			}
 		});
-	});
+	}, [newMessages, prevChat]);
 
 	return (
 		<>

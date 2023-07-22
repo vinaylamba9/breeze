@@ -341,8 +341,6 @@ const chatController = {
 						req.body.userID
 					);
 
-					console.log(userAlreadyExistInGroup, "-userAlrasdyExistingGropup");
-
 					if (userAlreadyExistInGroup && userAlreadyExistInGroup?.length > 0) {
 						responseStatusCode = HTTPStatusCode.FORBIDDEN;
 						responseMessage = HTTPStatusCode.FORBIDDEN;

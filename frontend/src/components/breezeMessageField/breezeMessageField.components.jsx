@@ -24,55 +24,45 @@ const BreezeMessageFields = ({
 	const { selectedChat } = useChatState();
 	const { register } = useForm({});
 
-	const typingIndicatorHandler = useCallback(
-		(e) => {
-			if (!socketConnection) return;
-			if (!typing) {
-				setTyping(true);
-				socket.emit("typing", selectedChat?._id);
+	const typingIndicatorHandler = (e) => {
+		if (!socketConnection) return;
+		if (!typing) {
+			setTyping(true);
+			socket.emit("typing", selectedChat?._id);
+		}
+		let lastTypingTime = new Date().getTime();
+		setTimeout(() => {
+			let currentTime = new Date().getTime();
+			if (currentTime - lastTypingTime >= 1000 && typing) {
+				socket.emit("stopTyping", selectedChat?._id);
+				setTyping(false);
 			}
-			let lastTypingTime = new Date().getTime();
-			setTimeout(() => {
-				let currentTime = new Date().getTime();
-				if (currentTime - lastTypingTime >= 5000 && typing) {
-					socket.emit("stopTyping", selectedChat?._id);
-					setTyping(false);
-				}
-			}, 5000);
-		},
-		[selectedChat?._id, setTyping, socketConnection, typing]
-	);
+		}, 1000);
+	};
 	function isShiftKeyOrSpace(e) {
 		return e.shiftKey || e.code === "Space";
 	}
-	const sendMessageHandler = useCallback(
-		async (e) => {
-			let msg = e?.target?.innerText?.trim();
-			if (msg === "" || isShiftKeyOrSpace(msg)) return;
-			if (!e?.shiftKey && e?.which !== 13) {
-				typingIndicatorHandler();
+	const sendMessageHandler = async (e) => {
+		let msg = e?.target?.innerText?.trim();
+		if (msg === "" || isShiftKeyOrSpace(msg)) return;
+		if (!e?.shiftKey && e?.which !== 13) {
+			typingIndicatorHandler();
+		}
+		if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
+			socket.emit("stopTyping", selectedChat?._id);
+			e.preventDefault();
+			e.target.innerText = "";
+			const response = await MessageDAO.createMessageDAO({
+				content: msg,
+				chatID: selectedChat?._id,
+			});
+			if (response?.statusCode === HTTPStatusCode.OK) {
+				setNewMessages([...newMessages, response?.responseBody]);
+				socket.emit("newMessage", response?.responseBody);
 			}
-			if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
-				socket.emit("stopTyping", selectedChat?._id);
-				e.preventDefault();
-				e.target.innerText = "";
-				const response = await MessageDAO.createMessageDAO({
-					content: msg,
-					chatID: selectedChat?._id,
-				});
-				if (response?.statusCode === HTTPStatusCode.OK) {
-					setNewMessages([...newMessages, response?.responseBody]);
-					socket.emit("newMessage", response?.responseBody);
-				}
-			}
-		},
-		[newMessages, selectedChat?._id, setNewMessages, typingIndicatorHandler]
-	);
+		}
+	};
 
-	useEffect(() => {
-		socket.on("typing", () => setIsTyping(true));
-		socket.on("stopTyping", () => setIsTyping(false));
-	}, [setIsTyping]);
 	return (
 		<>
 			{isTyping && (
