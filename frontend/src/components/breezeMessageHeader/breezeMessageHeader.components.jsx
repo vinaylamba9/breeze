@@ -20,7 +20,7 @@ const BreezeMessageHeader = ({ fetchAgain, setFetchAgain }) => {
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	return (
 		<>
-			<div className=' drop-shadow-md w-100% bg-color-TealWithOpacity'>
+			<div className=' transition-all duration-300 ease-in-out drop-shadow-md w-100% bg-color-greenishTeal'>
 				<div className='w-98%  mx-auto flex items-center justify-between py-2'>
 					<div
 						className='flex items-center gap-2 justify-start cursor-pointer'

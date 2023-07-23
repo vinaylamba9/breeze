@@ -36,6 +36,7 @@ module.exports = {
 				"color-lightTeal": "var(--color-lightTeal)",
 				"color-darkTeal": "var(--color-darkTeal)",
 				"color-champagne": "var(--color-champagne)",
+				"color-greenishTeal": "var(--color-greenishTeal)",
 				"color-TealWithOpacity": "var(--color-TealWithOpacity)",
 				"color-notified": "var(--color-notified)",
 				"color-poppedUp": "var(--color-poppedUp)",

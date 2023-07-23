@@ -4,7 +4,7 @@ const PostOnboardingLayout = () => {
 	return (
 		<div className='h-screen  bg-color-slate '>
 			<div className='w-90% mx-auto'>
-				<h1 className=' text-3xl py-2 text-color-darkTeal font-bold text-fontsize-pearl first-letter:text-4xl'>
+				<h1 className=' drop-shadow-md 	text-3xl py-2 text-color-darkTeal font-bold text-fontsize-pearl first-letter:text-4xl'>
 					Breeze
 				</h1>
 				<div className='mx-auto'>

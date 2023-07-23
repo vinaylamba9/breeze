@@ -99,8 +99,8 @@ io.on("connection", (socket) => {
 		socket.join(room);
 	});
 
-	socket.on("typing", (room) => socket.in(room).emit("typing"));
-	socket.on("stopTyping", (room) => socket.in(room).emit("stopTyping"));
+	socket.on("typing", (room) => socket.to(room).emit("typing"));
+	socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
 	socket.on("newMessage", (newMsgRecieved) => {
 		const chat = newMsgRecieved?.chat;
 		if (!chat?.users) return console.log("NO CHATS DEFINED");

@@ -25,7 +25,7 @@ import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
-import { socket } from "@/socket/socket";
+import { socket } from "@Socket/socket";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -119,7 +119,7 @@ const ChatScreen = () => {
 									bg-color-darkTeal
 									w-10 h-10
 									outline-none
-									rounded-full 
+									rounded-xl 
 									flex justify-center items-center
 									text-white text-4xl relative
 								'>
@@ -197,10 +197,10 @@ const ChatScreen = () => {
 						className='  flex xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%'
 						style={{ height: "calc(100vh - 140px)" }}>
 						<div
-							className='flex w-100%  rounded-2xl  justify-between gap-5 items-center my-auto mx-auto'
+							className='flex w-100%  rounded-xl  justify-between gap-5 items-center my-auto mx-auto'
 							style={{ height: "calc(100vh - 160px)" }}>
 							<div
-								className='bg-white rounded-2xl overflow-y-auto xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30%'
+								className='bg-white rounded-xl overflow-y-auto xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30%'
 								style={{ height: "calc(100vh - 170px)" }}>
 								{isLoading ? (
 									<BreezeTileSkeleton tileLength={7} />
@@ -209,6 +209,7 @@ const ChatScreen = () => {
 										return (
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
+													tileID={selectedChat?._id}
 													onClickHandler={() => {
 														setSelectedChat(item);
 														socket.emit("leaveChat", selectedChat?._id);
@@ -221,7 +222,14 @@ const ChatScreen = () => {
 																	item?.users
 															  )
 													}
-													msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													lastMsgSender={item?.recentMessage?.sender?.name}
+													// msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													msg={
+														item?.recentMessage?.content > 30
+															? item?.recentMessage?.content?.substring(0, 30) +
+															  "..."
+															: item?.recentMessage?.content
+													}
 													isActive={true}
 													isGrouped={item?.isGroupChat}
 													profileImage={
@@ -232,6 +240,11 @@ const ChatScreen = () => {
 																	item?.users
 															  )
 													}
+													styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
+														selectedChat === item
+															? " py-5 bg-color-greenishTeal"
+															: "bg-transparent"
+													} w-95% mx-auto`}
 													isNotification={false}
 												/>
 												<hr
@@ -247,7 +260,7 @@ const ChatScreen = () => {
 								)}
 							</div>
 							<div
-								className='bg-white rounded-2xl overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
+								className='bg-white rounded-xl overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
 								style={{ height: "calc(100vh - 170px)" }}>
 								{!selectedChat ? (
 									<ChatNotFound />

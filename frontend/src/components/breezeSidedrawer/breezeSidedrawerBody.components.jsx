@@ -78,7 +78,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 									bg-color-darkTeal
 									w-10 h-10
 									outline-none
-									rounded-full 
+									rounded-xl 
 									flex justify-center items-center
 									text-white text-4xl relative
 								'>

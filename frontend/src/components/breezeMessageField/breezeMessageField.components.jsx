@@ -24,45 +24,55 @@ const BreezeMessageFields = ({
 	const { selectedChat } = useChatState();
 	const { register } = useForm({});
 
-	const typingIndicatorHandler = (e) => {
-		if (!socketConnection) return;
-		if (!typing) {
-			setTyping(true);
-			socket.emit("typing", selectedChat?._id);
-		}
-		let lastTypingTime = new Date().getTime();
-		setTimeout(() => {
-			let currentTime = new Date().getTime();
-			if (currentTime - lastTypingTime >= 1000 && typing) {
-				socket.emit("stopTyping", selectedChat?._id);
-				setTyping(false);
+	const typingIndicatorHandler = useCallback(
+		(e) => {
+			if (!socketConnection) return;
+			if (!typing) {
+				setTyping(true);
+				socket.emit("typing", selectedChat?._id);
 			}
-		}, 1000);
-	};
+			let lastTypingTime = new Date().getTime();
+			setTimeout(() => {
+				let currentTime = new Date().getTime();
+				if (currentTime - lastTypingTime >= 1000 && typing) {
+					socket.emit("stopTyping", selectedChat?._id);
+					setTyping(false);
+				}
+			}, 1000);
+		},
+		[selectedChat?._id, setTyping, socketConnection, typing]
+	);
 	function isShiftKeyOrSpace(e) {
 		return e.shiftKey || e.code === "Space";
 	}
-	const sendMessageHandler = async (e) => {
-		let msg = e?.target?.innerText?.trim();
-		if (msg === "" || isShiftKeyOrSpace(msg)) return;
-		if (!e?.shiftKey && e?.which !== 13) {
-			typingIndicatorHandler();
-		}
-		if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
-			socket.emit("stopTyping", selectedChat?._id);
-			e.preventDefault();
-			e.target.innerText = "";
-			const response = await MessageDAO.createMessageDAO({
-				content: msg,
-				chatID: selectedChat?._id,
-			});
-			if (response?.statusCode === HTTPStatusCode.OK) {
-				setNewMessages([...newMessages, response?.responseBody]);
-				socket.emit("newMessage", response?.responseBody);
+	const sendMessageHandler = useCallback(
+		async (e) => {
+			let msg = e?.target?.innerText?.trim();
+			if (msg === "" || isShiftKeyOrSpace(msg)) return;
+			if (!e?.shiftKey && e?.which !== 13) {
+				typingIndicatorHandler();
 			}
-		}
-	};
+			if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
+				socket.emit("stopTyping", selectedChat?._id);
+				e.preventDefault();
+				e.target.innerText = "";
+				const response = await MessageDAO.createMessageDAO({
+					content: msg,
+					chatID: selectedChat?._id,
+				});
+				if (response?.statusCode === HTTPStatusCode.OK) {
+					setNewMessages([...newMessages, response?.responseBody]);
+					socket.emit("newMessage", response?.responseBody);
+				}
+			}
+		},
+		[newMessages, selectedChat?._id, setNewMessages, typingIndicatorHandler]
+	);
 
+	// useEffect(() => {
+	// 	socket.on("typing", () => setIsTyping(true));
+	// 	socket.on("stopTyping", () => setIsTyping(false));
+	// }, [setIsTyping]);
 	return (
 		<>
 			{isTyping && (
@@ -70,7 +80,7 @@ const BreezeMessageFields = ({
 					Typing ...
 				</span>
 			)}
-			<div className='rounded-bl-2xl drop-shadow-md bg-color-TealWithOpacity py-2 rounded-br-2xl w-100% '>
+			<div className=' transition-all duration-300 ease-in-out rounded-bl-2xl drop-shadow-md bg-color-greenishTeal py-2 rounded-br-2xl w-100% '>
 				<div className=' w-98% mx-auto flex justify-start items-start '>
 					<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
 						<BreezeTooltip id={"emoticons"}>
