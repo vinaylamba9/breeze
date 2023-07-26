@@ -41,9 +41,10 @@ const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
 	}, []);
 
 	useEffect(() => {
-		chatContainerRef.current.addEventListener("scroll", onScrollMsg);
+		const localRef = chatContainerRef?.current;
+		localRef.addEventListener("scroll", onScrollMsg);
 		return () => {
-			chatContainerRef.removeEventListener("scroll", onScrollMsg);
+			localRef.removeEventListener("scroll", onScrollMsg);
 			// Clear the timeout when the component is unmounted
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
