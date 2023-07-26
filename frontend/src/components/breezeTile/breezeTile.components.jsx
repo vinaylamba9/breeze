@@ -1,7 +1,6 @@
 import moment from "moment";
 import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import { useChatState } from "@Context/chatProvider";
 
 const BreezeTile = ({
 	title,
@@ -17,8 +16,6 @@ const BreezeTile = ({
 	styleClass,
 	isLastTimeActive,
 }) => {
-	const { selectedChat } = useChatState();
-	console.log(selectedChat);
 	return (
 		<Fragment>
 			<div
@@ -49,16 +46,16 @@ const BreezeTile = ({
 								Admin
 							</div>
 						)}
-						{
+						{isLastTimeActive && (
 							<p className='font-black text-fontsize-small text-color-darkTeal'>
 								{moment().format("hh:mm")}
 							</p>
-						}
-						{
+						)}
+						{isNotification && (
 							<p className='text-fontsize-small font-black text-text-color-purity text-center bg-color-notified rounded-full'>
 								1
 							</p>
-						}
+						)}
 					</div>
 				</div>
 			</div>

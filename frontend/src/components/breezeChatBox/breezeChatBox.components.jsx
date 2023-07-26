@@ -24,6 +24,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
+
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({
@@ -31,9 +32,13 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 		});
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
-
 			socket.emit("joinChat", selectedChat?._id);
 		}
+
+		return () => {
+			setNewMessages([]);
+			socket.emit("leaveChat", selectedChat?._id);
+		};
 	}, [selectedChat]);
 
 	useEffect(() => {

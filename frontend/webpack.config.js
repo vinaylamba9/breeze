@@ -32,7 +32,7 @@ module.exports = (_, argv) => ({
 		port: 3000,
 		// allowedHosts: "all",
 		// host: "0.0.0.0",
-		historyApiFallback: true,
+		// historyApiFallback: true,
 	},
 
 	module: {
