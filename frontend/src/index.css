@@ -136,3 +136,9 @@ input[type="number"] {
 [contenteditable] {
 	outline: 0px solid transparent;
 }
+
+[contentEditable][placeholder]:empty:before {
+	content: attr(placeholder) !important;
+	background-color: transparent;
+	color: var(--background-color-metal);
+}

@@ -1,7 +1,6 @@
 import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
-import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useRef } from "react";
 import {
 	MdOutlineEmojiEmotions,
 	MdOutlineKeyboardArrowUp,
@@ -12,6 +11,7 @@ import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
 
 const BreezeMessageFields = ({
+	prevChat,
 	setSocketConnection,
 	socketConnection,
 	newMessages,
@@ -22,8 +22,7 @@ const BreezeMessageFields = ({
 	isTyping,
 }) => {
 	const { selectedChat } = useChatState();
-	const { register } = useForm({});
-
+	const msgBoxRef = useRef(null);
 	const typingIndicatorHandler = useCallback(
 		(e) => {
 			if (!socketConnection) return;
@@ -42,17 +41,19 @@ const BreezeMessageFields = ({
 		},
 		[selectedChat?._id, setTyping, socketConnection, typing]
 	);
-	function isShiftKeyOrSpace(e) {
-		return e.shiftKey || e.code === "Space";
-	}
+
 	const sendMessageHandler = useCallback(
 		async (e) => {
-			let msg = e?.target?.innerText?.trim();
-			if (msg === "" || isShiftKeyOrSpace(msg)) return;
-			if (!e?.shiftKey && e?.which !== 13) {
-				typingIndicatorHandler();
+			let msg = e?.target?.innerText;
+			if (e?.target?.innerText?.trim()?.length === 0 && e?.which === 13) {
+				e?.preventDefault();
+				return;
 			}
-			if (!e?.shiftKey && e?.which === 13 && msg?.length > 0) {
+			if (
+				!e?.shiftKey &&
+				e?.which === 13 &&
+				e?.target?.innerText?.trim()?.length > 0
+			) {
 				socket.emit("stopTyping", selectedChat?._id);
 				e.preventDefault();
 				e.target.innerText = "";
@@ -64,15 +65,16 @@ const BreezeMessageFields = ({
 					setNewMessages([...newMessages, response?.responseBody]);
 					socket.emit("newMessage", response?.responseBody);
 				}
-			}
+			} else typingIndicatorHandler();
 		},
 		[newMessages, selectedChat?._id, setNewMessages, typingIndicatorHandler]
 	);
 
-	// useEffect(() => {
-	// 	socket.on("typing", () => setIsTyping(true));
-	// 	socket.on("stopTyping", () => setIsTyping(false));
-	// }, [setIsTyping]);
+	useEffect(() => {
+		let tempRef = msgBoxRef.current;
+		prevChat !== selectedChat && (tempRef.innerText = "");
+	}, [prevChat, selectedChat]);
+
 	return (
 		<>
 			{isTyping && (
@@ -99,7 +101,7 @@ const BreezeMessageFields = ({
 						</BreezeTooltip>
 					</div>
 					<div
-						{...register("messageBox")}
+						ref={msgBoxRef}
 						id='messageBox'
 						style={{
 							wordBreak: "break-word",

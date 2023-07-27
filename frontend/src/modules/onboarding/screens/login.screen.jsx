@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { MdEmail } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { Slide, ToastContainer, toast } from "react-toastify";
@@ -75,14 +75,17 @@ const Login = () => {
 
 	useEffect(() => {
 		let login = BreezeSessionManagement.getAPIKey();
-
 		if (login) navigate(BreezeRoutes.CHATROUTE);
 	}, [navigate]);
 
 	return (
 		<div className=' flex flex-col animate-fadeIn'>
 			<ToastContainer />
-			<BreezeToggleOnboard label={"Back to "} linkLabel='Signup' />
+			<BreezeToggleOnboard
+				label={"Back to "}
+				linkLabel='Signup'
+				link={BreezeRoutes.SIGNUPROUTE}
+			/>
 			<center>
 				<div className='mt-10% w-60% text-fontsize-brittle mx-auto  '>
 					<TypewriterLabel label='Log in with ' />

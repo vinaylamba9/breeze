@@ -10,7 +10,7 @@ export const ProtectedRoutes = ({ Component }) => {
 		if (!login || login === null) {
 			let deletedResponse = BreezeSessionManagement.deleteAllSession();
 			if (deletedResponse) {
-				navigate(BreezeRoutes.LOGINROUTE);
+				navigate(BreezeRoutes.SIGNUPROUTE);
 			}
 		}
 	}, [navigate]);

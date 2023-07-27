@@ -1,15 +1,15 @@
-import Signup from "@Modules/onboarding/screens/signup.screen.jsx";
 import OTP from "@Modules/onboarding/screens/otp.screen.jsx";
 import VerifyPassword from "@Modules/onboarding/screens/verifyPassword.screen.jsx";
-import Login from "@Modules/onboarding/screens/login.screen.jsx";
+import Login from "@Modules/onboarding/screens/login.screen";
 import ChatScreen from "@Modules/chat/screens/chat.screen";
+import Signup from "@Modules/onboarding/screens/signup.screen";
 
 export default class BreezeRoutes {
 	static SPLASHROUTE = "/splash";
 	static LANDINGROUTE = "/";
 	static AUTHROUTE = "/auth";
-	static SIGNUPROUTE = "/signup";
 	static LOGINROUTE = "/login";
+	static SIGNUPROUTE = "/signup";
 	static HOMEROUTE = "/home";
 	// static FORGOTPASSWORDROUTE = "/forgotpassword";
 	static UPDATEPASSWORDROUTE = "/updatepassword";
@@ -20,9 +20,10 @@ export default class BreezeRoutes {
 }
 
 export const preOnboardingRoutes = {
+	[BreezeRoutes.SIGNUPROUTE]: <Signup />,
 	[BreezeRoutes.LANDINGROUTE]: <Login />,
-	// [BreezeRoutes.SIGNUPROUTE]: <Signup />,
 	[BreezeRoutes.LOGINROUTE]: <Login />,
+
 	// [BreezeRoutes.OTPVERIFICATIONROUTE]: <OTP />,
 	// [BreezeRoutes.UPDATEPASSWORDROUTE]: <VerifyPassword />,
 };

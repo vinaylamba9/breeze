@@ -1,7 +1,7 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useChatState } from "@Context/chatProvider";
-import { useCallback, useState, useRef, useMemo } from "react";
+import { useCallback } from "react";
 import { DATE_UTILS } from "@/shared/utils/basic.utils";
 
 const BreezeChat = ({
@@ -26,7 +26,6 @@ const BreezeChat = ({
 		[newMessages, user?.userId]
 	);
 
-	console.log(stickyDateRef?.current, "--test");
 	return (
 		<>
 			{
@@ -79,7 +78,9 @@ const BreezeChat = ({
 										: "bg-color-poppedUp"
 								}  rounded-2xl px-5 py-2 mb-2`}>
 								<div className='flex justify-between items-start gap-3'>
-									<div className='text-sm w-90%'>{msg?.content}</div>
+									<div className='text-sm w-90% whitespace-pre-wrap'>
+										{msg?.content}
+									</div>
 									<div className='text-xs text-gray-600 pt-3'>
 										{DATE_UTILS?.getTimeInHHMM(msg?.createdAt)}
 									</div>
