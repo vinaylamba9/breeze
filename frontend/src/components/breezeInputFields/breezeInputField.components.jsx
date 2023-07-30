@@ -22,73 +22,71 @@ const BreezeInputField = ({
 
 	return (
 		<Fragment>
-			<div className='w-100% flex flex-row content-center justify-center items-center py-2%'>
-				{inputBoxType !== InputFieldStyleType.UNDERLINE ? (
-					<input
-						className={
-							errors && errors[name]
-								? ` mx-1 w-100% rounded-3xl 
-						text-background-color-dark
-						bg-danger-colorWithOpacity
-						px-8 py-4
-						ease-out duration-300
-						outline-none border-none
-						text-fontsize-brittle
-						focus:outline
-						focus:ring-2 focus:bg-danger-colorWithOpacity  focus:ring-danger-color
-						`
-								: ` mx-1 rounded-3xl 
-                            text-background-color-dark
-                            bg-color-TealWithOpacity 
-                            w-100% px-8 py-4
-							ease-out duration-300
-							outline-none border-none
-                            text-fontsize-brittle
-							focus:outline
-                            focus:ring-2 focus:bg-color-TealWithOpacity  focus:ring-color-darkTeal
-                            `
-						}
-						type={type}
-						name={name}
-						placeholder={placeholder}
-						{...register(name, required && validationSchema)}
-						onChange={(e) => {
-							formatRegister.onChange(e);
-							onChangeHandler?.(e);
-						}}
-						// onBlur={(e) => {
-						// 	formatRegister.onBlur(e);
-						// 	onBlurHandler?.(e);
-						// }}
-						// onKeyDown={(e) => {
-						// 	// formatRegister.onKeyDown(e);
-						// 	onKeyDownHandler?.(e);
-						// }}
-						id={name}
-						disabled={disabled}
-						required={required}
-						maxLength={maxLength}
-						onWheel={(e) => e.target.blur()}
-						autoComplete='off'
-					/>
-				) : (
-					<div>
+			<div className='w-100% '>
+				<div
+					tabIndex='0'
+					className={
+						errors && errors[name]
+							? "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-1 justify-center items-center  ring-danger-color focus-within:ring-2 "
+							: "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-1 justify-center items-center  ring-black focus-within:ring-2"
+					}>
+					{inputBoxType !== InputFieldStyleType.UNDERLINE ? (
 						<input
+							className={
+								errors && errors[name]
+									? ` mx-1 w-100% rounded-3xl 
+										py-4
+									px-4 outline-none	
+									text-fontsize-brittle
+						`
+									: `mx-1 rounded-3xl 
+								w-100% px-4 py-4 
+								outline-none	
+								text-fontsize-brittle
+                            `
+							}
 							type={type}
-							class='w-100% border-b-2 border-gray outline-none focus:border-color-darkTeal'
+							name={name}
 							placeholder={placeholder}
+							{...register(name, required && validationSchema)}
+							onChange={(e) => {
+								formatRegister.onChange(e);
+								onChangeHandler?.(e);
+							}}
+							// onBlur={(e) => {
+							// 	formatRegister.onBlur(e);
+							// 	onBlurHandler?.(e);
+							// }}
+							// onKeyDown={(e) => {
+							// 	// formatRegister.onKeyDown(e);
+							// 	onKeyDownHandler?.(e);
+							// }}
+							id={name}
+							disabled={disabled}
+							required={required}
+							maxLength={maxLength}
+							onWheel={(e) => e.target.blur()}
+							autoComplete='off'
 						/>
-					</div>
-				)}
-				{trailingIcon && (
-					<div
-						className={`${
-							iconStyle ? iconStyle : "cursor-pointer absolute right-52 "
-						}`}
-						onClick={iconClickHandler}>
-						{trailingIcon}
-					</div>
-				)}
+					) : (
+						<div>
+							<input
+								type={type}
+								class='w-100% border-b-2 border-gray outline-none focus:border-color-darkTeal'
+								placeholder={placeholder}
+							/>
+						</div>
+					)}
+					{trailingIcon && (
+						<div
+							className={`${
+								iconStyle ? iconStyle : "cursor-pointer relative right-5"
+							}`}
+							onClick={iconClickHandler}>
+							{trailingIcon}
+						</div>
+					)}
+				</div>
 			</div>
 
 			{required && !disabled

@@ -79,101 +79,112 @@ const Login = () => {
 	}, [navigate]);
 
 	return (
-		<div className=' flex flex-col animate-fadeIn'>
+		<div className='flex flex-col animate-fadeIn'>
 			<ToastContainer />
-			<BreezeToggleOnboard
-				label={"Back to "}
-				linkLabel='Signup'
-				link={BreezeRoutes.SIGNUPROUTE}
-			/>
-			<center>
-				<div className='mt-10% w-60% text-fontsize-brittle mx-auto  '>
-					<TypewriterLabel label='Log in with ' />
-					<div className='my-5'>
-						<BreezeInputField
-							type={InputType.EMAIL}
-							name='email'
-							register={register}
-							trailingIcon={
-								<MdEmail
-									style={{
-										color: `var(--color-darkTeal)`,
-										fontSize: `var(--fontsize-glossy)`,
-									}}
-								/>
+
+			<div className='mt-2 cursor-pointer'>
+				<img
+					alt='breeze_logo'
+					width={150}
+					src='https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690743542/Black_logo_-_no_background_cwsfs5.png'
+				/>
+			</div>
+			<div
+				className='flex justify-center flex-col mt-5 '
+				style={{ height: "calc(90vh - 170px)" }}>
+				<div className='mt-10% w-75% items-center  text-fontsize-brittle mx-auto  '>
+					<div className='text-fontsize-tough tracking font-semibold text-background-color-jade'>
+						Welcome back !
+					</div>
+					<div className='mt-16  '>
+						<div className='my-10'>
+							<BreezeInputField
+								type={InputType.EMAIL}
+								name='email'
+								register={register}
+								trailingIcon={
+									<MdEmail
+										style={{
+											color: `text-black`,
+											fontSize: `var(--fontsize-glossy)`,
+										}}
+									/>
+								}
+								errors={errors}
+								validationSchema={{
+									required: "Please enter valid email .",
+									pattern: {
+										value: EmailRegEx.email,
+										message: "Please enter valid email .",
+									},
+								}}
+								placeholder='Email'
+								required
+							/>
+						</div>
+						<div className='my-10'>
+							<BreezeInputField
+								register={register}
+								errors={errors}
+								validationSchema={{
+									required: "Please enter valid password .",
+								}}
+								name='password'
+								type={
+									togglePasswordVisibility ? InputType.PASSWORD : InputType.TEXT
+								}
+								trailingIcon={
+									togglePasswordVisibility ? (
+										<PasswordIconAiFillEyeInvisible />
+									) : (
+										<PasswordIconAiFillEye />
+									)
+								}
+								iconClickHandler={onTogglePassword}
+								placeholder='Password'
+								required
+							/>
+						</div>
+						<div className=' my-5 flex justify-end items-end   text-black '>
+							<div
+								className='w-36 relative cursor-pointer ease-in-out duration-300 hover:tracking-wide '
+								onClick={onForgotPasswordClickHandler}>
+								Forgot Password ?
+							</div>
+						</div>
+						<BreezeButton
+							backgroundColor={`var(--background-color-dark)`}
+							textColor={`var(--text-color-purity)`}
+							label='Get Started'
+							onClickHandler={handleSubmit(loginHandler)}
+						/>
+						<center>
+							<p>Or</p>
+						</center>
+						<BreezeButton
+							icon={
+								"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687718507/google_w2quk4.png"
 							}
-							errors={errors}
-							validationSchema={{
-								required: "Invalid e-mail .",
-								pattern: {
-									value: EmailRegEx.email,
-									message: "Invalid e-mail format",
-								},
-							}}
-							placeholder='E-mail Address'
-							required
+							backgroundColor={`var(--text-color-purity)`}
+							textColor={`var(--text-color-dark)`}
+							label='Log in with Google'
+							onClickHandler={() =>
+								toast.info("Features is coming soon!.", {
+									transition: Slide,
+									icon: "🚀",
+									style: {
+										borderRadius: "1rem",
+										color: "var(--color-darkTeal)",
+										boxShadow:
+											"0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+									},
+									progressStyle: { background: "var(--color-darkTeal)" },
+								})
+							}
 						/>
 					</div>
-					<div className='my-5'>
-						<BreezeInputField
-							register={register}
-							errors={errors}
-							validationSchema={{
-								required: "Invalid password .",
-							}}
-							name='password'
-							type={
-								togglePasswordVisibility ? InputType.PASSWORD : InputType.TEXT
-							}
-							trailingIcon={
-								togglePasswordVisibility ? (
-									<PasswordIconAiFillEyeInvisible />
-								) : (
-									<PasswordIconAiFillEye />
-								)
-							}
-							iconClickHandler={onTogglePassword}
-							placeholder='Password'
-							required
-						/>
-					</div>
-					<div
-						onClick={onForgotPasswordClickHandler}
-						className='mx-2 first-letter:cursor-pointer text-fontsize-brittle font-medium opacity-80 text-color-darkTeal  flex justify-end'>
-						<p>
-							<b>* Forgot Password?</b>{" "}
-						</p>
-					</div>
-					<BreezeButton
-						backgroundColor={`var(--color-darkTeal)`}
-						textColor={`var(--text-color-purity)`}
-						label='Get Started'
-						onClickHandler={handleSubmit(loginHandler)}
-					/>
-					<p>Or</p>
-					<BreezeButton
-						icon={
-							"https://res.cloudinary.com/dtjqyp0r2/image/upload/v1687718507/google_w2quk4.png"
-						}
-						backgroundColor={`var(--text-color-purity)`}
-						textColor={`var(--text-color-dark)`}
-						label='Log in with Google'
-						onClickHandler={() =>
-							toast.info("Features is coming soon!.", {
-								transition: Slide,
-								icon: "🚀",
-								style: {
-									borderRadius: "1rem",
-									color: "var(--color-darkTeal)",
-									boxShadow:
-										"0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-								},
-								progressStyle: { background: "var(--color-darkTeal)" },
-							})
-						}
-					/>
 				</div>
-			</center>
+			</div>
 		</div>
 	);
 };

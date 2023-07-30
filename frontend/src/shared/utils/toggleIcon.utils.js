@@ -4,7 +4,7 @@ export const PasswordIconAiFillEyeInvisible = () => {
 	return (
 		<AiFillEyeInvisible
 			style={{
-				color: `var(--color-darkTeal)`,
+				color: `text-black`,
 				fontSize: `var(--fontsize-glossy)`,
 			}}
 		/>
@@ -15,7 +15,7 @@ export const PasswordIconAiFillEye = () => {
 	return (
 		<AiFillEye
 			style={{
-				color: `var(--color-darkTeal)`,
+				color: `text-black`,
 				fontSize: `var(--fontsize-glossy)`,
 			}}
 		/>
