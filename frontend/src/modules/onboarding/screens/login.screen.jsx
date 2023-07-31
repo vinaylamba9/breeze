@@ -91,9 +91,9 @@ const Login = () => {
 			</div>
 			<div
 				className='flex justify-center flex-col mt-5 '
-				style={{ height: "calc(90vh - 170px)" }}>
+				style={{ minHeight: "calc(90vh - 170px)" }}>
 				<div className='mt-10% w-75% items-center  text-fontsize-brittle mx-auto  '>
-					<div className='text-fontsize-tough tracking font-semibold text-background-color-jade'>
+					<div className=' text-fontsize-tough tracking font-semibold text-background-color-jade'>
 						Welcome back !
 					</div>
 					<div className='mt-16  '>
@@ -122,7 +122,7 @@ const Login = () => {
 								required
 							/>
 						</div>
-						<div className='my-10'>
+						<div className='mt-10 mb-5'>
 							<BreezeInputField
 								register={register}
 								errors={errors}
@@ -145,9 +145,9 @@ const Login = () => {
 								required
 							/>
 						</div>
-						<div className=' my-5 flex justify-end items-end   text-black '>
+						<div className=' -mt-2 mb-5 flex justify-end items-end   text-black '>
 							<div
-								className='w-36 relative cursor-pointer ease-in-out duration-300 hover:tracking-wide '
+								className=' relative cursor-pointer ease-in-out duration-300'
 								onClick={onForgotPasswordClickHandler}>
 								Forgot Password ?
 							</div>
@@ -155,7 +155,7 @@ const Login = () => {
 						<BreezeButton
 							backgroundColor={`var(--background-color-dark)`}
 							textColor={`var(--text-color-purity)`}
-							label='Get Started'
+							label='Log in'
 							onClickHandler={handleSubmit(loginHandler)}
 						/>
 						<center>
@@ -182,6 +182,14 @@ const Login = () => {
 								})
 							}
 						/>
+						<center className='my-10'>
+							<span className='text-gray-500 flex items-center justify-center gap-2'>
+								Don't have an account ?{" "}
+								<p className='text-black cursor-pointer hover:underline ease-in-out duration-300'>
+									<b>Sign up</b>
+								</p>
+							</span>
+						</center>
 					</div>
 				</div>
 			</div>

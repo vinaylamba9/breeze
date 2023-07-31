@@ -17,6 +17,7 @@ const BreezeInputField = ({
 	validationSchema,
 	iconStyle,
 	inputBoxType,
+	label,
 }) => {
 	const formatRegister = { ...register(name, required && validationSchema) };
 
@@ -27,8 +28,8 @@ const BreezeInputField = ({
 					tabIndex='0'
 					className={
 						errors && errors[name]
-							? "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-1 justify-center items-center  ring-danger-color focus-within:ring-2 "
-							: "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-1 justify-center items-center  ring-black focus-within:ring-2"
+							? "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-2 justify-center items-center  ring-danger-color focus-within:ring-2 active:ring-black "
+							: "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-2 justify-center items-center  ring-black focus-within:ring-2 active:ring-black"
 					}>
 					{inputBoxType !== InputFieldStyleType.UNDERLINE ? (
 						<input
