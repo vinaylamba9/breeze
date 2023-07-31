@@ -33,6 +33,43 @@ const Signup = () => {
 		formState: { errors },
 	} = useForm({});
 
+	const signupHandler = useCallback(
+		async (d) => {
+			const response = await userDAO.signupDAO({
+				name: d?.fullName,
+				email: d?.email,
+				password: d?.password,
+			});
+
+			if (response?.statusCode === HTTPStatusCode.OK) {
+				navigate(BreezeRoutes.CHATROUTE);
+			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+				return toast.error(response?.responseBody?.errors?.[0]?.msg, {
+					transition: Slide,
+					style: {
+						borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--danger-color)" },
+				});
+			} else if (
+				response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
+				response?.statusCode === HTTPStatusCode.NOT_FOUND
+			) {
+				return toast.error(response?.responseBody, {
+					transition: Slide,
+					style: {
+						borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--danger-color)" },
+				});
+			}
+		},
+		[navigate]
+	);
 	useEffect(() => {
 		let login = BreezeSessionManagement.getAPIKey();
 		if (login) navigate(BreezeRoutes.CHATROUTE);
@@ -101,10 +138,10 @@ const Signup = () => {
 									}
 									errors={errors}
 									validationSchema={{
-										required: "Please enter valid email .",
+										required: "Please enter the valid email .",
 										pattern: {
 											value: EmailRegEx.email,
-											message: "Please enter valid email .",
+											message: "Please enter the valid email .",
 										},
 									}}
 									placeholder='Email'
@@ -116,7 +153,7 @@ const Signup = () => {
 									register={register}
 									errors={errors}
 									validationSchema={{
-										required: "Please enter valid password .",
+										required: "Please enter the valid password .",
 									}}
 									name='password'
 									type={
@@ -141,7 +178,7 @@ const Signup = () => {
 								backgroundColor={`var(--background-color-dark)`}
 								textColor={`var(--text-color-purity)`}
 								label='Sign up'
-								// onClickHandler={handleSubmit(loginHandler)}
+								onClickHandler={handleSubmit(signupHandler)}
 							/>
 							<center>
 								<p>Or</p>
@@ -167,7 +204,7 @@ const Signup = () => {
 									})
 								}
 							/>
-							<center className='my-10'>
+							<center className='mt-10 mb-2'>
 								<span className='text-gray-500 flex items-center justify-center gap-2'>
 									Already have an account ?{" "}
 									<Link to={BreezeRoutes.LOGINROUTE}>

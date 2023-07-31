@@ -93,13 +93,13 @@ const BreezeInputField = ({
 			{required && !disabled
 				? errors &&
 				  errors[name] && (
-						<div className='text-danger-color text-left   text-fontsize-brittle  mt-1 mx-1  '>
+						<div className='text-danger-color text-left  text-sm  mt-1 mx-1  '>
 							{errors[name]?.message && `* ${errors[name]?.message}`}
 						</div>
 				  )
 				: false}
 			{isError && (
-				<div className='text-danger-color text-left  text-fontsize-brittle  mt-1 mx-1'>
+				<div className='text-danger-color text-left text-sm  mt-1 mx-1'>
 					* {errorMsg}
 				</div>
 			)}
