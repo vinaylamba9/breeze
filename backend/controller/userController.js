@@ -44,9 +44,8 @@ const userController = {
 					let signupData = {
 						email: req.body.email,
 						password: req.body.password,
-						profileImage: req.body.profileImage,
 						name: req.body.name,
-						isVerified: AccountInitFrom.SELF != req.body.accountInItFrom,
+						isVerified: AccountInitFrom.SELF !== req.body.accountInItFrom,
 						accountInItFrom: req.body.accountInItFrom,
 						accountStatus: AccountStatus.ACTIVE,
 					};
@@ -66,13 +65,11 @@ const userController = {
 								otp: BASIC_UTILS.otpGenrator(6),
 								otpValidTill: Date.now() + TimeInMs.MIN5,
 							};
-
 							const userUpdated = await DB_UTILS.updateOneById(
 								userModel,
 								signedUpResponse["_id"],
 								updatedObject
 							);
-
 							if (userUpdated) {
 								let emailResponse = await EMAIL_SERVICES.sendOTPVerification(
 									userUpdated,
@@ -200,7 +197,6 @@ const userController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				const dbResponse = await DB_UTILS.findByEmail(req.body.email);
-
 				if (dbResponse) {
 					let isOnTime = BASIC_UTILS.timeON.isTimeLimitAvailable(
 						Date.now(),
@@ -247,6 +243,57 @@ const userController = {
 					responseStatusCode = HTTPStatusCode.FORBIDDEN;
 					responseMessage = HTTPStatusCode.FORBIDDEN;
 					responseData = "User not found.";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
+	// In case of OTP expires
+	resendOTP: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseData = errors;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+			} else {
+				let dbResponse = await DB_UTILS.findByEmail(req.body.email);
+				if (dbResponse) {
+					const userDetails = {
+						otp: BASIC_UTILS.otpGenrator(6),
+						otpValidTill: Date.now() + TimeInMs.MIN5,
+					};
+					const userUpdated = await DB_UTILS.updateOneById(
+						userModel,
+						dbResponse?._id,
+						userDetails
+					);
+
+					let emailResponse = await EMAIL_SERVICES.sendOTPVerification(
+						userUpdated,
+						MailSubject.ACCOUNT_VERIFICATION
+					);
+					if (emailResponse) {
+						responseMessage = HTTPStatusCode.OK;
+						responseStatusCode = HTTPStatusCode.OK;
+						responseData = "OTP sent successfully.Please verify it.";
+					} else {
+						responseMessage = HTTPStatusCode.BAD_REQUEST;
+						responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+						responseData = "Unable to send OTP to the email.";
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.NOT_FOUND;
+					responseMessage = HTTPStatusCode.NOT_FOUND;
+					responseData = "USER NOT FOUND";
 				}
 			}
 		} catch (error) {

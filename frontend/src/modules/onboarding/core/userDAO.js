@@ -63,7 +63,14 @@ export const userDAO = {
 			const signupResult = await userAPI.signup(userData);
 			if (signupResult) {
 				const statusCode = signupResult["statusCode"];
+				console.log(signupResult);
 				if (statusCode === HTTPStatusCode.CREATED) {
+					console.log(signupResult);
+				} else if (statusCode === HTTPStatusCode.OK) {
+					return {
+						statusCode: HTTPStatusCode.OK,
+						responseBody: signupResult?.responseBody,
+					};
 				} else if (statusCode === HTTPStatusCode.FORBIDDEN) {
 					return signupResult;
 				}

@@ -1,8 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-const OnboardingLayout = ({ children }) => {
-	const location = useLocation();
-	console.log(location, "-location");
+const OnboardingLayout = () => {
 	return (
 		<div className='h-screen flex items-center'>
 			<div className='flex w-99% justify-between m-auto h-98% '>

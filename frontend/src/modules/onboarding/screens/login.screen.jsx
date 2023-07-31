@@ -97,7 +97,7 @@ const Login = () => {
 							Welcome back !
 						</div>
 						<div className='mt-16  '>
-							<div className='my-10'>
+							<div className='mt-5 mb-10'>
 								<BreezeInputField
 									type={InputType.EMAIL}
 									name='email'
@@ -112,22 +112,22 @@ const Login = () => {
 									}
 									errors={errors}
 									validationSchema={{
-										required: "Please enter valid email .",
+										required: "Please enter the valid email.",
 										pattern: {
 											value: EmailRegEx.email,
-											message: "Please enter valid email .",
+											message: "Please enter the valid email.",
 										},
 									}}
 									placeholder='Email'
 									required
 								/>
 							</div>
-							<div className='mt-10 mb-5'>
+							<div className='mt-5 mb-5'>
 								<BreezeInputField
 									register={register}
 									errors={errors}
 									validationSchema={{
-										required: "Please enter valid password .",
+										required: "Please enter the valid password .",
 									}}
 									name='password'
 									type={
