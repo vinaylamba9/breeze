@@ -1,6 +1,8 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const OnboardingLayout = ({ children }) => {
+	const location = useLocation();
+	console.log(location, "-location");
 	return (
 		<div className='h-screen flex items-center'>
 			<div className='flex w-99% justify-between m-auto h-98% '>
@@ -12,13 +14,7 @@ const OnboardingLayout = ({ children }) => {
 					style={{
 						backgroundImage:
 							"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690787526/li-zhang-xRRQlR8Qu-Y-unsplash_ufpdzj.jpg)",
-					}}>
-					{/* <div className='absolute  right-10 top-5 bg-white  cursor-pointer rounded-3xl py-3 px-8 tracking ease-out duration-300 hover:tracking-wide '>
-						<h1 className=' text-fontsize-brittle font-medium text-black'>
-							Signup
-						</h1>
-					</div> */}
-				</div>
+					}}></div>
 			</div>
 		</div>
 	);
