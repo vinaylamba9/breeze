@@ -27,7 +27,9 @@ const BreezeInputField = ({
 				<div
 					tabIndex='0'
 					className={
-						errors && errors[name]
+						disabled
+							? "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-2 justify-center items-center  bg-gray-100 ring-gray-100  focus-within:ring-2 focus-within:ring-gray-100 active:ring-gray-100 "
+							: errors && errors[name]
 							? "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-2 justify-center items-center  ring-danger-color focus-within:ring-2 active:ring-black "
 							: "w-100% flex flex-row ease-out duration-300 cursor-pointer content-center rounded-3xl ring-2 justify-center items-center  ring-black focus-within:ring-2 active:ring-black"
 					}>
@@ -38,14 +40,15 @@ const BreezeInputField = ({
 									? ` mx-1 w-100% rounded-3xl 
 										py-4
 									px-4 outline-none	
-									text-fontsize-brittle
+									text-fontsize-brittle bg-transparent
 						`
 									: `mx-1 rounded-3xl 
-								w-100% px-4 py-4 
+								w-100% px-4 py-4  bg-transparent
 								outline-none	
 								text-fontsize-brittle
                             `
 							}
+							maxLength={maxLength}
 							type={type}
 							name={name}
 							placeholder={placeholder}
@@ -65,7 +68,6 @@ const BreezeInputField = ({
 							id={name}
 							disabled={disabled}
 							required={required}
-							maxLength={maxLength}
 							onWheel={(e) => e.target.blur()}
 							autoComplete='off'
 						/>
@@ -81,7 +83,11 @@ const BreezeInputField = ({
 					{trailingIcon && (
 						<div
 							className={`${
-								iconStyle ? iconStyle : "cursor-pointer relative right-5"
+								iconStyle
+									? iconStyle
+									: disabled
+									? "opacity-50 cursor-pointer relative right-5"
+									: "cursor-pointer relative right-5"
 							}`}
 							onClick={iconClickHandler}>
 							{trailingIcon}

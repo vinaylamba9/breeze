@@ -92,7 +92,6 @@ router.post(
 			.trim()
 			.isEmail()
 			.withMessage("Please enter a valid Email."),
-		check("name").notEmpty().withMessage("Name is required.").trim(),
 	],
 	userController.resendOTP
 );

@@ -12,7 +12,6 @@ import {
 	PasswordIconAiFillEye,
 	PasswordIconAiFillEyeInvisible,
 } from "@Shared/utils/toggleIcon.utils.js";
-
 import { userDAO } from "@/modules/onboarding/core/userDAO.js";
 import { HTTPStatusCode } from "@Constants/network";
 import { AccountInitFrom, EmailRegEx, InputType } from "@Constants/application";
@@ -22,7 +21,6 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 
 const Signup = () => {
 	const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
-
 	const navigate = useNavigate();
 
 	const {
@@ -33,43 +31,45 @@ const Signup = () => {
 		formState: { errors },
 	} = useForm({});
 
-	const signupHandler = useCallback(async (d) => {
-		const response = await userDAO.signupDAO({
-			name: d?.fullName,
-			email: d?.email,
-			password: d?.password,
-			accountInItFrom: AccountInitFrom.SELF,
-		});
-
-		// console.log(response, "-response");
-
-		// if (response?.statusCode === HTTPStatusCode.OK) {
-		// 	navigate(BreezeRoutes.CHATROUTE);
-		// } else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
-		// 	return toast.error(response?.responseBody?.errors?.[0]?.msg, {
-		// 		transition: Slide,
-		// 		style: {
-		// 			borderRadius: "1rem",
-		// 			color: "var(--color-darkTeal)",
-		// 			boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-		// 		},
-		// 		progressStyle: { background: "var(--danger-color)" },
-		// 	});
-		// } else if (
-		// 	response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
-		// 	response?.statusCode === HTTPStatusCode.NOT_FOUND
-		// ) {
-		// 	return toast.error(response?.responseBody, {
-		// 		transition: Slide,
-		// 		style: {
-		// 			borderRadius: "1rem",
-		// 			color: "var(--color-darkTeal)",
-		// 			boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-		// 		},
-		// 		progressStyle: { background: "var(--danger-color)" },
-		// 	});
-		// }
-	}, []);
+	const signupHandler = useCallback(
+		async (d) => {
+			const response = await userDAO.signupDAO({
+				name: d?.fullName,
+				email: d?.email,
+				password: d?.password,
+				accountInItFrom: AccountInitFrom.SELF,
+			});
+			if (response?.statusCode === HTTPStatusCode.OK) {
+				navigate(BreezeRoutes.OTPVERIFICATIONROUTE, {
+					state: { email: response?.responseBody?.data?.email },
+				});
+			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+				return toast.error(response?.responseBody?.errors?.[0]?.msg, {
+					transition: Slide,
+					style: {
+						borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--danger-color)" },
+				});
+			} else if (
+				response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
+				response?.statusCode === HTTPStatusCode.NOT_FOUND
+			) {
+				return toast.error(response?.responseBody, {
+					transition: Slide,
+					style: {
+						borderRadius: "1rem",
+						color: "var(--color-darkTeal)",
+						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+					},
+					progressStyle: { background: "var(--danger-color)" },
+				});
+			}
+		},
+		[navigate]
+	);
 	useEffect(() => {
 		let login = BreezeSessionManagement.getAPIKey();
 		if (login) navigate(BreezeRoutes.CHATROUTE);

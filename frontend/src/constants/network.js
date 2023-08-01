@@ -24,6 +24,8 @@ export class UserType {
 	static UPDATEPASSWORD = "/updatepassword";
 	static GET_ALL_USERS = "/getall";
 	static UPDATE_USER_BY_USERID = "/updateUserByUserID";
+	static RESEND_OTP = "/resendOTP";
+	static VERIFY_OTP = "/verifyotp";
 }
 
 export class ChatType {

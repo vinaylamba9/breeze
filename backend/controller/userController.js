@@ -79,7 +79,10 @@ const userController = {
 								if (emailResponse) {
 									responseMessage = HTTPStatusCode.OK;
 									responseStatusCode = HTTPStatusCode.OK;
-									responseData = "OTP sent successfully.Please verify it.";
+									responseData = {
+										message: "OTP sent successfully.Please verify it.",
+										email: signedUpResponse?.["email"],
+									};
 								} else {
 									responseMessage = HTTPStatusCode.BAD_REQUEST;
 									responseStatusCode = HTTPStatusCode.BAD_REQUEST;

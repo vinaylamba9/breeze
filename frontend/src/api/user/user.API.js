@@ -48,10 +48,42 @@ export const userAPI = {
 			MethodType.POST +
 			UserType.FORGOTPASSWORD;
 		try {
-			let response = await BreezeHttpService.sendPostRequest();
+			let response = await httpCall.sendPostRequest();
 			return response;
 		} catch (error) {
 			return errorDebug(error, "userAPI.forgotpassword()");
+		}
+	},
+	resendOTP: async function (userData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.dataToSend = userData;
+		httpCall.setAuthRequired = false;
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.USER +
+			MethodType.POST +
+			UserType.RESEND_OTP;
+		try {
+			let response = await httpCall.sendPostRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "userAPI.resendOTP()");
+		}
+	},
+	verifyOTP: async function (userData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.dataToSend = userData;
+		httpCall.setAuthRequired = false;
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.USER +
+			MethodType.POST +
+			UserType.VERIFY_OTP;
+		try {
+			let response = await httpCall.sendPostRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "userAPI.verifyOTP()");
 		}
 	},
 	updatePassword: async function (userData) {

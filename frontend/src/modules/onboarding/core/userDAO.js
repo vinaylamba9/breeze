@@ -63,9 +63,8 @@ export const userDAO = {
 			const signupResult = await userAPI.signup(userData);
 			if (signupResult) {
 				const statusCode = signupResult["statusCode"];
-				console.log(signupResult);
 				if (statusCode === HTTPStatusCode.CREATED) {
-					console.log(signupResult);
+					return signupResult;
 				} else if (statusCode === HTTPStatusCode.OK) {
 					return {
 						statusCode: HTTPStatusCode.OK,
@@ -78,6 +77,27 @@ export const userDAO = {
 			return signupResult;
 		} catch (error) {
 			return errorDebug(error, "userDAO.signupDAO");
+		}
+	},
+	verifyOTPDAO: async function (userData) {
+		try {
+			const verifyOTPResponse = await userAPI.verifyOTP(userData);
+			if (verifyOTPResponse) {
+				const statusCode = verifyOTPResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					return verifyOTPResponse;
+				} else if (statusCode === HTTPStatusCode.FORBIDDEN) {
+					return {
+						statusCode: HTTPStatusCode.FORBIDDEN,
+						responseBody: verifyOTPResponse?.responseBody,
+					};
+				} else if (statusCode === HTTPStatusCode.FORBIDDEN) {
+					return verifyOTPResponse;
+				}
+			}
+			return verifyOTPResponse;
+		} catch (error) {
+			return errorDebug(error, "userDAO.verifyOTPDAO");
 		}
 	},
 	forgotPasswordDAO: async function (userData) {
@@ -98,6 +118,26 @@ export const userDAO = {
 			}
 		} catch (error) {
 			return errorDebug(error, "userDAO.forgotPasswordDAO");
+		}
+	},
+	resendOTPDAO: async function (userData) {
+		try {
+			const resendOTPResponse = await userAPI.resendOTP(userData);
+			if (resendOTPResponse) {
+				const statusCode = resendOTPResponse["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					return {
+						statusCode: statusCode,
+						responseBody: resendOTPResponse.responseBody.data,
+					};
+				} else if (statusCode === HTTPStatusCode.FORBIDDEN) {
+					return resendOTPResponse;
+				} else if (statusCode === HTTPStatusCode.BAD_REQUEST) {
+					return resendOTPResponse;
+				}
+			}
+		} catch (error) {
+			return errorDebug(error, "userDAO.resendOTPDAO");
 		}
 	},
 	updatePasswordDAO: async function (userData) {

@@ -14,18 +14,19 @@ const BreezeButton = ({
 				disabled={isDisabled}
 				onClick={onClickHandler}
 				style={{
+					boxShadow: "0 3px 16px rgba(0,0,0,0.03), 0 3px 26px rgba(0,0,0,0.09)",
 					backgroundColor: !isDisabled && backgroundColor,
 					color: !isDisabled && textColor,
 				}}
-				className={`mx-1 rounded-3xl  drop-shadow
+				className={` rounded-3xl  
 				text-background-color-dark
 				${isDisabled ? "bg-color-slate" : "bg-color-TealWithOpacity "}
 				w-100% px-8 py-4
 				ease-out duration-300
-				outline-none border-none
+					outline-none
+				border-none
 				text-fontsize-brittle
-				focus:outline
-				focus:ring-2 focus:bg-color-TealWithOpacity  focus:ring-color-darkTeal ${buttonClass}	`}>
+				${buttonClass}	`}>
 				<div className='flex justify-center items-center gap-5'>
 					{icon && (
 						<span className='left-0'>

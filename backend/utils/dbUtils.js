@@ -81,11 +81,8 @@ const DB_UTILS = {
 		try {
 			let dbResponse = await modelName
 				.find({ _id: { $ne: loggedInUserID } })
-				.select(
-					" -accountInItFrom  -isVerified -createdAt -updatedAt -otp -otpValidTill"
-				);
-
-			return dbResponse;
+				.select(" -accountInItFrom  -createdAt -updatedAt -otp -otpValidTill");
+			return dbResponse?.filter((item) => item?.isVerified);
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };
 		}
