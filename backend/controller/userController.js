@@ -404,6 +404,7 @@ const userController = {
 							}
 						} else {
 							responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+							responseMessage = HTTPStatusCode.BAD_REQUEST;
 							responseData = "OTP IS NOT MATCHED.";
 						}
 					} else {

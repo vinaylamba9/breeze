@@ -110,7 +110,10 @@ export const userDAO = {
 					};
 				} else if (statusCode === HTTPStatusCode.FORBIDDEN) {
 					return forgotPasswordResult;
-				} else if (statusCode === HTTPStatusCode.BAD_REQUEST) {
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.NOT_FOUND
+				) {
 					return forgotPasswordResult;
 				}
 			}
