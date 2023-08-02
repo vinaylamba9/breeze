@@ -47,7 +47,6 @@ const MessageController = {
 					const createMessage = await MESSAGE_DB_UTILS.createMessage(
 						formattedData
 					);
-
 					const findChatAndUpdate = await CHAT_DB_UTILS.updateLatestMessage(
 						req.body.chatID,
 						createMessage

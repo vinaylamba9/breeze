@@ -1,9 +1,11 @@
+import BreezeSidebar from "@Components/breezeSidebar/breezeSidebar.components";
 import { Outlet } from "react-router-dom";
 
 const PostOnboardingLayout = () => {
 	return (
-		<div className='h-screen  bg-gray-100 flex items-center  '>
-			<div className='w-98% h-98% m-auto '>
+		<div className='h-screen w-screen bg-gray-100 flex items-start justify-start '>
+			<BreezeSidebar />
+			<div className='flex-1 m-auto '>
 				<div className='mx-auto'>
 					<Outlet />
 				</div>
