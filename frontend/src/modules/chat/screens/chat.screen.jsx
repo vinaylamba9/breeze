@@ -194,14 +194,12 @@ const ChatScreen = () => {
 					<ChatNotFound isLoading={isLoading} />
 				) : (
 					<div
-						className='  flex xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%'
-						style={{ height: "calc(100vh - 140px)" }}>
-						<div
-							className='flex w-100%  rounded-xl  justify-between gap-5 items-center my-auto mx-auto'
-							style={{ height: "calc(100vh - 160px)" }}>
+						className='  flex xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100% '
+						style={{ height: "calc(100vh - 85px)" }}>
+						<div className='flex w-100%  rounded-xl  items-start justify-between gap-5  m-auto'>
 							<div
 								className='bg-white rounded-xl overflow-y-auto xs:w-100% sm:w-100% md:w-30% lg:w-30% xl:w-30%'
-								style={{ height: "calc(100vh - 170px)" }}>
+								style={{ height: "calc(100vh - 88px)" }}>
 								{isLoading ? (
 									<BreezeTileSkeleton tileLength={7} />
 								) : (
@@ -261,7 +259,7 @@ const ChatScreen = () => {
 							</div>
 							<div
 								className='bg-white rounded-xl overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
-								style={{ height: "calc(100vh - 170px)" }}>
+								style={{ height: "calc(100vh - 88px)" }}>
 								{!selectedChat ? (
 									<ChatNotFound />
 								) : (

@@ -5,7 +5,7 @@ const BreezeTooltip = ({ children, id }) => {
 	return (
 		<Fragment>
 			<a>{children}</a>
-			<Tooltip id={id} />
+			<Tooltip id={id} className='z-40' />
 		</Fragment>
 	);
 };

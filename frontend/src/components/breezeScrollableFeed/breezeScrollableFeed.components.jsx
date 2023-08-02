@@ -58,7 +58,7 @@ const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
 			style={{
 				background:
 					"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690138802/subtle-prism_2_iyfq9l.png)",
-				height: isTyping ? "calc(100vh - 320px)" : "calc(100vh - 290px)",
+				height: isTyping ? "calc(100vh - 240px)" : "calc(100vh - 210px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}

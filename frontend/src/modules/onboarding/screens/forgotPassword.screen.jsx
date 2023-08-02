@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { MdEmail, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { IoKeypad } from "react-icons/io5";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import { userDAO } from "@/modules/onboarding/core/userDAO.js";
 import { HTTPStatusCode } from "@Constants/network";
 import { EmailRegEx, InputType } from "@Constants/application";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BreezeRoutes from "@Constants/routes";
 import useIconToggle from "@Shared/hooks/useIconToggle.js";
 import {

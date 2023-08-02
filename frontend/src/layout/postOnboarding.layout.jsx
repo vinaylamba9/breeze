@@ -2,11 +2,8 @@ import { Outlet } from "react-router-dom";
 
 const PostOnboardingLayout = () => {
 	return (
-		<div className='h-screen  bg-color-slate '>
-			<div className='w-90% mx-auto'>
-				<h1 className=' drop-shadow-md 	text-3xl py-2 text-color-darkTeal font-bold text-fontsize-pearl first-letter:text-4xl'>
-					Breeze
-				</h1>
+		<div className='h-screen  bg-gray-100 flex items-center  '>
+			<div className='w-98% h-98% m-auto '>
 				<div className='mx-auto'>
 					<Outlet />
 				</div>
