@@ -10,12 +10,11 @@ export const userDAO = {
 	loginDAO: async function (userData) {
 		try {
 			const loginResult = await userAPI.login(userData);
-
+			console.log(loginResult);
 			if (loginResult) {
 				const statusCode = loginResult["statusCode"];
 				if (statusCode === HTTPStatusCode.OK) {
 					const tempResult = loginResult.responseBody;
-
 					let _userAccount = new UserAccountModel({
 						userId: tempResult?.data?._id,
 						name: tempResult?.data?.name,
@@ -46,8 +45,7 @@ export const userDAO = {
 						};
 					}
 				} else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
-					let deletedResponse = BreezeSessionManagement.deleteAllSession();
-					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+					return loginResult;
 				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
 					return loginResult;
 				} else if (statusCode === HTTPStatusCode.BAD_REQUEST) {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { IoKeypad } from "react-icons/io5";
 import { useForm } from "react-hook-form";
@@ -6,34 +6,34 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BreezeButton from "@Components/breezeButton/breezeButton.components.jsx";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
-
+import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import { userDAO } from "@/modules/onboarding/core/userDAO.js";
 import { HTTPStatusCode } from "@Constants/network";
 import { EmailRegEx, InputType } from "@Constants/application";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BreezeRoutes from "@Constants/routes";
 
 const OTPScreen = () => {
 	const navigate = useNavigate();
 	const { state } = useLocation();
-
+	const [isLoading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
-		setError,
-		watch,
 		setValue,
 		formState: { errors },
 	} = useForm({});
 
 	const verifyAccountHandler = useCallback(
 		async (d) => {
+			setLoading(true);
 			const response = await userDAO.verifyOTPDAO({
 				email: state?.email,
 				otp: d?.otp,
 			});
 
-			if (response?.statusCode === HTTPStatusCode.FORBIDDEN) {
+			if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+				setLoading(false);
 				return toast.info(response?.responseBody, {
 					transition: Slide,
 					style: {
@@ -44,6 +44,7 @@ const OTPScreen = () => {
 					progressStyle: { background: "var(--background-color-dark)" },
 				});
 			} else if (response?.statusCode === HTTPStatusCode.OK) {
+				setLoading(false);
 				navigate(BreezeRoutes.LOGINROUTE);
 			}
 		},
@@ -51,8 +52,10 @@ const OTPScreen = () => {
 	);
 
 	const resendOTPHandler = useCallback(async () => {
+		setLoading(true);
 		const response = await userDAO.resendOTPDAO({ email: state?.email });
 		if (response?.statusCode === HTTPStatusCode.OK) {
+			setLoading(false);
 			return toast.info("OTP sent to your email.", {
 				transition: Slide,
 				style: {
@@ -63,7 +66,6 @@ const OTPScreen = () => {
 				progressStyle: { background: "var(--background-color-dark)" },
 			});
 		}
-		console.log(response, "-response");
 	}, [state?.email]);
 	useEffect(() => {
 		!state?.email
@@ -145,6 +147,13 @@ const OTPScreen = () => {
 							</div>
 
 							<BreezeButton
+								loaderComponent={
+									<BreezeLoader
+										height='h-6'
+										width='w-6'
+										loaderColor={"white"}
+										isLoading={isLoading}></BreezeLoader>
+								}
 								backgroundColor={`var(--background-color-dark)`}
 								textColor={`var(--text-color-purity)`}
 								label='Verify your account'

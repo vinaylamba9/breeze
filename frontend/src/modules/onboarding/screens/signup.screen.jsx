@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BreezeButton from "@Components/breezeButton/breezeButton.components.jsx";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
-
+import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import useIconToggle from "@Shared/hooks/useIconToggle.js";
 import {
 	PasswordIconAiFillEye,
@@ -22,17 +22,16 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 const Signup = () => {
 	const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
 	const navigate = useNavigate();
-
+	const [isLoading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
-		setError,
-		watch,
 		formState: { errors },
 	} = useForm({});
 
 	const signupHandler = useCallback(
 		async (d) => {
+			setLoading(true);
 			const response = await userDAO.signupDAO({
 				name: d?.fullName,
 				email: d?.email,
@@ -40,10 +39,12 @@ const Signup = () => {
 				accountInItFrom: AccountInitFrom.SELF,
 			});
 			if (response?.statusCode === HTTPStatusCode.OK) {
+				setLoading(false);
 				navigate(BreezeRoutes.OTPVERIFICATIONROUTE, {
 					state: { email: response?.responseBody?.data?.email },
 				});
 			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+				setLoading(false);
 				return toast.error(response?.responseBody?.errors?.[0]?.msg, {
 					transition: Slide,
 					style: {
@@ -57,6 +58,7 @@ const Signup = () => {
 				response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
 				response?.statusCode === HTTPStatusCode.NOT_FOUND
 			) {
+				setLoading(false);
 				return toast.error(response?.responseBody, {
 					transition: Slide,
 					style: {
@@ -175,6 +177,13 @@ const Signup = () => {
 							</div>
 
 							<BreezeButton
+								loaderComponent={
+									<BreezeLoader
+										height='h-6'
+										width='w-6'
+										loaderColor={"white"}
+										isLoading={isLoading}></BreezeLoader>
+								}
 								backgroundColor={`var(--background-color-dark)`}
 								textColor={`var(--text-color-purity)`}
 								label='Sign up'
@@ -191,16 +200,18 @@ const Signup = () => {
 								textColor={`var(--text-color-dark)`}
 								label='Sign up with Google'
 								onClickHandler={() =>
-									toast.info("Features is coming soon!.", {
+									toast.info("Feature is coming soon!.", {
 										transition: Slide,
 										icon: "🚀",
 										style: {
 											borderRadius: "1rem",
-											color: "var(--color-darkTeal)",
+											color: "var(--background-color-dark)",
 											boxShadow:
 												"0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 										},
-										progressStyle: { background: "var(--color-darkTeal)" },
+										progressStyle: {
+											background: "var(--background-color-dark)",
+										},
 									})
 								}
 							/>

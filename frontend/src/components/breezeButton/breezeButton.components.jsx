@@ -6,6 +6,7 @@ const BreezeButton = ({
 	textColor,
 	buttonClass,
 	width,
+	loaderComponent,
 	isDisabled = false,
 }) => {
 	return (
@@ -27,15 +28,14 @@ const BreezeButton = ({
 				border-none
 				text-fontsize-brittle
 				${buttonClass}	`}>
-				<div className='flex justify-center items-center gap-5'>
-					{icon && (
-						<span className='left-0'>
-							<img src={icon} height='20' width='20' alt='google' />
-						</span>
-					)}
-					<span className='ease-out duration-300 hover:tracking-wide text-base'>
+				<div className='flex  ease-in-out duration-300 justify-center items-center gap-5 '>
+					<div>
+						{icon && <img src={icon} height='20' width='20' alt='google' />}
+					</div>
+					<span className='ease-out duration-300 hover:tracking-wide text-base '>
 						{label}
 					</span>
+					{loaderComponent && loaderComponent}
 				</div>
 			</button>
 		</div>

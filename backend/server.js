@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
 	socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
 	socket.on("newMessage", (newMsgRecieved) => {
 		const chat = newMsgRecieved?.chat;
-		if (!chat?.users) return console.log("NO CHATS DEFINED");
+		if (!chat?.users) return;
 		chat?.users?.forEach((user) => {
 			if (user?._id === newMsgRecieved?.sender?._id) return;
 			socket.in(user?._id).emit("messageRecieved", newMsgRecieved);

@@ -157,7 +157,7 @@ const userController = {
 								if (emailResponse) {
 									responseMessage = HTTPStatusCode.OK;
 									responseStatusCode = HTTPStatusCode.OK;
-									responseData = "OTP sent successfully. Please verify it.";
+									responseData = "OTP SENT SUCCESSFULLY. PLEASE VERIFY IT";
 								} else {
 									responseMessage = HTTPStatusCode.BAD_REQUEST;
 									responseStatusCode = HTTPStatusCode.BAD_REQUEST;
@@ -166,18 +166,18 @@ const userController = {
 							} else {
 								responseStatusCode = HTTPStatusCode.BAD_REQUEST;
 								responseMessage = HTTPStatusCode.BAD_REQUEST;
-								responseData = "Unable to send OTP to the email.";
+								responseData = "UNABLE TO SENT OTP TO MAIL.";
 							}
 						}
 					} else {
 						responseStatusCode = HTTPStatusCode.UNAUTHORIZED;
 						responseMessage = HTTPStatusCode.UNAUTHORIZED;
-						responseData = "Password is not matching.";
+						responseData = "INCORRECT PASSWORD.";
 					}
 				} else {
 					responseStatusCode = HTTPStatusCode.NOT_FOUND;
 					responseMessage = HTTPStatusCode.NOT_FOUND;
-					responseData = "User not found.";
+					responseData = "USER NOT FOUND.";
 				}
 			}
 		} catch (error) {

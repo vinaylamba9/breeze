@@ -1,11 +1,10 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BreezeButton from "@Components/breezeButton/breezeButton.components.jsx";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
-
 import useIconToggle from "@Shared/hooks/useIconToggle.js";
 import {
 	PasswordIconAiFillEye,
@@ -17,10 +16,10 @@ import { EmailRegEx, InputType } from "@Constants/application";
 import { Link, useNavigate } from "react-router-dom";
 import BreezeRoutes from "@Constants/routes";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
-
+import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 const Login = () => {
 	const [togglePasswordVisibility, onTogglePassword] = useIconToggle();
-
+	const [isLoading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const {
@@ -37,19 +36,22 @@ const Login = () => {
 
 	const loginHandler = useCallback(
 		async (d) => {
+			setLoading(true);
 			const response = await userDAO.loginDAO({
 				email: d?.email,
 				password: d?.password,
 			});
-
+			console.log(response);
 			if (response?.statusCode === HTTPStatusCode.OK) {
+				setLoading(false);
 				navigate(BreezeRoutes.CHATROUTE);
 			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+				setLoading(false);
 				return toast.error(response?.responseBody?.errors?.[0]?.msg, {
 					transition: Slide,
 					style: {
-						borderRadius: "1rem",
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
 					progressStyle: { background: "var(--danger-color)" },
@@ -58,11 +60,12 @@ const Login = () => {
 				response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
 				response?.statusCode === HTTPStatusCode.NOT_FOUND
 			) {
+				setLoading(false);
 				return toast.error(response?.responseBody, {
 					transition: Slide,
 					style: {
-						borderRadius: "1rem",
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
 					progressStyle: { background: "var(--danger-color)" },
@@ -155,6 +158,13 @@ const Login = () => {
 								</div>
 							</div>
 							<BreezeButton
+								loaderComponent={
+									<BreezeLoader
+										height='h-6'
+										width='w-6'
+										loaderColor={"white"}
+										isLoading={isLoading}></BreezeLoader>
+								}
 								backgroundColor={`var(--background-color-dark)`}
 								textColor={`var(--text-color-purity)`}
 								label='Log in'
@@ -176,11 +186,13 @@ const Login = () => {
 										icon: "🚀",
 										style: {
 											borderRadius: "1rem",
-											color: "var(--color-darkTeal)",
+											color: "var(--background-color-dark)",
 											boxShadow:
 												"0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 										},
-										progressStyle: { background: "var(--color-darkTeal)" },
+										progressStyle: {
+											background: "var(--background-color-dark)",
+										},
 									})
 								}
 							/>

@@ -189,7 +189,7 @@ const ChatScreen = () => {
 				</div>
 			</div>
 
-			<BreezeLoader isLoading={isLoading}>
+			<BreezeLoader loaderColor={"black"} isLoading={isLoading}>
 				{chats?.length === 0 ? (
 					<ChatNotFound isLoading={isLoading} />
 				) : (
