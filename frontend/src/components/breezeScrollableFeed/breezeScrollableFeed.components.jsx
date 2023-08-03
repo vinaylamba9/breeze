@@ -54,11 +54,11 @@ const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
 
 	return (
 		<div
-			className='w-full bg-transparent'
+			className='w-full bg-gray-100'
 			style={{
-				background:
+				backgroundImage:
 					"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690138802/subtle-prism_2_iyfq9l.png)",
-				height: isTyping ? "calc(100vh - 240px)" : "calc(100vh - 210px)",
+				height: isTyping ? "calc(100vh - 163px)" : "calc(100vh - 160px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}

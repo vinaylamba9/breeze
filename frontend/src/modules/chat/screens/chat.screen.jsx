@@ -92,7 +92,7 @@ const ChatScreen = () => {
 	}, [onFetchChatHandler, fetchAgain]);
 
 	return (
-		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start  h-screen'>
+		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className='h-screen bg-white w-25% '>
 				<header className='drop-shadow-md truncate w-95% mx-auto my-5 text-fontsize-pearl font-bold'>
 					Chats
@@ -180,18 +180,6 @@ const ChatScreen = () => {
 								</>
 							)}
 						</div>
-						{/* <div
-									className='bg-white rounded-xl overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
-									style={{ height: "calc(100vh - 88px)" }}>
-									{!selectedChat ? (
-										<ChatNotFound />
-									) : (
-										<BreezeChatBox
-											fetchAgain={fetchAgain}
-											setFetchAgain={setFetchAgain}
-										/>
-									)}
-								</div> */}
 					</div>
 				</div>
 				{/* <BreezeTooltip id={"createChat"}>
@@ -236,6 +224,18 @@ const ChatScreen = () => {
 						/>
 					</SelectUserFromGroupProvider>
 				)} */}
+			</div>
+			<div
+				className='flex-1 bg-white overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
+				style={{ height: "calc(100vh)" }}>
+				{!selectedChat ? (
+					<ChatNotFound />
+				) : (
+					<BreezeChatBox
+						fetchAgain={fetchAgain}
+						setFetchAgain={setFetchAgain}
+					/>
+				)}
 			</div>
 			{/* <div className='xs:w-20% sm:w-20% md:w-30% lg:w-50% xl:w-70% '>
 					<div className='flex justify-end items-center'>

@@ -29,21 +29,20 @@ const BreezeChat = ({
 	return (
 		<>
 			{
-				<div
-					className={`mt-10% w-10% rounded-md text-sm mx-auto date-sticky drop-shadow-md text-center bg-white p-2  sticky top-3  z-10  ease-in-out duration-300 transition-all  ${
-						showPill ? "translate-y-0 opacity-100" : "translate-y-0 opacity-0"
-					}`}
-					ref={stickyMsgPillRef}>
-					hello
-					{/* {stickyMsgPillRef?.current?.value} */}
-				</div>
+				// <div
+				// 	className={`mt-10% w-10% rounded-md text-sm mx-auto date-sticky drop-shadow-md text-center bg-white p-2  sticky top-3  z-10  ease-in-out duration-300 transition-all  ${
+				// 		showPill ? "translate-y-0 opacity-100" : "translate-y-0 opacity-0"
+				// 	}`}
+				// 	ref={stickyMsgPillRef}>
+				// 	hello
+				// </div>
 			}
 			{newMessages?.length > 0 &&
 				newMessages?.map((msg, index) => (
 					<>
 						{index === 0 && (
 							<div
-								className=' mt-10% w-10% rounded-md text-sm mx-auto date-sticky drop-shadow-md text-center bg-white p-2  top-3  z-10'
+								className=' mt-10% w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center bg-gray-700 text-white p-2  top-3  z-10'
 								ref={stickyDateRef}>
 								{DATE_UTILS?.getDate(msg?.createdAt)}
 							</div>
@@ -52,7 +51,7 @@ const BreezeChat = ({
 							DATE_UTILS?.getDate(newMessages?.[index]?.createdAt) !==
 								DATE_UTILS?.getDate(newMessages?.[index - 1]?.createdAt) && (
 								<div
-									className=' mt-10% w-10% rounded-md text-sm mx-auto date-sticky drop-shadow-md text-center bg-white p-2  top-3  z-10'
+									className=' mt-10% w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center font-medium bg-gray-700 text-white p-2  top-3  z-10'
 									ref={stickyDateRef}>
 									{DATE_UTILS?.getDate(msg?.createdAt)}
 								</div>
@@ -74,14 +73,19 @@ const BreezeChat = ({
 								}}
 								className={` ${
 									msg?.sender?._id === user?.userId
-										? "bg-color-champagne"
-										: "bg-color-poppedUp"
+										? "bg-white text-gray-800"
+										: "bg-gray-800 text-white"
 								}  rounded-2xl px-5 py-2 mb-2`}>
 								<div className='flex justify-between items-start gap-3'>
 									<div className='text-sm w-90% whitespace-pre-wrap'>
 										{msg?.content}
 									</div>
-									<div className='text-xs text-gray-600 pt-3'>
+									<div
+										className={`text-xs self-end ${
+											msg?.sender?._id === user?.userId
+												? "text-gray-800"
+												: "text-white"
+										} pt-3`}>
 										{DATE_UTILS?.getTimeInHHMM(msg?.createdAt)}
 									</div>
 								</div>

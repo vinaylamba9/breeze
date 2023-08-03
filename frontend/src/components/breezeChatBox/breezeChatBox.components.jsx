@@ -69,8 +69,8 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	return (
 		<>
 			<div
-				style={{ height: "calc(100vh - 88px)" }}
-				className=' flex flex-col justify-between items-center rounded-2xl '>
+				style={{ height: "calc(100vh)" }}
+				className=' flex flex-col justify-between items-center'>
 				<BreezeMessageHeader
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
