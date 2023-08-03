@@ -6,7 +6,12 @@ import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.comp
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
-const BreezeMessageHeader = ({ fetchAgain, setFetchAgain }) => {
+const BreezeMessageHeader = ({
+	isSelectedChatProfile,
+	setSelectedChatProfile,
+	fetchAgain,
+	setFetchAgain,
+}) => {
 	const {
 		user,
 		setUser,
@@ -17,7 +22,7 @@ const BreezeMessageHeader = ({ fetchAgain, setFetchAgain }) => {
 		userList,
 		setUserList,
 	} = useChatState();
-	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
+
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  w-100% bg-black rounded-bl rounded-br text-white'>

@@ -2,16 +2,11 @@ import { useCallback, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
-import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import { useChatState } from "@Context/chatProvider";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
 import { profileDropdown, profileMenuType } from "@Constants/application";
-import { userDAO } from "@Modules/onboarding/core/userDAO";
-import BreezeRoutes from "@Constants/routes";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 import { HTTPStatusCode } from "@Constants/network";
@@ -21,16 +16,13 @@ import ChatNotFound from "@Modules/misc/screens/chatNotFound.screen";
 import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.components";
 import { ChatDAO } from "../core/chatDAO";
-import BreezeLoader from "@Components/breezeLoader/breezeLoader.components";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
 import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
-import classNames from "classnames";
 
 const ChatScreen = () => {
-	const navigate = useNavigate();
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
@@ -81,11 +73,6 @@ const ChatScreen = () => {
 		else setChats([]);
 		setLoading(false);
 	}, [setChats, user?._id]);
-
-	const onLogoutHandler = useCallback(() => {
-		const res = userDAO.logoutDAO();
-		if (res) navigate(BreezeRoutes.LOGINROUTE);
-	}, [navigate]);
 
 	useEffect(() => {
 		onFetchChatHandler();

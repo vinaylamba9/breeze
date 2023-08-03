@@ -1,8 +1,17 @@
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { MdCall, MdSettings, MdNewspaper } from "react-icons/md";
 import { HiUserGroup, HiChatBubbleLeftEllipsis } from "react-icons/hi2";
-
+import { HiLogout } from "react-icons/hi";
+import { useCallback } from "react";
+import { userDAO } from "@Modules/onboarding/core/userDAO";
+import BreezeRoutes from "@Constants/routes";
+import { useNavigate } from "react-router-dom";
 const BreezeSidebar = () => {
+	const navigate = useNavigate();
+	const onLogoutHandler = useCallback(() => {
+		const res = userDAO.logoutDAO();
+		if (res) navigate(BreezeRoutes.LOGINROUTE);
+	}, [navigate]);
 	const sidebarItems = [
 		{
 			icon: (
@@ -10,7 +19,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-glossy)`,
+						fontSize: `var(--fontsize-trim)`,
 					}}
 				/>
 			),
@@ -23,7 +32,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-glossy)`,
+						fontSize: `var(--fontsize-trim)`,
 					}}
 				/>
 			),
@@ -36,7 +45,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-glossy)`,
+						fontSize: `var(--fontsize-trim)`,
 					}}
 				/>
 			),
@@ -49,7 +58,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-glossy)`,
+						fontSize: `var(--fontsize-trim)`,
 					}}
 				/>
 			),
@@ -62,7 +71,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-glossy)`,
+						fontSize: `var(--fontsize-trim)`,
 					}}
 				/>
 			),
@@ -93,13 +102,24 @@ const BreezeSidebar = () => {
 					))}
 				</div>
 
-				<div className='rounded-2xl mb-6'>
-					<BreezeAvatar
-						// profileImage={user?.profileImage}
-						isGrouped={false}
-						isActive={true}
-						title={"Shekhar Shashank"}
-					/>
+				<div className='flex flex-col justify-between items-center'>
+					<div className='rounded-2xl mb-6'>
+						<BreezeAvatar
+							// profileImage={user?.profileImage}
+							isGrouped={false}
+							isActive={true}
+							title={"Shekhar Shashank"}
+						/>
+					</div>
+					<div className='p-2 rounded-xl bg-gray-700' onClick={onLogoutHandler}>
+						<HiLogout
+							style={{
+								cursor: "pointer",
+								color: `var(--background-color-light)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 		</aside>

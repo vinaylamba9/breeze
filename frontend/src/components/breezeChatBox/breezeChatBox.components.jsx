@@ -24,7 +24,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
-
+	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({
@@ -72,6 +72,8 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 				style={{ height: "calc(100vh)" }}
 				className=' flex flex-col justify-between items-center'>
 				<BreezeMessageHeader
+					isSelectedChatProfile={isSelectedChatProfile}
+					setSelectedChatProfile={setSelectedChatProfile}
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
 				/>
