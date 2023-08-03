@@ -14,7 +14,8 @@
 			"@Core/*": ["src/core/*"],
 			"@Constants/*": ["src/constants/*"],
 			"@Context/*": ["src/context/*"],
-			"@Socket/*": ["src/socket/*"]
+			"@Socket/*": ["src/socket/*"],
+			"@Zustand/*": ["src/zustand/*"]
 		}
 	}
 }

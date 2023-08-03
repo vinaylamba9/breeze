@@ -6,6 +6,7 @@ import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.comp
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
+import useCombinedStore from "@Zustand/store/store";
 const BreezeMessageHeader = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
@@ -23,15 +24,17 @@ const BreezeMessageHeader = ({
 		setUserList,
 	} = useChatState();
 
+	const { showActive, hideActive } = useCombinedStore((state) => ({
+		showActive: state?.showActive,
+		hideActive: state?.hideActive,
+	}));
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white drop-shadow-md rounded-bl rounded-br text-black'>
 				<div className='w-98%  mx-auto flex items-center justify-between py-4'>
 					<div
 						className='flex items-center gap-2 justify-start cursor-pointer'
-						onClick={() => {
-							setSelectedChatProfile(true);
-						}}>
+						onClick={showActive}>
 						<BreezeAvatar
 							title={
 								selectedChat?.isGroupChat
@@ -58,7 +61,7 @@ const BreezeMessageHeader = ({
 					</div>
 				</div>
 			</div>
-			{isSelectedChatProfile && (
+			{/* {isSelectedChatProfile && (
 				<SelectUserFromGroupProvider>
 					<BreezeSideDrawer
 						backgroundColor='bg-color-slate'
@@ -79,7 +82,7 @@ const BreezeMessageHeader = ({
 						position='right-0'
 					/>
 				</SelectUserFromGroupProvider>
-			)}
+			)} */}
 		</>
 	);
 };

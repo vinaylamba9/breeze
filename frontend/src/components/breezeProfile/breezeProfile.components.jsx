@@ -19,16 +19,17 @@ const BreezeProfile = ({ onClose }) => {
 	} = useChatState();
 
 	return selectUserFromGroup ? (
-		<>
-			<div className=' text-fontsize-glossy font-medium pl-2 relative -mt-0.5 left-10 '>
+		<div
+			className='w-95% border border-red-700  mx-auto'
+			style={{
+				maxHeight: "100vh",
+				minHeight: "100vh",
+				overflowY: "scroll",
+			}}>
+			<div className=' text-fontsize-glossy font-medium pl-2  -mt-0.5 left-10 '>
 				Contact info
 			</div>
-			<div
-				style={{
-					maxHeight: "100vh",
-					minHeight: "100vh",
-					overflowY: "scroll",
-				}}>
+			<div>
 				<div className='w-100% flex flex-col items-center justify-center my-6'>
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
 						<BreezeAvatar
@@ -158,18 +159,17 @@ const BreezeProfile = ({ onClose }) => {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	) : (
-		<>
-			<div className=' text-fontsize-glossy font-medium pl-2 relative -mt-0.5 left-10 '>
-				Contact info
-			</div>
-			<div
-				style={{
-					maxHeight: "100vh",
-					minHeight: "100vh",
-					overflowY: "scroll",
-				}}>
+		<div
+			className='w-95% border border-red-700  mx-auto'
+			style={{
+				maxHeight: "100vh",
+				minHeight: "100vh",
+				overflowY: "scroll",
+			}}>
+			<div className=' text-fontsize-glossy font-medium  '>Contact info</div>
+			<div style={{ height: "90vh" }}>
 				<div className='w-100% flex flex-col items-center justify-center my-6'>
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
 						<BreezeAvatar
@@ -266,7 +266,7 @@ const BreezeProfile = ({ onClose }) => {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

@@ -34,7 +34,7 @@ const BreezeTile = ({
 						/>
 						<div className=' grid grid-row-2 gap-1 w-70% '>
 							<h3 className='truncate font-black text-sm '>{title}</h3>
-							<p className=' truncate text-fontsize-smart text-background-color-metal'>
+							<p className=' truncate text-fontsize-smart text-gray-500'>
 								{msg || bio}
 							</p>
 						</div>

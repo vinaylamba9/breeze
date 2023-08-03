@@ -7,7 +7,12 @@ import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
 import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
 
-const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
+const BreezeChatBox = ({
+	fetchAgain,
+	isSelectedChatProfile,
+	setSelectedChatProfile,
+	setFetchAgain,
+}) => {
 	const {
 		user,
 		setUser,
@@ -24,7 +29,7 @@ const BreezeChatBox = ({ fetchAgain, setFetchAgain }) => {
 	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
-	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
+
 	const getMessageByChatIDHandler = useCallback(async () => {
 		if (!selectedChat) return;
 		const response = await MessageDAO.getMessageByChatID({

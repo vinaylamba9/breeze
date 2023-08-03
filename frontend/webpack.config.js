@@ -25,6 +25,7 @@ module.exports = (_, argv) => ({
 			"@Constants": path.resolve(__dirname, "src/constants"),
 			"@Context": path.resolve(__dirname, "src/context"),
 			"@Socket": path.resolve(__dirname, "src/socket"),
+			"@Zustand": path.resolve(__dirname, "src/zustand"),
 		},
 	},
 

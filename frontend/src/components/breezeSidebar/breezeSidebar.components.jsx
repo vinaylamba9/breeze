@@ -1,11 +1,16 @@
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import { MdCall, MdSettings, MdNewspaper } from "react-icons/md";
+import {
+	MdCall,
+	MdSettings,
+	MdNewspaper,
+	MdOutlinePowerSettingsNew,
+} from "react-icons/md";
 import { HiUserGroup, HiChatBubbleLeftEllipsis } from "react-icons/hi2";
-import { HiLogout } from "react-icons/hi";
 import { useCallback } from "react";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import { useNavigate } from "react-router-dom";
+
 const BreezeSidebar = () => {
 	const navigate = useNavigate();
 	const onLogoutHandler = useCallback(() => {
@@ -112,7 +117,7 @@ const BreezeSidebar = () => {
 						/>
 					</div>
 					<div className='p-2 rounded-xl bg-gray-700' onClick={onLogoutHandler}>
-						<HiLogout
+						<MdOutlinePowerSettingsNew
 							style={{
 								cursor: "pointer",
 								color: `var(--background-color-light)`,

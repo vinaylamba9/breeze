@@ -21,12 +21,13 @@ import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
 import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
-
+import useCombinedStore from "@Zustand/store/store";
+import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
-
+	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const {
 		user,
 		setUser,
@@ -37,6 +38,10 @@ const ChatScreen = () => {
 		userList,
 		setUserList,
 	} = useChatState();
+
+	const { isActive } = useCombinedStore((state) => ({
+		isActive: state?.isActive,
+	}));
 
 	const {
 		register,
@@ -80,7 +85,7 @@ const ChatScreen = () => {
 
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
-			<div className='h-screen bg-white w-25% '>
+			<div className=' bg-white w-25% '>
 				<header className='drop-shadow-md truncate w-95% mx-auto my-5 text-fontsize-pearl font-bold'>
 					Chats
 				</header>
@@ -104,7 +109,7 @@ const ChatScreen = () => {
 				</div>
 
 				<div className='w-100% mx-auto'>
-					<div className='rounded-xl  items-start justify-between gap-5  m-auto'>
+					<div className='rounded-xl  items-start justify-between gap-5 m-auto'>
 						<div
 							className='bg-white rounded-xl overflow-y-auto '
 							style={{ height: "calc(100vh - 155px)" }}>
@@ -212,18 +217,30 @@ const ChatScreen = () => {
 					</SelectUserFromGroupProvider>
 				)} */}
 			</div>
-			<div
-				className='flex-1 bg-white overflow-y-auto xs:hidden sm:hidden md:w-70% lg:w-70% xl:w-70% '
-				style={{ height: "calc(100vh)" }}>
+			<div className={`${isActive ? "w-50%" : "flex-1"} bg-white`}>
 				{!selectedChat ? (
 					<ChatNotFound />
 				) : (
 					<BreezeChatBox
+						isSelectedChatProfile={isSelectedChatProfile}
+						setSelectedChatProfile={setSelectedChatProfile}
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
 					/>
 				)}
 			</div>
+
+			{isActive && (
+				<div className='bg-white h-screen flex-1 '>
+					<BreezeInDisplaySidebar
+						fetchAgain={fetchAgain}
+						setFetchAgain={setFetchAgain}
+						isSelectedChatProfile={isSelectedChatProfile}
+						setSelectedChatProfile={setSelectedChatProfile}
+					/>
+				</div>
+			)}
+
 			{/* <div className='xs:w-20% sm:w-20% md:w-30% lg:w-50% xl:w-70% '>
 					<div className='flex justify-end items-center'>
 						<BreezeDropdown

@@ -130,7 +130,13 @@ const BreezeGroupProfile = ({
 		setValue("editGroupBio", selectedChat?.bio);
 	}, [setValue, selectedChat?.chatName, selectedChat?.bio]);
 	return (
-		<div>
+		<div
+			className='w-95% border border-red-700  mx-auto'
+			style={{
+				maxHeight: "100vh",
+				minHeight: "100vh",
+				overflowY: "scroll",
+			}}>
 			{selectUserFromGroup ? (
 				<BreezeProfile onClose={() => setSelectedChatProfile(false)} />
 			) : (
