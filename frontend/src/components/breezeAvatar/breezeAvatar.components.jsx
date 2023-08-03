@@ -52,7 +52,7 @@ const BreezeAvatar = ({
 					}}>
 					{!!profileImage ? (
 						<img
-							className='h-10 w-10 rounded-xl'
+							className='h-9 w-9 rounded-xl'
 							src={profileImage}
 							alt='profile'
 						/>

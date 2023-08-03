@@ -42,7 +42,7 @@ const BreezeChat = ({
 					<>
 						{index === 0 && (
 							<div
-								className=' mt-10% w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center bg-gray-700 text-white p-2  top-3  z-10'
+								className=' mt-1 w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center bg-gray-700 text-white p-2  top-1  z-10'
 								ref={stickyDateRef}>
 								{DATE_UTILS?.getDate(msg?.createdAt)}
 							</div>
@@ -51,12 +51,12 @@ const BreezeChat = ({
 							DATE_UTILS?.getDate(newMessages?.[index]?.createdAt) !==
 								DATE_UTILS?.getDate(newMessages?.[index - 1]?.createdAt) && (
 								<div
-									className=' mt-10% w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center font-medium bg-gray-700 text-white p-2  top-3  z-10'
+									className='mt-1 w-10% rounded-3xl text-sm mx-auto date-sticky drop-shadow text-center font-medium bg-gray-700 text-white p-2  top-3  z-10'
 									ref={stickyDateRef}>
 									{DATE_UTILS?.getDate(msg?.createdAt)}
 								</div>
 							)}
-						<div className='flex items-center justify-start ' key={index}>
+						<div className='flex gap-2 items-center justify-start ' key={index}>
 							<div>{usersMsgFilter(msg, index)}</div>
 							<div
 								style={{
