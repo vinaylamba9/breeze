@@ -43,8 +43,8 @@ const BreezeAvatar = ({
 				<div
 					className={
 						!!profileImage
-							? `rounded-2xl p-1 `
-							: `p-2  h-12 w-12 relative flex justify-center items-center rounded-2xl  text-xl uppercase`
+							? `rounded-xl p-1 `
+							: `p-2  h-11 w-11 relative flex justify-center items-center rounded-xl  text-xl uppercase`
 					}
 					style={{
 						backgroundColor: hexColor,
@@ -52,7 +52,7 @@ const BreezeAvatar = ({
 					}}>
 					{!!profileImage ? (
 						<img
-							className='h-10 w-10 rounded-2xl'
+							className='h-10 w-10 rounded-xl'
 							src={profileImage}
 							alt='profile'
 						/>
@@ -61,7 +61,7 @@ const BreezeAvatar = ({
 					)}
 				</div>
 				{!isGrouped && isActive && (
-					<span className='bottom-0 right-1  absolute  w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
+					<span className='bottom-0 right-0 absolute  w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
 				)}
 			</>
 		</div>

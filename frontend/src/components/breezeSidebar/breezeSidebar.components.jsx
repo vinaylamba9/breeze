@@ -10,7 +10,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-trim)`,
+						fontSize: `var(--fontsize-glossy)`,
 					}}
 				/>
 			),
@@ -23,7 +23,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-trim)`,
+						fontSize: `var(--fontsize-glossy)`,
 					}}
 				/>
 			),
@@ -36,7 +36,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-trim)`,
+						fontSize: `var(--fontsize-glossy)`,
 					}}
 				/>
 			),
@@ -49,7 +49,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-trim)`,
+						fontSize: `var(--fontsize-glossy)`,
 					}}
 				/>
 			),
@@ -62,7 +62,7 @@ const BreezeSidebar = () => {
 					style={{
 						cursor: "pointer",
 						color: `var(--background-color-light)`,
-						fontSize: `var(--fontsize-trim)`,
+						fontSize: `var(--fontsize-glossy)`,
 					}}
 				/>
 			),
@@ -81,9 +81,9 @@ const BreezeSidebar = () => {
 							className='mb-6 flex flex-col justify-center items-center cursor-pointer'
 							key={index}>
 							<div
-								className={`p-3 ${
+								className={`p-2 ${
 									item?.isActive && "bg-gray-700"
-								} rounded-2xl self-center hover:bg-gray-700 hover:rounded-xl tranition duration-300 ease-in-out`}>
+								} rounded-xl self-center hover:bg-gray-700 hover:rounded-xl tranition duration-300 ease-in-out`}>
 								{item?.icon}
 							</div>
 							<p className='truncate  text-white text-xs text-center'>

@@ -8,12 +8,12 @@ const ChatNotFound = ({ isLoading }) => {
 					style={{ height: "calc(100vh - 300px)" }}
 					alt='no_chat_found'
 					className='w-50 h-32 bg-no-repeat object-center'
-					src=''
-				/> */}
+					src='https://images.unsplash.com/photo-1535850579364-952ef600d22e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2204&q=80'
+				/>
 				<span className='text-center'>
 					<p>Seamless Chats, Boundless Connections</p>
 					<p className='text-lg text-black font-semibold'>Breeze.io</p>
-				</span>
+				</span> */}
 			</div>
 		)
 	);

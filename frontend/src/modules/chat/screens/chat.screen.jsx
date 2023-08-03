@@ -162,7 +162,7 @@ const ChatScreen = () => {
 													}
 													styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
 														selectedChat === item
-															? " py-5 bg-gray-200"
+															? " py-5 bg-gray-100"
 															: "bg-transparent"
 													} w-95% mx-auto`}
 													isNotification={false}
