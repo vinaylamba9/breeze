@@ -1,77 +1,100 @@
-import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import { RxDashboard } from "react-icons/rx";
-import { MdCall, MdSettings } from "react-icons/md";
+import { MdCall, MdSettings, MdNewspaper } from "react-icons/md";
 import { HiUserGroup, HiChatBubbleLeftEllipsis } from "react-icons/hi2";
 
 const BreezeSidebar = () => {
+	const sidebarItems = [
+		{
+			icon: (
+				<MdNewspaper
+					style={{
+						cursor: "pointer",
+						color: `var(--background-color-light)`,
+						fontSize: `var(--fontsize-trim)`,
+					}}
+				/>
+			),
+			text: "Feed",
+		},
+		{
+			icon: (
+				<HiChatBubbleLeftEllipsis
+					style={{
+						cursor: "pointer",
+						color: `var(--background-color-light)`,
+						fontSize: `var(--fontsize-trim)`,
+					}}
+				/>
+			),
+			text: "Chat",
+		},
+		{
+			icon: (
+				<HiUserGroup
+					style={{
+						cursor: "pointer",
+						color: `var(--background-color-light)`,
+						fontSize: `var(--fontsize-trim)`,
+					}}
+				/>
+			),
+			text: "Group",
+		},
+		{
+			icon: (
+				<MdCall
+					style={{
+						cursor: "pointer",
+						color: `var(--background-color-light)`,
+						fontSize: `var(--fontsize-trim)`,
+					}}
+				/>
+			),
+			text: "Call",
+		},
+		{
+			icon: (
+				<MdSettings
+					style={{
+						cursor: "pointer",
+						color: `var(--background-color-light)`,
+						fontSize: `var(--fontsize-trim)`,
+					}}
+				/>
+			),
+			text: "Settings",
+		},
+	];
 	return (
-		<Fragment>
-			<div className='bg-black px-5 flex h-screen'>
-				<div
-					className='flex flex-col justify-between items-center overflow-y-auto  my-auto w-100% '
-					style={{ height: "95vh", maxHeight: "95vh" }}>
-					<div className=''>
-						<div className='p-3 rounded-2xl mb-6'>
-							<RxDashboard
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
+		<aside className='bg-black px-5 flex h-screen'>
+			<div
+				className='flex flex-col justify-between items-center overflow-y-auto  my-auto w-100% '
+				style={{ height: "95vh", maxHeight: "95vh" }}>
+				<div className='flex flex-col justify-center items-center'>
+					{sidebarItems?.map((item, index) => (
+						<div
+							className='mb-6 flex flex-col justify-center items-center cursor-pointer'
+							key={index}>
+							<div className='p-3  rounded-2xl self-center hover:bg-gray-700 hover:rounded-xl tranition duration-300 ease-in-out'>
+								{item?.icon}
+							</div>
+							<p className='truncate  text-white text-xs text-center'>
+								{item?.text}
+							</p>
 						</div>
+					))}
+				</div>
 
-						<div className='bg-gray-700 p-3 rounded-2xl mb-6'>
-							<HiChatBubbleLeftEllipsis
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-						</div>
-						<div className='p-3 rounded-2xl mb-6'>
-							<HiUserGroup
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-						</div>
-						<div className=' p-3 rounded-2xl mb-6'>
-							<MdCall
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-						</div>
-						<div className='p-3 rounded-2xl mb-6'>
-							<MdSettings
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-						</div>
-						{/* <div className='text-white text-fontsize-small'>Dashboard</div> */}
-					</div>
-
-					<div className='rounded-2xl mb-6'>
-						<BreezeAvatar
-							// profileImage={user?.profileImage}
-							isGrouped={false}
-							isActive={true}
-							title={"Shekhar Shashank"}
-						/>
-					</div>
+				<div className='rounded-2xl mb-6'>
+					<BreezeAvatar
+						// profileImage={user?.profileImage}
+						isGrouped={false}
+						isActive={true}
+						title={"Shekhar Shashank"}
+					/>
 				</div>
 			</div>
-		</Fragment>
+		</aside>
 	);
 };
 
