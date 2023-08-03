@@ -15,6 +15,7 @@ const BreezeSidebar = () => {
 				/>
 			),
 			text: "Feed",
+			isActive: false,
 		},
 		{
 			icon: (
@@ -27,6 +28,7 @@ const BreezeSidebar = () => {
 				/>
 			),
 			text: "Chat",
+			isActive: true,
 		},
 		{
 			icon: (
@@ -39,6 +41,7 @@ const BreezeSidebar = () => {
 				/>
 			),
 			text: "Group",
+			isActive: false,
 		},
 		{
 			icon: (
@@ -51,6 +54,7 @@ const BreezeSidebar = () => {
 				/>
 			),
 			text: "Call",
+			isActive: false,
 		},
 		{
 			icon: (
@@ -63,6 +67,7 @@ const BreezeSidebar = () => {
 				/>
 			),
 			text: "Settings",
+			isActive: false,
 		},
 	];
 	return (
@@ -75,7 +80,10 @@ const BreezeSidebar = () => {
 						<div
 							className='mb-6 flex flex-col justify-center items-center cursor-pointer'
 							key={index}>
-							<div className='p-3  rounded-2xl self-center hover:bg-gray-700 hover:rounded-xl tranition duration-300 ease-in-out'>
+							<div
+								className={`p-3 ${
+									item?.isActive && "bg-gray-700"
+								} rounded-2xl self-center hover:bg-gray-700 hover:rounded-xl tranition duration-300 ease-in-out`}>
 								{item?.icon}
 							</div>
 							<p className='truncate  text-white text-xs text-center'>

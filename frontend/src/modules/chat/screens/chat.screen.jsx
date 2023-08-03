@@ -26,6 +26,8 @@ import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
 import { socket } from "@Socket/socket";
+import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
+import classNames from "classnames";
 
 const ChatScreen = () => {
 	const navigate = useNavigate();
@@ -92,79 +94,90 @@ const ChatScreen = () => {
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start  h-screen'>
 			<div className='h-screen bg-white w-25% '>
-				<BreezeSearch
-					placeholder={"Search chat"}
-					leadingIcon={
-						<BiSearch
-							style={{
-								color: `var(--color-darkTeal)`,
-								fontSize: `var(--fontsize-glossy)`,
-							}}
-						/>
-					}
-					register={register}
-					name='searchUser'
-				/>
-				<div style={{ height: "calc(100vh - 85px)" }}>
+				<header className='drop-shadow-md truncate w-95% mx-auto my-5 text-fontsize-pearl font-bold'>
+					Chats
+				</header>
+				<div className='w-95% mx-auto my-5'>
+					<BreezeSearch
+						placeholder={"Search chat"}
+						leadingIcon={
+							<BiSearch
+								style={{
+									color: `var(--background-color-dark)`,
+									fontSize: `var(--fontsize-glossy)`,
+								}}
+							/>
+						}
+						register={register}
+						name='searchUser'
+					/>
+				</div>
+				<div className='w-95% mx-auto'>
+					<BreezeDivider isDashed={true} />
+				</div>
+
+				<div className='w-100% mx-auto'>
 					<div className='rounded-xl  items-start justify-between gap-5  m-auto'>
 						<div
 							className='bg-white rounded-xl overflow-y-auto '
-							style={{ height: "calc(100vh - 88px)" }}>
+							style={{ height: "calc(100vh - 155px)" }}>
 							{isLoading ? (
 								<BreezeTileSkeleton tileLength={7} />
 							) : (
-								chats?.map((item, index) => {
-									return (
-										<div key={`tile_item_${index}`}>
-											<BreezeTile
-												tileID={selectedChat?._id}
-												onClickHandler={() => {
-													setSelectedChat(item);
-													socket.emit("leaveChat", selectedChat?._id);
-												}}
-												title={
-													item?.isGroupChat
-														? item?.chatName
-														: CHAT_UTILS?.getOtherSideUserName(
-																user,
-																item?.users
-														  )
-												}
-												lastMsgSender={item?.recentMessage?.sender?.name}
-												// msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
-												msg={
-													item?.recentMessage?.content > 30
-														? item?.recentMessage?.content?.substring(0, 30) +
-														  "..."
-														: item?.recentMessage?.content
-												}
-												isActive={true}
-												isGrouped={item?.isGroupChat}
-												profileImage={
-													item?.isGroupChat
-														? item?.groupImage
-														: CHAT_UTILS?.getOtherSideProfileImage(
-																user,
-																item?.users
-														  )
-												}
-												styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
-													selectedChat === item
-														? " py-5 bg-color-greenishTeal"
-														: "bg-transparent"
-												} w-95% mx-auto`}
-												isNotification={false}
-											/>
-											<hr
-												style={{
-													width: "95%",
-													margin: "0 auto",
-													borderTop: "1px solid var(--muted-color)",
-												}}
-											/>
-										</div>
-									);
-								})
+								<>
+									{chats?.map((item, index) => {
+										return (
+											<div key={`tile_item_${index}`}>
+												<BreezeTile
+													tileID={selectedChat?._id}
+													onClickHandler={() => {
+														setSelectedChat(item);
+														socket.emit("leaveChat", selectedChat?._id);
+													}}
+													title={
+														item?.isGroupChat
+															? item?.chatName
+															: CHAT_UTILS?.getOtherSideUserName(
+																	user,
+																	item?.users
+															  )
+													}
+													lastMsgSender={item?.recentMessage?.sender?.name}
+													// msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													msg={
+														item?.recentMessage?.content > 30
+															? item?.recentMessage?.content?.substring(0, 30) +
+															  "..."
+															: item?.recentMessage?.content
+													}
+													isActive={true}
+													isGrouped={item?.isGroupChat}
+													profileImage={
+														item?.isGroupChat
+															? item?.groupImage
+															: CHAT_UTILS?.getOtherSideProfileImage(
+																	user,
+																	item?.users
+															  )
+													}
+													styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
+														selectedChat === item
+															? " py-5 bg-gray-200"
+															: "bg-transparent"
+													} w-95% mx-auto`}
+													isNotification={false}
+												/>
+												<hr
+													style={{
+														width: "95%",
+														margin: "0 auto",
+														borderTop: "1px solid var(--muted-color)",
+													}}
+												/>
+											</div>
+										);
+									})}
+								</>
 							)}
 						</div>
 						{/* <div
