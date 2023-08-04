@@ -1,11 +1,12 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useChatState } from "@Context/chatProvider";
-import { MdBlock, MdReport, MdDelete, MdOutlineMessage } from "react-icons/md";
+import { MdBlock, MdReport, MdDelete } from "react-icons/md";
 import { IoArrowForward } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeDivider from "../breezeDivider/breezeDivider.components";
+
 const BreezeProfile = ({ onClose }) => {
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
@@ -76,7 +77,7 @@ const BreezeProfile = ({ onClose }) => {
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 						<div className='mt-5'>
-							<h1 className='text-center uppercase  ease-out duration-300 hover:tracking-wider cursor-pointer '>
+							<h1 className='text-center uppercase font-semibold ease-out duration-300 hover:tracking-wider cursor-pointer '>
 								{selectUserFromGroup?.isGroupChat
 									? selectUserFromGroup?.chatName
 									: CHAT_UTILS?.getOtherSideUserName(
@@ -85,7 +86,7 @@ const BreezeProfile = ({ onClose }) => {
 									  )}
 							</h1>
 
-							<p className='mt-1 text-color-darkTeal ease-out duration-300 hover:tracking-wider  cursor-pointer'>
+							<p className='mt-1 text-color-darkTeal text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
 								{!selectUserFromGroup?.isGroupChat &&
 									CHAT_UTILS?.getOtherSideProfileEmail(
 										user,
@@ -93,16 +94,18 @@ const BreezeProfile = ({ onClose }) => {
 									)}
 							</p>
 							<div
-								className='mt-5 items-center justify-center flex flex-col cursor-pointer'
+								className='mt-5 items-center justify-center flex  cursor-pointer'
 								onClick={() => {
 									setSelectedChat(selectUserFromGroup);
 									onClose();
 								}}>
-								<p className='text-color-darkTeal'>Go to chat</p>
-								<div>
-									<MdOutlineMessage
+								<p className='text-gray-700 hover:mr-1 font-medium ease-in-out duration-300'>
+									Go to chat
+								</p>
+								<div className='p-2 hover:ml-1  hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '>
+									<IoArrowForward
 										style={{
-											color: `var(--color-darkTeal)`,
+											color: `var(--background-color-black)`,
 											fontSize: `var(--fontsize-trim)`,
 										}}
 									/>
@@ -112,10 +115,12 @@ const BreezeProfile = ({ onClose }) => {
 					</div>
 				</div>
 				<BreezeDivider isDashed={true} />
-				<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
+				<div className='w-95% flex flex-col items-center justify-center mb-6 rounded-2xl'>
 					<div className=' w-90% py-3 mx-auto cursor-pointer'>
-						<p className='text-fontsize-virgin tracking-wide'>About</p>
-						<p className='text-color-darkTeal'>
+						<p className='text-fontsize-virgin tracking-wide text-gray-900 font-medium'>
+							About
+						</p>
+						<p className='text-gray-700 mt-1'>
 							{selectUserFromGroup?.isGroupChat
 								? selectUserFromGroup?.bio
 								: CHAT_UTILS?.getOtherSideProfileBio(
@@ -126,8 +131,8 @@ const BreezeProfile = ({ onClose }) => {
 					</div>
 				</div>
 				<BreezeDivider isDashed={true} />
-				<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
-					<div className='w-95% mx-auto flex flex-col items-center justify-center mb-6 rounded-2xl'>
+				<div className='w-95% flex flex-col items-center justify-center mb-6  rounded-2xl'>
+					<div className='w-100% mx-auto flex flex-col items-center justify-center mb-6 rounded-2xl'>
 						<div className='w-100%  flex flex-col justify-start items-center  py-3'>
 							<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
 								<MdReport
@@ -232,13 +237,13 @@ const BreezeProfile = ({ onClose }) => {
 						/>
 
 						<div className='mt-5'>
-							<h1 className='text-center uppercase  ease-out duration-300 hover:tracking-wider cursor-pointer '>
+							<h1 className='text-center uppercase font-semibold	 ease-out duration-300 hover:tracking-wider cursor-pointer '>
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
 									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
 							</h1>
 
-							<p className='mt-1 text-color-darkTeal ease-out duration-300 hover:tracking-wider  cursor-pointer'>
+							<p className='mt-1 text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
 								{!selectedChat?.isGroupChat &&
 									CHAT_UTILS?.getOtherSideProfileEmail(
 										user,
@@ -251,8 +256,10 @@ const BreezeProfile = ({ onClose }) => {
 				<BreezeDivider isDashed={true} />
 				<div className='w-95% mx-auto flex flex-col items-center justify-center mb-6  rounded-2xl'>
 					<div className=' w-90% py-3 mx-auto cursor-pointer'>
-						<p className='text-fontsize-virgin tracking-wide'>About</p>
-						<p className='text-color-darkTeal'>
+						<p className='text-fontsize-virgin text-gray-900 tracking-wide font-medium'>
+							About
+						</p>
+						<p className='text-gray-700 mt-1'>
 							{selectedChat?.isGroupChat
 								? selectedChat?.bio
 								: CHAT_UTILS?.getOtherSideProfileBio(user, selectedChat?.users)}

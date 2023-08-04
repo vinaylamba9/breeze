@@ -18,8 +18,8 @@ const BreezeAvatar = ({
 				<div
 					className={
 						!!profileImage
-							? `rounded-2xl p-2 `
-							: `p-2  h-36 w-36 relative flex justify-center items-center rounded-2xl  text-xl uppercase`
+							? `rounded-full p-2 `
+							: `p-2  h-36 w-36 relative flex justify-center items-center rounded-full  text-xl uppercase`
 					}
 					style={{
 						backgroundColor: hexColor,
@@ -27,7 +27,7 @@ const BreezeAvatar = ({
 					}}>
 					{!!profileImage ? (
 						<img
-							className='h-32 w-32  rounded-2xl'
+							className='h-32 w-32  rounded-full'
 							src={profileImage}
 							alt='profile'
 						/>
@@ -45,8 +45,8 @@ const BreezeAvatar = ({
 				<div
 					className={
 						!!profileImage
-							? `rounded-xl p-1 `
-							: `p-2  h-11 w-11 relative flex justify-center items-center rounded-xl  text-xl uppercase`
+							? `rounded-full p-1 `
+							: `p-2  h-11 w-11 relative flex justify-center items-center rounded-full	  text-xl uppercase`
 					}
 					style={{
 						backgroundColor: hexColor,
@@ -54,7 +54,7 @@ const BreezeAvatar = ({
 					}}>
 					{!!profileImage ? (
 						<img
-							className='h-9 w-9 rounded-xl'
+							className='h-9 w-9 rounded-full'
 							src={profileImage}
 							alt='profile'
 						/>

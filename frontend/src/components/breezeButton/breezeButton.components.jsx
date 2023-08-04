@@ -29,9 +29,11 @@ const BreezeButton = ({
 				text-fontsize-brittle
 				${buttonClass}	`}>
 				<div className='flex  ease-in-out duration-300 justify-center items-center gap-5 '>
-					<div>
-						{icon && <img src={icon} height='20' width='20' alt='google' />}
-					</div>
+					{icon && (
+						<div>
+							{icon && <img src={icon} height='20' width='20' alt='google' />}
+						</div>
+					)}
 					<span className='ease-out duration-300 hover:tracking-wide text-base '>
 						{label}
 					</span>
