@@ -38,9 +38,10 @@ export const CHAT_UTILS = {
 			i < messages?.length - 1 &&
 			messages?.[i + 1]?.sender?._id === m?.sender?._id &&
 			messages?.[i].sender?._id !== userId
-		)
-			return 0;
-		else if (
+		) {
+			if (m?.chat?.isGroupChat) return 44;
+			else return 0;
+		} else if (
 			(i < messages?.length - 1 &&
 				messages?.[i + 1]?.sender?._id !== m?.sender?._id &&
 				messages?.[i]?.sender?._id !== userId) ||

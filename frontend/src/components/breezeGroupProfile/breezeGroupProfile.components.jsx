@@ -310,10 +310,10 @@ const BreezeGroupProfile = ({
 						</div>
 						<BreezeDivider isDashed={true} />
 						<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl mx-auto'>
-							<div className=' w-90% py-3 mx-auto cursor-pointer '>
+							<div className=' w-95% py-3 mx-auto cursor-pointer '>
 								{selectedChat?.groupAdmin?._id === user?.userId && (
 									<div
-										className=' truncate   duration-300 ease-in-out  py-3 flex items-center justify-start gap-3	'
+										className=' truncate   duration-300 ease-in-out  py-1 flex items-center justify-start gap-3	'
 										onClick={() => setAddMembersModal(true)}>
 										<span className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'>
 											<BsPlusLg
