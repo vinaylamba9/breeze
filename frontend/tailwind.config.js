@@ -79,6 +79,9 @@ module.exports = {
 				"5%": "5%",
 				"10%": "10%",
 				"20%": "20%",
+				"22%": "22%",
+				"23%": "23%",
+				"24%": "24%",
 				"25%": "25%",
 				"28%": "28%",
 				"30%": "30%",
@@ -88,6 +91,7 @@ module.exports = {
 				"48%": "48%",
 
 				"50%": "50%",
+				"51%": "51%",
 				"60%": "60%",
 				"70%": "70%",
 				"75%": "75%",
@@ -220,18 +224,22 @@ module.exports = {
 				},
 				slideIn: {
 					from: {
-						width: "0%",
+						// width: 0,
+						marginRight: "-100%",
 					},
 					to: {
-						width: "28%",
+						// width: "auto",
+						marginRight: "0%",
 					},
 				},
 				slideOut: {
 					from: {
-						width: "28%",
+						// width: "auto",
+						marginRight: "0%",
 					},
 					to: {
-						width: "0%",
+						// width: 0,
+						marginRight: "-100%",
 					},
 				},
 			},

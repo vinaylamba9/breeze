@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const PostOnboardingLayout = () => {
 	return (
-		<div className='h-screen w-screen bg-gray-100 border border-black flex items-start justify-start '>
+		<div className='h-screen w-screen bg-gray-100 overflow-x-hidden flex items-start justify-start '>
 			<BreezeSidebar />
 			<div className='flex-1 '>
 				<Outlet />

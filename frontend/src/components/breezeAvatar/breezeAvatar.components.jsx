@@ -32,7 +32,9 @@ const BreezeAvatar = ({
 							alt='profile'
 						/>
 					) : (
-						initials
+						<h1 className='text-fontsize-strong text-bold drop-shadow-md'>
+							{initials}
+						</h1>
 					)}
 				</div>
 			</>

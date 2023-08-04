@@ -1,9 +1,11 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useChatState } from "@Context/chatProvider";
 import { MdBlock, MdReport, MdDelete, MdOutlineMessage } from "react-icons/md";
+import { IoArrowForward } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
-
+import useCombinedStore from "@Zustand/store/store";
+import BreezeDivider from "../breezeDivider/breezeDivider.components";
 const BreezeProfile = ({ onClose }) => {
 	const { selectUserFromGroup, setSelectUserFromGroup } =
 		useSelectUserFomGroupState();
@@ -17,21 +19,40 @@ const BreezeProfile = ({ onClose }) => {
 		userList,
 		setUserList,
 	} = useChatState();
-
+	const { hideActive } = useCombinedStore((state) => ({
+		hideActive: state?.hideActive,
+	}));
 	return selectUserFromGroup ? (
 		<div
-			className='w-95% border border-red-700  mx-auto'
 			style={{
 				maxHeight: "100vh",
 				minHeight: "100vh",
-				overflowY: "scroll",
 			}}>
-			<div className=' text-fontsize-glossy font-medium pl-2  -mt-0.5 left-10 '>
-				Contact info
+			<div className=' bg-white drop-shadow-md py-3.5 rounded-bl rounded-br'>
+				<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
+					<div
+						className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '
+						onClick={hideActive}>
+						<IoArrowForward
+							style={{
+								color: `var(--background-color-black)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+						/>
+					</div>
+					<div className=' flex-1 truncate text-fontsize-trim font-medium'>
+						Contact &nbsp;info
+					</div>
+				</div>
 			</div>
-			<div>
-				<div className='w-100% flex flex-col items-center justify-center my-6'>
-					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
+			<div
+				className='overflow-y-auto '
+				style={{
+					minHeight: "calc(100vh - 76px)",
+					maxHeight: "calc(100vh - 76px)",
+				}}>
+				<div className='w-95% flex flex-col items-center justify-center my-6'>
+					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 						<BreezeAvatar
 							isProfileMode={true}
 							title={
@@ -54,7 +75,7 @@ const BreezeProfile = ({ onClose }) => {
 
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
-						<div className='my-5'>
+						<div className='mt-5'>
 							<h1 className='text-center uppercase  ease-out duration-300 hover:tracking-wider cursor-pointer '>
 								{selectUserFromGroup?.isGroupChat
 									? selectUserFromGroup?.chatName
@@ -90,7 +111,8 @@ const BreezeProfile = ({ onClose }) => {
 						</div>
 					</div>
 				</div>
-				<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
+				<BreezeDivider isDashed={true} />
+				<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
 					<div className=' w-90% py-3 mx-auto cursor-pointer'>
 						<p className='text-fontsize-virgin tracking-wide'>About</p>
 						<p className='text-color-darkTeal'>
@@ -103,58 +125,60 @@ const BreezeProfile = ({ onClose }) => {
 						</p>
 					</div>
 				</div>
-				<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
-					<div className='w-100% flex flex-col justify-center items-center  py-3'>
-						<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-							<MdReport
-								style={{
-									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Block{" "}
-								{selectUserFromGroup?.isGroupChat
-									? selectUserFromGroup?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(
-											user,
-											selectUserFromGroup?.users
-									  )}
-							</p>
+				<BreezeDivider isDashed={true} />
+				<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
+					<div className='w-95% mx-auto flex flex-col items-center justify-center mb-6 rounded-2xl'>
+						<div className='w-100%  flex flex-col justify-start items-center  py-3'>
+							<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
+								<MdReport
+									style={{
+										color: `var(--danger-color)`,
+										fontSize: `var(--fontsize-virgin)`,
+									}}
+								/>
+								<p className='text-danger-color text-md'>
+									Block &nbsp;
+									{selectedChat?.isGroupChat
+										? selectedChat?.chatName
+										: CHAT_UTILS?.getOtherSideUserName(
+												user,
+												selectedChat?.users
+										  )}
+								</p>
+							</div>
 						</div>
-					</div>
-					<hr />
-					<div className=' w-100% flex flex-col justify-center items-center  py-3'>
-						<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-							<MdBlock
-								style={{
-									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Report{" "}
-								{selectUserFromGroup?.isGroupChat
-									? selectUserFromGroup?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(
-											user,
-											selectUserFromGroup?.users
-									  )}
-							</p>
+						<hr />
+						<div className=' w-100% flex flex-col justify-center items-center  py-3'>
+							<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
+								<MdBlock
+									style={{
+										color: `var(--danger-color)`,
+										fontSize: `var(--fontsize-virgin)`,
+									}}
+								/>
+								<p className='text-danger-color text-md'>
+									Report &nbsp;
+									{selectedChat?.isGroupChat
+										? selectedChat?.chatName
+										: CHAT_UTILS?.getOtherSideUserName(
+												user,
+												selectedChat?.users
+										  )}
+								</p>
+							</div>
 						</div>
-					</div>
-					<hr />
-					<div className=' w-100% flex flex-col justify-center items-center  py-3'>
-						<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
-							<MdDelete
-								style={{
-									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
-								}}
-							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Clear chat
-							</p>
+						<hr />
+						<div className=' w-100% flex flex-col justify-center items-center  py-3'>
+							<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
+								<MdDelete
+									style={{
+										color: `var(--danger-color)`,
+										fontSize: `var(--fontsize-virgin)`,
+									}}
+								/>
+
+								<p className='text-danger-color text-md'>Clear &nbsp;chat</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -162,16 +186,35 @@ const BreezeProfile = ({ onClose }) => {
 		</div>
 	) : (
 		<div
-			className='w-95% border border-red-700  mx-auto'
 			style={{
 				maxHeight: "100vh",
 				minHeight: "100vh",
-				overflowY: "scroll",
 			}}>
-			<div className=' text-fontsize-glossy font-medium  '>Contact info</div>
-			<div style={{ height: "90vh" }}>
-				<div className='w-100% flex flex-col items-center justify-center my-6'>
-					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-3'>
+			<div className=' bg-white drop-shadow-md py-3.5 rounded-bl rounded-br'>
+				<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
+					<div
+						className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '
+						onClick={hideActive}>
+						<IoArrowForward
+							style={{
+								color: `var(--background-color-black)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+						/>
+					</div>
+					<div className=' flex-1 truncate text-fontsize-glossy font-medium'>
+						Contact &nbsp;info
+					</div>
+				</div>
+			</div>
+			<div
+				className='overflow-y-auto '
+				style={{
+					minHeight: "calc(100vh - 76px)",
+					maxHeight: "calc(100vh - 76px)",
+				}}>
+				<div className='w-95% mx-auto flex flex-col items-center justify-center my-6'>
+					<div className='w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 						<BreezeAvatar
 							isProfileMode={true}
 							title={
@@ -185,11 +228,10 @@ const BreezeProfile = ({ onClose }) => {
 								!selectedChat?.isGroupChat &&
 								CHAT_UTILS?.getOtherSideProfileImage(user, selectedChat?.users)
 							}
-
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 
-						<div className='my-5'>
+						<div className='mt-5'>
 							<h1 className='text-center uppercase  ease-out duration-300 hover:tracking-wider cursor-pointer '>
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
@@ -206,7 +248,8 @@ const BreezeProfile = ({ onClose }) => {
 						</div>
 					</div>
 				</div>
-				<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
+				<BreezeDivider isDashed={true} />
+				<div className='w-95% mx-auto flex flex-col items-center justify-center mb-6  rounded-2xl'>
 					<div className=' w-90% py-3 mx-auto cursor-pointer'>
 						<p className='text-fontsize-virgin tracking-wide'>About</p>
 						<p className='text-color-darkTeal'>
@@ -216,17 +259,18 @@ const BreezeProfile = ({ onClose }) => {
 						</p>
 					</div>
 				</div>
-				<div className='w-100% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl'>
-					<div className='w-100% flex flex-col justify-center items-center  py-3'>
+				<BreezeDivider isDashed={true} />
+				<div className='w-95% mx-auto flex flex-col items-center justify-center mb-6 rounded-2xl'>
+					<div className='w-100%  flex flex-col justify-start items-center  py-3'>
 						<div className='w-90% mx-auto flex justify-start items-center gap-5 cursor-pointer ease-out duration-300 hover:tracking-wider'>
 							<MdReport
 								style={{
 									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
+									fontSize: `var(--fontsize-virgin)`,
 								}}
 							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Block{" "}
+							<p className='text-danger-color text-md'>
+								Block &nbsp;
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
 									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
@@ -239,11 +283,11 @@ const BreezeProfile = ({ onClose }) => {
 							<MdBlock
 								style={{
 									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
+									fontSize: `var(--fontsize-virgin)`,
 								}}
 							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Report{" "}
+							<p className='text-danger-color text-md'>
+								Report &nbsp;
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
 									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
@@ -256,12 +300,11 @@ const BreezeProfile = ({ onClose }) => {
 							<MdDelete
 								style={{
 									color: `var(--danger-color)`,
-									fontSize: `var(--fontsize-trim)`,
+									fontSize: `var(--fontsize-virgin)`,
 								}}
 							/>
-							<p className='text-danger-color text-fontsize-brittle'>
-								Clear chat
-							</p>
+
+							<p className='text-danger-color text-md'>Clear &nbsp;chat</p>
 						</div>
 					</div>
 				</div>

@@ -217,7 +217,7 @@ const ChatScreen = () => {
 					</SelectUserFromGroupProvider>
 				)} */}
 			</div>
-			<div className={`${isActive ? "w-50%" : "flex-1"} bg-white`}>
+			<div className={`${isActive ? "w-51%" : "flex-1"}`}>
 				{!selectedChat ? (
 					<ChatNotFound />
 				) : (
@@ -231,7 +231,7 @@ const ChatScreen = () => {
 			</div>
 
 			{isActive && (
-				<div className='bg-white h-screen flex-1 '>
+				<div className={`bg-white h-screen flex-1`}>
 					<BreezeInDisplaySidebar
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
