@@ -1,11 +1,12 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useChatState } from "@Context/chatProvider";
 import { MdBlock, MdReport, MdDelete } from "react-icons/md";
-import { IoArrowForward } from "react-icons/io5";
+import { IoArrowForward, IoArrowBack } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
+import { useMemo } from "react";
 
 const BreezeProfile = ({ onClose }) => {
 	const { selectUserFromGroup, setSelectUserFromGroup } =
@@ -20,9 +21,24 @@ const BreezeProfile = ({ onClose }) => {
 		userList,
 		setUserList,
 	} = useChatState();
-	const { hideActive } = useCombinedStore((state) => ({
+	const { hideActive, showActive } = useCombinedStore((state) => ({
 		hideActive: state?.hideActive,
+		showActive: state?.showActive,
 	}));
+
+	const getProfileNameMemo = useMemo(
+		() =>
+			selectUserFromGroup?.isGroupChat
+				? selectUserFromGroup?.chatName
+				: CHAT_UTILS?.getOtherSideUserName(user, selectUserFromGroup?.users),
+		[
+			selectUserFromGroup?.chatName,
+			selectUserFromGroup?.isGroupChat,
+			selectUserFromGroup?.users,
+			user,
+		]
+	);
+
 	return selectUserFromGroup ? (
 		<div
 			style={{
@@ -33,8 +49,8 @@ const BreezeProfile = ({ onClose }) => {
 				<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
 					<div
 						className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '
-						onClick={hideActive}>
-						<IoArrowForward
+						onClick={() => setSelectUserFromGroup(null)}>
+						<IoArrowBack
 							style={{
 								color: `var(--background-color-black)`,
 								fontSize: `var(--fontsize-trim)`,
@@ -56,14 +72,7 @@ const BreezeProfile = ({ onClose }) => {
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 						<BreezeAvatar
 							isProfileMode={true}
-							title={
-								selectUserFromGroup?.isGroupChat
-									? selectUserFromGroup?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(
-											user,
-											selectUserFromGroup?.users
-									  )
-							}
+							title={getProfileNameMemo}
 							isActive={true}
 							isGrouped={selectUserFromGroup?.isGroupChat}
 							profileImage={
@@ -96,6 +105,7 @@ const BreezeProfile = ({ onClose }) => {
 							<div
 								className='mt-5 items-center justify-center flex  cursor-pointer'
 								onClick={() => {
+									hideActive();
 									setSelectedChat(selectUserFromGroup);
 									onClose();
 								}}>
@@ -143,12 +153,7 @@ const BreezeProfile = ({ onClose }) => {
 								/>
 								<p className='text-danger-color text-md'>
 									Block &nbsp;
-									{selectedChat?.isGroupChat
-										? selectedChat?.chatName
-										: CHAT_UTILS?.getOtherSideUserName(
-												user,
-												selectedChat?.users
-										  )}
+									{getProfileNameMemo}
 								</p>
 							</div>
 						</div>
@@ -163,12 +168,7 @@ const BreezeProfile = ({ onClose }) => {
 								/>
 								<p className='text-danger-color text-md'>
 									Report &nbsp;
-									{selectedChat?.isGroupChat
-										? selectedChat?.chatName
-										: CHAT_UTILS?.getOtherSideUserName(
-												user,
-												selectedChat?.users
-										  )}
+									{getProfileNameMemo}
 								</p>
 							</div>
 						</div>
