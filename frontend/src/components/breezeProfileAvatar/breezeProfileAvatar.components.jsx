@@ -189,7 +189,7 @@ const BreezeProfileAvatar = ({
 						width={"w-20%"}
 						buttonClass={"py-1.5"}
 						label={"Remove Image"}
-						backgroundColor={`var(--color-darkTeal)`}
+						backgroundColor={`var(--background-color-dark)`}
 						textColor={`var(--text-color-purity)`}
 						onClickHandler={removeImageHandler}
 					/>
