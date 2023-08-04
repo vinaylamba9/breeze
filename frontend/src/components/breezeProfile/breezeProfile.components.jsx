@@ -57,7 +57,7 @@ const BreezeProfile = ({ onClose }) => {
 							}}
 						/>
 					</div>
-					<div className=' flex-1 truncate text-fontsize-trim font-medium'>
+					<div className=' flex-1 truncate text-fontsize-glossy font-medium'>
 						Contact &nbsp;info
 					</div>
 				</div>
