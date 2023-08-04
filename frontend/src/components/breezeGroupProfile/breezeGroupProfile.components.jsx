@@ -19,6 +19,7 @@ import CreateGroupProvider from "@Context/createGroupProvider";
 import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAvatar.components";
 import useCombinedStore from "@Zustand/store/store";
 import { IoArrowForward } from "react-icons/io5";
+import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
 	fetchAgain,
@@ -206,12 +207,12 @@ const BreezeGroupProfile = ({
 												/>
 											</div>
 											<div
-												className='cursor-pointer'
+												className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 												onClick={handleSubmit(renameGroupNameHandler)}>
 												<FiCheck
 													style={{
-														color: `var(--color-darkTeal)`,
-														fontSize: `var(--fontsize-pearl)`,
+														color: `var(--background-color-black)`,
+														fontSize: `var(--fontsize-glossy)`,
 													}}
 												/>
 											</div>
@@ -227,12 +228,12 @@ const BreezeGroupProfile = ({
 													  )}
 											</div>
 											<div
-												className='cursor-pointer'
+												className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 												onClick={() => setEditGroupName(true)}>
 												<FiEdit3
 													style={{
-														color: `var(--color-darkTeal)`,
-														fontSize: `var(--fontsize-trim)`,
+														color: `var(--background-color-black)`,
+														fontSize: `var(--fontsize-glossy)`,
 													}}
 												/>
 											</div>
@@ -240,18 +241,19 @@ const BreezeGroupProfile = ({
 									)}
 
 									<p className='mt-1 text-center text-slate-400 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
-										Group :{" "}
-										{selectedChat?.isGroupChat && selectedChat?.users?.length}{" "}
-										Members
+										<b>Group</b> :{" "}
+										{selectedChat?.isGroupChat && selectedChat?.users?.length}
+										&nbsp; Members
 									</p>
 								</div>
 							</div>
 						</div>
+						<BreezeDivider isDashed={true} />
 						<div className='w-95% flex items-start justify-center my-6 bg-white rounded-2xl mx-auto'>
 							{isEditGroupBio ? (
 								<div className=' w-100% '>
 									<div className='w-100% mx-auto  p-3'>
-										<p className='text-fontsize-virgin tracking-wide px-3'>
+										<p className='mb-1 text-fontsize-virgin text-gray-900 tracking-wide font-medium'>
 											About
 										</p>
 										<BreezeInputField
@@ -269,8 +271,10 @@ const BreezeGroupProfile = ({
 								</div>
 							) : (
 								<div className='flex flex-col items-start justify-start  w-80% py-3 mx-auto cursor-pointer'>
-									<p className='text-fontsize-virgin tracking-wide'>About</p>
-									<p className='text-color-darkTeal'>
+									<p className='text-fontsize-virgin text-gray-900 tracking-wide font-medium'>
+										About
+									</p>
+									<p className='text-gray-700 mt-1'>
 										{selectedChat?.isGroupChat
 											? selectedChat?.bio
 											: CHAT_UTILS?.getOtherSideProfileBio(
@@ -282,48 +286,48 @@ const BreezeGroupProfile = ({
 							)}
 							{isEditGroupBio ? (
 								<div
-									className='cursor-pointer pt-3 pr-5'
+									className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 									onClick={handleSubmit(renameGroupBioHandler)}>
 									<FiCheck
 										style={{
-											color: `var(--color-darkTeal)`,
-											fontSize: `var(--fontsize-pearl)`,
+											color: `var(--background-color-black)`,
+											fontSize: `var(--fontsize-glossy)`,
 										}}
 									/>
 								</div>
 							) : (
 								<div
-									className='cursor-pointer pt-3 pr-5'
+									className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 									onClick={() => setEditGroupBio(true)}>
 									<FiEdit3
 										style={{
-											color: `var(--color-darkTeal)`,
-											fontSize: `var(--fontsize-trim)`,
+											color: `var(--background-color-black)`,
+											fontSize: `var(--fontsize-glossy)`,
 										}}
 									/>
 								</div>
 							)}
 						</div>
+						<BreezeDivider isDashed={true} />
 						<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl mx-auto'>
-							<div className=' w-90% py-3 mx-auto cursor-pointer flex justify-between items-center'>
-								<p className='text-color-darkTeal text-lg'>
-									{selectedChat?.users?.length} Members
-								</p>
+							<div className=' w-90% py-3 mx-auto cursor-pointer '>
 								{selectedChat?.groupAdmin?._id === user?.userId && (
 									<div
-										className=' bg-color-cyan shadow-md rounded-md px-5 py-2.5 flex items-center justify-start gap-2'
+										className=' truncate   duration-300 ease-in-out  py-3 flex items-center justify-start gap-3	'
 										onClick={() => setAddMembersModal(true)}>
-										<span>
+										<span className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'>
 											<BsPlusLg
 												style={{
 													cursor: "pointer",
-													color: `var(--background-color-light)`,
+													color: `var(--background-color-black)`,
 													fontSize: `var(--fontsize-trim)`,
 													fontWeight: 900,
 												}}
 											/>
 										</span>
-										<span className='text-white'>Add Members</span>
+										<span className='text-gray-900 text-lg font-medium'>
+											Add &nbsp; Members
+										</span>
 									</div>
 								)}
 							</div>
@@ -371,6 +375,7 @@ const BreezeGroupProfile = ({
 								</div>
 							</div>
 						</div>
+						<BreezeDivider isDashed={true} />
 						<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl mx-auto'>
 							<div className=' w-100% flex flex-col justify-center items-center  py-3'>
 								<div

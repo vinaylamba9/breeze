@@ -5,7 +5,7 @@ import { IoArrowForward } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 import useCombinedStore from "@Zustand/store/store";
-import BreezeDivider from "../breezeDivider/breezeDivider.components";
+import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 
 const BreezeProfile = ({ onClose }) => {
 	const { selectUserFromGroup, setSelectUserFromGroup } =
