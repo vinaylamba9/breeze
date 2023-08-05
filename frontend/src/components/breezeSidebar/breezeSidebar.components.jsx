@@ -10,13 +10,28 @@ import { useCallback } from "react";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import { useNavigate } from "react-router-dom";
-
+import { useChatState } from "@Context/chatProvider";
+import useCombinedStore from "@Zustand/store/store";
 const BreezeSidebar = () => {
 	const navigate = useNavigate();
 	const onLogoutHandler = useCallback(() => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
 	}, [navigate]);
+	const {
+		user,
+		setUser,
+		selectedChat,
+		setSelectedChat,
+		chats,
+		setChats,
+		userList,
+		setUserList,
+	} = useChatState();
+	const { showActive, showProfile } = useCombinedStore((state) => ({
+		showActive: state?.showActive,
+		showProfile: state?.showProfile,
+	}));
 	const sidebarItems = [
 		{
 			icon: (
@@ -108,12 +123,17 @@ const BreezeSidebar = () => {
 				</div>
 
 				<div className='flex flex-col justify-between items-center'>
-					<div className='rounded-2xl mb-6'>
+					<div
+						className='rounded-2xl mb-6'
+						onClick={() => {
+							showActive();
+							showProfile();
+						}}>
 						<BreezeAvatar
-							// profileImage={user?.profileImage}
+							profileImage={user?.profileImage}
 							isGrouped={false}
 							isActive={true}
-							title={"Shekhar Shashank"}
+							title={user?.name}
 						/>
 					</div>
 					<div className='p-2 rounded-xl bg-gray-700' onClick={onLogoutHandler}>

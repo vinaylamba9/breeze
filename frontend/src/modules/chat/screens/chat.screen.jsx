@@ -39,8 +39,9 @@ const ChatScreen = () => {
 		setUserList,
 	} = useChatState();
 
-	const { isActive } = useCombinedStore((state) => ({
+	const { isActive, hideProfile } = useCombinedStore((state) => ({
 		isActive: state?.isActive,
+		hideProfile: state?.hideProfile,
 	}));
 
 	const {
@@ -52,7 +53,6 @@ const ChatScreen = () => {
 	} = useForm({});
 
 	const [isSidebar, setSidebar] = useState(false);
-	const [isProfile, setProfile] = useState(false);
 
 	const openSideBar = () => {
 		setSidebar(true);
@@ -126,6 +126,7 @@ const ChatScreen = () => {
 												<BreezeTile
 													tileID={selectedChat?._id}
 													onClickHandler={() => {
+														hideProfile();
 														setSelectedChat(item);
 														socket.emit("leaveChat", selectedChat?._id);
 													}}
@@ -244,41 +245,6 @@ const ChatScreen = () => {
 				</div>
 			)}
 
-			{/* <div className='xs:w-20% sm:w-20% md:w-30% lg:w-50% xl:w-70% '>
-					<div className='flex justify-end items-center'>
-						<BreezeDropdown
-							listItems={profileDropdown}
-							menuAction={(e, key) => {
-								switch (key) {
-									case profileMenuType.LOGOUT:
-										onLogoutHandler();
-										break;
-									case profileMenuType.PROFILE:
-										setProfile(true);
-										break;
-									default:
-										break;
-								}
-							}}
-							isIcon={true}
-							children={
-								<BreezeTooltip id={"profileImage"}>
-									<div
-										data-tooltip-id='profileImage'
-										data-tooltip-content={user?.name}>
-										<BreezeAvatar
-											profileImage={user?.profileImage}
-											isGrouped={false}
-											isActive={true}
-											title={user?.name}
-										/>
-									</div>
-								</BreezeTooltip>
-							}
-						/>
-					</div>
-				</div> */}
-
 			{isGroupChatModal && (
 				<BreezeModal
 					backgroundColor={"bg-color-slate"}
@@ -288,23 +254,6 @@ const ChatScreen = () => {
 					children={<BreezeGroupChat closeModal={closeGroupModal} />}
 					isDismissible={true}
 				/>
-			)}
-			{isProfile && (
-				<SelectUserFromGroupProvider>
-					<BreezeSideDrawer
-						backgroundColor='bg-color-slate'
-						isOpen={isProfile}
-						onClose={() => setProfile(false)}
-						position='right-0'
-						children={
-							<BreezeSelfProfile
-								fetchAgain={fetchAgain}
-								setFetchAgain={setFetchAgain}
-								onClose={() => setProfile(false)}
-							/>
-						}
-					/>
-				</SelectUserFromGroupProvider>
 			)}
 		</div>
 	);

@@ -1,16 +1,18 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { FiEdit3, FiCheck } from "react-icons/fi";
+import { IoArrowForward } from "react-icons/io5";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useForm } from "react-hook-form";
 import { useChatState } from "@Context/chatProvider";
 import { MdOutlineMail } from "react-icons/md";
 import { InputType } from "@Constants/application";
-
+import useCombinedStore from "@Zustand/store/store";
 import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAvatar.components";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
-import { userDAO } from "@/modules/onboarding/core/userDAO";
-import { HTTPStatusCode } from "@/constants/network";
-import { BreezeSessionManagement } from "@/shared/services/sessionManagement.service";
+import { userDAO } from "@Modules/onboarding/core/userDAO";
+import { HTTPStatusCode } from "@Constants/network";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
+import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		register,
@@ -34,6 +36,10 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 
 	const [isEditProfileName, setEditProfileName] = useState(false);
 	const [isEditProfileBio, setEditProfileBio] = useState(false);
+	const { hideActive, hideProfile } = useCombinedStore((state) => ({
+		hideActive: state?.hideActive,
+		hideProfile: state?.hideProfile,
+	}));
 	const renameProfileNameHandler = useCallback(
 		async (d) => {
 			if (d?.editProfileName !== user?.name) {
@@ -78,17 +84,38 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 		setValue("editProfileBio", user?.bio);
 	}, [setValue, user?.name, user?.bio]);
 	return (
-		<>
-			<div className=' text-fontsize-glossy font-medium pl-2 relative -mt-0.5 left-10 '>
-				Profile Info
+		<div
+			style={{
+				maxHeight: "100vh",
+				minHeight: "100vh",
+			}}>
+			<div className=' bg-white drop-shadow-md py-3.5 rounded-bl rounded-br'>
+				<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
+					<div
+						className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '
+						onClick={() => {
+							hideActive();
+							hideProfile();
+						}}>
+						<IoArrowForward
+							style={{
+								color: `var(--background-color-black)`,
+								fontSize: `var(--fontsize-trim)`,
+							}}
+						/>
+					</div>
+					<div className=' flex-1 truncate text-fontsize-glossy font-medium'>
+						Profile &nbsp;info
+					</div>
+				</div>
 			</div>
 			<div
+				className='overflow-y-auto '
 				style={{
-					maxHeight: "100vh",
-					minHeight: "100vh",
-					overflowY: "scroll",
+					minHeight: "calc(100vh - 76px)",
+					maxHeight: "calc(100vh - 76px)",
 				}}>
-				<div className='w-100% flex flex-col items-center justify-center my-6'>
+				<div className='w-95% flex flex-col items-center justify-center my-6 mx-auto'>
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 						<BreezeProfileAvatar
 							isIndividual={true}
@@ -115,12 +142,12 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 										/>
 									</div>
 									<div
-										className='cursor-pointer'
+										className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 										onClick={handleSubmit(renameProfileNameHandler)}>
 										<FiCheck
 											style={{
-												color: `var(--color-darkTeal)`,
-												fontSize: `var(--fontsize-pearl)`,
+												color: `var(--background-color-black)`,
+												fontSize: `var(--fontsize-glossy)`,
 											}}
 										/>
 									</div>
@@ -131,12 +158,12 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 										{user?.name}
 									</div>
 									<div
-										className='cursor-pointer'
+										className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 										onClick={() => setEditProfileName(true)}>
 										<FiEdit3
 											style={{
-												color: `var(--color-darkTeal)`,
-												fontSize: `var(--fontsize-trim)`,
+												color: `var(--background-color-black)`,
+												fontSize: `var(--fontsize-glossy)`,
 											}}
 										/>
 									</div>
@@ -145,7 +172,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 							<div className='flex justify-center items-center gap-2 mt-3 cursor-pointer'>
 								<MdOutlineMail
 									style={{
-										color: `var(--color-darkTeal)`,
+										color: `var(--background-color-black)`,
 										fontSize: `var(--fontsize-trim)`,
 									}}
 								/>
@@ -156,7 +183,8 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 						</div>
 					</div>
 				</div>
-				<div className='w-100% flex items-start justify-center my-6 bg-white rounded-2xl'>
+				<BreezeDivider isDashed={true} />
+				<div className='w-95% flex items-start justify-center my-6 bg-white rounded-2xl mx-auto'>
 					{isEditProfileBio ? (
 						<div className=' w-100% '>
 							<div className='w-100% mx-auto  p-3'>
@@ -177,35 +205,35 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 					) : (
 						<div className='flex flex-col items-start justify-start  w-80% py-3 mx-auto cursor-pointer'>
 							<p className='text-fontsize-virgin tracking-wide'>About</p>
-							<p className='text-color-darkTeal'>{user?.bio}</p>
+							<p className='text-gray-700 mt-1'>{user?.bio}</p>
 						</div>
 					)}
 					{isEditProfileBio ? (
 						<div
-							className='cursor-pointer pt-3 pr-5'
+							className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 							onClick={handleSubmit(renameProfileBioHandler)}>
 							<FiCheck
 								style={{
-									color: `var(--color-darkTeal)`,
-									fontSize: `var(--fontsize-pearl)`,
+									color: `var(--background-color-black)`,
+									fontSize: `var(--fontsize-glossy)`,
 								}}
 							/>
 						</div>
 					) : (
 						<div
-							className='cursor-pointer pt-3 pr-5'
+							className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
 							onClick={() => setEditProfileBio(true)}>
 							<FiEdit3
 								style={{
-									color: `var(--color-darkTeal)`,
-									fontSize: `var(--fontsize-trim)`,
+									color: `var(--background-color-black)`,
+									fontSize: `var(--fontsize-glossy)`,
 								}}
 							/>
 						</div>
 					)}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
