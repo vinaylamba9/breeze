@@ -18,8 +18,6 @@ const BreezeMessageFields = ({
 	setNewMessages,
 	typing,
 	setTyping,
-	setIsTyping,
-	isTyping,
 }) => {
 	const { selectedChat } = useChatState();
 	const msgBoxRef = useRef(null);
@@ -76,60 +74,53 @@ const BreezeMessageFields = ({
 	}, [prevChat, selectedChat]);
 
 	return (
-		<>
-			{isTyping && (
-				<span className='transition ease-in-out duration-300 w-100% bg-transparent drop-shadow-lg px-4 text-black text-sm'>
-					Typing ...
-				</span>
-			)}
-			<div className=' transition-all duration-300 ease-in-out  drop-shadow-md bg-white rounded-tl  py-4 w-100% '>
-				<div className=' w-98% mx-auto flex justify-start items-start '>
-					<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
-						<BreezeTooltip id={"emoticons"}>
-							<span data-tooltip-id='emoticons' data-tooltip-content='Emojis'>
-								<MdOutlineEmojiEmotions className='text-gray-900  text-fontsize-trim' />
-							</span>
-						</BreezeTooltip>
-					</div>
-					<div className='mx-1 py-2  cursor-pointer text-center  rounded-full flex items-end'>
-						<BreezeTooltip id={"attachements"}>
-							<span
-								data-tooltip-id='attachements'
-								data-tooltip-content='Attachements'>
-								<MdOutlineAttachFile className='text-gray-900  text-fontsize-trim' />
-							</span>
-						</BreezeTooltip>
-					</div>
-					<div
-						ref={msgBoxRef}
-						id='messageBox'
-						style={{
-							wordBreak: "break-word",
-							minHeight: "40px",
-							maxHeight: "70px",
-							userSelect: "text",
-						}}
-						onKeyDown={sendMessageHandler}
-						// onChange={typingIndicatorHandler}
-						className='  bg-gray-100 text-md w-100%  rounded-2xl 
+		<div className=' transition-all duration-300 ease-in-out  drop-shadow-md bg-white rounded-tl  py-4 w-100% '>
+			<div className=' w-98% mx-auto flex justify-start items-start '>
+				<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
+					<BreezeTooltip id={"emoticons"}>
+						<span data-tooltip-id='emoticons' data-tooltip-content='Emojis'>
+							<MdOutlineEmojiEmotions className='text-gray-900  text-fontsize-trim' />
+						</span>
+					</BreezeTooltip>
+				</div>
+				<div className='mx-1 py-2  cursor-pointer text-center  rounded-full flex items-end'>
+					<BreezeTooltip id={"attachements"}>
+						<span
+							data-tooltip-id='attachements'
+							data-tooltip-content='Attachements'>
+							<MdOutlineAttachFile className='text-gray-900  text-fontsize-trim' />
+						</span>
+					</BreezeTooltip>
+				</div>
+				<div
+					ref={msgBoxRef}
+					id='messageBox'
+					style={{
+						wordBreak: "break-word",
+						minHeight: "40px",
+						maxHeight: "70px",
+						userSelect: "text",
+					}}
+					onKeyDown={sendMessageHandler}
+					// onChange={typingIndicatorHandler}
+					className='  bg-gray-100 text-md w-100%  rounded-2xl 
 						mx-auto px-4 py-3 overflow-y-auto text-gray-900 '
-						contentEditable
-						suppressContentEditableWarning
-						placeholder='Type a message'
-						title='Type a message'
-						tabIndex={10}
-						datalexicaleditor
-						spellCheck></div>
-					<div className=' py-2 mx-1  cursor-pointer text-center flex items-end'>
-						<BreezeTooltip id={"editor"}>
-							<span data-tooltip-id='editor' data-tooltip-content='Editor'>
-								<MdOutlineKeyboardArrowUp className='text-gray-900 text-fontsize-trim' />
-							</span>
-						</BreezeTooltip>
-					</div>
+					contentEditable
+					suppressContentEditableWarning
+					placeholder='Type a message'
+					title='Type a message'
+					tabIndex={10}
+					datalexicaleditor
+					spellCheck></div>
+				<div className=' py-2 mx-1  cursor-pointer text-center flex items-end'>
+					<BreezeTooltip id={"editor"}>
+						<span data-tooltip-id='editor' data-tooltip-content='Editor'>
+							<MdOutlineKeyboardArrowUp className='text-gray-900 text-fontsize-trim' />
+						</span>
+					</BreezeTooltip>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

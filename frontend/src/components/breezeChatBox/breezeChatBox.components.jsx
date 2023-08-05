@@ -81,12 +81,12 @@ const BreezeChatBox = ({
 					setSelectedChatProfile={setSelectedChatProfile}
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
+					isTyping={isTyping}
 				/>
 				<BreezeScrollableFeed newMessages={newMessages} isTyping={isTyping} />
 
 				<BreezeMessageFields
 					prevChat={prevChat}
-					isTyping={isTyping}
 					setIsTyping={setIsTyping}
 					typing={typing}
 					setTyping={setTyping}
