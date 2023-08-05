@@ -112,7 +112,10 @@ const ChatScreen = () => {
 					<div className='rounded-xl  items-start justify-between gap-5 m-auto'>
 						<div
 							className='bg-white rounded-xl overflow-y-auto '
-							style={{ height: "calc(100vh - 155px)" }}>
+							style={{
+								height: "calc(100vh - 152px)",
+								maxHeight: "calc(100vh - 152px)",
+							}}>
 							{isLoading ? (
 								<BreezeTileSkeleton tileLength={7} />
 							) : (
