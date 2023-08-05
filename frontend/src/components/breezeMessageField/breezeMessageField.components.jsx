@@ -74,7 +74,7 @@ const BreezeMessageFields = ({
 	}, [prevChat, selectedChat]);
 
 	return (
-		<div className=' transition-all duration-300 ease-in-out  drop-shadow-md bg-white rounded-tl  py-4 w-100% '>
+		<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
 			<div className=' w-98% mx-auto flex justify-start items-start '>
 				<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
 					<BreezeTooltip id={"emoticons"}>
@@ -97,8 +97,8 @@ const BreezeMessageFields = ({
 					id='messageBox'
 					style={{
 						wordBreak: "break-word",
-						minHeight: "40px",
-						maxHeight: "70px",
+						// minHeight: "40px",
+						// maxHeight: "70px",
 						userSelect: "text",
 					}}
 					onKeyDown={sendMessageHandler}

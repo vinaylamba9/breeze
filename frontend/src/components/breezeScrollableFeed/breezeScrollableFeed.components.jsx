@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import { useChatState } from "@Context/chatProvider";
-const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
+const BreezeScrollableFeed = ({ newMessages }) => {
 	const { selectedChat } = useChatState();
 	const chatContainerRef = useRef(null);
 	const stickyMsgPillRef = useRef(null);
@@ -54,11 +54,12 @@ const BreezeScrollableFeed = ({ newMessages, isTyping }) => {
 
 	return (
 		<div
-			className='w-full bg-gray-100'
+			className='w-full bg-gray-100 '
 			style={{
 				backgroundImage:
 					"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690138802/subtle-prism_2_iyfq9l.png)",
-				height: isTyping ? "calc(100vh - 163px)" : "calc(100vh - 160px)",
+				maxHeight: "calc(100vh - 156px)",
+				height: "calc(100vh - 156px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}

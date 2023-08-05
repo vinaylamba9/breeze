@@ -74,8 +74,8 @@ const BreezeChatBox = ({
 	return (
 		<>
 			<div
-				style={{ height: "calc(100vh)" }}
-				className=' flex flex-col justify-between items-center'>
+				style={{ maxHeight: "calc(100vh)" }}
+				className=' flex flex-col justify-start items-center overflow-y-hidden'>
 				<BreezeMessageHeader
 					isSelectedChatProfile={isSelectedChatProfile}
 					setSelectedChatProfile={setSelectedChatProfile}
@@ -84,17 +84,18 @@ const BreezeChatBox = ({
 					isTyping={isTyping}
 				/>
 				<BreezeScrollableFeed newMessages={newMessages} isTyping={isTyping} />
-
-				<BreezeMessageFields
-					prevChat={prevChat}
-					setIsTyping={setIsTyping}
-					typing={typing}
-					setTyping={setTyping}
-					setSocketConnection={setSocketConnection}
-					socketConnection={socketConnection}
-					newMessages={newMessages}
-					setNewMessages={setNewMessages}
-				/>
+				<div className='w-100% flex-1'>
+					<BreezeMessageFields
+						prevChat={prevChat}
+						setIsTyping={setIsTyping}
+						typing={typing}
+						setTyping={setTyping}
+						setSocketConnection={setSocketConnection}
+						socketConnection={socketConnection}
+						newMessages={newMessages}
+						setNewMessages={setNewMessages}
+					/>
+				</div>
 			</div>
 		</>
 	);
