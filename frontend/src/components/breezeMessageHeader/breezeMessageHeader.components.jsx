@@ -12,6 +12,7 @@ const BreezeMessageHeader = ({
 	setSelectedChatProfile,
 	fetchAgain,
 	setFetchAgain,
+	isTyping,
 }) => {
 	const {
 		user,
@@ -53,11 +54,18 @@ const BreezeMessageHeader = ({
 							}
 							onClickHandler={() => setSelectedChatProfile(true)}
 						/>
-						<h1 className='text-fontsize-brittle uppercase font-medium'>
-							{selectedChat?.isGroupChat
-								? selectedChat?.chatName
-								: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
-						</h1>
+						<div className='flex flex-col justify-start items-start'>
+							<h1 className='text-fontsize-brittle uppercase font-medium'>
+								{selectedChat?.isGroupChat
+									? selectedChat?.chatName
+									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+							</h1>
+							{isTyping && (
+								<span className='transition ease-in-out duration-300  text-green-500 text-sm'>
+									Typing ...
+								</span>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
