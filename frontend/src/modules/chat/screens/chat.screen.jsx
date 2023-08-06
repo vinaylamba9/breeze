@@ -5,8 +5,6 @@ import { BsPlusLg } from "react-icons/bs";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
 import { useChatState } from "@Context/chatProvider";
-import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
-import { profileDropdown, profileMenuType } from "@Constants/application";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 import { HTTPStatusCode } from "@Constants/network";
@@ -17,8 +15,7 @@ import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.components";
 import { ChatDAO } from "../core/chatDAO";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
-import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
-import BreezeSelfProfile from "@Components/breezeSelfProfile/breezeSelfProfile.components";
+
 import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";

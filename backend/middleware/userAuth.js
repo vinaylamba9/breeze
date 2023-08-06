@@ -6,7 +6,7 @@ const BASIC_UTILS = require("../utils/basicUtils");
 const userAuth = {
 	isLoggedIn: async function (req, res, next) {
 		try {
-			let token = req?.headers?.authorization?.split(" ")[1]; //SPLITTING THE BEARER TOKEN
+			let token = req?.headers?.authorization?.split(" ")?.[1]; //SPLITTING THE BEARER TOKEN
 			if (!token || token === undefined)
 				return res
 					.status(401)
@@ -20,7 +20,28 @@ const userAuth = {
 				next();
 			}
 		} catch (error) {
-			return res.status(401).json({ error: "PLEASE AUTHENTICATE." });
+			return res?.status(401)?.json({ error: "PLEASE AUTHENTICATE." });
+		}
+	},
+	isLoggedInSocket: async function (socket, next) {
+		try {
+			const authHeader = socket?.handshake?.query?.token;
+
+			if (!authHeader) {
+				return next(new Error("TOKEN REQUIRED FOR AUTHENTICATION."));
+			}
+			const token = authHeader.split(" ")[1];
+			if (!token) {
+				return next(new Error("TOKEN REQUIRED FOR AUTHENTICATION."));
+			}
+
+			const profileData = await jwt.verify(token, process.env.PRIVATE_TOKEN);
+			const data = BASIC_UTILS.cleanPassword(profileData);
+			socket.request.token = token;
+			socket.request.user = data;
+			next();
+		} catch (error) {
+			return next(new Error("PLEASE AUTHENTICATE."));
 		}
 	},
 };
