@@ -10,16 +10,7 @@ const BreezeInDisplaySidebar = ({
 	fetchAgain,
 	setFetchAgain,
 }) => {
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
+	const { selectedChat } = useChatState();
 	const { isProfile, showProfile } = useCombinedStore((state) => ({
 		isProfile: state?.isProfile,
 		showProfile: state?.showProfile,

@@ -2,8 +2,9 @@ import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useChatState } from "@Context/chatProvider";
 import { useCallback } from "react";
-import { DATE_UTILS } from "@/shared/utils/basic.utils";
-import BreezeDivider from "../breezeDivider/breezeDivider.components";
+import { DATE_UTILS } from "@Shared/utils/basic.utils";
+import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
+import useCombinedStore from "@Zustand/store/store";
 
 const BreezeChat = ({
 	showPill,
@@ -11,8 +12,10 @@ const BreezeChat = ({
 	stickyDateRef,
 	newMessages,
 }) => {
-	const { user, selectedChat } = useChatState();
-
+	const { selectedChat } = useChatState();
+	const { loggedInUser } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	const msgDividerComponent = useCallback(
 		(msg) => {
 			return (
@@ -35,8 +38,13 @@ const BreezeChat = ({
 	);
 	const usersMsgFilter = useCallback(
 		(msg, index) =>
-			(CHAT_UTILS?.isSameSenderOfMsg(newMessages, msg, index, user?.userId) ||
-				CHAT_UTILS?.isLastMessages(newMessages, index, user?.userId)) &&
+			(CHAT_UTILS?.isSameSenderOfMsg(
+				newMessages,
+				msg,
+				index,
+				loggedInUser?.userId
+			) ||
+				CHAT_UTILS?.isLastMessages(newMessages, index, loggedInUser?.userId)) &&
 			selectedChat?.isGroupChat && (
 				<BreezeAvatar
 					title={msg?.sender?.name}
@@ -44,7 +52,7 @@ const BreezeChat = ({
 				/>
 			),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[newMessages, user?.userId]
+		[newMessages, loggedInUser?.userId]
 	);
 
 	return (
@@ -75,14 +83,14 @@ const BreezeChat = ({
 										newMessages,
 										msg,
 										index,
-										user?.userId
+										loggedInUser?.userId
 									),
 									marginTop: CHAT_UTILS?.isSameUser(newMessages, msg, index)
 										? 10
 										: 10,
 								}}
 								className={` ${
-									msg?.sender?._id === user?.userId
+									msg?.sender?._id === loggedInUser?.userId
 										? "bg-white text-black"
 										: "bg-gray-800 text-white"
 								}  rounded-2xl px-5 py-2 mb-2`}>
@@ -92,7 +100,7 @@ const BreezeChat = ({
 									</div>
 									<div
 										className={`text-xs self-end ${
-											msg?.sender?._id === user?.userId
+											msg?.sender?._id === loggedInUser?.userId
 												? "text-black"
 												: "text-white"
 										} pt-3`}>

@@ -21,20 +21,13 @@ const BreezeProfileAvatar = ({
 	setFetchAgain,
 	fetchAgain,
 }) => {
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
+	const { setUser, selectedChat, setSelectedChat } = useChatState();
 	const [hexColor, textColor] = useAvatarColorGenerator(title);
 	const initials = useAvatarInitials(title);
 	const [imagePreview, setImagePreview] = useState(null);
-
+	const { loggedInUser } = useChatState((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	const onUpdateGroupImageHandler = useCallback(
 		async (url) => {
 			const response = await ChatDAO.updateGroupChatImageDAO({
@@ -51,7 +44,7 @@ const BreezeProfileAvatar = ({
 	const onUpdatePersonalImageHandler = useCallback(
 		async (url) => {
 			const response = await userDAO.updateUserDetailsDAO({
-				userID: user?.userId,
+				userID: loggedInUser?.userId,
 				updatedData: {
 					profileImage: url,
 				},
@@ -61,7 +54,7 @@ const BreezeProfileAvatar = ({
 				setUser(userInfo);
 			}
 		},
-		[setUser, user?.userId]
+		[setUser, loggedInUser?.userId]
 	);
 
 	const handleImageChange = useCallback(

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useChatState } from "@Context/chatProvider";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
@@ -14,17 +13,10 @@ const BreezeMessageHeader = ({
 	setFetchAgain,
 	isTyping,
 }) => {
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
-
+	const { selectedChat } = useChatState();
+	const { loggedInUser } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	const { showActive } = useCombinedStore((state) => ({
 		showActive: state?.showActive,
 	}));
@@ -39,7 +31,10 @@ const BreezeMessageHeader = ({
 							title={
 								selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )
 							}
 							isActive={true}
 							isGrouped={selectedChat?.isGroupChat}
@@ -47,7 +42,7 @@ const BreezeMessageHeader = ({
 								selectedChat?.isGroupChat
 									? selectedChat?.groupImage
 									: CHAT_UTILS?.getOtherSideProfileImage(
-											user,
+											loggedInUser,
 											selectedChat?.users
 									  )
 							}
@@ -57,7 +52,10 @@ const BreezeMessageHeader = ({
 							<h1 className='text-fontsize-brittle uppercase font-medium'>
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )}
 							</h1>
 							{isTyping && (
 								<span className='transition ease-in-out duration-300  text-green-500 text-sm'>
