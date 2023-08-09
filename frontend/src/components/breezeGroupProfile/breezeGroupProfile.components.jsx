@@ -8,7 +8,6 @@ import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useChatState } from "@Context/chatProvider";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
-import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
 import { InputType } from "@Constants/application";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
@@ -49,21 +48,26 @@ const BreezeGroupProfile = ({
 	const [isEditGroupName, setEditGroupName] = useState(false);
 	const [isEditGroupBio, setEditGroupBio] = useState(false);
 	const [addMembersModal, setAddMembersModal] = useState(false);
-	const { selectUserFromGroup, setSelectUserFromGroup } =
-		useSelectUserFomGroupState();
-	const { hideActive } = useCombinedStore((state) => ({
-		hideActive: state?.hideActive,
-	}));
-	const onFilterUserFromGroup = (item) => {
-		const response = chats?.filter(
-			(chat) =>
-				!chat?.isGroupChat &&
-				(chat?.users?.[0]?._id === item?._id ||
-					chat?.users?.[1]?._id === item?._id)
-		);
 
+	const {
+		selectUserFromGroup,
+		clearUserFromGroup,
+		hideActive,
+		setSelectUserFromGroup,
+	} = useCombinedStore((state) => ({
+		selectUserFromGroup: state?.selectUserFromGroup,
+		setSelectUserFromGroup: state?.setSelectUserFromGroup,
+		hideActive: state?.hideActive,
+		clearUserFromGroup: state?.clearUserFromGroup,
+	}));
+
+	const onFilterUserFromGroup = (item) => {
+		const response = selectedChat?.users?.filter(
+			(user) => user._id === item?._id
+		);
 		setSelectUserFromGroup(response?.[0]);
 	};
+
 	const renameGroupNameHandler = useCallback(
 		async (d) => {
 			if (d?.editGroupName !== selectedChat?.chatName) {
@@ -147,7 +151,10 @@ const BreezeGroupProfile = ({
 						<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
 							<div
 								className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '
-								onClick={hideActive}>
+								onClick={() => {
+									hideActive();
+									clearUserFromGroup();
+								}}>
 								<IoArrowForward
 									style={{
 										color: `var(--background-color-black)`,

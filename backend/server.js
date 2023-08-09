@@ -121,8 +121,9 @@ io.on("connection", async (socket) => {
 				// 	if (!chat?.users) return;
 				// 	chat?.users?.forEach((user, index) => {
 				// 		if (user?._id === createMessage?.sender?._id) return;
-				// 		socket.in(user?._id).emit("messageRecieved", createMessage);
+				// 		socket.broadcast.emit("messageRecieved", createMessage);
 				// 	});
+
 				// });
 				socket.on("newMessage", (newMsgRecieved) => {
 					const chat = newMsgRecieved?.chat;

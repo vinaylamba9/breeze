@@ -25,9 +25,8 @@ const BreezeMessageHeader = ({
 		setUserList,
 	} = useChatState();
 
-	const { showActive, hideActive } = useCombinedStore((state) => ({
+	const { showActive } = useCombinedStore((state) => ({
 		showActive: state?.showActive,
-		hideActive: state?.hideActive,
 	}));
 	return (
 		<>

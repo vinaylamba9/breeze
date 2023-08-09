@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { IoClose, IoArrowBackOutline } from "react-icons/io5";
-import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
+import useCombinedStore from "@Zustand/store/store";
+
 const BreezeSideDrawer = ({
 	children,
 	isOpen,
@@ -10,15 +11,18 @@ const BreezeSideDrawer = ({
 }) => {
 	const sideDrawerRef = useRef();
 	const [showContent, setShowContent] = useState(false);
-	const { selectUserFromGroup, setSelectUserFromGroup } =
-		useSelectUserFomGroupState();
+
+	const { clearUserFromGroup, selectUserFromGroup } = useCombinedStore(
+		(state) => ({
+			selectUserFromGroup: state?.selectUserFromGroup,
+			clearUserFromGroup: state?.clearUserFromGroup,
+		})
+	);
 	useEffect(() => {
 		const handleSideDrawerClick = (event) => {
 			if (!sideDrawerRef?.current?.contains(event?.target)) onClose();
 		};
-
 		window.addEventListener("mousedown", handleSideDrawerClick);
-
 		return () => {
 			window.removeEventListener("mousedown", handleSideDrawerClick);
 		};
@@ -68,7 +72,7 @@ const BreezeSideDrawer = ({
 								color: `var(--background-color-dark)`,
 								fontSize: `var(--fontsize-trim)`,
 							}}
-							onClick={() => setSelectUserFromGroup(null)}
+							onClick={clearUserFromGroup}
 						/>
 					</div>
 				) : (

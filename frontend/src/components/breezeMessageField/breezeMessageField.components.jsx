@@ -78,14 +78,11 @@ const BreezeMessageFields = ({
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
 
-	useEffect(() => {
-		socket.on("messageRecieved", (newMsgReceived) => {
-			console.log("hello messageRecievd");
-			setNewMessages([...newMessages, newMsgReceived]);
-		});
-	}, [newMessages, setNewMessages]);
-
-	console.log(newMessages, "-newMsg");
+	// useEffect(() => {
+	// 	socket.on("messageRecieved", (newMsgReceived) => {
+	// 		setNewMessages([...newMessages, newMsgReceived]);
+	// 	});
+	// }, [newMessages, setNewMessages]);
 
 	return (
 		<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
