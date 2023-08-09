@@ -1,9 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { FiEdit3, FiCheck } from "react-icons/fi";
 import { IoArrowForward } from "react-icons/io5";
-import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import { useForm } from "react-hook-form";
-import { useChatState } from "@Context/chatProvider";
 import { MdOutlineMail } from "react-icons/md";
 import { InputType } from "@Constants/application";
 import useCombinedStore from "@Zustand/store/store";
@@ -13,6 +11,7 @@ import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
+
 const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 	const {
 		register,

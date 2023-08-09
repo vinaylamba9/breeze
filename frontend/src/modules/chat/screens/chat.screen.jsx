@@ -26,17 +26,15 @@ const ChatScreen = () => {
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const {
-		user,
-		setUser,
+		// user,
 		selectedChat,
 		setSelectedChat,
 		chats,
 		setChats,
-		userList,
-		setUserList,
 	} = useChatState();
 
-	const { isActive, hideProfile } = useCombinedStore((state) => ({
+	const { loggedInUser, isActive, hideProfile } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
 		isActive: state?.isActive,
 		hideProfile: state?.hideProfile,
 	}));
@@ -69,12 +67,12 @@ const ChatScreen = () => {
 
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
-		const response = await ChatDAO.fetchChatDAO(user?._id);
+		const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
 		if (response?.statusCode === HTTPStatusCode.OK)
 			setChats(response?.responseBody);
 		else setChats([]);
 		setLoading(false);
-	}, [setChats, user?._id]);
+	}, [setChats, loggedInUser?._id]);
 
 	useEffect(() => {
 		onFetchChatHandler();
@@ -131,7 +129,7 @@ const ChatScreen = () => {
 														item?.isGroupChat
 															? item?.chatName
 															: CHAT_UTILS?.getOtherSideUserName(
-																	user,
+																	loggedInUser,
 																	item?.users
 															  )
 													}
@@ -149,7 +147,7 @@ const ChatScreen = () => {
 														item?.isGroupChat
 															? item?.groupImage
 															: CHAT_UTILS?.getOtherSideProfileImage(
-																	user,
+																	loggedInUser,
 																	item?.users
 															  )
 													}

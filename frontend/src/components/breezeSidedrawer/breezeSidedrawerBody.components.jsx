@@ -13,7 +13,7 @@ import { useChatState } from "@Context/chatProvider";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
-	const { setSelectedChat, user, userList, setUserList, chats, setChats } =
+	const { setSelectedChat, userList, setUserList, chats, setChats } =
 		useChatState();
 
 	const [isLoading, setLoading] = useState(false);
