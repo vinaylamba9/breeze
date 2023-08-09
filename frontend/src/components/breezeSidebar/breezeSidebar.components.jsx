@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import { useNavigate } from "react-router-dom";
-import { useChatState } from "@Context/chatProvider";
+
 import useCombinedStore from "@Zustand/store/store";
 const BreezeSidebar = () => {
 	const navigate = useNavigate();
@@ -18,7 +18,7 @@ const BreezeSidebar = () => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
 	}, [navigate]);
-	// const { user } = useChatState();
+
 	const { loggedInUser, showActive, showProfile } = useCombinedStore(
 		(state) => ({
 			loggedInUser: state?.loggedInUser,
