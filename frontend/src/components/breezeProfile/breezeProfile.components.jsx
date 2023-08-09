@@ -3,14 +3,10 @@ import { useChatState } from "@Context/chatProvider";
 import { MdBlock, MdReport, MdDelete } from "react-icons/md";
 import { IoArrowForward, IoArrowBack } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import { useSelectUserFomGroupState } from "@Context/selectUserFromGroupProvider";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
-import { useMemo } from "react";
 
 const BreezeProfile = ({ onClose }) => {
-	const { selectUserFromGroup, setSelectUserFromGroup } =
-		useSelectUserFomGroupState();
 	const {
 		user,
 		setUser,
@@ -21,23 +17,12 @@ const BreezeProfile = ({ onClose }) => {
 		userList,
 		setUserList,
 	} = useChatState();
-	const { hideActive, showActive } = useCombinedStore((state) => ({
-		hideActive: state?.hideActive,
-		showActive: state?.showActive,
-	}));
-
-	const getProfileNameMemo = useMemo(
-		() =>
-			selectUserFromGroup?.isGroupChat
-				? selectUserFromGroup?.chatName
-				: CHAT_UTILS?.getOtherSideUserName(user, selectUserFromGroup?.users),
-		[
-			selectUserFromGroup?.chatName,
-			selectUserFromGroup?.isGroupChat,
-			selectUserFromGroup?.users,
-			user,
-		]
-	);
+	const { hideActive, selectUserFromGroup, setSelectUserFromGroup } =
+		useCombinedStore((state) => ({
+			hideActive: state?.hideActive,
+			selectUserFromGroup: state?.selectUserFromGroup,
+			setSelectUserFromGroup: state?.setSelectUserFromGroup,
+		}));
 
 	return selectUserFromGroup ? (
 		<div
@@ -72,27 +57,15 @@ const BreezeProfile = ({ onClose }) => {
 					<div className='bg-white w-100% flex flex-col justify-center items-center rounded-2xl py-5'>
 						<BreezeAvatar
 							isProfileMode={true}
-							title={getProfileNameMemo}
+							title={selectUserFromGroup?.name}
 							isActive={true}
 							isGrouped={selectUserFromGroup?.isGroupChat}
-							profileImage={
-								!selectUserFromGroup?.isGroupChat &&
-								CHAT_UTILS?.getOtherSideProfileImage(
-									user,
-									selectUserFromGroup?.users
-								)
-							}
-
+							profileImage={selectUserFromGroup?.profileImage}
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 						<div className='mt-5'>
 							<h1 className='text-center uppercase font-semibold ease-out duration-300 hover:tracking-wider cursor-pointer '>
-								{selectUserFromGroup?.isGroupChat
-									? selectUserFromGroup?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(
-											user,
-											selectUserFromGroup?.users
-									  )}
+								{selectUserFromGroup?.name}
 							</h1>
 
 							<p className='mt-1 text-color-darkTeal text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
@@ -106,7 +79,7 @@ const BreezeProfile = ({ onClose }) => {
 								className='mt-5 items-center justify-center flex  cursor-pointer'
 								onClick={() => {
 									hideActive();
-									setSelectedChat(selectUserFromGroup);
+									setSelectedChat(selectUserFromGroup?._id);
 									onClose();
 								}}>
 								<p className='text-gray-700 hover:mr-1 font-medium ease-in-out duration-300'>
@@ -130,14 +103,7 @@ const BreezeProfile = ({ onClose }) => {
 						<p className='text-fontsize-virgin tracking-wide text-gray-900 font-medium'>
 							About
 						</p>
-						<p className='text-gray-700 mt-1'>
-							{selectUserFromGroup?.isGroupChat
-								? selectUserFromGroup?.bio
-								: CHAT_UTILS?.getOtherSideProfileBio(
-										user,
-										selectUserFromGroup?.users
-								  )}
-						</p>
+						<p className='text-gray-700 mt-1'>{selectUserFromGroup?.bio}</p>
 					</div>
 				</div>
 				<BreezeDivider isDashed={true} />
@@ -153,7 +119,7 @@ const BreezeProfile = ({ onClose }) => {
 								/>
 								<p className='text-danger-color text-md'>
 									Block &nbsp;
-									{getProfileNameMemo}
+									{selectUserFromGroup?.name}
 								</p>
 							</div>
 						</div>
@@ -168,7 +134,7 @@ const BreezeProfile = ({ onClose }) => {
 								/>
 								<p className='text-danger-color text-md'>
 									Report &nbsp;
-									{getProfileNameMemo}
+									{selectUserFromGroup?.name}
 								</p>
 							</div>
 						</div>

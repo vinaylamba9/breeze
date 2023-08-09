@@ -20,6 +20,8 @@ const users = require("./routes/userRoutes/index");
 const chats = require("./routes/chatRoutes/index");
 const message = require("./routes/messageRoutes/index");
 const DevConfig = require("./config/devConfig");
+const { MESSAGE_DB_UTILS, CHAT_DB_UTILS } = require("./utils/dbUtils");
+const { userAuth } = require("./middleware/userAuth");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -88,33 +90,61 @@ const io = new Server(server, {
 	cors: DevConfig.corsOrigin,
 });
 
-io.on("connection", (socket) => {
-	console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
+io.on("connection", async (socket) => {
+	await userAuth?.isLoggedInSocket(socket, (err) => {
+		if (err) {
+			console.info("\t 🏃‍♂️  SOCKET STATUS :: ERROR [ ❌ ]".red);
+			socket.disconnect();
+		} else {
+			const user = socket.request.user;
+			if (user) {
+				console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
+				socket.emit("authenticated", true);
+				socket.on("bootstrapSocket", (userDetails) => {
+					socket.join(userDetails?.userId);
+					socket.emit("connected");
+				});
+				socket.on("joinChat", (room) => {
+					socket.join(room);
+				});
+				socket.on("typing", (room) => socket.to(room).emit("typing"));
+				socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
 
-	socket.on("bootstrapSocket", (userDetails) => {
-		socket.join(userDetails?.userId);
-		socket.emit("connected");
-	});
-	socket.on("joinChat", (room) => {
-		socket.join(room);
-	});
+				// socket.on("newMessage", async (obj) => {
+				// 	const createMessage = await MESSAGE_DB_UTILS?.createMessage({
+				// 		sender: user?.userId,
+				// 		content: obj?.content,
+				// 		chat: obj?.chatID,
+				// 	});
+				// 	await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, createMessage);
+				// 	const chat = createMessage?.chat;
+				// 	if (!chat?.users) return;
+				// 	chat?.users?.forEach((user, index) => {
+				// 		if (user?._id === createMessage?.sender?._id) return;
+				// 		socket.broadcast.emit("messageRecieved", createMessage);
+				// 	});
 
-	socket.on("typing", (room) => socket.to(room).emit("typing"));
-	socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
-	socket.on("newMessage", (newMsgRecieved) => {
-		const chat = newMsgRecieved?.chat;
-		if (!chat?.users) return;
-		chat?.users?.forEach((user) => {
-			if (user?._id === newMsgRecieved?.sender?._id) return;
-			socket.in(user?._id).emit("messageRecieved", newMsgRecieved);
-		});
-	});
+				// });
+				socket.on("newMessage", (newMsgRecieved) => {
+					const chat = newMsgRecieved?.chat;
+					if (!chat?.users) return;
+					chat?.users?.forEach((user) => {
+						if (user?._id === newMsgRecieved?.sender?._id) return;
+						socket.in(user?._id).emit("messageRecieved", newMsgRecieved);
+					});
+				});
 
-	socket.on("leaveChat", (room) => {
-		socket.leave(room);
-	});
-
-	socket.off("bootstrapSocket", () => {
-		socket.leave(userDetails?.userId);
+				socket.on("leaveChat", (room) => {
+					socket.leave(room);
+				});
+				socket.off("bootstrapSocket", () => {
+					socket.leave(userDetails?.userId);
+				});
+			} else {
+				console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
+				console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);
+				socket.disconnect();
+			}
+		}
 	});
 });

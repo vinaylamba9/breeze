@@ -55,6 +55,11 @@ const BreezeMessageFields = ({
 				socket.emit("stopTyping", selectedChat?._id);
 				e.preventDefault();
 				e.target.innerText = "";
+				// socket.emit("newMessage", {
+				// 	content: msg,
+				// 	chatID: selectedChat?._id,
+				// });
+
 				const response = await MessageDAO.createMessageDAO({
 					content: msg,
 					chatID: selectedChat?._id,
@@ -72,6 +77,12 @@ const BreezeMessageFields = ({
 		let tempRef = msgBoxRef.current;
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
+
+	// useEffect(() => {
+	// 	socket.on("messageRecieved", (newMsgReceived) => {
+	// 		setNewMessages([...newMessages, newMsgReceived]);
+	// 	});
+	// }, [newMessages, setNewMessages]);
 
 	return (
 		<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
@@ -110,7 +121,6 @@ const BreezeMessageFields = ({
 					placeholder='Type a message'
 					title='Type a message'
 					tabIndex={10}
-					datalexicaleditor
 					spellCheck></div>
 				<div className=' py-2 mx-1  cursor-pointer text-center flex items-end'>
 					<BreezeTooltip id={"editor"}>
