@@ -19,6 +19,7 @@ import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAv
 import useCombinedStore from "@Zustand/store/store";
 import { IoArrowForward } from "react-icons/io5";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
+
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
 	fetchAgain,
@@ -34,16 +35,7 @@ const BreezeGroupProfile = ({
 		formState: { errors },
 	} = useForm({});
 
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
+	const { selectedChat, setSelectedChat } = useChatState();
 
 	const [isEditGroupName, setEditGroupName] = useState(false);
 	const [isEditGroupBio, setEditGroupBio] = useState(false);
@@ -53,11 +45,13 @@ const BreezeGroupProfile = ({
 		selectUserFromGroup,
 		clearUserFromGroup,
 		hideActive,
+		loggedInUser,
 		setSelectUserFromGroup,
 	} = useCombinedStore((state) => ({
 		selectUserFromGroup: state?.selectUserFromGroup,
 		setSelectUserFromGroup: state?.setSelectUserFromGroup,
 		hideActive: state?.hideActive,
+		loggedInUser: state?.loggedInUser,
 		clearUserFromGroup: state?.clearUserFromGroup,
 	}));
 
@@ -121,7 +115,7 @@ const BreezeGroupProfile = ({
 	const leaveGroupHandler = useCallback(async () => {
 		const response = await ChatDAO.removeUserFromGroupDAO({
 			chatID: selectedChat?._id,
-			userID: user?.userId,
+			userID: loggedInUser?.userId,
 		});
 		if (response?.statusCode === HTTPStatusCode.OK) setSelectedChat();
 		setFetchAgain(!fetchAgain);
@@ -130,7 +124,7 @@ const BreezeGroupProfile = ({
 		selectedChat?._id,
 		setFetchAgain,
 		setSelectedChat,
-		user?.userId,
+		loggedInUser?.userId,
 	]);
 
 	useEffect(() => {
@@ -183,7 +177,7 @@ const BreezeGroupProfile = ({
 										selectedChat?.isGroupChat
 											? selectedChat?.chatName
 											: CHAT_UTILS?.getOtherSideUserName(
-													user,
+													loggedInUser,
 													selectedChat?.users
 											  )
 									}
@@ -191,7 +185,7 @@ const BreezeGroupProfile = ({
 										selectedChat?.isGroupChat
 											? selectedChat?.groupImage
 											: CHAT_UTILS?.getOtherSideProfileImage(
-													user,
+													loggedInUser,
 													selectedChat?.users
 											  )
 									}
@@ -230,7 +224,7 @@ const BreezeGroupProfile = ({
 												{selectedChat?.isGroupChat
 													? selectedChat?.chatName
 													: CHAT_UTILS?.getOtherSideUserName(
-															user,
+															loggedInUser,
 															selectedChat?.users
 													  )}
 											</div>
@@ -285,7 +279,7 @@ const BreezeGroupProfile = ({
 										{selectedChat?.isGroupChat
 											? selectedChat?.bio
 											: CHAT_UTILS?.getOtherSideProfileBio(
-													user,
+													loggedInUser,
 													selectedChat?.users
 											  )}
 									</p>
@@ -318,7 +312,7 @@ const BreezeGroupProfile = ({
 						<BreezeDivider isDashed={true} />
 						<div className='w-95% flex flex-col items-center justify-center mb-6 bg-white rounded-2xl mx-auto'>
 							<div className=' w-95% py-3 mx-auto cursor-pointer '>
-								{selectedChat?.groupAdmin?._id === user?.userId && (
+								{selectedChat?.groupAdmin?._id === loggedInUser?.userId && (
 									<div
 										className=' truncate   duration-300 ease-in-out  py-1 flex items-center justify-start gap-3	'
 										onClick={() => setAddMembersModal(true)}>
@@ -355,7 +349,7 @@ const BreezeGroupProfile = ({
 												<div key={`tile_item_${index}`}>
 													<BreezeTile
 														onClickHandler={
-															user?.userId !== item?._id
+															loggedInUser?.userId !== item?._id
 																? () => onFilterUserFromGroup(item)
 																: null
 														}
@@ -431,7 +425,7 @@ const BreezeGroupProfile = ({
 								fetchAgain={fetchAgain}
 								setFetchAgain={setFetchAgain}
 								existingUser={selectedChat?.users?.filter(
-									(item) => user?.userId !== item?._id
+									(item) => loggedInUser?.userId !== item?._id
 								)}
 								isEditGroup={true}
 								closeModal={() => setAddMembersModal(false)}

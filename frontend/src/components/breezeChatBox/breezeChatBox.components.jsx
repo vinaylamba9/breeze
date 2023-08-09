@@ -6,6 +6,7 @@ import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
 import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
+import useCombinedStore from "@Zustand/store/store";
 
 const BreezeChatBox = ({
 	fetchAgain,
@@ -13,17 +14,10 @@ const BreezeChatBox = ({
 	setSelectedChatProfile,
 	setFetchAgain,
 }) => {
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
-
+	const { selectedChat } = useChatState();
+	const { loggedInUser } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	const [prevChat, setPrevChat] = useState(selectedChat);
 	const [newMessages, setNewMessages] = useState([]);
 	const [socketConnection, setSocketConnection] = useState(false);
@@ -52,14 +46,14 @@ const BreezeChatBox = ({
 
 	useEffect(() => {
 		socket.connect();
-		socket.emit("bootstrapSocket", user);
+		socket.emit("bootstrapSocket", loggedInUser);
 		socket.on("connected", () => setSocketConnection(true));
 		socket.on("typing", (room) => setIsTyping(true));
 		socket.on("stopTyping", (room) => setIsTyping(false));
 		return () => {
 			socket.disconnect();
 		};
-	}, [user]);
+	}, [loggedInUser]);
 
 	useEffect(() => {
 		socket.on("messageRecieved", (newMsgRecieved) => {

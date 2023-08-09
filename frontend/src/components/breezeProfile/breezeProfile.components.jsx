@@ -7,22 +7,18 @@ import useCombinedStore from "@Zustand/store/store";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 
 const BreezeProfile = ({ onClose }) => {
+	const { selectedChat, setSelectedChat } = useChatState();
 	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
-	const { hideActive, selectUserFromGroup, setSelectUserFromGroup } =
-		useCombinedStore((state) => ({
-			hideActive: state?.hideActive,
-			selectUserFromGroup: state?.selectUserFromGroup,
-			setSelectUserFromGroup: state?.setSelectUserFromGroup,
-		}));
+		loggedInUser,
+		hideActive,
+		selectUserFromGroup,
+		setSelectUserFromGroup,
+	} = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+		hideActive: state?.hideActive,
+		selectUserFromGroup: state?.selectUserFromGroup,
+		setSelectUserFromGroup: state?.setSelectUserFromGroup,
+	}));
 
 	return selectUserFromGroup ? (
 		<div
@@ -71,7 +67,7 @@ const BreezeProfile = ({ onClose }) => {
 							<p className='mt-1 text-color-darkTeal text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
 								{!selectUserFromGroup?.isGroupChat &&
 									CHAT_UTILS?.getOtherSideProfileEmail(
-										user,
+										loggedInUser,
 										selectUserFromGroup?.users
 									)}
 							</p>
@@ -191,13 +187,19 @@ const BreezeProfile = ({ onClose }) => {
 							title={
 								selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )
 							}
 							isActive={true}
 							isGrouped={selectedChat?.isGroupChat}
 							profileImage={
 								!selectedChat?.isGroupChat &&
-								CHAT_UTILS?.getOtherSideProfileImage(user, selectedChat?.users)
+								CHAT_UTILS?.getOtherSideProfileImage(
+									loggedInUser,
+									selectedChat?.users
+								)
 							}
 							// onClickHandler={() => setSelectedChatProfile(true)}
 						/>
@@ -206,13 +208,16 @@ const BreezeProfile = ({ onClose }) => {
 							<h1 className='text-center uppercase font-semibold	 ease-out duration-300 hover:tracking-wider cursor-pointer '>
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )}
 							</h1>
 
 							<p className='mt-1 text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
 								{!selectedChat?.isGroupChat &&
 									CHAT_UTILS?.getOtherSideProfileEmail(
-										user,
+										loggedInUser,
 										selectedChat?.users
 									)}
 							</p>
@@ -228,7 +233,10 @@ const BreezeProfile = ({ onClose }) => {
 						<p className='text-gray-700 mt-1'>
 							{selectedChat?.isGroupChat
 								? selectedChat?.bio
-								: CHAT_UTILS?.getOtherSideProfileBio(user, selectedChat?.users)}
+								: CHAT_UTILS?.getOtherSideProfileBio(
+										loggedInUser,
+										selectedChat?.users
+								  )}
 						</p>
 					</div>
 				</div>
@@ -246,7 +254,10 @@ const BreezeProfile = ({ onClose }) => {
 								Block &nbsp;
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )}
 							</p>
 						</div>
 					</div>
@@ -263,7 +274,10 @@ const BreezeProfile = ({ onClose }) => {
 								Report &nbsp;
 								{selectedChat?.isGroupChat
 									? selectedChat?.chatName
-									: CHAT_UTILS?.getOtherSideUserName(user, selectedChat?.users)}
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )}
 							</p>
 						</div>
 					</div>

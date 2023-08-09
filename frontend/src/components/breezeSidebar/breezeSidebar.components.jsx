@@ -18,20 +18,14 @@ const BreezeSidebar = () => {
 		const res = userDAO.logoutDAO();
 		if (res) navigate(BreezeRoutes.LOGINROUTE);
 	}, [navigate]);
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
-	const { showActive, showProfile } = useCombinedStore((state) => ({
-		showActive: state?.showActive,
-		showProfile: state?.showProfile,
-	}));
+	// const { user } = useChatState();
+	const { loggedInUser, showActive, showProfile } = useCombinedStore(
+		(state) => ({
+			loggedInUser: state?.loggedInUser,
+			showActive: state?.showActive,
+			showProfile: state?.showProfile,
+		})
+	);
 	const sidebarItems = [
 		{
 			icon: (
@@ -130,10 +124,10 @@ const BreezeSidebar = () => {
 							showProfile();
 						}}>
 						<BreezeAvatar
-							profileImage={user?.profileImage}
+							profileImage={loggedInUser?.profileImage}
 							isGrouped={false}
 							isActive={true}
-							title={user?.name}
+							title={loggedInUser?.name}
 						/>
 					</div>
 					<div className='p-2 rounded-xl bg-gray-700' onClick={onLogoutHandler}>

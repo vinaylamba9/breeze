@@ -23,28 +23,20 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 		formState: { errors },
 	} = useForm({});
 
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
-
 	const [isEditProfileName, setEditProfileName] = useState(false);
 	const [isEditProfileBio, setEditProfileBio] = useState(false);
-	const { hideActive, hideProfile } = useCombinedStore((state) => ({
-		hideActive: state?.hideActive,
-		hideProfile: state?.hideProfile,
-	}));
+	const { loggedInUser, setUserDetails, hideActive, hideProfile } =
+		useCombinedStore((state) => ({
+			loggedInUser: state?.loggedInUser,
+			setUserDetails: state?.setUserDetails,
+			hideActive: state?.hideActive,
+			hideProfile: state?.hideProfile,
+		}));
 	const renameProfileNameHandler = useCallback(
 		async (d) => {
-			if (d?.editProfileName !== user?.name) {
+			if (d?.editProfileName !== loggedInUser?.name) {
 				const response = await userDAO.updateUserDetailsDAO({
-					userID: user?.userId,
+					userID: loggedInUser?.userId,
 					updatedData: {
 						name: d?.editProfileName,
 					},
@@ -52,17 +44,17 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					isEditProfileName && setEditProfileName(false);
 					let userInfo = BreezeSessionManagement.getUserSession();
-					setUser(userInfo);
+					setUserDetails(userInfo);
 				}
 			} else setEditProfileName(false);
 		},
-		[isEditProfileName, setUser, user?.name, user?.userId]
+		[isEditProfileName, loggedInUser?.name, loggedInUser?.userId]
 	);
 	const renameProfileBioHandler = useCallback(
 		async (d) => {
-			if (d?.editProfileBio !== user?.bio) {
+			if (d?.editProfileBio !== loggedInUser?.bio) {
 				const response = await userDAO.updateUserDetailsDAO({
-					userID: user?.userId,
+					userID: loggedInUser?.userId,
 					updatedData: {
 						bio: d?.editProfileBio,
 					},
@@ -70,19 +62,20 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					isEditProfileBio && setEditProfileBio(false);
 					let userInfo = BreezeSessionManagement.getUserSession();
-					setUser(userInfo);
+					setUserDetails(userInfo);
 				}
 			} else {
 				setEditProfileBio(false);
 			}
 		},
-		[isEditProfileBio, setUser, user?.bio, user?.userId]
+		[isEditProfileBio, loggedInUser?.bio, loggedInUser?.userId]
 	);
 
 	useEffect(() => {
-		setValue("editProfileName", user?.name);
-		setValue("editProfileBio", user?.bio);
-	}, [setValue, user?.name, user?.bio]);
+		setValue("editProfileName", loggedInUser?.name);
+		setValue("editProfileBio", loggedInUser?.bio);
+	}, [setValue, loggedInUser?.name, loggedInUser?.bio]);
+
 	return (
 		<div
 			style={{
@@ -121,8 +114,8 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 							isIndividual={true}
 							fetchAgain={fetchAgain}
 							setFetchAgain={setFetchAgain}
-							title={user?.name}
-							profileImage={user?.profileImage}
+							title={loggedInUser?.name}
+							profileImage={loggedInUser?.profileImage}
 						/>
 
 						<div className='my-5 w-90%'>
@@ -155,7 +148,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 							) : (
 								<div className='flex items-center justify-center gap-5'>
 									<div className='text-center uppercase  text-fontsize-pearl ease-out duration-300 hover:tracking-wider cursor-pointer '>
-										{user?.name}
+										{loggedInUser?.name}
 									</div>
 									<div
 										className='cursor-pointer p-3 hover:rounded-full hover:bg-gray-200 ease-in-out duration-300'
@@ -177,7 +170,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 									}}
 								/>
 								<Fragment className='mt-1 text-center text-slate-400 ease-out duration-300 hover:tracking-wider'>
-									{user?.email}
+									{loggedInUser?.email}
 								</Fragment>
 							</div>
 						</div>
@@ -205,7 +198,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 					) : (
 						<div className='flex flex-col items-start justify-start  w-80% py-3 mx-auto cursor-pointer'>
 							<p className='text-fontsize-virgin tracking-wide'>About</p>
-							<p className='text-gray-700 mt-1'>{user?.bio}</p>
+							<p className='text-gray-700 mt-1'>{loggedInUser?.bio}</p>
 						</div>
 					)}
 					{isEditProfileBio ? (
