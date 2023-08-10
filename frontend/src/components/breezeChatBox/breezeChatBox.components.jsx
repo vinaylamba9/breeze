@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BreezeMessageFields from "@Components/breezeMessageField/breezeMessageField.components";
 import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHeader.components";
-import { MessageDAO } from "@Modules/chat/core/messageDAO";
+
 import { useChatState } from "@Context/chatProvider";
-import { HTTPStatusCode } from "@Constants/network";
+
 import { socket } from "@Socket/socket";
 import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
 import useCombinedStore from "@Zustand/store/store";
@@ -19,42 +19,22 @@ const BreezeChatBox = ({
 		loggedInUser: state?.loggedInUser,
 	}));
 	const [prevChat, setPrevChat] = useState(selectedChat);
-	const [newMessages, setNewMessages] = useState([]);
+
 	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
-
-	const getMessageByChatIDHandler = useCallback(async () => {
-		if (!selectedChat) return;
-		const response = await MessageDAO.getMessageByChatID({
-			chatID: selectedChat?._id,
-		});
-		if (response?.statusCode === HTTPStatusCode.OK) {
-			setNewMessages(response?.responseBody);
-			socket.emit("joinChat", selectedChat?._id);
-		}
-
-		return () => {
-			setNewMessages([]);
-			socket.emit("leaveChat", selectedChat?._id);
-		};
-	}, [selectedChat]);
-
-	useEffect(() => {
-		getMessageByChatIDHandler();
-	}, [getMessageByChatIDHandler]);
-
+	const [newMessages, setNewMessages] = useState([]);
 	useEffect(() => {
 		socket.connect();
 		socket.emit("bootstrapSocket", loggedInUser);
 		socket.on("connected", () => setSocketConnection(true));
 		socket.on("typing", (room) => setIsTyping(true));
 		socket.on("stopTyping", (room) => setIsTyping(false));
+
 		return () => {
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
-
 	useEffect(() => {
 		socket.on("messageRecieved", (newMsgRecieved) => {
 			if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
@@ -63,8 +43,7 @@ const BreezeChatBox = ({
 				setNewMessages([...newMessages, newMsgRecieved]);
 			}
 		});
-	}, [newMessages, prevChat]);
-
+	}, [newMessages, prevChat, setNewMessages]);
 	return (
 		<>
 			<div
@@ -77,17 +56,22 @@ const BreezeChatBox = ({
 					setFetchAgain={setFetchAgain}
 					isTyping={isTyping}
 				/>
-				<BreezeScrollableFeed newMessages={newMessages} isTyping={isTyping} />
+				<BreezeScrollableFeed
+					prevChat={prevChat}
+					isTyping={isTyping}
+					setNewMessages={setNewMessages}
+					newMessages={newMessages}
+				/>
 				<div className='w-100% flex-1'>
 					<BreezeMessageFields
 						prevChat={prevChat}
 						setIsTyping={setIsTyping}
+						setNewMessages={setNewMessages}
+						newMessages={newMessages}
 						typing={typing}
 						setTyping={setTyping}
 						setSocketConnection={setSocketConnection}
 						socketConnection={socketConnection}
-						newMessages={newMessages}
-						setNewMessages={setNewMessages}
 					/>
 				</div>
 			</div>

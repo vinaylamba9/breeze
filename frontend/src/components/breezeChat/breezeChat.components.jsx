@@ -1,14 +1,18 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useChatState } from "@Context/chatProvider";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
-
+import { HTTPStatusCode } from "@Constants/network";
+import { MessageDAO } from "@Modules/chat/core/messageDAO";
+import { socket } from "@Socket/socket";
 const BreezeChat = ({
+	prevChat,
 	showPill,
 	stickyMsgPillRef,
+	setNewMessages,
 	stickyDateRef,
 	newMessages,
 }) => {
@@ -16,6 +20,7 @@ const BreezeChat = ({
 	const { loggedInUser } = useCombinedStore((state) => ({
 		loggedInUser: state?.loggedInUser,
 	}));
+
 	const msgDividerComponent = useCallback(
 		(msg) => {
 			return (
@@ -54,6 +59,21 @@ const BreezeChat = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[newMessages, loggedInUser?.userId]
 	);
+
+	const getMessageByChatIDHandler = useCallback(async () => {
+		if (!selectedChat) return;
+		const response = await MessageDAO.getMessageByChatID({
+			chatID: selectedChat?._id,
+		});
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			setNewMessages(response?.responseBody);
+			socket.emit("joinChat", selectedChat?._id);
+		}
+	}, [selectedChat, setNewMessages]);
+
+	useEffect(() => {
+		getMessageByChatIDHandler();
+	}, [getMessageByChatIDHandler]);
 
 	return (
 		<>

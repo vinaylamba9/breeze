@@ -15,23 +15,17 @@ import BreezeModal from "@Components/breezeModal/breezeModal.components";
 import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.components";
 import { ChatDAO } from "../core/chatDAO";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
-
 import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
+import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
-	const {
-		// user,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-	} = useChatState();
+	const { selectedChat, setSelectedChat, chats, setChats } = useChatState();
 
 	const { loggedInUser, isActive, hideProfile } = useCombinedStore((state) => ({
 		loggedInUser: state?.loggedInUser,
@@ -39,13 +33,7 @@ const ChatScreen = () => {
 		hideProfile: state?.hideProfile,
 	}));
 
-	const {
-		register,
-		handleSubmit,
-		setError,
-		watch,
-		formState: { errors },
-	} = useForm({});
+	const { register } = useForm({});
 
 	const [isSidebar, setSidebar] = useState(false);
 
@@ -81,10 +69,23 @@ const ChatScreen = () => {
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
-				<header className='drop-shadow-md truncate w-95% mx-auto my-5 text-fontsize-pearl font-bold'>
-					Chats
+				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
+					<p className='text-fontsize-pearl font-bold'>Chats</p>
+					<div
+						className='flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
+						onClick={openSideBar}>
+						<BsPlusLg
+							style={{
+								cursor: "pointer",
+								color: `var(--background-color-light)`,
+								fontSize: `var(--fontsize-glossy)`,
+								fontWeight: 900,
+							}}
+						/>
+						<p className='text-white -mt-0.5'>Create chat</p>
+					</div>
 				</header>
-				<div className='w-95% mx-auto my-5'>
+				<div className='w-95% mx-auto mt-5 mb-8'>
 					<BreezeSearch
 						placeholder={"Search chat"}
 						leadingIcon={
@@ -108,8 +109,8 @@ const ChatScreen = () => {
 						<div
 							className='bg-white rounded-xl overflow-y-auto '
 							style={{
-								height: "calc(100vh - 152px)",
-								maxHeight: "calc(100vh - 152px)",
+								height: "calc(100vh - 175px)",
+								maxHeight: "calc(100vh - 175px)",
 							}}>
 							{isLoading ? (
 								<BreezeTileSkeleton tileLength={7} />
@@ -200,7 +201,7 @@ const ChatScreen = () => {
 						</span>
 					</button>
 				</BreezeTooltip> */}
-				{/* {isSidebar && (
+				{isSidebar && (
 					<SelectUserFromGroupProvider>
 						<BreezeSideDrawer
 							isOpen={isSidebar}
@@ -214,7 +215,7 @@ const ChatScreen = () => {
 							}
 						/>
 					</SelectUserFromGroupProvider>
-				)} */}
+				)}
 			</div>
 			<div className={`${isActive ? "w-51%" : "flex-1"}`}>
 				{!selectedChat ? (

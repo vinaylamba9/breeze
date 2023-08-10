@@ -7,7 +7,7 @@ const BreezeSideDrawer = ({
 	isOpen,
 	onClose,
 	position = "left-0",
-	backgroundColor = "bg-color-slate",
+	backgroundColor,
 }) => {
 	const sideDrawerRef = useRef();
 	const [showContent, setShowContent] = useState(false);
@@ -45,7 +45,7 @@ const BreezeSideDrawer = ({
 	return (
 		<main
 			className={
-				" transition-all duration-300 fixed z-20 backdrop-blur-md  inset-0  ease-in-out mx-auto " +
+				" transition-all duration-300 fixed z-20 bg-white inset-0  ease-in-out mx-auto " +
 				(isOpen
 					? "transition-opacity opacity-100 duration-500 translate-x-0"
 					: "transition-all opacity-0 translate-x-full")

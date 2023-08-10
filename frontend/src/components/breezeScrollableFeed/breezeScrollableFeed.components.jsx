@@ -1,7 +1,8 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import { useChatState } from "@Context/chatProvider";
-const BreezeScrollableFeed = ({ newMessages }) => {
+
+const BreezeScrollableFeed = ({ newMessages, setNewMessages }) => {
 	const { selectedChat } = useChatState();
 	const chatContainerRef = useRef(null);
 	const stickyMsgPillRef = useRef(null);
@@ -26,13 +27,10 @@ const BreezeScrollableFeed = ({ newMessages }) => {
 	const onScrollMsg = useCallback(() => {
 		if (chatContainerRef.current) {
 			const { scrollTop } = chatContainerRef?.current;
-
 			setShowPill(scrollTop > 0);
-
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
 			}
-
 			// Set a new timeout to hide the pill after 2 seconds
 			timeoutRef.current = setTimeout(() => {
 				setShowPill(false);
@@ -67,10 +65,11 @@ const BreezeScrollableFeed = ({ newMessages }) => {
 				style={{ maxHeight: "100%" }}
 				ref={chatContainerRef}>
 				<BreezeChat
+					setNewMessages={setNewMessages}
+					newMessages={newMessages}
 					showPill={showPill}
 					stickyMsgPillRef={stickyMsgPillRef}
 					stickyDateRef={stickyDateRef}
-					newMessages={newMessages}
 				/>
 			</div>
 		</div>
