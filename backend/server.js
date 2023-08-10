@@ -118,20 +118,12 @@ io.on("connection", async (socket) => {
 				// 	});
 				// 	await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, createMessage);
 				// 	const chat = createMessage?.chat;
-				// 	if (!chat?.users) return;
-				// 	chat?.users?.forEach((user, index) => {
-				// 		if (user?._id === createMessage?.sender?._id) return;
-				// 		socket.broadcast.emit("messageRecieved", createMessage);
-				// 	});
-
+				// 	socket.to(chat?._id).emit("messageRecieved", createMessage);
 				// });
 				socket.on("newMessage", (newMsgRecieved) => {
 					const chat = newMsgRecieved?.chat;
 					if (!chat?.users) return;
-					chat?.users?.forEach((user) => {
-						if (user?._id === newMsgRecieved?.sender?._id) return;
-						socket.in(user?._id).emit("messageRecieved", newMsgRecieved);
-					});
+					socket.to(chat?._id).emit("messageRecieved", newMsgRecieved);
 				});
 
 				socket.on("leaveChat", (room) => {

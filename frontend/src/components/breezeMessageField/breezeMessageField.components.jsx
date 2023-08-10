@@ -14,10 +14,10 @@ const BreezeMessageFields = ({
 	prevChat,
 	setSocketConnection,
 	socketConnection,
-	newMessages,
-	setNewMessages,
 	typing,
 	setTyping,
+	newMessages,
+	setNewMessages,
 }) => {
 	const { selectedChat } = useChatState();
 	const msgBoxRef = useRef(null);
@@ -55,6 +55,7 @@ const BreezeMessageFields = ({
 				socket.emit("stopTyping", selectedChat?._id);
 				e.preventDefault();
 				e.target.innerText = "";
+
 				// socket.emit("newMessage", {
 				// 	content: msg,
 				// 	chatID: selectedChat?._id,
@@ -77,12 +78,6 @@ const BreezeMessageFields = ({
 		let tempRef = msgBoxRef.current;
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
-
-	// useEffect(() => {
-	// 	socket.on("messageRecieved", (newMsgReceived) => {
-	// 		setNewMessages([...newMessages, newMsgReceived]);
-	// 	});
-	// }, [newMessages, setNewMessages]);
 
 	return (
 		<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
