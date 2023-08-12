@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
+import { MdEmail, MdOutlineSubtitles } from "react-icons/md";
 
 const BreezeTile = ({
 	title,
@@ -15,6 +16,7 @@ const BreezeTile = ({
 	onClickHandler,
 	styleClass,
 	isLastTimeActive,
+	email,
 }) => {
 	return (
 		<Fragment>
@@ -24,7 +26,7 @@ const BreezeTile = ({
                     justify-start items-center ${styleClass}  `}>
 				<div className={` m-auto w-95%  flex items-center justify-between `}>
 					<div
-						className='flex w-80%  items-center justify-start 
+						className='flex w-80%  items-start justify-start 
                     gap-2 '>
 						<BreezeAvatar
 							profileImage={profileImage}
@@ -34,9 +36,40 @@ const BreezeTile = ({
 						/>
 						<div className=' grid grid-row-2 gap-1 w-70% '>
 							<h3 className='truncate font-black text-sm '>{title}</h3>
+							<Fragment className=' truncate '>
+								{email && (
+									<div className='flex justify-start gap-2 items-center'>
+										<MdEmail
+											className='mt-1'
+											style={{
+												color: `text-gray-600`,
+												fontSize: `var(--fontsize-smart)`,
+											}}
+										/>
+										<p className=' text-gray-700 text-fontsize-smart'>
+											{email}
+										</p>
+									</div>
+								)}
+							</Fragment>
+
 							<p className=' truncate text-fontsize-smart text-gray-500'>
-								{msg || bio}
+								{msg}
 							</p>
+							<Fragment className=' truncate '>
+								{bio && (
+									<div className='flex justify-start gap-2 items-center'>
+										<MdOutlineSubtitles
+											className='mt-0.5'
+											style={{
+												color: `text-gray-600`,
+												fontSize: `var(--fontsize-smart)`,
+											}}
+										/>
+										<p className=' text-gray-500 text-fontsize-smart'>{bio}</p>
+									</div>
+								)}
+							</Fragment>
 						</div>
 					</div>
 
