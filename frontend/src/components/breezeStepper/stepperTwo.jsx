@@ -181,7 +181,7 @@ const StepperTwo = ({
 			<div className={`mt-5 ${isEditGroup && "w-95% mx-auto"}`}>
 				{isEditGroup && (
 					<div className='mb-5'>
-						<h2 className='text-fontsize-pearl text-color-darkTeal font-bold'>
+						<h2 className='text-fontsize-pearl text-black font-bold'>
 							Add members
 						</h2>
 
