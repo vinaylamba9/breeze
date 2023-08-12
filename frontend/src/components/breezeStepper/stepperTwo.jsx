@@ -62,10 +62,11 @@ const StepperTwo = ({
 				return toast.error("Users already selected.", {
 					transition: Slide,
 					style: {
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
-					progressStyle: { background: "var(--danger-color)" },
+					progressStyle: { background: "var(--background-color-dark)" },
 				});
 			}
 			const userToSelect = [...selectedUser, user];
@@ -87,20 +88,22 @@ const StepperTwo = ({
 				return toast.error("Users already selected.", {
 					transition: Slide,
 					style: {
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
-					progressStyle: { background: "var(--danger-color)" },
+					progressStyle: { background: "var(--background-color-dark)" },
 				});
 			}
 			if (selectedChat?.groupAdmin?._id !== user?.userId) {
 				return toast.error("Only admin can add users.", {
 					transition: Slide,
 					style: {
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
-					progressStyle: { background: "var(--danger-color)" },
+					progressStyle: { background: "var(--background-color-dark)" },
 				});
 			}
 			const userToSelect = [...selectedUser, alreadyExistingUser];
@@ -178,7 +181,7 @@ const StepperTwo = ({
 			<div className={`mt-5 ${isEditGroup && "w-95% mx-auto"}`}>
 				{isEditGroup && (
 					<div className='mb-5'>
-						<h2 className='text-fontsize-pearl text-color-darkTeal font-bold'>
+						<h2 className='text-fontsize-pearl text-black font-bold'>
 							Add members
 						</h2>
 
@@ -190,16 +193,13 @@ const StepperTwo = ({
 						</div>
 					</div>
 				)}
-				<div
-					className={`mt-10 ${
-						isEditGroup ? "w-100%" : "w-70%"
-					} mx-auto drop-shadow-md`}>
+				<div className={`mt-10 ${isEditGroup ? "w-100%" : "w-70%"} mx-auto`}>
 					<BreezeSearch
 						placeholder={"Search user"}
 						leadingIcon={
 							<BiSearch
 								style={{
-									color: `var(--color-darkTeal)`,
+									color: `var(--background-color-dark)`,
 									fontSize: `var(--fontsize-glossy)`,
 								}}
 							/>
@@ -261,8 +261,15 @@ const StepperTwo = ({
 											isNotification={item?.isNotification}
 											bio={item?.bio}
 											styleClass={
-												"bg-white  mx-2 py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity transition duration-300 ease-in-out"
+												"bg-white  mx-2 py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
 											}
+										/>
+										<hr
+											style={{
+												width: "95%",
+												margin: "0 auto",
+												borderTop: "1px solid var(--muted-color)",
+											}}
 										/>
 									</div>
 								);
@@ -270,11 +277,11 @@ const StepperTwo = ({
 						)}
 					</div>
 				</div>
-				<div className='flex items-center justify-center  '>
+				<div className='flex items-center justify-center gap-4  '>
 					{isEditGroup ? (
 						<BreezeButton
 							label={"Update group "}
-							backgroundColor={`var(--color-darkTeal)`}
+							backgroundColor={`var(--background-color-dark)`}
 							textColor={`var(--text-color-purity)`}
 							onClickHandler={onUpdateGroupHandler}
 						/>
@@ -282,7 +289,7 @@ const StepperTwo = ({
 						handlePrev && (
 							<BreezeButton
 								label={"Previous step"}
-								backgroundColor={`var(--color-darkTeal)`}
+								backgroundColor={`var(--background-color-dark)`}
 								textColor={`var(--text-color-purity)`}
 								onClickHandler={handlePrev}
 							/>
@@ -291,7 +298,7 @@ const StepperTwo = ({
 					{handlePrev && selectedUser?.length > 0 && (
 						<BreezeButton
 							label={"Create group "}
-							backgroundColor={`var(--color-darkTeal)`}
+							backgroundColor={`var(--background-color-dark)`}
 							textColor={`var(--text-color-purity)`}
 							onClickHandler={onCreateGroupHandler}
 						/>

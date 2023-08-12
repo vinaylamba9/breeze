@@ -90,17 +90,6 @@ const io = new Server(server, {
 	cors: DevConfig.corsOrigin,
 });
 
-function convertObjectIdsToStrings(key, value) {
-	if (value instanceof ObjectId) {
-		return value.toString();
-	}
-	return value;
-}
-
-async function createMessage(obj, user) {
-	return createdMessage;
-}
-
 io.on("connection", async (socket) => {
 	await userAuth?.isLoggedInSocket(socket, (err) => {
 		if (err) {
@@ -120,7 +109,6 @@ io.on("connection", async (socket) => {
 				});
 				socket.on("typing", (room) => socket.to(room).emit("typing"));
 				socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
-
 				socket.on("sendMessage", async (obj) => {
 					try {
 						let response = await MESSAGE_DB_UTILS?.createMessage({
@@ -129,7 +117,7 @@ io.on("connection", async (socket) => {
 							chat: obj?.chatID,
 						});
 						await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
-						console.log(response, "-response");
+
 						io.in(response?.chat?._id?.toString()).emit(
 							"messageReceived",
 							response
