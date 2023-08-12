@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const cors = require("cors");
-
+const { ObjectId } = require("mongodb");
 const PORT = process.env.PORT;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json");
@@ -90,6 +90,17 @@ const io = new Server(server, {
 	cors: DevConfig.corsOrigin,
 });
 
+function convertObjectIdsToStrings(key, value) {
+	if (value instanceof ObjectId) {
+		return value.toString();
+	}
+	return value;
+}
+
+async function createMessage(obj, user) {
+	return createdMessage;
+}
+
 io.on("connection", async (socket) => {
 	await userAuth?.isLoggedInSocket(socket, (err) => {
 		if (err) {
@@ -110,20 +121,22 @@ io.on("connection", async (socket) => {
 				socket.on("typing", (room) => socket.to(room).emit("typing"));
 				socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
 
-				// socket.on("newMessage", async (obj) => {
-				// 	const createMessage = await MESSAGE_DB_UTILS?.createMessage({
-				// 		sender: user?.userId,
-				// 		content: obj?.content,
-				// 		chat: obj?.chatID,
-				// 	});
-				// 	await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, createMessage);
-				// 	const chat = createMessage?.chat;
-				// 	socket.to(chat?._id).emit("messageRecieved", createMessage);
-				// });
-				socket.on("newMessage", (newMsgRecieved) => {
-					const chat = newMsgRecieved?.chat;
-					if (!chat?.users) return;
-					socket.to(chat?._id).emit("messageRecieved", newMsgRecieved);
+				socket.on("sendMessage", async (obj) => {
+					try {
+						let response = await MESSAGE_DB_UTILS?.createMessage({
+							sender: user?.userId,
+							content: obj?.content,
+							chat: obj?.chatID,
+						});
+						await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
+						console.log(response, "-response");
+						io.in(response?.chat?._id?.toString()).emit(
+							"messageReceived",
+							response
+						);
+					} catch (error) {
+						console.error("Error handling newMessage:", error);
+					}
 				});
 
 				socket.on("leaveChat", (room) => {
