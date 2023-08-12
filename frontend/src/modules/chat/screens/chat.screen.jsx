@@ -206,6 +206,8 @@ const ChatScreen = () => {
 						<BreezeSideDrawer
 							isOpen={isSidebar}
 							onClose={closeSideBar}
+							backgroundColor={"bg-white"}
+							position='right-0'
 							children={
 								<BreezeSideDrawerBody
 									onModalOpen={openGroupModal}
@@ -243,7 +245,7 @@ const ChatScreen = () => {
 
 			{isGroupChatModal && (
 				<BreezeModal
-					backgroundColor={"bg-color-slate"}
+					backgroundColor={"bg-white"}
 					closeModal={closeGroupModal}
 					isModalOpen={isGroupChatModal}
 					key={"Group_chat_modal"}

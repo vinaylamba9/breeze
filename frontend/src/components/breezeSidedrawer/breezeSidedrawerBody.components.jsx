@@ -17,13 +17,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 		useChatState();
 
 	const [isLoading, setLoading] = useState(false);
-	const {
-		register,
-		handleSubmit,
-		setError,
-		watch,
-		formState: { errors },
-	} = useForm({});
+	const { register } = useForm({});
 
 	/** Getting All Users list from Chat API */
 	const getAllUsers = useCallback(async () => {
@@ -58,7 +52,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 		<div className='p-2 '>
 			<div className='flex mt-10 w-95% mx-auto items-center justify-between px-4'>
 				<div>
-					<h2 className=' drop-shadow-md text-fontsize-pearl text-color-darkTeal font-bold'>
+					<h2 className='  text-fontsize-pearl text-black font-bold'>
 						Create chat
 					</h2>
 
@@ -75,7 +69,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 						title='Group Chat'
 						className='
 									cursor-pointer
-									bg-color-darkTeal
+									bg-black
 									w-10 h-10
 									outline-none
 									rounded-xl 
@@ -98,13 +92,13 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 				</BreezeTooltip>
 			</div>
 
-			<div className='w-95% mx-auto drop-shadow-md mt-10 px-4'>
+			<div className='w-95% mx-auto mt-5 mb-8'>
 				<BreezeSearch
 					placeholder={"Search user"}
 					leadingIcon={
 						<BiSearch
 							style={{
-								color: `var(--color-darkTeal)`,
+								color: `var(--background-color-dark)`,
 								fontSize: `var(--fontsize-glossy)`,
 							}}
 						/>
@@ -114,9 +108,10 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 				/>
 			</div>
 			<div
-				className='w-100% mx-auto  mt-5 px-4 '
+				className='w-100% mx-auto  mt-5 '
 				style={{
-					minHeight: "75vh",
+					minHeight: "90vh",
+					maxHeight: "90vh",
 				}}>
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />
@@ -124,26 +119,35 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 					<div
 						className=' rounded-2xl'
 						style={{
-							maxHeight: "73vh",
-							minHeight: "73vh",
+							minHeight: "90vh",
+							maxHeight: "90vh",
 							overflowY: "scroll",
 						}}>
-						{userList?.map((item) => {
+						{userList?.map((item, index) => {
 							return (
-								<BreezeTile
-									onClickHandler={() => onCreateChatHandler(item?._id)}
-									title={item?.name}
-									imgBackgroundColor={item?.imgBackgroundColor}
-									msg={item?.msg}
-									isActive={true}
-									isGrouped={item?.isGrouped}
-									profileImage={item?.profileImage}
-									isNotification={item?.isNotification}
-									bio={item?.bio}
-									styleClass={
-										"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-color-TealWithOpacity transition duration-300 ease-in-out"
-									}
-								/>
+								<div key={`add_user_${index}`}>
+									<BreezeTile
+										onClickHandler={() => onCreateChatHandler(item?._id)}
+										title={item?.name}
+										imgBackgroundColor={item?.imgBackgroundColor}
+										msg={item?.msg}
+										isActive={true}
+										isGrouped={item?.isGrouped}
+										profileImage={item?.profileImage}
+										isNotification={item?.isNotification}
+										bio={item?.bio}
+										styleClass={
+											"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
+										}
+									/>
+									<hr
+										style={{
+											width: "95%",
+											margin: "0 auto",
+											borderTop: "1px solid var(--muted-color)",
+										}}
+									/>
+								</div>
 							);
 						})}
 					</div>
