@@ -45,7 +45,7 @@ const BreezeModal = ({
 								</div>
 							)}
 							{isDismissible && (
-								<div className='right cursor-pointer absolute right-5 top-4'>
+								<div className='right  absolute right-5 top-2 p-4 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300'>
 									<IoClose
 										style={{
 											color: `var(--background-color-dark)`,
