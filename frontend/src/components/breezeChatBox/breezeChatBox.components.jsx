@@ -35,15 +35,18 @@ const BreezeChatBox = ({
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
-	useEffect(() => {
-		socket.on("messageRecieved", (newMsgRecieved) => {
-			if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
-				// FOR NOTIFICATION
-			} else {
-				setNewMessages([...newMessages, newMsgRecieved]);
-			}
-		});
-	}, [newMessages, prevChat, setNewMessages]);
+	// useEffect(() => {
+	// 	socket.on("messageReceived", (newMsgRecieved) => {
+	// 		if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
+	// 			// FOR NOTIFICATION
+	// 		} else {
+	// 			setNewMessages([...newMessages, newMsgRecieved]);
+	// 		}
+	// 	});
+
+	// 	return () => socket.off("messageReceived");
+	// }, [newMessages, prevChat]);
+
 	return (
 		<>
 			<div
@@ -62,18 +65,16 @@ const BreezeChatBox = ({
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 				/>
-				<div className='w-100% flex-1'>
-					<BreezeMessageFields
-						prevChat={prevChat}
-						setIsTyping={setIsTyping}
-						setNewMessages={setNewMessages}
-						newMessages={newMessages}
-						typing={typing}
-						setTyping={setTyping}
-						setSocketConnection={setSocketConnection}
-						socketConnection={socketConnection}
-					/>
-				</div>
+				<BreezeMessageFields
+					prevChat={prevChat}
+					setIsTyping={setIsTyping}
+					setNewMessages={setNewMessages}
+					newMessages={newMessages}
+					typing={typing}
+					setTyping={setTyping}
+					setSocketConnection={setSocketConnection}
+					socketConnection={socketConnection}
+				/>
 			</div>
 		</>
 	);

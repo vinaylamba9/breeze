@@ -56,22 +56,22 @@ const BreezeMessageFields = ({
 				e.preventDefault();
 				e.target.innerText = "";
 
-				// socket.emit("newMessage", {
-				// 	content: msg,
-				// 	chatID: selectedChat?._id,
-				// });
-
-				const response = await MessageDAO.createMessageDAO({
+				socket.emit("sendMessage", {
 					content: msg,
 					chatID: selectedChat?._id,
 				});
-				if (response?.statusCode === HTTPStatusCode.OK) {
-					setNewMessages([...newMessages, response?.responseBody]);
-					socket.emit("newMessage", response?.responseBody);
-				}
+
+				// const response = await MessageDAO.createMessageDAO({
+				// 	content: msg,
+				// 	chatID: selectedChat?._id,
+				// });
+				// if (response?.statusCode === HTTPStatusCode.OK) {
+				// 	setNewMessages([...newMessages, response?.responseBody]);
+				// 	socket.emit("newMessage", response?.responseBody);
+				// }
 			} else typingIndicatorHandler();
 		},
-		[newMessages, selectedChat?._id, setNewMessages, typingIndicatorHandler]
+		[selectedChat?._id, typingIndicatorHandler]
 	);
 
 	useEffect(() => {

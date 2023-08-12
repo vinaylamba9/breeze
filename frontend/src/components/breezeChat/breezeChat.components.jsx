@@ -65,9 +65,9 @@ const BreezeChat = ({
 		const response = await MessageDAO.getMessageByChatID({
 			chatID: selectedChat?._id,
 		});
+		socket.emit("joinChat", selectedChat?._id);
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
-			socket.emit("joinChat", selectedChat?._id);
 		}
 	}, [selectedChat, setNewMessages]);
 
@@ -75,17 +75,16 @@ const BreezeChat = ({
 		getMessageByChatIDHandler();
 	}, [getMessageByChatIDHandler]);
 
+	useEffect(() => {
+		socket.on("messageReceived", (newMsgRecieved) =>
+			setNewMessages([...newMessages, newMsgRecieved])
+		);
+
+		return () => socket.off("messageReceived");
+	}, [newMessages, prevChat, setNewMessages]);
+
 	return (
 		<>
-			{
-				// <div
-				// 	className={`mt-10% w-10% rounded-md text-sm mx-auto date-sticky drop-shadow-md text-center bg-white p-2  sticky top-3  z-10  ease-in-out duration-300 transition-all  ${
-				// 		showPill ? "translate-y-0 opacity-100" : "translate-y-0 opacity-0"
-				// 	}`}
-				// 	ref={stickyMsgPillRef}>
-				// 	hello
-				// </div>
-			}
 			{newMessages?.length > 0 &&
 				newMessages?.map((msg, index) => (
 					<>
