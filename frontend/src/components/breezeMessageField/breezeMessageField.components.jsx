@@ -60,15 +60,6 @@ const BreezeMessageFields = ({
 					content: msg,
 					chatID: selectedChat?._id,
 				});
-
-				// const response = await MessageDAO.createMessageDAO({
-				// 	content: msg,
-				// 	chatID: selectedChat?._id,
-				// });
-				// if (response?.statusCode === HTTPStatusCode.OK) {
-				// 	setNewMessages([...newMessages, response?.responseBody]);
-				// 	socket.emit("newMessage", response?.responseBody);
-				// }
 			} else typingIndicatorHandler();
 		},
 		[selectedChat?._id, typingIndicatorHandler]

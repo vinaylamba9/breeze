@@ -3,7 +3,8 @@ import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 const BreezeStepper = ({ stepperList, currentStep }) => {
 	return (
 		<div>
-			<div className='flex justify-center items-center mx-auto'>
+			<BreezeDivider isDashed={true} />
+			<div className='flex justify-center items-center mx-auto mt-5'>
 				{stepperList?.map((step, i) => {
 					return (
 						<>
@@ -31,6 +32,7 @@ const BreezeStepper = ({ stepperList, currentStep }) => {
 					);
 				})}
 			</div>
+
 			<div>{stepperList[currentStep - 1]?.component}</div>
 		</div>
 	);
