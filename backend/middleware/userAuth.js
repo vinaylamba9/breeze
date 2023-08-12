@@ -25,7 +25,7 @@ const userAuth = {
 	},
 	isLoggedInSocket: async function (socket, next) {
 		try {
-			const authHeader = socket?.handshake?.query?.token;
+			const authHeader = socket.handshake.headers.authorization;
 
 			if (!authHeader) {
 				return next(new Error("TOKEN REQUIRED FOR AUTHENTICATION."));

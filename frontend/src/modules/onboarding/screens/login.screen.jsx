@@ -41,7 +41,7 @@ const Login = () => {
 				email: d?.email,
 				password: d?.password,
 			});
-			console.log(response);
+
 			if (response?.statusCode === HTTPStatusCode.OK) {
 				setLoading(false);
 				navigate(BreezeRoutes.CHATROUTE);

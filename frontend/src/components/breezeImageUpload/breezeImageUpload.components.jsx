@@ -33,17 +33,15 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 				};
 				reader.readAsDataURL(selectedFile);
 				const response = await MiscAPI.uploadImage(data);
-
 				setGroupImageURL(response?.responseBody?.secure_url);
 				toast.success("Image uploaded successfully.", {
 					transition: Slide,
-					icon: "🚀",
 					style: {
-						// borderRadius: "1rem",
-						color: "var(--color-darkTeal)",
+						borderRadius: ".5rem",
+						color: "var(--background-color-dark)",
 						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
 					},
-					progressStyle: { background: "var(--color-darkTeal)" },
+					progressStyle: { background: "var(--background-color-dark)" },
 				});
 			} else {
 				// Invalid file type, reset the image preview
@@ -80,7 +78,7 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 			<ToastContainer />
 			<div className='w-full flex items-center flex-col justify-center'>
 				{imagePreview ? (
-					<div className='h-36 w-36 border-2 border-color-darkTeal rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+					<div className='h-36 w-36 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 						<img
 							ref={uploadedImageRef}
 							src={imagePreview}
@@ -100,10 +98,10 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 						/>
 						<label
 							htmlFor='uploadImage'
-							className='h-36 w-36 border-2 border-color-darkTeal rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+							className='h-36 w-36 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 							<ImUpload
 								style={{
-									color: `var(--color-darkTeal)`,
+									color: `var(--background-color-black)`,
 									fontSize: `var(--fontsize-strong)`,
 								}}
 							/>
@@ -120,9 +118,9 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 				{imagePreview && (
 					<BreezeButton
 						width={"w-20%"}
-						buttonClass={"py-2 mt-2 mb-2"}
+						buttonClass={"py-1.5 mt-2 mb-2"}
 						label={"Remove Image"}
-						backgroundColor={`var(--color-darkTeal)`}
+						backgroundColor={`var(--background-color-dark)`}
 						textColor={`var(--text-color-purity)`}
 						onClickHandler={removeImageHandler}
 					/>

@@ -50,7 +50,7 @@ const StepperOne = ({ handleNext }) => {
 						trailingIcon={
 							<MdGroup
 								style={{
-									color: `var(--color-darkTeal)`,
+									color: `var(--background-color-black)`,
 									fontSize: `var(--fontsize-glossy)`,
 								}}
 							/>
@@ -75,7 +75,7 @@ const StepperOne = ({ handleNext }) => {
 						trailingIcon={
 							<MdOutlineSubtitles
 								style={{
-									color: `var(--color-darkTeal)`,
+									color: `var(--background-color-black)`,
 									fontSize: `var(--fontsize-glossy)`,
 								}}
 							/>
@@ -92,7 +92,7 @@ const StepperOne = ({ handleNext }) => {
 				<BreezeButton
 					buttonClass={"py-4 mt-2 mb-2"}
 					label={"Next Step"}
-					backgroundColor={`var(--color-darkTeal)`}
+					backgroundColor={`var(--background-color-dark)`}
 					textColor={`var(--text-color-purity)`}
 					onClickHandler={handleSubmit(onClickNextHandler)}
 				/>
