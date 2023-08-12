@@ -109,8 +109,8 @@ const ChatScreen = () => {
 						<div
 							className='bg-white rounded-xl overflow-y-auto '
 							style={{
-								height: "calc(100vh - 175px)",
-								maxHeight: "calc(100vh - 175px)",
+								height: "calc(100vh - 170px)",
+								maxHeight: "calc(100vh - 170px)",
 							}}>
 							{isLoading ? (
 								<BreezeTileSkeleton tileLength={7} />
@@ -174,33 +174,7 @@ const ChatScreen = () => {
 						</div>
 					</div>
 				</div>
-				{/* <BreezeTooltip id={"createChat"}>
-					<button
-						onClick={openSideBar}
-						title='Create Chat'
-						className='
-									cursor-pointer
-									bg-color-darkTeal
-									w-10 h-10
-									outline-none
-									rounded-xl 
-									flex justify-center items-center
-									text-white text-4xl relative
-								'>
-						<span
-							data-tooltip-id='createChat'
-							data-tooltip-content='Create Chat'>
-							<BsPlusLg
-								style={{
-									cursor: "pointer",
-									color: `var(--background-color-light)`,
-									fontSize: `var(--fontsize-trim)`,
-									fontWeight: 900,
-								}}
-							/>
-						</span>
-					</button>
-				</BreezeTooltip> */}
+
 				{isSidebar && (
 					<SelectUserFromGroupProvider>
 						<BreezeSideDrawer

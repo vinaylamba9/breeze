@@ -11,7 +11,7 @@ import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { useChatState } from "@Context/chatProvider";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
-
+import _ from "lodash";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const { setSelectedChat, userList, setUserList, chats, setChats } =
 		useChatState();
@@ -123,31 +123,34 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 							maxHeight: "90vh",
 							overflowY: "scroll",
 						}}>
-						{userList?.map((item, index) => {
+						{_.sortBy(userList, ["name"])?.map((item, index) => {
 							return (
-								<div key={`add_user_${index}`}>
-									<BreezeTile
-										onClickHandler={() => onCreateChatHandler(item?._id)}
-										title={item?.name}
-										imgBackgroundColor={item?.imgBackgroundColor}
-										msg={item?.msg}
-										isActive={true}
-										isGrouped={item?.isGrouped}
-										profileImage={item?.profileImage}
-										isNotification={item?.isNotification}
-										bio={item?.bio}
-										styleClass={
-											"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
-										}
-									/>
-									<hr
-										style={{
-											width: "95%",
-											margin: "0 auto",
-											borderTop: "1px solid var(--muted-color)",
-										}}
-									/>
-								</div>
+								<>
+									<div key={`add_user_${index}`}>
+										{index < userList?.length - 1 &&
+											item?.name?.charAt(0) !==
+												userList?.[index + 1]?.name?.charAt(0) && (
+												<p className='ml-2 text-gray-500 text-fontsize-smart font-semibold'>
+													# {item?.name?.charAt(0)}
+												</p>
+											)}
+										<BreezeTile
+											onClickHandler={() => onCreateChatHandler(item?._id)}
+											title={item?.name}
+											imgBackgroundColor={item?.imgBackgroundColor}
+											msg={item?.msg}
+											isActive={true}
+											isGrouped={item?.isGrouped}
+											profileImage={item?.profileImage}
+											isNotification={item?.isNotification}
+											bio={item?.bio}
+											email={item?.email}
+											styleClass={
+												"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
+											}
+										/>
+									</div>
+								</>
 							);
 						})}
 					</div>
