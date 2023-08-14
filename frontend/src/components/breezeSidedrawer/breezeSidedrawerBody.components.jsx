@@ -110,8 +110,8 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 			<div
 				className='w-100% mx-auto  mt-5 '
 				style={{
-					minHeight: "90vh",
-					maxHeight: "90vh",
+					minHeight: "80vh",
+					maxHeight: "80vh",
 				}}>
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />

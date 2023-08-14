@@ -100,8 +100,9 @@ io.on("connection", async (socket) => {
 			if (user) {
 				console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
 				socket.emit("authenticated", true);
-				socket.on("bootstrapSocket", (userDetails) => {
-					socket.join(userDetails?.userId);
+				socket.on("bootstrapSocket", () => {
+					socket.join(user?.userId);
+
 					socket.emit("connected");
 				});
 				socket.on("joinChat", (room) => {
@@ -117,11 +118,15 @@ io.on("connection", async (socket) => {
 							chat: obj?.chatID,
 						});
 						await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
-
-						io.in(response?.chat?._id?.toString()).emit(
+						console.log(response, "-response");
+						io.to(response?.chat?._id?.toString()).emit(
 							"messageReceived",
 							response
 						);
+						// io.to(response?.chat?._id?.toString()).emit(
+						// 	"recentMessage",
+						// 	response
+						// );
 					} catch (error) {
 						console.error("Error handling newMessage:", error);
 					}
@@ -130,13 +135,19 @@ io.on("connection", async (socket) => {
 				socket.on("leaveChat", (room) => {
 					socket.leave(room);
 				});
-				socket.off("bootstrapSocket", () => {
+				socket.on("leaveServer", (userDetails) => {
 					socket.leave(userDetails?.userId);
+
+					socket.disconnect();
+					delete socket.request.token;
+					delete socket.request.user;
 				});
 			} else {
 				console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
 				console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);
 				socket.disconnect();
+				delete socket.request.token;
+				delete socket.request.user;
 			}
 		}
 	});

@@ -53,9 +53,11 @@ const BreezeTile = ({
 								)}
 							</Fragment>
 
-							<p className=' truncate text-fontsize-smart text-gray-500'>
-								{msg}
-							</p>
+							{msg && (
+								<p className=' truncate text-fontsize-smart text-gray-500'>
+									{msg}
+								</p>
+							)}
 							<Fragment className=' truncate '>
 								{bio && (
 									<div className='flex justify-start gap-2 items-center'>
