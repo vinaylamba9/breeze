@@ -16,6 +16,8 @@ const BreezeMessageFields = ({
 	setSocketConnection,
 	socketConnection,
 	typing,
+	fetchAgain,
+	setFetchAgain,
 	setTyping,
 	newMessages,
 	setNewMessages,
@@ -65,9 +67,10 @@ const BreezeMessageFields = ({
 					content: msg,
 					chatID: selectedChat?._id,
 				});
+				setFetchAgain(!fetchAgain);
 			} else typingIndicatorHandler();
 		},
-		[selectedChat?._id, typingIndicatorHandler]
+		[fetchAgain, selectedChat?._id, setFetchAgain, typingIndicatorHandler]
 	);
 
 	useEffect(() => {

@@ -7,11 +7,10 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const cors = require("cors");
-const { ObjectId } = require("mongodb");
+
 const PORT = process.env.PORT;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json");
-const { Server } = require("socket.io");
 
 /* ================ Configuring UTILITY PACKAGES START  =================*/
 
@@ -19,9 +18,8 @@ const { DB_CONFIG } = require("./config/dbConfig");
 const users = require("./routes/userRoutes/index");
 const chats = require("./routes/chatRoutes/index");
 const message = require("./routes/messageRoutes/index");
-const DevConfig = require("./config/devConfig");
-const { MESSAGE_DB_UTILS, CHAT_DB_UTILS } = require("./utils/dbUtils");
-const { userAuth } = require("./middleware/userAuth");
+const socketIOSetup = require("./socket/socket");
+// const io = require("./socket/socket");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -85,70 +83,5 @@ const server = app.listen(PORT).on("listening", onListening);
 /* ================ Connecting with the PORT ENDS  =================*/
 
 /** ================== SOCKET.IO CONNECTION STARTS ================== */
-const io = new Server(server, {
-	pingTimeout: DevConfig.pingTimeout,
-	cors: DevConfig.corsOrigin,
-});
 
-io.on("connection", async (socket) => {
-	await userAuth?.isLoggedInSocket(socket, (err) => {
-		if (err) {
-			console.info("\t 🏃‍♂️  SOCKET STATUS :: ERROR [ ❌ ]".red);
-			socket.disconnect();
-		} else {
-			const user = socket.request.user;
-			if (user) {
-				console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
-				socket.emit("authenticated", true);
-				socket.on("bootstrapSocket", () => {
-					socket.join(user?.userId);
-
-					socket.emit("connected");
-				});
-				socket.on("joinChat", (room) => {
-					socket.join(room);
-				});
-				socket.on("typing", (room) => socket.to(room).emit("typing"));
-				socket.on("stopTyping", (room) => socket.to(room).emit("stopTyping"));
-				socket.on("sendMessage", async (obj) => {
-					try {
-						let response = await MESSAGE_DB_UTILS?.createMessage({
-							sender: user?.userId,
-							content: obj?.content,
-							chat: obj?.chatID,
-						});
-						await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
-						console.log(response, "-response");
-						io.to(response?.chat?._id?.toString()).emit(
-							"messageReceived",
-							response
-						);
-						// io.to(response?.chat?._id?.toString()).emit(
-						// 	"recentMessage",
-						// 	response
-						// );
-					} catch (error) {
-						console.error("Error handling newMessage:", error);
-					}
-				});
-
-				socket.on("leaveChat", (room) => {
-					socket.leave(room);
-				});
-				socket.on("leaveServer", (userDetails) => {
-					socket.leave(userDetails?.userId);
-
-					socket.disconnect();
-					delete socket.request.token;
-					delete socket.request.user;
-				});
-			} else {
-				console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
-				console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);
-				socket.disconnect();
-				delete socket.request.token;
-				delete socket.request.user;
-			}
-		}
-	});
-});
+socketIOSetup(server);

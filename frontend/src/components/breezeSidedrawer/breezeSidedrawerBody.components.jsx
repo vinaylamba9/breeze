@@ -24,7 +24,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 		setLoading(true);
 		const response = await userDAO.getAllUsersDAO();
 		if (response?.statusCode === HTTPStatusCode.OK) {
-			setUserList(response?.responseBody || []);
+			setUserList(_.sortBy(response?.responseBody, ["name"]) || []);
 			setLoading(false);
 		}
 	}, [setUserList]);
@@ -48,6 +48,21 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	useEffect(() => {
 		getAllUsers();
 	}, [getAllUsers]);
+
+	const alphabetsHandler = useCallback(
+		(index, item) => {
+			const prev = userList?.[index - 1]?.name?.charAt(0) ?? "";
+			const current = item?.name?.charAt(0);
+			return (
+				prev !== current && (
+					<p className='ml-2 text-gray-500 text-fontsize-smart font-semibold'>
+						# {current}
+					</p>
+				)
+			);
+		},
+		[userList]
+	);
 	return (
 		<div className='p-2 '>
 			<div className='flex mt-10 w-95% mx-auto items-center justify-between px-4'>
@@ -123,17 +138,11 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 							maxHeight: "90vh",
 							overflowY: "scroll",
 						}}>
-						{_.sortBy(userList, ["name"])?.map((item, index) => {
+						{userList?.map((item, index) => {
 							return (
 								<>
+									{alphabetsHandler(index, item)}
 									<div key={`add_user_${index}`}>
-										{index < userList?.length - 1 &&
-											item?.name?.charAt(0) !==
-												userList?.[index + 1]?.name?.charAt(0) && (
-												<p className='ml-2 text-gray-500 text-fontsize-smart font-semibold'>
-													# {item?.name?.charAt(0)}
-												</p>
-											)}
 										<BreezeTile
 											onClickHandler={() => onCreateChatHandler(item?._id)}
 											title={item?.name}

@@ -12,4 +12,8 @@ export const socket = io(URL, {
 	extraHeaders: {
 		Authorization: BreezeSessionManagement.getAPIKey(),
 	},
+	reconnection: true,
+	reconnectionAttempts: Infinity,
+	reconnectionDelay: 10000, // defaults to 1000
+	reconnectionDelayMax: 10000, // defaults to 5000
 });

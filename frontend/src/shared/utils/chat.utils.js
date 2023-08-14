@@ -20,9 +20,7 @@ export const CHAT_UTILS = {
 			: users?.[0]?.bio,
 	isSameSenderOfMsg: (messages, m, i, userID) => {
 		return (
-			i < messages?.length - 1 &&
-			(messages?.[i - 1]?.sender?._id !== m?.sender?._id ||
-				messages?.[i + 1]?.sender?._id === undefined) &&
+			messages?.[i - 1]?.sender?._id !== m?.sender?._id &&
 			messages?.[i]?.sender?._id !== userID
 		);
 	},
@@ -36,26 +34,16 @@ export const CHAT_UTILS = {
 	isLastMessages: (messages, i, userID) => {
 		return (
 			i === messages?.length - 1 &&
-			messages?.[messages?.length - 1]?.sender?._id !== userID &&
-			messages?.[messages?.length - 1]?.sender?._id
+			messages?.[messages?.length - 1]?.sender?._id !== userID
 		);
 	},
-	msgMargin: (messages, m, i, userId) => {
-		if (
-			(i < messages?.length - 1 &&
-				messages?.[i - 1]?.sender?._id !== m?.sender?._id &&
-				messages?.[i]?.sender?._id !== userId) ||
-			(i === messages?.length - 1 && messages?.[i]?.sender?._id !== userId)
-		)
-			return 0;
-		else if (
-			i < messages?.length - 1 &&
-			messages?.[i - 1]?.sender?._id === m?.sender?._id &&
-			messages?.[i].sender?._id !== userId
-		) {
-			if (m?.chat?.isGroupChat) return 44;
-			else return 0;
-		} else return "auto";
+	msgMargin: (messages, msg, i, userID) => {
+		return msg?.sender?._id === userID
+			? "auto"
+			: !CHAT_UTILS?.isSameSenderOfMsg(messages, msg, i, userID) &&
+			  msg?.chat?.isGroupChat
+			? 44
+			: 0;
 	},
 	isSameUser: (messages, m, i) => {
 		return i > 0 && messages?.[i - 1]?.sender?._id === m?.sender?._id;
