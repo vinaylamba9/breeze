@@ -20,18 +20,21 @@ import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
+import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const { selectedChat, setSelectedChat, chats, setChats } = useChatState();
-
-	const { loggedInUser, isActive, hideProfile } = useCombinedStore((state) => ({
-		loggedInUser: state?.loggedInUser,
-		isActive: state?.isActive,
-		hideProfile: state?.hideProfile,
-	}));
+	// const [recentMessage, setRecentMessage] = useState(null);
+	const { setUserDetails, loggedInUser, isActive, hideProfile } =
+		useCombinedStore((state) => ({
+			loggedInUser: state?.loggedInUser,
+			isActive: state?.isActive,
+			hideProfile: state?.hideProfile,
+			setUserDetails: state?.setUserDetails,
+		}));
 
 	const { register } = useForm({});
 
@@ -66,6 +69,25 @@ const ChatScreen = () => {
 		onFetchChatHandler();
 	}, [onFetchChatHandler, fetchAgain]);
 
+	useEffect(() => {
+		const getUserDetails = BreezeSessionManagement.getUserSession();
+		setUserDetails(getUserDetails);
+	}, [setUserDetails]);
+	useEffect(() => {
+		console.log("here,");
+		socket.connect();
+		socket.emit("bootstrapSocket", loggedInUser);
+		socket.on("connected", () => {
+			console.log("user connected");
+		});
+		// socket.on("connected", () => setSocketConnection(true));
+		// socket.on("typing", (room) => setIsTyping(true));
+		// socket.on("stopTyping", (room) => setIsTyping(false));
+
+		return () => {
+			socket.disconnect();
+		};
+	}, [loggedInUser]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -135,7 +157,7 @@ const ChatScreen = () => {
 															  )
 													}
 													lastMsgSender={item?.recentMessage?.sender?.name}
-													// msg={item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+													bio={!item?.recentMessage && item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
 													msg={
 														item?.recentMessage?.content > 30
 															? item?.recentMessage?.content?.substring(0, 30) +

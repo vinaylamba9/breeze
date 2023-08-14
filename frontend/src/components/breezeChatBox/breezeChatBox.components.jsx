@@ -25,8 +25,6 @@ const BreezeChatBox = ({
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessages, setNewMessages] = useState([]);
 	useEffect(() => {
-		socket.connect();
-		socket.emit("bootstrapSocket", loggedInUser);
 		socket.on("connected", () => setSocketConnection(true));
 		socket.on("typing", (room) => setIsTyping(true));
 		socket.on("stopTyping", (room) => setIsTyping(false));

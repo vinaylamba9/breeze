@@ -9,6 +9,7 @@ import {
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
+import useCombinedStore from "@/zustand/store/store";
 
 const BreezeMessageFields = ({
 	prevChat,
@@ -19,6 +20,9 @@ const BreezeMessageFields = ({
 	newMessages,
 	setNewMessages,
 }) => {
+	const { loggedInUser } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	const { selectedChat } = useChatState();
 	const msgBoxRef = useRef(null);
 	const typingIndicatorHandler = useCallback(
@@ -57,6 +61,7 @@ const BreezeMessageFields = ({
 				e.target.innerText = "";
 
 				socket.emit("sendMessage", {
+					// sender: loggedInUser?.userId,
 					content: msg,
 					chatID: selectedChat?._id,
 				});

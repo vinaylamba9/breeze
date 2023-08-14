@@ -44,7 +44,8 @@ const Login = () => {
 
 			if (response?.statusCode === HTTPStatusCode.OK) {
 				setLoading(false);
-				navigate(BreezeRoutes.CHATROUTE);
+				window.location.reload(BreezeButton.CHATROUTE);
+				// navigate(BreezeRoutes.CHATROUTE, {});
 			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
 				setLoading(false);
 				return toast.error(response?.responseBody?.errors?.[0]?.msg, {

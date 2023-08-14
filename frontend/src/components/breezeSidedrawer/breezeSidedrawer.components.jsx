@@ -38,7 +38,7 @@ const BreezeSideDrawer = ({
 		};
 	}, [isOpen]);
 
-	const drawerClasses = ` mx-auto fixed inset-y-0 ${position} z-50 w-30% ${backgroundColor} shadow-2xl ${
+	const drawerClasses = ` mx-auto fixed inset-y-0 ${position} z-50 w-30% ${backgroundColor} shadow-xl ${
 		isOpen ? "animate-slideIn" : "animate-slideOut"
 	}`;
 
@@ -77,6 +77,7 @@ const BreezeSideDrawer = ({
 					</div>
 				) : (
 					<div
+						onClick={onClose}
 						className={`${
 							position === "left-0" ? "right" : "left"
 						} cursor-pointer absolute ${
@@ -87,7 +88,6 @@ const BreezeSideDrawer = ({
 								color: `var(--background-color-dark)`,
 								fontSize: `var(--fontsize-trim)`,
 							}}
-							onClick={onClose}
 						/>
 					</div>
 				)}

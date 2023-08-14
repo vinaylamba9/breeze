@@ -3,6 +3,7 @@ const useLoggedInUser = (set) => ({
 	loggedInUser: BreezeSessionManagement.getUserSession(),
 	setUserDetails: (updatedDetails) =>
 		set(() => ({ loggedInUser: updatedDetails })),
+	clearLoggedInUser: () => set(() => ({ loggedInUser: null })),
 });
 
 export default useLoggedInUser;

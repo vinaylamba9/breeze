@@ -10,22 +10,25 @@ import { useCallback } from "react";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeRoutes from "@Constants/routes";
 import { useNavigate } from "react-router-dom";
-
+import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
 const BreezeSidebar = () => {
-	const navigate = useNavigate();
-	const onLogoutHandler = useCallback(() => {
-		const res = userDAO.logoutDAO();
-		if (res) navigate(BreezeRoutes.LOGINROUTE);
-	}, [navigate]);
-
-	const { loggedInUser, showActive, showProfile } = useCombinedStore(
-		(state) => ({
+	const { clearLoggedInUser, loggedInUser, showActive, showProfile } =
+		useCombinedStore((state) => ({
 			loggedInUser: state?.loggedInUser,
 			showActive: state?.showActive,
 			showProfile: state?.showProfile,
-		})
-	);
+			clearLoggedInUser: state?.clearLoggedInUser,
+		}));
+	const navigate = useNavigate();
+	const onLogoutHandler = useCallback(() => {
+		clearLoggedInUser();
+		socket.emit("leaveServer", loggedInUser);
+		socket.disconnect();
+		const res = userDAO.logoutDAO();
+		if (res) navigate(BreezeRoutes.LOGINROUTE);
+	}, [clearLoggedInUser, loggedInUser, navigate]);
+
 	const sidebarItems = [
 		{
 			icon: (
@@ -93,6 +96,7 @@ const BreezeSidebar = () => {
 			isActive: false,
 		},
 	];
+
 	return (
 		<aside className='bg-black px-5 flex h-screen'>
 			<div
