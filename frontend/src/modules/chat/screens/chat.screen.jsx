@@ -74,7 +74,6 @@ const ChatScreen = () => {
 		setUserDetails(getUserDetails);
 	}, [setUserDetails]);
 	useEffect(() => {
-		console.log("here,");
 		socket.connect();
 		socket.emit("bootstrapSocket", loggedInUser);
 		socket.on("connected", () => {

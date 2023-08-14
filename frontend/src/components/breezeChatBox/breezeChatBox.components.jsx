@@ -72,6 +72,8 @@ const BreezeChatBox = ({
 					setTyping={setTyping}
 					setSocketConnection={setSocketConnection}
 					socketConnection={socketConnection}
+					fetchAgain={fetchAgain}
+					setFetchAgain={setFetchAgain}
 				/>
 			</div>
 		</>

@@ -43,13 +43,12 @@ const BreezeChat = ({
 	);
 	const usersMsgFilter = useCallback(
 		(msg, index) =>
-			(CHAT_UTILS?.isSameSenderOfMsg(
+			CHAT_UTILS?.isSameSenderOfMsg(
 				newMessages,
 				msg,
 				index,
 				loggedInUser?.userId
-			) ||
-				CHAT_UTILS?.isLastMessages(newMessages, index, loggedInUser?.userId)) &&
+			) &&
 			selectedChat?.isGroupChat && (
 				<BreezeAvatar
 					title={msg?.sender?.name}
