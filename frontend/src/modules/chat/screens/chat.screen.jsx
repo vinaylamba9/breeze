@@ -67,7 +67,7 @@ const ChatScreen = () => {
 
 	useEffect(() => {
 		onFetchChatHandler();
-	}, [onFetchChatHandler, fetchAgain]);
+	}, [onFetchChatHandler]);
 
 	useEffect(() => {
 		const getUserDetails = BreezeSessionManagement.getUserSession();
@@ -87,6 +87,7 @@ const ChatScreen = () => {
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
+
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -219,6 +220,7 @@ const ChatScreen = () => {
 					<ChatNotFound />
 				) : (
 					<BreezeChatBox
+						setChats={setChats}
 						isSelectedChatProfile={isSelectedChatProfile}
 						setSelectedChatProfile={setSelectedChatProfile}
 						fetchAgain={fetchAgain}

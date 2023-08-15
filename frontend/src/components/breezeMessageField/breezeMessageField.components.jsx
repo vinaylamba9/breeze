@@ -16,8 +16,9 @@ const BreezeMessageFields = ({
 	setSocketConnection,
 	socketConnection,
 	typing,
-	fetchAgain,
-	setFetchAgain,
+	setChats,
+	// fetchAgain,
+	// setFetchAgain,
 	setTyping,
 	newMessages,
 	setNewMessages,
@@ -67,10 +68,10 @@ const BreezeMessageFields = ({
 					content: msg,
 					chatID: selectedChat?._id,
 				});
-				setFetchAgain(!fetchAgain);
+				// setFetchAgain(!fetchAgain);
 			} else typingIndicatorHandler();
 		},
-		[fetchAgain, selectedChat?._id, setFetchAgain, typingIndicatorHandler]
+		[selectedChat?._id, typingIndicatorHandler]
 	);
 
 	useEffect(() => {
@@ -78,6 +79,12 @@ const BreezeMessageFields = ({
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
 
+	useEffect(() => {
+		console.log("here");
+		socket.on("recentMessage", (chatList) => {
+			setChats(chatList);
+		});
+	}, [setChats]);
 	return (
 		<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
 			<div className=' w-98% mx-auto flex justify-start items-start '>
