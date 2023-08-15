@@ -10,9 +10,19 @@ const messageHandler = (socket, user, io) => {
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
 			io.to(response?.chat?._id?.toString()).emit("messageReceived", response);
+
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
-			console.log(chatByID, "-chatById");
-			socket.to(user?.userId?.toString()).emit("recentMessage", chatByID);
+
+			const filteredChatByRoomID = chatByID?.filter(
+				(item) => item?._id?.toString() === response?.chat?._id?.toString()
+			);
+			const userPromises = filteredChatByRoomID?.[0]?.users?.map(
+				async (item) => {
+					const chatByID = await CHAT_DB_UTILS.findByID(item?._id);
+					io.to(item?._id?.toString()).emit("recentChatList", chatByID);
+				}
+			);
+			await Promise.all(userPromises);
 		} catch (error) {
 			console.error("Error handling newMessage:", error);
 		}

@@ -14,6 +14,8 @@ const BreezeChatBox = ({
 	setSelectedChatProfile,
 	setFetchAgain,
 	setChats,
+	setSocketConnection,
+	socketConnection,
 }) => {
 	const { selectedChat } = useChatState();
 	const { loggedInUser } = useCombinedStore((state) => ({
@@ -21,12 +23,10 @@ const BreezeChatBox = ({
 	}));
 	const [prevChat, setPrevChat] = useState(selectedChat);
 
-	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessages, setNewMessages] = useState([]);
 	useEffect(() => {
-		socket.on("connected", () => setSocketConnection(true));
 		socket.on("typing", (room) => setIsTyping(true));
 		socket.on("stopTyping", (room) => setIsTyping(false));
 
