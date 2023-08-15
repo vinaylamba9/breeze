@@ -13,6 +13,7 @@ const BreezeChatBox = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
 	setFetchAgain,
+	setChats,
 }) => {
 	const { selectedChat } = useChatState();
 	const { loggedInUser } = useCombinedStore((state) => ({
@@ -60,11 +61,13 @@ const BreezeChatBox = ({
 				<BreezeScrollableFeed
 					prevChat={prevChat}
 					isTyping={isTyping}
+					setChats={setChats}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 				/>
 				<BreezeMessageFields
 					prevChat={prevChat}
+					setChats={setChats}
 					setIsTyping={setIsTyping}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}

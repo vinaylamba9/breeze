@@ -5,8 +5,10 @@ const DevConfig = require("../config/devConfig");
 const roomHandler = require("./handlers/roomHandler");
 const typingHandler = require("./handlers/typingHandler");
 const messageHandler = require("./handlers/messageHandler");
-function socketIOSetup(server) {
+
+const socketIOSetup = (server) => {
 	const io = new Server(server, {
+		// pingInterval: DevConfig.pingTimeout,
 		pingTimeout: DevConfig.pingTimeout,
 		cors: DevConfig.corsOrigin,
 		connectionStateRecovery: {
@@ -20,7 +22,7 @@ function socketIOSetup(server) {
 		userAuth.isLoggedInSocket(socket, next);
 	});
 	io.on("connection", async (socket) => {
-		const user = socket.request.user;
+		const { user } = socket.request;
 		if (user) {
 			console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
 			socket.on("bootstrapSocket", () => {
@@ -46,5 +48,5 @@ function socketIOSetup(server) {
 			delete socket.request.user;
 		}
 	});
-}
+};
 module.exports = socketIOSetup;

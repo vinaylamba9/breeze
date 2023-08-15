@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import { useChatState } from "@Context/chatProvider";
 
-const BreezeScrollableFeed = ({ newMessages, setNewMessages }) => {
+const BreezeScrollableFeed = ({ setChats, newMessages, setNewMessages }) => {
 	const { selectedChat } = useChatState();
 	const chatContainerRef = useRef(null);
 	const stickyMsgPillRef = useRef(null);
@@ -65,6 +65,7 @@ const BreezeScrollableFeed = ({ newMessages, setNewMessages }) => {
 				style={{ maxHeight: "100%" }}
 				ref={chatContainerRef}>
 				<BreezeChat
+					setChats={setChats}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 					showPill={showPill}
