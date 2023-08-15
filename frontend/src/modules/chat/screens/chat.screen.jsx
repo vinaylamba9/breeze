@@ -27,7 +27,7 @@ const ChatScreen = () => {
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const { selectedChat, setSelectedChat, chats, setChats } = useChatState();
-	// const [recentMessage, setRecentMessage] = useState(null);
+	const [socketConnection, setSocketConnection] = useState(false);
 	const { setUserDetails, loggedInUser, isActive, hideProfile } =
 		useCombinedStore((state) => ({
 			loggedInUser: state?.loggedInUser,
@@ -56,18 +56,18 @@ const ChatScreen = () => {
 		setGroupChatModal(false);
 	};
 
-	const onFetchChatHandler = useCallback(async () => {
-		setLoading(true);
-		const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
-		if (response?.statusCode === HTTPStatusCode.OK)
-			setChats(response?.responseBody);
-		else setChats([]);
-		setLoading(false);
-	}, [setChats, loggedInUser?._id]);
+	// const onFetchChatHandler = useCallback(async () => {
+	// 	setLoading(true);
+	// 	const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
+	// 	if (response?.statusCode === HTTPStatusCode.OK) {
+	// 		setChats(response?.responseBody);
+	// 	} else setChats([]);
+	// 	setLoading(false);
+	// }, [loggedInUser?._id, setChats]);
 
-	useEffect(() => {
-		onFetchChatHandler();
-	}, [onFetchChatHandler]);
+	// useEffect(() => {
+	// 	onFetchChatHandler();
+	// }, [onFetchChatHandler]);
 
 	useEffect(() => {
 		const getUserDetails = BreezeSessionManagement.getUserSession();
@@ -76,18 +76,33 @@ const ChatScreen = () => {
 	useEffect(() => {
 		socket.connect();
 		socket.emit("bootstrapSocket", loggedInUser);
-		socket.on("connected", () => {
-			console.log("user connected");
+		socket.on("connected", () => setSocketConnection(true));
+		socket.on("connected", (callback) => {
+			callback();
 		});
-		// socket.on("connected", () => setSocketConnection(true));
-		// socket.on("typing", (room) => setIsTyping(true));
-		// socket.on("stopTyping", (room) => setIsTyping(false));
 
 		return () => {
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
 
+	useEffect(() => {
+		setSelectedChat(chats[0]);
+	}, [chats, setSelectedChat]);
+
+	useEffect(() => {
+		socket.on("fetchChats", (chatByID) => {
+			setChats(chatByID);
+		});
+	});
+	useEffect(() => {
+		socket.on("recentChatList", (chatByID) => {
+			setChats(chatByID);
+		});
+		return () => {
+			socket.disconnect("recentChatList");
+		};
+	}, [setChats]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>

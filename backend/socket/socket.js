@@ -1,4 +1,4 @@
-// const { MESSAGE_DB_UTILS, CHAT_DB_UTILS } = require("../utils/dbUtils");
+const { CHAT_DB_UTILS } = require("../utils/dbUtils");
 const { userAuth } = require("../middleware/userAuth");
 const { Server } = require("socket.io");
 const DevConfig = require("../config/devConfig");
@@ -27,15 +27,19 @@ const socketIOSetup = (server) => {
 			console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
 			socket.on("bootstrapSocket", () => {
 				socket.join(user?.userId);
-				socket.emit("connected");
+				socket.emit("connected", async () => {
+					const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
+					io.to(user?.userId).emit("fetchChats", chatByID);
+				});
 			});
 
 			roomHandler(socket);
 			typingHandler(socket);
 			messageHandler(socket, user, io);
 
-			socket.on("leaveServer", (userDetails) => {
-				socket.leave(userDetails?.userId);
+			socket.on("leaveServer", () => {
+				console.log("here");
+				socket.leave(user?.userId);
 				socket.disconnect();
 				delete socket.request.token;
 				delete socket.request.user;

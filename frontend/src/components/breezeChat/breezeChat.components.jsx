@@ -10,7 +10,6 @@ import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import { socket } from "@Socket/socket";
 const BreezeChat = ({
 	prevChat,
-	setChats,
 	showPill,
 	stickyMsgPillRef,
 	setNewMessages,
@@ -77,17 +76,12 @@ const BreezeChat = ({
 
 	useEffect(() => {
 		socket.on("messageReceived", (newMsgRecieved) => {
-			console.log(newMsgRecieved, "-newmsg");
 			setNewMessages([...newMessages, newMsgRecieved]);
 		});
 
 		return () => socket.off("messageReceived");
 	}, [newMessages, prevChat, setNewMessages]);
-	useEffect(() => {
-		socket.on("recentMessage", (chatList) => {
-			setChats(chatList);
-		});
-	}, [setChats]);
+
 	return (
 		<>
 			{newMessages?.length > 0 &&
