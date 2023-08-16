@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const cors = require("cors");
-
+const { Server } = require("socket.io");
 const PORT = process.env.PORT;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json");
@@ -19,6 +19,8 @@ const users = require("./routes/userRoutes/index");
 const chats = require("./routes/chatRoutes/index");
 const message = require("./routes/messageRoutes/index");
 const socketIOSetup = require("./socket/socket");
+const { userAuth } = require("./middleware/userAuth");
+const DevConfig = require("./config/devConfig");
 // const io = require("./socket/socket");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
@@ -83,5 +85,21 @@ const server = app.listen(PORT).on("listening", onListening);
 /* ================ Connecting with the PORT ENDS  =================*/
 
 /** ================== SOCKET.IO CONNECTION STARTS ================== */
+const io = new Server(server, {
+	// pingInterval: DevConfig.pingTimeout,
+	pingTimeout: DevConfig.pingTimeout,
+	cors: DevConfig.corsOrigin,
+	connectionStateRecovery: {
+		// the backup duration of the sessions and the packets
+		maxDisconnectionDuration: 2 * 60 * 1000,
+		// whether to skip middlewares upon successful recovery
+		skipMiddlewares: true,
+	},
+});
+io.use((socket, next) => {
+	userAuth.isLoggedInSocket(socket, next);
+});
 
-socketIOSetup(server);
+io.on("connection", (socket) => {
+	socketIOSetup(socket, io);
+});

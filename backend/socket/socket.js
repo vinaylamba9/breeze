@@ -1,55 +1,39 @@
 const { CHAT_DB_UTILS } = require("../utils/dbUtils");
-const { userAuth } = require("../middleware/userAuth");
-const { Server } = require("socket.io");
-const DevConfig = require("../config/devConfig");
+
 const roomHandler = require("./handlers/roomHandler");
 const typingHandler = require("./handlers/typingHandler");
 const messageHandler = require("./handlers/messageHandler");
 
-const socketIOSetup = (server) => {
-	const io = new Server(server, {
-		// pingInterval: DevConfig.pingTimeout,
-		pingTimeout: DevConfig.pingTimeout,
-		cors: DevConfig.corsOrigin,
-		connectionStateRecovery: {
-			// the backup duration of the sessions and the packets
-			maxDisconnectionDuration: 2 * 60 * 1000,
-			// whether to skip middlewares upon successful recovery
-			skipMiddlewares: true,
-		},
-	});
-	io.use((socket, next) => {
-		userAuth.isLoggedInSocket(socket, next);
-	});
-	io.on("connection", async (socket) => {
-		const { user } = socket.request;
-		if (user) {
-			console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
-			socket.on("bootstrapSocket", () => {
-				socket.join(user?.userId);
-				socket.emit("connected", async () => {
-					const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
-					io.to(user?.userId).emit("fetchChats", chatByID);
-				});
-			});
+const socketIOSetup = (socket, io) => {
+	const { user } = socket?.request;
 
-			roomHandler(socket, user, io);
-			typingHandler(socket);
-			messageHandler(socket, user, io);
-
-			socket.on("leaveServer", () => {
-				socket.leave(user?.userId);
-				socket.disconnect();
-				delete socket.request.token;
-				delete socket.request.user;
+	if (user) {
+		console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
+		socket.on("bootstrapSocket", () => {
+			socket.join(user?.userId);
+			socket.emit("connected", async () => {
+				const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
+				io.to(user?.userId).emit("fetchChats", chatByID);
 			});
-		} else {
-			console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
-			console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);
+		});
+
+		roomHandler(socket, user, io);
+		typingHandler(socket);
+		messageHandler(socket, user, io);
+		// typingHandler(socket, io);
+
+		socket.on("leaveServer", () => {
+			socket.leave(user?.userId);
 			socket.disconnect();
 			delete socket.request.token;
 			delete socket.request.user;
-		}
-	});
+		});
+	} else {
+		console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
+		console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);
+		socket.disconnect();
+		delete socket.request.token;
+		delete socket.request.user;
+	}
 };
 module.exports = socketIOSetup;

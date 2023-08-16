@@ -27,13 +27,13 @@ const BreezeChatBox = ({
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessages, setNewMessages] = useState([]);
 	useEffect(() => {
-		socket.on("typing", (room) => setIsTyping(true));
-		socket.on("stopTyping", (room) => setIsTyping(false));
+		socket.on("typing", () => setIsTyping(true));
+		socket.on("stopTyping", () => setIsTyping(false));
 
 		return () => {
 			socket.disconnect();
 		};
-	}, [loggedInUser]);
+	}, [setIsTyping]);
 	// useEffect(() => {
 	// 	socket.on("getMessage", (newMsgRecieved) => {
 	// 		if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {

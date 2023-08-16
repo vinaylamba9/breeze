@@ -56,18 +56,18 @@ const ChatScreen = () => {
 		setGroupChatModal(false);
 	};
 
-	// const onFetchChatHandler = useCallback(async () => {
-	// 	setLoading(true);
-	// 	const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
-	// 	if (response?.statusCode === HTTPStatusCode.OK) {
-	// 		setChats(response?.responseBody);
-	// 	} else setChats([]);
-	// 	setLoading(false);
-	// }, [loggedInUser?._id, setChats]);
+	const onFetchChatHandler = useCallback(async () => {
+		setLoading(true);
+		const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			setChats(response?.responseBody);
+		} else setChats([]);
+		setLoading(false);
+	}, [loggedInUser?._id, setChats]);
 
-	// useEffect(() => {
-	// 	onFetchChatHandler();
-	// }, [onFetchChatHandler]);
+	useEffect(() => {
+		onFetchChatHandler();
+	}, [onFetchChatHandler]);
 
 	useEffect(() => {
 		const getUserDetails = BreezeSessionManagement.getUserSession();
