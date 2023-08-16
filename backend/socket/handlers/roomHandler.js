@@ -2,6 +2,8 @@ const { MESSAGE_DB_UTILS } = require("../../utils/dbUtils");
 
 const roomHandler = (socket, user, io) => {
 	socket.on("joinChat", async (chatID) => {
+		socket.join(chatID);
+		console.log(chatID, "-user has joined this conversation");
 		const messageByChatIDResponse = await MESSAGE_DB_UTILS.findMessageByChatID(
 			chatID
 		);
