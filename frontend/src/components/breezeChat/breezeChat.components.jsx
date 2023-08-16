@@ -68,18 +68,25 @@ const BreezeChat = ({
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setNewMessages(response?.responseBody);
 		}
-	}, [selectedChat, setNewMessages]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		getMessageByChatIDHandler();
 	}, [getMessageByChatIDHandler]);
 
 	useEffect(() => {
-		socket.on("messageReceived", (newMsgRecieved) => {
+		socket.on("roomMessage", (roomMessage) => {
+			setNewMessages(roomMessage);
+		});
+	}, [setNewMessages, selectedChat]);
+
+	useEffect(() => {
+		socket.on("getMessage", (newMsgRecieved) => {
 			setNewMessages([...newMessages, newMsgRecieved]);
 		});
 
-		return () => socket.off("messageReceived");
+		return () => socket.off("getMessage");
 	}, [newMessages, prevChat, setNewMessages]);
 
 	return (

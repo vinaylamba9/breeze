@@ -7,19 +7,25 @@ const messageHandler = (socket, user, io) => {
 				content: obj?.content,
 				chat: obj?.chatID,
 			});
+			const chat = response?.chat;
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
-			io.to(response?.chat?._id?.toString()).emit("messageReceived", response);
 
+			chat?.users?.forEach((user) => {
+				io.to(user?._id?.toString()).emit("getMessage", response);
+			});
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
 
 			const filteredChatByRoomID = chatByID?.filter(
 				(item) => item?._id?.toString() === response?.chat?._id?.toString()
 			);
+
 			const userPromises = filteredChatByRoomID?.[0]?.users?.map(
 				async (item) => {
-					const chatByID = await CHAT_DB_UTILS.findByID(item?._id);
-					io.to(item?._id?.toString()).emit("recentChatList", chatByID);
+					if (item?._id?.toString() === user?.userId) {
+						const chatByID = await CHAT_DB_UTILS.findByID(item?._id);
+						io.to(item?._id?.toString()).emit("recentChatList", chatByID);
+					}
 				}
 			);
 			await Promise.all(userPromises);
