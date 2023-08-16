@@ -64,12 +64,9 @@ const BreezeMessageFields = ({
 				e.target.innerText = "";
 
 				socket.emit("sendMessage", {
-					// sender: loggedInUser?.userId,
 					content: msg,
 					chatID: selectedChat?._id,
 				});
-
-				setFetchAgain(!fetchAgain);
 			} else typingIndicatorHandler();
 		},
 		[selectedChat?._id, typingIndicatorHandler]

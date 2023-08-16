@@ -35,15 +35,16 @@ const BreezeChatBox = ({
 		};
 	}, [loggedInUser]);
 	// useEffect(() => {
-	// 	socket.on("messageReceived", (newMsgRecieved) => {
+	// 	socket.on("getMessage", (newMsgRecieved) => {
 	// 		if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
 	// 			// FOR NOTIFICATION
 	// 		} else {
+	// 			console.log("getMessage");
 	// 			setNewMessages([...newMessages, newMsgRecieved]);
 	// 		}
 	// 	});
 
-	// 	return () => socket.off("messageReceived");
+	// 	// return () => socket.off("getMessage");
 	// }, [newMessages, prevChat]);
 
 	return (

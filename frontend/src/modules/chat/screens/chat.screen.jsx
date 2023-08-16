@@ -80,29 +80,26 @@ const ChatScreen = () => {
 		socket.on("connected", (callback) => {
 			callback();
 		});
-
 		return () => {
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
 
-	useEffect(() => {
-		setSelectedChat(chats[0]);
-	}, [chats, setSelectedChat]);
+	// useEffect(() => {
+	// 	setSelectedChat(chats[0]);
+	// }, [chats]);
 
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
 			setChats(chatByID);
 		});
-	});
+	}, [chats, setChats]);
 	useEffect(() => {
 		socket.on("recentChatList", (chatByID) => {
 			setChats(chatByID);
 		});
-		return () => {
-			socket.disconnect("recentChatList");
-		};
 	}, [setChats]);
+
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -161,6 +158,7 @@ const ChatScreen = () => {
 													onClickHandler={() => {
 														hideProfile();
 														setSelectedChat(item);
+														socket.emit("joinChat", item?._id);
 														socket.emit("leaveChat", selectedChat?._id);
 													}}
 													title={

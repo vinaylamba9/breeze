@@ -33,12 +33,11 @@ const socketIOSetup = (server) => {
 				});
 			});
 
-			roomHandler(socket);
+			roomHandler(socket, user, io);
 			typingHandler(socket);
 			messageHandler(socket, user, io);
 
 			socket.on("leaveServer", () => {
-				console.log("here");
 				socket.leave(user?.userId);
 				socket.disconnect();
 				delete socket.request.token;
