@@ -59,21 +59,21 @@ const BreezeChat = ({
 		[newMessages, loggedInUser?.userId]
 	);
 
-	const getMessageByChatIDHandler = useCallback(async () => {
-		if (!selectedChat) return;
-		const response = await MessageDAO.getMessageByChatID({
-			chatID: selectedChat?._id,
-		});
-		socket.emit("joinChat", selectedChat?._id);
-		if (response?.statusCode === HTTPStatusCode.OK) {
-			setNewMessages(response?.responseBody);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	// const getMessageByChatIDHandler = useCallback(async () => {
+	// 	if (!selectedChat) return;
+	// 	const response = await MessageDAO.getMessageByChatID({
+	// 		chatID: selectedChat?._id,
+	// 	});
 
-	useEffect(() => {
-		getMessageByChatIDHandler();
-	}, [getMessageByChatIDHandler]);
+	// 	if (response?.statusCode === HTTPStatusCode.OK) {
+	// 		setNewMessages(response?.responseBody);
+	// 	}
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, []);
+
+	// useEffect(() => {
+	// 	getMessageByChatIDHandler();
+	// }, [getMessageByChatIDHandler]);
 
 	useEffect(() => {
 		socket.on("roomMessage", (roomMessage) => {
@@ -83,11 +83,12 @@ const BreezeChat = ({
 
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
-			setNewMessages([...newMessages, newMsgRecieved]);
+			selectedChat?._id === newMsgRecieved?.chat?._id &&
+				setNewMessages([...newMessages, newMsgRecieved]);
 		});
 
 		return () => socket.off("getMessage");
-	}, [newMessages, prevChat, setNewMessages]);
+	}, [newMessages, selectedChat, setNewMessages]);
 
 	return (
 		<>

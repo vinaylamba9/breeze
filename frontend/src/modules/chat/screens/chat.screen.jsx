@@ -75,7 +75,7 @@ const ChatScreen = () => {
 	}, [setUserDetails]);
 	useEffect(() => {
 		socket.connect();
-		socket.emit("bootstrapSocket", loggedInUser);
+		socket.emit("joinSocket", loggedInUser?.userId);
 		socket.on("connected", () => setSocketConnection(true));
 		socket.on("connected", (callback) => {
 			callback();
@@ -84,10 +84,6 @@ const ChatScreen = () => {
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
-
-	// useEffect(() => {
-	// 	setSelectedChat(chats[0]);
-	// }, [chats]);
 
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
@@ -100,6 +96,10 @@ const ChatScreen = () => {
 		});
 	}, [setChats]);
 
+	useEffect(() => {
+		const activeChat = chats?.filter((item) => item?._id === selectedChat?._id);
+		setSelectedChat(activeChat?.[0]);
+	}, [chats, selectedChat?._id, setSelectedChat]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>

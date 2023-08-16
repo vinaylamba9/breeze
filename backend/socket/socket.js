@@ -9,18 +9,22 @@ const socketIOSetup = (socket, io) => {
 
 	if (user) {
 		console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
-		socket.on("bootstrapSocket", () => {
+
+		// User joins or open the application
+		socket.on("joinSocket", (loggedInUser) => {
 			socket.join(user?.userId);
-			socket.emit("connected", async () => {
-				const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
-				io.to(user?.userId).emit("fetchChats", chatByID);
-			});
 		});
 
+		// Fetch initials chat list when user open the application
+		socket.emit("connected", async () => {
+			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
+			io.to(user?.userId).emit("fetchChats", chatByID);
+		});
+
+		// Join a chat room
 		roomHandler(socket, user, io);
-		typingHandler(socket);
 		messageHandler(socket, user, io);
-		// typingHandler(socket, io);
+		typingHandler(socket, io);
 
 		socket.on("leaveServer", () => {
 			socket.leave(user?.userId);
