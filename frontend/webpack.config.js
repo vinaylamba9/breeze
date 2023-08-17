@@ -6,7 +6,10 @@ const deps = require("./package.json").dependencies;
 require("dotenv").config({ path: "./.env" });
 module.exports = (_, argv) => ({
 	output: {
-		publicPath: "http://localhost:3000/",
+		publicPath:
+			argv.mode === "development"
+				? "http://localhost:3000/"
+				: "https://breezee.vercel.app/",
 	},
 
 	resolve: {
@@ -31,8 +34,6 @@ module.exports = (_, argv) => ({
 
 	devServer: {
 		port: 3000,
-		// allowedHosts: "all",
-		// host: "0.0.0.0",
 		historyApiFallback: true,
 	},
 
