@@ -5,8 +5,6 @@ import { useCallback, useEffect } from "react";
 import { DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
-import { HTTPStatusCode } from "@Constants/network";
-import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import { socket } from "@Socket/socket";
 const BreezeChat = ({
 	prevChat,

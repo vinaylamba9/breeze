@@ -21,6 +21,7 @@ import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
+
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -160,6 +161,7 @@ const ChatScreen = () => {
 														setSelectedChat(item);
 														socket.emit("joinChat", item?._id);
 														socket.emit("leaveChat", selectedChat?._id);
+														socket.emit("stopTyping", selectedChat?._id);
 													}}
 													title={
 														item?.isGroupChat
