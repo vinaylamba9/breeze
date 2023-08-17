@@ -36,13 +36,14 @@ const BreezeMessageFields = ({
 			}
 
 			let lastTypingTime = new Date().getTime();
+			const timer = 2000;
 			setTimeout(() => {
 				let currentTime = new Date().getTime();
-				if (currentTime - lastTypingTime >= 1000 && typing) {
+				if (currentTime - lastTypingTime >= timer && typing) {
 					socket.emit("stopTyping", selectedChat?._id);
 					setTyping(false);
 				}
-			}, 1000);
+			}, timer);
 		},
 		[selectedChat?._id, setTyping, typing]
 	);

@@ -161,6 +161,7 @@ const ChatScreen = () => {
 														setSelectedChat(item);
 														socket.emit("joinChat", item?._id);
 														socket.emit("leaveChat", selectedChat?._id);
+														socket.emit("stopTyping", selectedChat?._id);
 													}}
 													title={
 														item?.isGroupChat
