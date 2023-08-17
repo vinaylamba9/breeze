@@ -27,15 +27,25 @@ const ChatScreen = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
-	const { selectedChat, setSelectedChat, chats, setChats } = useChatState();
+	const { selectedChat, setSelectedChat } = useChatState();
 	const [socketConnection, setSocketConnection] = useState(false);
-	const { setUserDetails, loggedInUser, isActive, hideProfile } =
-		useCombinedStore((state) => ({
-			loggedInUser: state?.loggedInUser,
-			isActive: state?.isActive,
-			hideProfile: state?.hideProfile,
-			setUserDetails: state?.setUserDetails,
-		}));
+	const {
+		setUserDetails,
+		chatList,
+		clearChatList,
+		setChatList,
+		loggedInUser,
+		isActive,
+		hideProfile,
+	} = useCombinedStore((state) => ({
+		chatList: state?.chatList,
+		setChatList: state?.setChatList,
+		clearChatList: state?.clearChatList,
+		loggedInUser: state?.loggedInUser,
+		isActive: state?.isActive,
+		hideProfile: state?.hideProfile,
+		setUserDetails: state?.setUserDetails,
+	}));
 
 	const { register } = useForm({});
 
@@ -61,10 +71,10 @@ const ChatScreen = () => {
 		setLoading(true);
 		const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
 		if (response?.statusCode === HTTPStatusCode.OK) {
-			setChats(response?.responseBody);
-		} else setChats([]);
+			setChatList(response?.responseBody);
+		} else clearChatList();
 		setLoading(false);
-	}, [loggedInUser?._id, setChats]);
+	}, [clearChatList, loggedInUser?._id, setChatList]);
 
 	useEffect(() => {
 		onFetchChatHandler();
@@ -88,19 +98,21 @@ const ChatScreen = () => {
 
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
-			setChats(chatByID);
+			setChatList(chatByID);
 		});
-	}, [chats, setChats]);
+	}, [setChatList]);
 	useEffect(() => {
 		socket.on("recentChatList", (chatByID) => {
-			setChats(chatByID);
+			setChatList(chatByID);
 		});
-	}, [setChats]);
+	}, [setChatList]);
 
 	useEffect(() => {
-		const activeChat = chats?.filter((item) => item?._id === selectedChat?._id);
+		const activeChat = chatList?.filter(
+			(item) => item?._id === selectedChat?._id
+		);
 		setSelectedChat(activeChat?.[0]);
-	}, [chats, selectedChat?._id, setSelectedChat]);
+	}, [chatList, selectedChat?._id, setSelectedChat]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -151,7 +163,7 @@ const ChatScreen = () => {
 								<BreezeTileSkeleton tileLength={7} />
 							) : (
 								<>
-									{chats?.map((item, index) => {
+									{chatList?.map((item, index) => {
 										return (
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
@@ -235,7 +247,7 @@ const ChatScreen = () => {
 					<ChatNotFound />
 				) : (
 					<BreezeChatBox
-						setChats={setChats}
+						setChats={setChatList}
 						isSelectedChatProfile={isSelectedChatProfile}
 						setSelectedChatProfile={setSelectedChatProfile}
 						fetchAgain={fetchAgain}

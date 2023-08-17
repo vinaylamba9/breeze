@@ -12,10 +12,13 @@ import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { useChatState } from "@Context/chatProvider";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import _ from "lodash";
+import useCombinedStore from "@Zustand/store/store";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
-	const { setSelectedChat, userList, setUserList, chats, setChats } =
-		useChatState();
-
+	const { setSelectedChat, userList, setUserList } = useChatState();
+	const { chatList, setChatList } = useCombinedStore((state) => ({
+		chatList: state?.chatList,
+		setChatList: state?.setChatList,
+	}));
 	const [isLoading, setLoading] = useState(false);
 	const { register } = useForm({});
 
@@ -36,13 +39,14 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 			const response = await ChatDAO.createChatDAO({ userID: id });
 			if (response?.statusCode === HTTPStatusCode.OK) {
 				const data = response?.responseBody;
-				if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+				if (!chatList.find((c) => c._id === data._id))
+					setChatList([data, ...chatList]);
 				setSelectedChat(data);
 				setLoading(false);
 				onClose();
 			}
 		},
-		[chats, onClose, setChats, setSelectedChat]
+		[chatList, onClose, setChatList, setSelectedChat]
 	);
 
 	useEffect(() => {

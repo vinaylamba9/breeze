@@ -14,6 +14,7 @@ import { HTTPStatusCode } from "@Constants/network";
 import { useChatState } from "@Context/chatProvider";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import BreezeTileSkeleton from "@Components/breezeTileSkeleton/breezeTileSkeleton.components";
+import useCombinedStore from "@Zustand/store/store";
 
 const StepperTwo = ({
 	fetchAgain,
@@ -27,25 +28,14 @@ const StepperTwo = ({
 	const { formDetails, setFormDetails } = useCreateGroupState();
 	const [newUsersToAdd, setNewUsersToAdd] = useState([]); //Will work only in case of update
 	const [isLoading, setLoading] = useState(false);
-	const {
-		user,
-		setUser,
-		selectedChat,
-		setSelectedChat,
-		chats,
-		setChats,
-		userList,
-		setUserList,
-	} = useChatState();
+	const { user, selectedChat, setSelectedChat, userList, setUserList } =
+		useChatState();
 
-	const {
-		register,
-		handleSubmit,
-		setValue,
-		setError,
-		watch,
-		formState: { errors },
-	} = useForm({});
+	const { chatList, setChatList } = useCombinedStore((state) => ({
+		chatList: state?.chatList,
+		setChatList: state?.setChatList,
+	}));
+	const { register } = useForm({});
 	/** Getting All Users list from Chat API */
 	const getAllUsers = useCallback(async () => {
 		setLoading(true);
@@ -128,7 +118,7 @@ const StepperTwo = ({
 		delete formDetails?.profileImage;
 		const response = await ChatDAO.createGroupChatDAO(formDetails);
 		if (response?.statusCode === HTTPStatusCode.OK) {
-			setChats([response?.responseBody, ...chats]);
+			setChatList([response?.responseBody, ...chatList]);
 			setFormDetails({
 				name: null,
 				bio: null,
