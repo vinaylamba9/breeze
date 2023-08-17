@@ -29,10 +29,6 @@ const BreezeChatBox = ({
 	useEffect(() => {
 		socket.on("typing", () => setIsTyping(true));
 		socket.on("stopTyping", () => setIsTyping(false));
-
-		return () => {
-			socket.disconnect();
-		};
 	}, [setIsTyping]);
 	// useEffect(() => {
 	// 	socket.on("getMessage", (newMsgRecieved) => {
