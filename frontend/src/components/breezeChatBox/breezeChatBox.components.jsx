@@ -1,26 +1,20 @@
 import { useEffect, useState } from "react";
 import BreezeMessageFields from "@Components/breezeMessageField/breezeMessageField.components";
 import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHeader.components";
-
 import { useChatState } from "@Context/chatProvider";
-
 import { socket } from "@Socket/socket";
 import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
-import useCombinedStore from "@Zustand/store/store";
 
 const BreezeChatBox = ({
 	fetchAgain,
 	isSelectedChatProfile,
 	setSelectedChatProfile,
 	setFetchAgain,
-	setChats,
 	setSocketConnection,
 	socketConnection,
 }) => {
 	const { selectedChat } = useChatState();
-	const { loggedInUser } = useCombinedStore((state) => ({
-		loggedInUser: state?.loggedInUser,
-	}));
+
 	const [prevChat, setPrevChat] = useState(selectedChat);
 
 	const [typing, setTyping] = useState(false);
@@ -58,13 +52,11 @@ const BreezeChatBox = ({
 				<BreezeScrollableFeed
 					prevChat={prevChat}
 					isTyping={isTyping}
-					setChats={setChats}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 				/>
 				<BreezeMessageFields
 					prevChat={prevChat}
-					setChats={setChats}
 					setIsTyping={setIsTyping}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}

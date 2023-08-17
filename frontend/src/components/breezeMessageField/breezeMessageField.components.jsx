@@ -16,7 +16,7 @@ const BreezeMessageFields = ({
 	setSocketConnection,
 	socketConnection,
 	typing,
-	setChats,
+
 	fetchAgain,
 	setFetchAgain,
 	setTyping,
