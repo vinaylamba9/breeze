@@ -1,9 +1,10 @@
 const typingHandler = (socket, io) => {
 	socket.on("typing", (selectedChat) => {
-		socket.in(selectedChat).emit("typing");
+		console.log("typing ", selectedChat);
+		socket.to(selectedChat).emit("typing");
 	});
 	socket.on("stopTyping", (selectedChat) => {
-		socket.in(selectedChat).emit("stopTyping");
+		socket.to(selectedChat).emit("stopTyping");
 	});
 };
 
