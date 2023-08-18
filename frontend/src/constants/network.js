@@ -1,9 +1,8 @@
 export class NetworkInfo {
-	static protocol = "http://";
-	static domain = "localhost:5001";
+	// static protocol = "http://";
+	// static domain = "localhost:5001";
 	static subDomain = "/api";
-	static networkInfo =
-		NetworkInfo.protocol + NetworkInfo.domain + NetworkInfo.subDomain;
+	static networkInfo = process.env.BREEZE_BACKEND_URL + NetworkInfo.subDomain;
 }
 
 export class APIType {
