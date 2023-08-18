@@ -2,7 +2,7 @@
 	"name": "frontend",
 	"version": "1.0.0",
 	"scripts": {
-		"build:prod": " env-cmd -f .env.production webpack --mode production",
+		"build": " env-cmd -f .env.production webpack --mode production",
 		"build:dev": " env-cmd -f .env.development webpack --mode development",
 		"build:start": " env-cmd -f .env.development cd dist && PORT=3000 npx serve",
 		"start": " env-cmd -f .env.development webpack serve --open --mode development",
