@@ -85,7 +85,7 @@ const server = app.listen(process.env.PORT).on("listening", onListening);
 
 /** ================== SOCKET.IO CONNECTION STARTS ================== */
 const io = new Server(server, {
-	pingTimeout: process.env.SOCKET_PING_TIMEOUT,
+	// pingTimeout: process.env.SOCKET_PING_TIMEOUT,
 	cors: {
 		origin: process.env.BREEZE_URL,
 	},
