@@ -6,10 +6,7 @@ const deps = require("./package.json").dependencies;
 require("dotenv").config({ path: "./.env" });
 module.exports = (_, argv) => ({
 	output: {
-		publicPath:
-			argv.mode === "development"
-				? "http://localhost:3000/"
-				: "https://breezee.vercel.app/",
+		publicPath: process.env.REACT_SIDE_ENDPOINT,
 	},
 
 	resolve: {

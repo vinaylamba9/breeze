@@ -1,7 +1,7 @@
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import { io } from "socket.io-client";
 
-const URL = process.env.REACT_SOCKET_ENDPOINT;
+const URL = process.env.BREEZE_BACKEND_URL;
 
 export const socket = io(URL, {
 	autoConnect: true,
