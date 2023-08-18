@@ -2,5 +2,6 @@
 
 # dependencies
 backend/node_modules
-backend/.env
-breeze/.env
+backend/.env.development
+backend/.env.production
+
