@@ -1,6 +1,8 @@
 export class NetworkInfo {
-	static protocol = "http://";
-	static domain = "localhost:5001";
+	// static protocol = "http://";
+	// static domain = "localhost:5001";
+	static protocol = "https://";
+	static domain = "breeze-flz9.onrender.com";
 	static subDomain = "/api";
 	static networkInfo =
 		NetworkInfo.protocol + NetworkInfo.domain + NetworkInfo.subDomain;
