@@ -1,14 +1,13 @@
+const path = require("path");
 require("dotenv").config();
 require("colors");
 const express = require("express");
 const app = express();
-const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const cors = require("cors");
 const { Server } = require("socket.io");
-const PORT = process.env.PORT;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./swagger.json");
 
@@ -20,8 +19,7 @@ const chats = require("./routes/chatRoutes/index");
 const message = require("./routes/messageRoutes/index");
 const socketIOSetup = require("./socket/socket");
 const { userAuth } = require("./middleware/userAuth");
-const DevConfig = require("./config/devConfig");
-// const io = require("./socket/socket");
+// const Config = require("./config/config.js");
 
 /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -73,22 +71,24 @@ const onListening = () => {
 const bootstrapMessage = () => {
 	console.info(
 		`\n\t SERVER IS ONLINE [ 📢 ] AND RUNNING [ 🚀 ]  \n
-        \n\t -ON PORT :: ${PORT}
+		\n\t - SERVER MODE :: ${process.env.NODE_ENV}
+        \n\t -ON PORT :: ${process.env.PORT}
         \n\t -STARTED AT :: ${new Date()}
         \n\t---------------------- LET'S BREEZE LOGS ----------------------\n `
 			.rainbow
 	);
 };
 
-const server = app.listen(PORT).on("listening", onListening);
+const server = app.listen(process.env.PORT).on("listening", onListening);
 
 /* ================ Connecting with the PORT ENDS  =================*/
 
 /** ================== SOCKET.IO CONNECTION STARTS ================== */
 const io = new Server(server, {
-	// pingInterval: DevConfig.pingTimeout,
-	pingTimeout: DevConfig.pingTimeout,
-	cors: DevConfig.corsOrigin,
+	pingTimeout: process.env.SOCKET_PING_TIMEOUT,
+	cors: {
+		origin: process.env.BREEZE_URL,
+	},
 	connectionStateRecovery: {
 		// the backup duration of the sessions and the packets
 		maxDisconnectionDuration: 2 * 60 * 1000,
