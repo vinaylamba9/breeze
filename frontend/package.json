@@ -2,10 +2,10 @@
 	"name": "frontend",
 	"version": "1.0.0",
 	"scripts": {
-		"build": " env-cmd -f .env webpack --mode production",
-		"build:dev": " env-cmd -f .env webpack --mode development",
-		"build:start": " env-cmd -f .env cd dist && PORT=3000 npx serve",
-		"start": " env-cmd -f .env webpack serve --open --mode development",
+		"build": " env-cmd -f .env.production webpack --mode production",
+		"build:dev": " env-cmd -f .env.development webpack --mode development",
+		"build:start": " env-cmd -f .env.development cd dist && PORT=3000 npx serve",
+		"start": " env-cmd -f .env.development webpack serve --open --mode development",
 		"start:live": "webpack serve --open --mode development --live-reload --hot"
 	},
 	"license": "MIT",
