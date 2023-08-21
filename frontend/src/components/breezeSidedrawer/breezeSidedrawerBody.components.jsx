@@ -111,7 +111,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 				</BreezeTooltip>
 			</div>
 
-			<div className='w-95% mx-auto mt-5 mb-8'>
+			<div className='w-95% mx-auto mt-5 mb-2'>
 				<BreezeSearch
 					placeholder={"Search user"}
 					leadingIcon={
@@ -126,20 +126,15 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 					name='searchUser'
 				/>
 			</div>
-			<div
-				className='w-100% mx-auto  mt-5 '
-				style={{
-					minHeight: "80vh",
-					maxHeight: "80vh",
-				}}>
+			<div className='w-100% mx-auto mt-5 '>
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />
 				) : (
 					<div
 						className=' rounded-2xl'
 						style={{
-							minHeight: "90vh",
-							maxHeight: "90vh",
+							minHeight: "78vh",
+							maxHeight: "78vh",
 							overflowY: "scroll",
 						}}>
 						{userList?.map((item, index) => {

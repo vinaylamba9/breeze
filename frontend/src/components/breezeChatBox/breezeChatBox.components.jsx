@@ -16,7 +16,7 @@ const BreezeChatBox = ({
 	const { selectedChat } = useChatState();
 
 	const [prevChat, setPrevChat] = useState(selectedChat);
-
+	const [showEmojiPicker, setEmojiPicker] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessages, setNewMessages] = useState([]);
@@ -50,12 +50,16 @@ const BreezeChatBox = ({
 					isTyping={isTyping}
 				/>
 				<BreezeScrollableFeed
+					setEmojiPicker={setEmojiPicker}
+					showEmojiPicker={showEmojiPicker}
 					prevChat={prevChat}
 					isTyping={isTyping}
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 				/>
 				<BreezeMessageFields
+					setEmojiPicker={setEmojiPicker}
+					showEmojiPicker={showEmojiPicker}
 					prevChat={prevChat}
 					setIsTyping={setIsTyping}
 					setNewMessages={setNewMessages}

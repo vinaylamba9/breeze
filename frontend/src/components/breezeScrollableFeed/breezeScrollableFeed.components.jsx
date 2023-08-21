@@ -2,7 +2,12 @@ import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import { useChatState } from "@Context/chatProvider";
 
-const BreezeScrollableFeed = ({ newMessages, setNewMessages }) => {
+const BreezeScrollableFeed = ({
+	showEmojiPicker,
+	setEmojiPicker,
+	newMessages,
+	setNewMessages,
+}) => {
 	const { selectedChat } = useChatState();
 	const chatContainerRef = useRef(null);
 	const stickyMsgPillRef = useRef(null);
@@ -56,8 +61,10 @@ const BreezeScrollableFeed = ({ newMessages, setNewMessages }) => {
 			style={{
 				backgroundImage:
 					"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690138802/subtle-prism_2_iyfq9l.png)",
-				maxHeight: "calc(100vh - 156px)",
-				height: "calc(100vh - 156px)",
+				maxHeight: showEmojiPicker
+					? "calc(100vh - 600px)"
+					: "calc(100vh - 156px)",
+				height: showEmojiPicker ? "calc(100vh - 600px)" : "calc(100vh - 156px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}
