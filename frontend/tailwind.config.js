@@ -187,6 +187,7 @@ module.exports = {
 				fadeInOut: "fadeInOut 3s",
 				slideIn: "slideIn 0.5s ease-in-out",
 				slideOut: "slideOut 0.5s ease-in-out",
+				rotate: "rotate .5s ease-in-out ",
 			},
 			keyframes: {
 				fadeIn: {
@@ -242,8 +243,11 @@ module.exports = {
 						marginRight: "-100%",
 					},
 				},
+				rotate: {
+					"0%": { transform: "rotate(0deg)" },
+					"100%": { transform: "rotate(90deg)" },
+				},
 			},
-
 			boxShadow: {
 				material: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",
 			},

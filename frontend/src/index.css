@@ -147,3 +147,12 @@ input[type="number"] {
 	background-color: transparent;
 	color: var(--background-color-metal);
 }
+
+.EmojiPickerReact.epr-main {
+	border-radius: 0px !important;
+	border-color: transparent;
+	border-left: none !important;
+	border-bottom: none !important;
+	border-right: none !important;
+	/* border: none !important; */
+}

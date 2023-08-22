@@ -6,6 +6,7 @@ import {
 	MdOutlineKeyboardArrowUp,
 	MdOutlineAttachFile,
 } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
 import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
@@ -83,18 +84,35 @@ const BreezeMessageFields = ({
 
 	useEffect(() => {
 		msgBoxRef.current.focus();
-	}, [msgBoxRef]);
+	}, [msgBoxRef, selectedChat]);
 	return (
 		<>
+			{showEmojiPicker && (
+				<span className='transition ease-in-out duration-300 w-100% bg-transparent  text-sm'>
+					<BreezeEmojiPicker
+						message={message}
+						setMessage={setMessage}
+						theme={"light"}
+						msgBoxRef={msgBoxRef}
+					/>
+				</span>
+			)}
 			<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
 				<div className=' w-98% mx-auto flex justify-start items-start '>
 					<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
 						<BreezeTooltip id={"emoticons"}>
 							<span data-tooltip-id='emoticons' data-tooltip-content='Emojis'>
-								<MdOutlineEmojiEmotions
-									className='text-gray-900  text-fontsize-trim'
-									onClick={toggleEmojiPicker}
-								/>
+								{!showEmojiPicker ? (
+									<MdOutlineEmojiEmotions
+										className='text-gray-900  text-fontsize-trim'
+										onClick={toggleEmojiPicker}
+									/>
+								) : (
+									<IoClose
+										className='text-gray-900 animate-rotate text-fontsize-trim'
+										onClick={toggleEmojiPicker}
+									/>
+								)}
 							</span>
 						</BreezeTooltip>
 					</div>
@@ -135,16 +153,6 @@ const BreezeMessageFields = ({
 					</div>
 				</div>
 			</div>
-			{showEmojiPicker && (
-				<span className='transition ease-in-out duration-300 w-100% bg-transparent drop-shadow-lg  text-color-darkTeal text-sm'>
-					<BreezeEmojiPicker
-						message={message}
-						setMessage={setMessage}
-						theme={"light"}
-						msgBoxRef={msgBoxRef}
-					/>
-				</span>
-			)}
 		</>
 	);
 };

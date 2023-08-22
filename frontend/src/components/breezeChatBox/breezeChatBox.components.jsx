@@ -40,8 +40,8 @@ const BreezeChatBox = ({
 	return (
 		<>
 			<div
-				style={{ maxHeight: "calc(100vh)" }}
-				className=' flex flex-col justify-start items-center overflow-y-hidden'>
+				style={{ height: "calc(100vh)", maxHeight: "calc(100vh)" }}
+				className=' flex flex-col justify-start items-center '>
 				<BreezeMessageHeader
 					isSelectedChatProfile={isSelectedChatProfile}
 					setSelectedChatProfile={setSelectedChatProfile}
