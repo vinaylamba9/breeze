@@ -62,9 +62,8 @@ const BreezeScrollableFeed = ({
 				maxHeight: showEmojiPicker
 					? "calc(100vh - 600px)"
 					: "calc(100vh - 156px)",
-				minHeight: showEmojiPicker
-					? "calc(100vh - 630px)"
-					: "calc(100vh - 205px)",
+
+				height: showEmojiPicker ? "calc(100vh - 600px)" : "calc(100vh - 156px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}
