@@ -40,6 +40,7 @@ const BreezeMessageFields = ({
 				setTyping(true);
 				socket.emit("typing", selectedChat?._id);
 			}
+
 			let lastTypingTime = new Date().getTime();
 			const timer = 2000;
 			setTimeout(() => {
@@ -63,7 +64,7 @@ const BreezeMessageFields = ({
 			if (!e?.shiftKey && e?.which === 13 && message?.length > 0) {
 				e.preventDefault();
 				socket.emit("stopTyping", selectedChat?._id);
-
+				e.target.innerText = "";
 				setMessage(null);
 
 				socket.emit("sendMessage", {
@@ -80,6 +81,9 @@ const BreezeMessageFields = ({
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
 
+	useEffect(() => {
+		msgBoxRef.current.focus();
+	}, [msgBoxRef]);
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
