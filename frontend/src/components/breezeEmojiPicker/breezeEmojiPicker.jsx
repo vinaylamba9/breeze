@@ -46,6 +46,7 @@ const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 				lazyLoadEmojis={true}
 				searchDisabled={true}
 				width={"100%"}
+				previewConfig={{}}
 				onEmojiClick={handleEmojiPicker}
 			/>
 		</div>

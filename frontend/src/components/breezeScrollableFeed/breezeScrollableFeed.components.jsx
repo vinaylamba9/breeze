@@ -59,12 +59,12 @@ const BreezeScrollableFeed = ({
 		<div
 			className='w-full bg-gray-100 '
 			style={{
-				backgroundImage:
-					"url(https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690138802/subtle-prism_2_iyfq9l.png)",
 				maxHeight: showEmojiPicker
 					? "calc(100vh - 600px)"
 					: "calc(100vh - 156px)",
-				height: showEmojiPicker ? "calc(100vh - 600px)" : "calc(100vh - 156px)",
+				minHeight: showEmojiPicker
+					? "calc(100vh - 630px)"
+					: "calc(100vh - 205px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}
