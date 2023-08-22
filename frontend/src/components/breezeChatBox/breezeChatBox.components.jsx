@@ -57,22 +57,23 @@ const BreezeChatBox = ({
 					setNewMessages={setNewMessages}
 					newMessages={newMessages}
 				/>
-				<div style={{ width: "71.2%" }} className='absolute bottom-0 flex-1 '>
-					<BreezeMessageFields
-						setEmojiPicker={setEmojiPicker}
-						showEmojiPicker={showEmojiPicker}
-						prevChat={prevChat}
-						setIsTyping={setIsTyping}
-						setNewMessages={setNewMessages}
-						newMessages={newMessages}
-						typing={typing}
-						setTyping={setTyping}
-						setSocketConnection={setSocketConnection}
-						socketConnection={socketConnection}
-						fetchAgain={fetchAgain}
-						setFetchAgain={setFetchAgain}
-					/>
-				</div>
+				<BreezeMessageFields
+					setEmojiPicker={setEmojiPicker}
+					showEmojiPicker={showEmojiPicker}
+					prevChat={prevChat}
+					setIsTyping={setIsTyping}
+					setNewMessages={setNewMessages}
+					newMessages={newMessages}
+					typing={typing}
+					setTyping={setTyping}
+					setSocketConnection={setSocketConnection}
+					socketConnection={socketConnection}
+					fetchAgain={fetchAgain}
+					setFetchAgain={setFetchAgain}
+				/>
+				{/* <div style={{ width: "71.2%" }} className='absolute bottom-0 flex-1 '>
+					
+				</div> */}
 			</div>
 		</>
 	);

@@ -36,6 +36,8 @@ const ChatScreen = () => {
 		setChatList,
 		loggedInUser,
 		isActive,
+		// selectedChat,
+		// setSelectedChat,
 		hideProfile,
 	} = useCombinedStore((state) => ({
 		chatList: state?.chatList,
@@ -45,6 +47,8 @@ const ChatScreen = () => {
 		isActive: state?.isActive,
 		hideProfile: state?.hideProfile,
 		setUserDetails: state?.setUserDetails,
+		selectedChat: state?.selectedChat,
+		setSelectedChat: state?.setSelectedChat,
 	}));
 
 	const { register } = useForm({});
