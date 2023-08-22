@@ -1,5 +1,4 @@
 const { CHAT_DB_UTILS } = require("../utils/dbUtils");
-
 const roomHandler = require("./handlers/roomHandler");
 const typingHandler = require("./handlers/typingHandler");
 const messageHandler = require("./handlers/messageHandler");

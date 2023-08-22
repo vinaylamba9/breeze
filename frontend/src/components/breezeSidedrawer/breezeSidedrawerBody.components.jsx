@@ -14,11 +14,14 @@ import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import _ from "lodash";
 import useCombinedStore from "@Zustand/store/store";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
-	const { setSelectedChat, userList, setUserList } = useChatState();
-	const { chatList, setChatList } = useCombinedStore((state) => ({
-		chatList: state?.chatList,
-		setChatList: state?.setChatList,
-	}));
+	const { userList, setUserList } = useChatState();
+	const { chatList, setSelectedChat, setChatList } = useCombinedStore(
+		(state) => ({
+			chatList: state?.chatList,
+			setSelectedChat: state?.setSelectedChat,
+			setChatList: state?.setChatList,
+		})
+	);
 	const [isLoading, setLoading] = useState(false);
 	const { register } = useForm({});
 

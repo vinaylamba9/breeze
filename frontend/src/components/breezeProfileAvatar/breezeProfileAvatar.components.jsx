@@ -12,6 +12,7 @@ import { ChatDAO } from "@Modules/chat/core/chatDAO";
 import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
+import useCombinedStore from "@Zustand/store/store";
 
 const BreezeProfileAvatar = ({
 	isIndividual,
@@ -21,13 +22,17 @@ const BreezeProfileAvatar = ({
 	setFetchAgain,
 	fetchAgain,
 }) => {
-	const { setUser, selectedChat, setSelectedChat } = useChatState();
+	const { setUser } = useChatState();
 	const [hexColor, textColor] = useAvatarColorGenerator(title);
 	const initials = useAvatarInitials(title);
 	const [imagePreview, setImagePreview] = useState(null);
-	const { loggedInUser } = useChatState((state) => ({
-		loggedInUser: state?.loggedInUser,
-	}));
+	const { loggedInUser, selectedChat, setSelectedChat } = useCombinedStore(
+		(state) => ({
+			loggedInUser: state?.loggedInUser,
+			selectedChat: state?.selectedChat,
+			setSelectedChat: state?.setSelectedChat,
+		})
+	);
 	const onUpdateGroupImageHandler = useCallback(
 		async (url) => {
 			const response = await ChatDAO.updateGroupChatImageDAO({

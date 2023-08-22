@@ -28,13 +28,15 @@ const StepperTwo = ({
 	const { formDetails, setFormDetails } = useCreateGroupState();
 	const [newUsersToAdd, setNewUsersToAdd] = useState([]); //Will work only in case of update
 	const [isLoading, setLoading] = useState(false);
-	const { user, selectedChat, setSelectedChat, userList, setUserList } =
-		useChatState();
+	const { user, userList, setUserList } = useChatState();
 
-	const { chatList, setChatList } = useCombinedStore((state) => ({
-		chatList: state?.chatList,
-		setChatList: state?.setChatList,
-	}));
+	const { chatList, selectedChat, setSelectedChat, setChatList } =
+		useCombinedStore((state) => ({
+			chatList: state?.chatList,
+			selectedChat: state?.selectedChat,
+			setSelectedChat: state?.setSelectedChat,
+			setChatList: state?.setChatList,
+		}));
 	const { register } = useForm({});
 	/** Getting All Users list from Chat API */
 	const getAllUsers = useCallback(async () => {

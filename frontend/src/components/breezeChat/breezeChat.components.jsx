@@ -1,6 +1,5 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
-import { useChatState } from "@Context/chatProvider";
 import { useCallback, useEffect } from "react";
 import { DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
@@ -14,9 +13,9 @@ const BreezeChat = ({
 	stickyDateRef,
 	newMessages,
 }) => {
-	const { selectedChat } = useChatState();
-	const { loggedInUser } = useCombinedStore((state) => ({
+	const { loggedInUser, selectedChat } = useCombinedStore((state) => ({
 		loggedInUser: state?.loggedInUser,
+		selectedChat: state?.selectedChat,
 	}));
 
 	const msgDividerComponent = useCallback(

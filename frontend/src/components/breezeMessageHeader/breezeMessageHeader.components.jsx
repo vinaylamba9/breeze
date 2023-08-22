@@ -1,10 +1,8 @@
-import { useChatState } from "@Context/chatProvider";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
-import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import useCombinedStore from "@Zustand/store/store";
 const BreezeMessageHeader = ({
 	isSelectedChatProfile,
@@ -13,13 +11,14 @@ const BreezeMessageHeader = ({
 	setFetchAgain,
 	isTyping,
 }) => {
-	const { selectedChat } = useChatState();
-	const { loggedInUser } = useCombinedStore((state) => ({
-		loggedInUser: state?.loggedInUser,
-	}));
-	const { showActive } = useCombinedStore((state) => ({
-		showActive: state?.showActive,
-	}));
+	const { showActive, loggedInUser, selectedChat } = useCombinedStore(
+		(state) => ({
+			showActive: state?.showActive,
+			loggedInUser: state?.loggedInUser,
+			selectedChat: state?.selectedChat,
+		})
+	);
+
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white drop-shadow-md rounded-bl rounded-br text-black'>

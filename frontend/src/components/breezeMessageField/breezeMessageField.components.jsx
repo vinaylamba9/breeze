@@ -7,7 +7,6 @@ import {
 	MdOutlineAttachFile,
 } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
-import { useChatState } from "@Context/chatProvider";
 import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
@@ -26,14 +25,14 @@ const BreezeMessageFields = ({
 	showEmojiPicker,
 	setEmojiPicker,
 }) => {
-	const { loggedInUser } = useCombinedStore((state) => ({
-		loggedInUser: state?.loggedInUser,
+	const { selectedChat } = useCombinedStore((state) => ({
+		selectedChat: state?.selectedChat,
 	}));
 	const [message, setMessage] = useState(null);
 	const toggleEmojiPicker = () => {
 		setEmojiPicker(!showEmojiPicker);
 	};
-	const { selectedChat } = useChatState();
+
 	const msgBoxRef = useRef(null);
 	const typingIndicatorHandler = useCallback(
 		(e) => {

@@ -39,8 +39,6 @@ const MessageController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
-					console.log(req?.user, "-uswer");
-					console.log(req?.body, "obj");
 					const formattedData = {
 						sender: req.user.userId,
 						content: req.body.content,
@@ -49,7 +47,7 @@ const MessageController = {
 					const createMessage = await MESSAGE_DB_UTILS.createMessage(
 						formattedData
 					);
-					console.log(createMessage, "-createMessage");
+
 					const findChatAndUpdate = await CHAT_DB_UTILS.updateLatestMessage(
 						req.body.chatID,
 						createMessage
