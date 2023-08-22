@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import BreezeMessageFields from "@Components/breezeMessageField/breezeMessageField.components";
 import BreezeMessageHeader from "@Components/breezeMessageHeader/breezeMessageHeader.components";
-import { useChatState } from "@Context/chatProvider";
 import { socket } from "@Socket/socket";
 import BreezeScrollableFeed from "@Components/breezeScrollableFeed/breezeScrollableFeed.components";
+import useCombinedStore from "@/zustand/store/store";
 
 const BreezeChatBox = ({
 	fetchAgain,
@@ -13,8 +13,9 @@ const BreezeChatBox = ({
 	setSocketConnection,
 	socketConnection,
 }) => {
-	const { selectedChat } = useChatState();
-
+	const { selectedChat } = useCombinedStore((state) => ({
+		selectedChat: state?.selectedChat,
+	}));
 	const [prevChat, setPrevChat] = useState(selectedChat);
 	const [showEmojiPicker, setEmojiPicker] = useState(false);
 	const [typing, setTyping] = useState(false);

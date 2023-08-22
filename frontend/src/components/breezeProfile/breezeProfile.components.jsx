@@ -1,5 +1,4 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import { useChatState } from "@Context/chatProvider";
 import { MdBlock, MdReport, MdDelete } from "react-icons/md";
 import { IoArrowForward, IoArrowBack } from "react-icons/io5";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
@@ -7,15 +6,18 @@ import useCombinedStore from "@Zustand/store/store";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 
 const BreezeProfile = ({ onClose }) => {
-	const { selectedChat, setSelectedChat } = useChatState();
 	const {
 		loggedInUser,
 		hideActive,
+		selectedChat,
 		selectUserFromGroup,
+		setSelectedChat,
 		setSelectUserFromGroup,
 	} = useCombinedStore((state) => ({
 		loggedInUser: state?.loggedInUser,
 		hideActive: state?.hideActive,
+		setSelectedChat: state?.setSelectedChat,
+		selectedChat: state?.selectedChat,
 		selectUserFromGroup: state?.selectUserFromGroup,
 		setSelectUserFromGroup: state?.setSelectUserFromGroup,
 	}));
@@ -65,17 +67,18 @@ const BreezeProfile = ({ onClose }) => {
 							</h1>
 
 							<p className='mt-1 text-color-darkTeal text-gray-700 ease-out duration-300 hover:tracking-wider  cursor-pointer'>
-								{!selectUserFromGroup?.isGroupChat &&
-									CHAT_UTILS?.getOtherSideProfileEmail(
-										loggedInUser,
-										selectUserFromGroup?.users
-									)}
+								{selectUserFromGroup?.email ||
+									(!selectUserFromGroup?.isGroupChat &&
+										CHAT_UTILS?.getOtherSideProfileEmail(
+											loggedInUser,
+											selectUserFromGroup?.users
+										))}
 							</p>
-							<div
+							{/* <div
 								className='mt-5 items-center justify-center flex  cursor-pointer'
 								onClick={() => {
+									setSelectedChat(selectUserFromGroup);
 									hideActive();
-									setSelectedChat(selectUserFromGroup?._id);
 									onClose();
 								}}>
 								<p className='text-gray-700 hover:mr-1 font-medium ease-in-out duration-300'>
@@ -89,7 +92,7 @@ const BreezeProfile = ({ onClose }) => {
 										}}
 									/>
 								</div>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>

@@ -5,7 +5,6 @@ import { MdReportProblem } from "react-icons/md";
 import { FiEdit3, FiCheck } from "react-icons/fi";
 import { BsPlusLg } from "react-icons/bs";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import { useChatState } from "@Context/chatProvider";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeInputField from "@Components/breezeInputFields/breezeInputField.components.jsx";
@@ -35,8 +34,6 @@ const BreezeGroupProfile = ({
 		formState: { errors },
 	} = useForm({});
 
-	const { selectedChat, setSelectedChat } = useChatState();
-
 	const [isEditGroupName, setEditGroupName] = useState(false);
 	const [isEditGroupBio, setEditGroupBio] = useState(false);
 	const [addMembersModal, setAddMembersModal] = useState(false);
@@ -46,6 +43,8 @@ const BreezeGroupProfile = ({
 		clearUserFromGroup,
 		hideActive,
 		loggedInUser,
+		selectedChat,
+		setSelectedChat,
 		setSelectUserFromGroup,
 	} = useCombinedStore((state) => ({
 		selectUserFromGroup: state?.selectUserFromGroup,
@@ -53,6 +52,8 @@ const BreezeGroupProfile = ({
 		hideActive: state?.hideActive,
 		loggedInUser: state?.loggedInUser,
 		clearUserFromGroup: state?.clearUserFromGroup,
+		selectedChat: state?.selectedChat,
+		setSelectedChat: state?.setSelectedChat,
 	}));
 
 	const onFilterUserFromGroup = (item) => {

@@ -4,7 +4,6 @@ import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
 import BreezeTile from "@Components/breezeTile/breezeTile.components";
 import BreezeSearch from "@Components/breezeSearch/breezeSearch.components.jsx";
-import { useChatState } from "@Context/chatProvider";
 import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
 import BreezeSideDrawerBody from "@Components/breezeSidedrawer/breezeSidedrawerBody.components";
 import { HTTPStatusCode } from "@Constants/network";
@@ -19,7 +18,7 @@ import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
-import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
+// import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 
 const ChatScreen = () => {
@@ -27,19 +26,20 @@ const ChatScreen = () => {
 	const [isLoading, setLoading] = useState(false);
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
-	const { selectedChat, setSelectedChat } = useChatState();
 	const [socketConnection, setSocketConnection] = useState(false);
 	const {
 		setUserDetails,
+		clearUserFromGroup,
 		chatList,
 		clearChatList,
 		setChatList,
 		loggedInUser,
 		isActive,
-		// selectedChat,
-		// setSelectedChat,
+		selectedChat,
+		setSelectedChat,
 		hideProfile,
 	} = useCombinedStore((state) => ({
+		clearUserFromGroup: state?.clearUserFromGroup,
 		chatList: state?.chatList,
 		setChatList: state?.setChatList,
 		clearChatList: state?.clearChatList,
@@ -174,6 +174,7 @@ const ChatScreen = () => {
 													tileID={selectedChat?._id}
 													onClickHandler={() => {
 														hideProfile();
+														clearUserFromGroup();
 														setSelectedChat(item);
 														socket.emit("joinChat", item?._id);
 														socket.emit("leaveChat", selectedChat?._id);
@@ -229,21 +230,19 @@ const ChatScreen = () => {
 				</div>
 
 				{isSidebar && (
-					<SelectUserFromGroupProvider>
-						<BreezeSideDrawer
-							isOpen={isSidebar}
-							onClose={closeSideBar}
-							backgroundColor={"bg-white"}
-							position='right-0'
-							children={
-								<BreezeSideDrawerBody
-									onModalOpen={openGroupModal}
-									onClose={closeSideBar}
-									onModalClose={closeGroupModal}
-								/>
-							}
-						/>
-					</SelectUserFromGroupProvider>
+					<BreezeSideDrawer
+						isOpen={isSidebar}
+						onClose={closeSideBar}
+						backgroundColor={"bg-white"}
+						position='right-0'
+						children={
+							<BreezeSideDrawerBody
+								onModalOpen={openGroupModal}
+								onClose={closeSideBar}
+								onModalClose={closeGroupModal}
+							/>
+						}
+					/>
 				)}
 			</div>
 			<div className={`${isActive ? "w-51%" : "flex-1"}`}>
