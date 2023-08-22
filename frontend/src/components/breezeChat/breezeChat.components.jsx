@@ -24,7 +24,7 @@ const BreezeChat = ({
 			return (
 				<div className='flex justify-between items-center w-90% mx-auto gap-4'>
 					<div className='w-100%'>
-						<BreezeDivider borderColor={"border-gray-300"} isDashed={true} />
+						<BreezeDivider borderColor={"border-gray-200"} isDashed={true} />
 					</div>
 					<div
 						className='  text-sm font-medium mx-auto date-sticky  text-center    text-gray-500  p-2  top-3  z-10'
@@ -32,7 +32,7 @@ const BreezeChat = ({
 						{DATE_UTILS?.getDate(msg?.createdAt)}
 					</div>
 					<div className='w-100%'>
-						<BreezeDivider borderColor={"border-gray-300"} isDashed={true} />
+						<BreezeDivider borderColor={"border-gray-200"} isDashed={true} />
 					</div>
 				</div>
 			);
