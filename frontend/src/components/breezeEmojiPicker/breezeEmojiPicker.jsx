@@ -1,29 +1,51 @@
 import EmojiPicker from "emoji-picker-react";
-import { useEffect, useState } from "react";
 
-const BreezeEmojiPicker = ({ message, setMessage, theme, msgBoxRef }) => {
-	const [curorPosition, setCursorPosition] = useState(null);
-
-	const handleEmojiPicker = (emojiData, e) => {
+const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
+	const handleEmojiPicker = (emojiData) => {
+		// e?.preventDefault();
 		const { emoji } = emojiData;
-		const ref = msgBoxRef?.current;
-		ref.focus();
-		// const start = message?.substring(0, ref?.selectionStart);
-		// const end = message?.substring(ref?.selectionStart);
-		// const updatedText = start + emoji + end;
-		setMessage((prevInput) => prevInput + emoji);
-		// msgBoxRef.current.innerText = updatedText;
-		// setCursorPosition(start?.length + emoji?.length);
+
+		// Get the current selection
+		const selection = window.getSelection();
+
+		if (selection.rangeCount > 0) {
+			// Get the first range
+			const range = selection.getRangeAt(0);
+
+			// Create a new text node with the emoji
+			const emojiNode = document.createTextNode(emoji);
+
+			// Insert the emoji at the cursor position
+			range.deleteContents();
+			range.insertNode(emojiNode);
+
+			// Move the cursor after the inserted emoji
+			range.setStartAfter(emojiNode);
+			range.collapse(true);
+
+			// Clear the selection
+			selection.removeAllRanges();
+
+			// Set the updated range as the selection
+			selection.addRange(range);
+
+			// Focus on the content-editable div
+			msgBoxRef.current.focus();
+
+			// Trigger the input event to update React's state
+			const event = new Event("input", { bubbles: true });
+			msgBoxRef.current.dispatchEvent(event);
+		}
+		// Optionally, you can also update the message state if needed
+		setMessage(msgBoxRef.current.textContent);
 	};
 
-	useEffect(() => {
-		msgBoxRef.current.selectionEnd = curorPosition;
-	}, [curorPosition, msgBoxRef]);
 	return (
 		<div>
 			<EmojiPicker
+				lazyLoadEmojis={true}
+				searchDisabled={true}
 				width={"100%"}
-				theme={theme}
 				onEmojiClick={handleEmojiPicker}
 			/>
 		</div>
