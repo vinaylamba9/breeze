@@ -18,7 +18,6 @@ import { socket } from "@Socket/socket";
 import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
-// import SelectUserFromGroupProvider from "@Context/selectUserFromGroupProvider";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 
 const ChatScreen = () => {
@@ -95,6 +94,7 @@ const ChatScreen = () => {
 		socket.on("connected", (callback) => {
 			callback();
 		});
+
 		return () => {
 			socket.disconnect();
 		};
@@ -117,6 +117,7 @@ const ChatScreen = () => {
 		);
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
+
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
