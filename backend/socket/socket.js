@@ -24,8 +24,11 @@ const socketIOSetup = (socket, io) => {
 		roomHandler(socket, user, io);
 		messageHandler(socket, user, io);
 		typingHandler(socket, io);
-
+		socket.on("keepAlive", () => {
+			socketIOSetup(socket, io);
+		});
 		socket.on("leaveServer", () => {
+			console.log("loggedOUt");
 			socket.leave(user?.userId);
 			socket.disconnect();
 			delete socket.request.token;
