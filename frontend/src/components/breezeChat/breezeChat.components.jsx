@@ -13,10 +13,13 @@ const BreezeChat = ({
 	stickyDateRef,
 	newMessages,
 }) => {
-	const { loggedInUser, selectedChat } = useCombinedStore((state) => ({
-		loggedInUser: state?.loggedInUser,
-		selectedChat: state?.selectedChat,
-	}));
+	const { loggedInUser, selectedChat, notificationList, setNotification } =
+		useCombinedStore((state) => ({
+			loggedInUser: state?.loggedInUser,
+			notificationList: state?.notificationList,
+			setNotification: state?.setNotification,
+			selectedChat: state?.selectedChat,
+		}));
 
 	const msgDividerComponent = useCallback(
 		(msg) => {
@@ -78,14 +81,29 @@ const BreezeChat = ({
 		});
 	}, [setNewMessages, selectedChat]);
 
+	console.log(notificationList, "-notification");
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
-			selectedChat?._id === newMsgRecieved?.chat?._id &&
+			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
+			} else {
+				setNotification([...notificationList, newMsgRecieved]);
+				// setNewMessages([...newMessages, newMsgRecieved]);
+			}
+
+			// selectedChat?._id === newMsgRecieved?.chat?._id &&
+			// 	setNewMessages([...newMessages, newMsgRecieved]);
 		});
 
 		return () => socket.off("getMessage");
-	}, [newMessages, selectedChat, setNewMessages]);
+	}, [
+		newMessages,
+		notificationList,
+		prevChat,
+		selectedChat,
+		setNewMessages,
+		setNotification,
+	]);
 
 	return (
 		<>

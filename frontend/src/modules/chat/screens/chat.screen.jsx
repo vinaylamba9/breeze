@@ -90,12 +90,17 @@ const ChatScreen = () => {
 	useEffect(() => {
 		socket.connect();
 		socket.emit("joinSocket", loggedInUser?.userId);
-		socket.on("connected", () => setSocketConnection(true));
+
 		socket.on("connected", (callback) => {
 			callback();
+			setSocketConnection(true);
 		});
+		const keepAliveInterval = setInterval(() => {
+			socket.emit("keepAlive", { message: "Still alive" });
+		}, 30000);
 
 		return () => {
+			clearInterval(keepAliveInterval);
 			socket.disconnect();
 		};
 	}, [loggedInUser]);
