@@ -81,7 +81,7 @@ const BreezeChat = ({
 		});
 	}, [setNewMessages, selectedChat]);
 
-	console.log(notificationList, "-notification");
+	// console.log(notificationList, "-notification");
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
