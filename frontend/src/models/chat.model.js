@@ -6,7 +6,7 @@ export default class ChatModel {
 		this.profileImage = data?.profileImage;
 		this.lastTimeMsg = data?.lastTimeMsg;
 		this.isNotification = data?.isNotification;
-		this.notificationCount = data?.notificationCount;
+		this.unreadMessageCount = data?.unreadMessageCount;
 		this.isGrouped = data?.isGrouped;
 		this.isActive = data?.isActive;
 	}
@@ -20,7 +20,7 @@ export default class ChatModel {
 				profileImage: item?.profileImage,
 				lastTimeMsg: item?.lastTimeMsg,
 				isNotification: item?.isNotification,
-				notificationCount: item?.notificationCount,
+				unreadMessageCount: item?.unreadMessageCount,
 				isGrouped: item?.isGrouped,
 				isActive: item?.isActive,
 			};

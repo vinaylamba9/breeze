@@ -17,6 +17,7 @@ const BreezeTile = ({
 	styleClass,
 	isLastTimeActive,
 	email,
+	unreadMessageCount,
 }) => {
 	return (
 		<Fragment>
@@ -87,8 +88,8 @@ const BreezeTile = ({
 							</p>
 						)}
 						{isNotification && (
-							<p className='text-fontsize-small font-black text-text-color-purity text-center bg-color-notified rounded-full'>
-								1
+							<p className='text-fontsize-small font-bold text-text-color-purity py-1 px-2 bg-green-500 rounded-full'>
+								{unreadMessageCount}
 							</p>
 						)}
 					</div>

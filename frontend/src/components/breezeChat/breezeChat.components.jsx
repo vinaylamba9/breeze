@@ -80,11 +80,11 @@ const BreezeChat = ({
 			setNewMessages(roomMessage);
 		});
 	}, [setNewMessages, selectedChat]);
-
-	// console.log(notificationList, "-notification");
+	console.log(selectedChat, "-selectedChat");
+	console.log(notificationList, "-notification");
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
-			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
+			if (!selectedChat || selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			} else {
 				setNotification([...notificationList, newMsgRecieved]);

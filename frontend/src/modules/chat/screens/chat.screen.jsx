@@ -36,6 +36,7 @@ const ChatScreen = () => {
 		isActive,
 		selectedChat,
 		setSelectedChat,
+		notificationList,
 		hideProfile,
 	} = useCombinedStore((state) => ({
 		clearUserFromGroup: state?.clearUserFromGroup,
@@ -48,6 +49,7 @@ const ChatScreen = () => {
 		setUserDetails: state?.setUserDetails,
 		selectedChat: state?.selectedChat,
 		setSelectedChat: state?.setSelectedChat,
+		notificationList: state?.notificationList,
 	}));
 
 	const { register } = useForm({});
@@ -123,6 +125,15 @@ const ChatScreen = () => {
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
 
+	const unreadMessageCountHandler = useCallback(
+		(item) => {
+			const count = notificationList?.filter((notification) => {
+				return notification?.chat?._id === item?._id;
+			});
+			return count?.length;
+		},
+		[notificationList]
+	);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -217,7 +228,8 @@ const ChatScreen = () => {
 															? " py-5 bg-gray-100"
 															: "bg-transparent"
 													} w-95% mx-auto`}
-													isNotification={false}
+													isNotification={unreadMessageCountHandler(item) > 0}
+													unreadMessageCount={unreadMessageCountHandler(item)}
 												/>
 												<hr
 													style={{
