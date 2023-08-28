@@ -2,18 +2,14 @@ import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
 import useCombinedStore from "@/zustand/store/store";
 
-const BreezeScrollableFeed = ({
-	showEmojiPicker,
-	setEmojiPicker,
-	newMessages,
-	setNewMessages,
-}) => {
+const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 	const chatContainerRef = useRef(null);
 	const stickyMsgPillRef = useRef(null);
 	const timeoutRef = useRef(null);
 	const [showPill, setShowPill] = useState(false);
-	const { selectedChat } = useCombinedStore((state) => ({
+	const { selectedChat, newMessages } = useCombinedStore((state) => ({
 		selectedChat: state?.selectedChat,
+		newMessages: state?.newMessages,
 	}));
 	useEffect(() => {
 		scrollToRecent();
@@ -72,8 +68,6 @@ const BreezeScrollableFeed = ({
 				style={{ maxHeight: "100%" }}
 				ref={chatContainerRef}>
 				<BreezeChat
-					setNewMessages={setNewMessages}
-					newMessages={newMessages}
 					showPill={showPill}
 					stickyMsgPillRef={stickyMsgPillRef}
 					stickyDateRef={stickyDateRef}

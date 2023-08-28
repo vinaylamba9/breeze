@@ -6,6 +6,7 @@ import useLoggedInUser from "@Zustand/slice/useLoggedInUser";
 import useChat from "@Zustand/slice/useChatList";
 import useSelectedChat from "@Zustand/slice/useSelectedChat";
 import useNotification from "@Zustand/slice/useNotification";
+import useNewMessage from "@Zustand/slice/useNewMessage";
 
 const useCombinedStore = create((...set) => ({
 	...useToggleSidebarSlice(...set),
@@ -15,6 +16,7 @@ const useCombinedStore = create((...set) => ({
 	...useChat(...set),
 	...useSelectedChat(...set),
 	...useNotification(...set),
+	...useNewMessage(...set),
 }));
 
 export default useCombinedStore;

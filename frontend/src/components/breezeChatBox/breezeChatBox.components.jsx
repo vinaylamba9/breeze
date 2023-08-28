@@ -20,23 +20,11 @@ const BreezeChatBox = ({
 	const [showEmojiPicker, setEmojiPicker] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
-	const [newMessages, setNewMessages] = useState([]);
+
 	useEffect(() => {
 		socket.on("typing", () => setIsTyping(true));
 		socket.on("stopTyping", () => setIsTyping(false));
 	}, [setIsTyping]);
-	// useEffect(() => {
-	// 	socket.on("getMessage", (newMsgRecieved) => {
-	// 		if (!prevChat || prevChat?._id !== newMsgRecieved?.chat?._id) {
-	// 			// FOR NOTIFICATION
-	// 		} else {
-	// 			console.log("getMessage");
-	// 			setNewMessages([...newMessages, newMsgRecieved]);
-	// 		}
-	// 	});
-
-	// 	// return () => socket.off("getMessage");
-	// }, [newMessages, prevChat]);
 
 	return (
 		<>
@@ -55,16 +43,12 @@ const BreezeChatBox = ({
 					showEmojiPicker={showEmojiPicker}
 					prevChat={prevChat}
 					isTyping={isTyping}
-					setNewMessages={setNewMessages}
-					newMessages={newMessages}
 				/>
 				<BreezeMessageFields
 					setEmojiPicker={setEmojiPicker}
 					showEmojiPicker={showEmojiPicker}
 					prevChat={prevChat}
 					setIsTyping={setIsTyping}
-					setNewMessages={setNewMessages}
-					newMessages={newMessages}
 					typing={typing}
 					setTyping={setTyping}
 					setSocketConnection={setSocketConnection}

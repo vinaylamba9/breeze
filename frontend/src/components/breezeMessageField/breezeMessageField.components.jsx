@@ -17,11 +17,7 @@ const BreezeMessageFields = ({
 	setSocketConnection,
 	socketConnection,
 	typing,
-	fetchAgain,
-	setFetchAgain,
 	setTyping,
-	newMessages,
-	setNewMessages,
 	showEmojiPicker,
 	setEmojiPicker,
 }) => {
