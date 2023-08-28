@@ -5,20 +5,13 @@ import { DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import { socket } from "@Socket/socket";
-const BreezeChat = ({
-	prevChat,
-	showPill,
-	stickyMsgPillRef,
-	setNewMessages,
-	stickyDateRef,
-	newMessages,
-}) => {
-	const { loggedInUser, selectedChat, notificationList, setNotification } =
+const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
+	const { loggedInUser, selectedChat, setNewMessages, newMessages } =
 		useCombinedStore((state) => ({
 			loggedInUser: state?.loggedInUser,
-			notificationList: state?.notificationList,
-			setNotification: state?.setNotification,
 			selectedChat: state?.selectedChat,
+			setNewMessages: state?.setNewMessages,
+			newMessages: state?.newMessages,
 		}));
 
 	const msgDividerComponent = useCallback(
@@ -80,30 +73,28 @@ const BreezeChat = ({
 			setNewMessages(roomMessage);
 		});
 	}, [setNewMessages, selectedChat]);
-	console.log(selectedChat, "-selectedChat");
-	console.log(notificationList, "-notification");
-	useEffect(() => {
-		socket.on("getMessage", (newMsgRecieved) => {
-			if (!selectedChat || selectedChat?._id === newMsgRecieved?.chat?._id) {
-				setNewMessages([...newMessages, newMsgRecieved]);
-			} else {
-				setNotification([...notificationList, newMsgRecieved]);
-				// setNewMessages([...newMessages, newMsgRecieved]);
-			}
 
-			// selectedChat?._id === newMsgRecieved?.chat?._id &&
-			// 	setNewMessages([...newMessages, newMsgRecieved]);
-		});
+	// useEffect(() => {
+	// 	socket.on("getMessage", (newMsgRecieved) => {
+	// 		if (!selectedChat || selectedChat?._id === newMsgRecieved?.chat?._id) {
+	// 			setNewMessages([...newMessages, newMsgRecieved]);
+	// 		} else {
+	// 			setNotification([...notificationList, newMsgRecieved]);
+	// 			// setNewMessages([...newMessages, newMsgRecieved]);
+	// 		}
 
-		return () => socket.off("getMessage");
-	}, [
-		newMessages,
-		notificationList,
-		prevChat,
-		selectedChat,
-		setNewMessages,
-		setNotification,
-	]);
+	// 		// selectedChat?._id === newMsgRecieved?.chat?._id &&
+	// 		// 	setNewMessages([...newMessages, newMsgRecieved]);
+	// 	});
+
+	// 	return () => socket.off("getMessage");
+	// }, [
+	// 	newMessages,
+	// 	notificationList,
+	// 	selectedChat,
+	// 	setNewMessages,
+	// 	setNotification,
+	// ]);
 
 	return (
 		<>

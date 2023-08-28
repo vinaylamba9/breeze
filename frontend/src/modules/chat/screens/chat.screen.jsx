@@ -37,6 +37,9 @@ const ChatScreen = () => {
 		selectedChat,
 		setSelectedChat,
 		notificationList,
+		setNewMessages,
+		newMessages,
+		setNotification,
 		hideProfile,
 	} = useCombinedStore((state) => ({
 		clearUserFromGroup: state?.clearUserFromGroup,
@@ -50,6 +53,9 @@ const ChatScreen = () => {
 		selectedChat: state?.selectedChat,
 		setSelectedChat: state?.setSelectedChat,
 		notificationList: state?.notificationList,
+		setNotification: state?.setNotification,
+		setNewMessages: state?.setNewMessages,
+		newMessages: state?.newMessages,
 	}));
 
 	const { register } = useForm({});
@@ -134,6 +140,38 @@ const ChatScreen = () => {
 		},
 		[notificationList]
 	);
+
+	const clearNotificationByID = (item) => {
+		let i = 0;
+		while (i < notificationList.length) {
+			if (notificationList?.[i].chat?._id === item?._id) {
+				notificationList.splice(i, 1);
+			} else {
+				i++;
+			}
+		}
+	};
+
+	useEffect(() => {
+		socket.on("getMessage", (newMsgRecieved) => {
+			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
+				setNewMessages([...newMessages, newMsgRecieved]);
+			} else if (
+				!selectedChat ||
+				selectedChat?._id !== newMsgRecieved?.chat?._id
+			) {
+				setNotification([...notificationList, newMsgRecieved]);
+			}
+		});
+
+		return () => socket.off("getMessage");
+	}, [
+		newMessages,
+		notificationList,
+		selectedChat,
+		setNewMessages,
+		setNotification,
+	]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -190,6 +228,7 @@ const ChatScreen = () => {
 												<BreezeTile
 													tileID={selectedChat?._id}
 													onClickHandler={() => {
+														clearNotificationByID(item);
 														hideProfile();
 														clearUserFromGroup();
 														setSelectedChat(item);

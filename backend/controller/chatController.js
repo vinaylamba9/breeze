@@ -317,6 +317,52 @@ const chatController = {
 				.send({ message: responseMessage, data: responseData });
 		}
 	},
+	/**
+	 * @Function updateRecentMessage()
+	 * @param {*} req
+	 * @param {*} res
+	 * @returns Update Group Profile Image
+	 */
+	updateRecentMessage: async function (req, res) {
+		let responseStatusCode, responseMessage, responseData;
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				responseStatusCode = HTTPStatusCode.BAD_REQUEST;
+				responseData = errors;
+				responseMessage = HTTPStatusCode.BAD_REQUEST;
+			} else {
+				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
+					const unreadMessage = await CHAT_DB_UTILS.updateUnreadMessage(
+						req.body.chatID,
+						req.body.unreadMessageList
+					);
+
+					if (!unreadMessage) {
+						responseStatusCode = HTTPStatusCode.NOT_FOUND;
+						responseMessage = HTTPStatusCode.NOT_FOUND;
+						responseData = "CHAT NOT FOUND.";
+					} else {
+						responseStatusCode = HTTPStatusCode.OK;
+						responseMessage = HTTPStatusCode.OK;
+						responseData = unreadMessage;
+					}
+				} else {
+					responseStatusCode = HTTPStatusCode.NOT_FOUND;
+					responseMessage = HTTPStatusCode.NOT_FOUND;
+					responseData = "CHAT NOT FOUND.";
+				}
+			}
+		} catch (error) {
+			responseStatusCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+			responseData = error.toString();
+		} finally {
+			return res
+				.status(responseStatusCode)
+				.send({ message: responseMessage, data: responseData });
+		}
+	},
 
 	/**
 	 * @Function AddToGroup()

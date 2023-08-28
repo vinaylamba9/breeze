@@ -35,6 +35,12 @@ const chatModel = mongoose.Schema(
 			default: "Hey! Let's Breeze.",
 			trim: true,
 		},
+		unreadMessage: [
+			{
+				type: SchemaTypes.ObjectId,
+				ref: "User",
+			},
+		],
 	},
 	{
 		timestamps: true,
