@@ -140,4 +140,22 @@ export const ChatAPI = {
 			return errorDebug(error, "ChatAPI.updateGroupChatImage()");
 		}
 	},
+	updateUnreadMessage: async function (groupData) {
+		let httpCall = new BreezeHttpService();
+		httpCall.URL =
+			NetworkInfo.networkInfo +
+			APIType.CHAT +
+			MethodType.PUT +
+			ChatType.UPDATE_UNREAD_MESSAGE;
+		httpCall.setAuthRequired = true;
+		httpCall.setAuthToken = BreezeSessionManagement.getAPIKey();
+		httpCall.dataToSend = groupData;
+
+		try {
+			let response = await httpCall.sendPutRequest();
+			return response;
+		} catch (error) {
+			return errorDebug(error, "ChatAPI.updateUnreadMessage()");
+		}
+	},
 };

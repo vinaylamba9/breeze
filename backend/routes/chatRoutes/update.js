@@ -43,19 +43,20 @@ router.put(
 	chatController.updateGroupChatImage
 );
 router.put(
-	"/updateUnreadMessage",
+	"/unreadMessage",
 	[
 		userAuth.isLoggedIn,
-		// check("groupImage").notEmpty().withMessage("Group bio is required.").trim(),
 		check("chatID").notEmpty().withMessage("Chat ID is required."),
+		check("unreadMessageSenderID")
+			.notEmpty()
+			.withMessage("sender ID is required."),
 	],
-	chatController.updateGroupChatImage
+	chatController.updateUnreadMessage
 );
 router.put(
 	"/addToGroup",
 	[
 		userAuth.isLoggedIn,
-
 		check("chatID").notEmpty().withMessage("Chat ID is required."),
 		check("userID").notEmpty().withMessage("User ID is required."),
 	],

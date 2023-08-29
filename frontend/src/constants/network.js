@@ -36,6 +36,7 @@ export class ChatType {
 	static ADD_MULTIPLE_USERS_TO_GROUP = "/addMultipleToGroup";
 	static REMOVE_FROM_GROUP = "/removeFromGroup";
 	static UPDATE_GROUP_CHAT_IMAGE = "/updateGroupChatImage";
+	static UPDATE_UNREAD_MESSAGE = "/unreadMessage";
 }
 
 export class MessageType {

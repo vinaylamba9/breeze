@@ -8,7 +8,7 @@ const socketIOSetup = (socket, io) => {
 
 	if (user) {
 		console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
-
+		console.log(user?.userId);
 		// User joins or open the application
 		socket.on("joinSocket", (loggedInUser) => {
 			socket.join(user?.userId);

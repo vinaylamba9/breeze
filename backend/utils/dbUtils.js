@@ -223,8 +223,13 @@ const CHAT_DB_UTILS = {
 	},
 	updateUnreadMessage: async function (chatID, unreadMessage) {
 		try {
+			console.log(chatID, "-chatModel", unreadMessage);
 			let dbResponse = await chatModel
-				.findByIdAndUpdate(chatID, { unreadMessage }, { new: true })
+				.findByIdAndUpdate(
+					chatID,
+					{ $push: { unreadMessage: unreadMessage } },
+					{ new: true }
+				)
 				.populate(
 					"users",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
@@ -241,7 +246,7 @@ const CHAT_DB_UTILS = {
 	updateGroupImage: async function (chatID, groupImage) {
 		try {
 			let dbResponse = await chatModel
-				.findByIdAndUpdate(chatID, { groupImage }, { new: true })
+				.findByIdAndUpdate({ _id: chatId }, { groupImage }, { new: true })
 				.populate(
 					"users",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"

@@ -103,13 +103,11 @@ const ChatScreen = () => {
 			callback();
 			setSocketConnection(true);
 		});
-		const keepAliveInterval = setInterval(() => {
-			socket.emit("keepAlive", { message: "Still alive" });
-		}, 30000);
 
 		return () => {
-			clearInterval(keepAliveInterval);
 			socket.disconnect();
+			socket.off("joinSocket");
+			socket.off("connected");
 		};
 	}, [loggedInUser]);
 
@@ -117,13 +115,27 @@ const ChatScreen = () => {
 		socket.on("fetchChats", (chatByID) => {
 			setChatList(chatByID);
 		});
+
+		return () => socket.off("fetchChats");
 	}, [setChatList]);
 	useEffect(() => {
 		socket.on("recentChatList", (chatByID) => {
 			setChatList(chatByID);
 		});
+
+		return () => socket.off("recentChatList");
 	}, [setChatList]);
 
+	const unreadMessageAPIHandler = useCallback(async (chatID, senderID) => {
+		const response = await ChatDAO.updateUnreadMessageDAO({
+			chatID: chatID,
+			unreadMessageSenderID: senderID,
+		});
+
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			// setNotification(response?.responseBody?.unreadMessage);
+		}
+	}, []);
 	useEffect(() => {
 		const activeChat = chatList?.filter(
 			(item) => item?._id === selectedChat?._id
@@ -131,6 +143,7 @@ const ChatScreen = () => {
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
 
+	console.log(notificationList, "-notificationList");
 	const unreadMessageCountHandler = useCallback(
 		(item) => {
 			const count = notificationList?.filter((notification) => {
@@ -142,25 +155,22 @@ const ChatScreen = () => {
 	);
 
 	const clearNotificationByID = (item) => {
-		let i = 0;
-		while (i < notificationList.length) {
-			if (notificationList?.[i].chat?._id === item?._id) {
-				notificationList.splice(i, 1);
-			} else {
-				i++;
-			}
-		}
+		const clearNotification = notificationList?.filter(
+			(notification) => notification?.chat?._id !== item?._id
+		);
+		setNotification(clearNotification);
 	};
 
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
-			} else if (
-				!selectedChat ||
-				selectedChat?._id !== newMsgRecieved?.chat?._id
-			) {
+			} else {
 				setNotification([...notificationList, newMsgRecieved]);
+				unreadMessageAPIHandler(
+					newMsgRecieved?.chat?._id,
+					newMsgRecieved?.sender?._id
+				);
 			}
 		});
 
@@ -171,6 +181,7 @@ const ChatScreen = () => {
 		selectedChat,
 		setNewMessages,
 		setNotification,
+		unreadMessageAPIHandler,
 	]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
