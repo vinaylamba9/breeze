@@ -7,6 +7,7 @@ const messageHandler = (socket, user, io) => {
 				content: obj?.content,
 				chat: obj?.chatID,
 			});
+
 			const chat = response?.chat;
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);

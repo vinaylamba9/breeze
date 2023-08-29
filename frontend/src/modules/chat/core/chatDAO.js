@@ -179,6 +179,34 @@ export const ChatDAO = {
 			return errorDebug(error, "ChatDAO.updateGroupChatImageDAO()");
 		}
 	},
+	updateUnreadMessageDAO: async function (groupChatDetails) {
+		try {
+			const response = await ChatAPI.updateUnreadMessage(groupChatDetails);
+			if (response) {
+				const statusCode = response["statusCode"];
+				if (statusCode === HTTPStatusCode.OK) {
+					const tempResult = response.responseBody?.data;
+					return {
+						statusCode: statusCode,
+						responseBody: tempResult,
+					};
+				} else if (statusCode === HTTPStatusCode.NOT_FOUND) {
+					return response;
+				} else if (
+					statusCode === HTTPStatusCode.BAD_REQUEST ||
+					statusCode === HTTPStatusCode.INTERNAL_SERVER_ERROR
+				)
+					return response;
+				else if (statusCode === HTTPStatusCode.UNAUTHORIZED) {
+					let deletedResponse = BreezeSessionManagement.deleteAllSession();
+					if (deletedResponse) window.location.replace(BreezeRoutes.LOGINROUTE);
+				}
+				return statusCode;
+			}
+		} catch (error) {
+			return errorDebug(error, "ChatDAO.updateUnreadMessageDAO()");
+		}
+	},
 	addMultipleUsersToGroupDAO: async function (groupChatDetails) {
 		try {
 			const response = await ChatAPI.addMultipleUsersToGroup(groupChatDetails);

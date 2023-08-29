@@ -323,7 +323,7 @@ const chatController = {
 	 * @param {*} res
 	 * @returns Update Group Profile Image
 	 */
-	updateRecentMessage: async function (req, res) {
+	updateUnreadMessage: async function (req, res) {
 		let responseStatusCode, responseMessage, responseData;
 		try {
 			const errors = validationResult(req);
@@ -333,9 +333,10 @@ const chatController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
+					console.log();
 					const unreadMessage = await CHAT_DB_UTILS.updateUnreadMessage(
 						req.body.chatID,
-						req.body.unreadMessageList
+						req.body.unreadMessageSenderID
 					);
 
 					if (!unreadMessage) {

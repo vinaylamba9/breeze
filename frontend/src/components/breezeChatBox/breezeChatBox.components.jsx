@@ -10,8 +10,6 @@ const BreezeChatBox = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
 	setFetchAgain,
-	setSocketConnection,
-	socketConnection,
 }) => {
 	const { selectedChat } = useCombinedStore((state) => ({
 		selectedChat: state?.selectedChat,
@@ -24,6 +22,11 @@ const BreezeChatBox = ({
 	useEffect(() => {
 		socket.on("typing", () => setIsTyping(true));
 		socket.on("stopTyping", () => setIsTyping(false));
+
+		return () => {
+			socket.off("typing");
+			socket.off("stopTyping");
+		};
 	}, [setIsTyping]);
 
 	return (
@@ -51,14 +54,9 @@ const BreezeChatBox = ({
 					setIsTyping={setIsTyping}
 					typing={typing}
 					setTyping={setTyping}
-					setSocketConnection={setSocketConnection}
-					socketConnection={socketConnection}
 					fetchAgain={fetchAgain}
 					setFetchAgain={setFetchAgain}
 				/>
-				{/* <div style={{ width: "71.2%" }} className='absolute bottom-0 flex-1 '>
-					
-				</div> */}
 			</div>
 		</>
 	);

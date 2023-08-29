@@ -14,8 +14,6 @@ import BreezeEmojiPicker from "@Components/breezeEmojiPicker/breezeEmojiPicker";
 
 const BreezeMessageFields = ({
 	prevChat,
-	setSocketConnection,
-	socketConnection,
 	typing,
 	setTyping,
 	showEmojiPicker,
@@ -68,6 +66,8 @@ const BreezeMessageFields = ({
 					chatID: selectedChat?._id,
 				});
 			} else typingIndicatorHandler(e);
+
+			// return () => socket.off("sendMessage");
 		},
 		[message, selectedChat?._id, typingIndicatorHandler]
 	);
@@ -80,6 +80,11 @@ const BreezeMessageFields = ({
 	useEffect(() => {
 		msgBoxRef.current.focus();
 	}, [msgBoxRef, selectedChat]);
+
+	useEffect(() => {
+		return () => socket.off("sendMessage");
+	}, []);
+
 	return (
 		<>
 			{showEmojiPicker && (
