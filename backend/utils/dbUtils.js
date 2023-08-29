@@ -223,11 +223,10 @@ const CHAT_DB_UTILS = {
 	},
 	updateUnreadMessage: async function (chatID, unreadMessage) {
 		try {
-			console.log(chatID, "-chatModel", unreadMessage);
 			let dbResponse = await chatModel
 				.findByIdAndUpdate(
 					chatID,
-					{ $push: { unreadMessage: unreadMessage } },
+					{ unreadMessage: unreadMessage },
 					{ new: true }
 				)
 				.populate(

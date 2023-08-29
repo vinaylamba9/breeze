@@ -80,12 +80,12 @@ const ChatScreen = () => {
 
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
-		const response = await ChatDAO.fetchChatDAO(loggedInUser?._id);
+		const response = await ChatDAO.fetchChatDAO(loggedInUser?.userId);
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setChatList(response?.responseBody);
 		} else clearChatList();
 		setLoading(false);
-	}, [clearChatList, loggedInUser?._id, setChatList]);
+	}, [clearChatList, loggedInUser?.userId, setChatList]);
 
 	useEffect(() => {
 		onFetchChatHandler();
@@ -98,7 +98,6 @@ const ChatScreen = () => {
 	useEffect(() => {
 		socket.connect();
 		socket.emit("joinSocket", loggedInUser?.userId);
-
 		socket.on("connected", (callback) => {
 			callback();
 			setSocketConnection(true);
@@ -131,11 +130,8 @@ const ChatScreen = () => {
 			chatID: chatID,
 			unreadMessageSenderID: senderID,
 		});
-
-		if (response?.statusCode === HTTPStatusCode.OK) {
-			// setNotification(response?.responseBody?.unreadMessage);
-		}
 	}, []);
+
 	useEffect(() => {
 		const activeChat = chatList?.filter(
 			(item) => item?._id === selectedChat?._id
@@ -143,39 +139,49 @@ const ChatScreen = () => {
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
 
-	console.log(notificationList, "-notificationList");
 	const unreadMessageCountHandler = useCallback(
 		(item) => {
-			const count = notificationList?.filter((notification) => {
-				return notification?.chat?._id === item?._id;
+			const count = item?.unreadMessage?.filter((msg) => {
+				return msg === loggedInUser?.userId;
 			});
+
 			return count?.length;
 		},
-		[notificationList]
+		[loggedInUser]
 	);
 
 	const clearNotificationByID = (item) => {
-		const clearNotification = notificationList?.filter(
-			(notification) => notification?.chat?._id !== item?._id
-		);
+		const clearNotification = item?.unreadMessage?.filter((msg) => {
+			return msg !== loggedInUser?.userId;
+		});
 		setNotification(clearNotification);
+		unreadMessageAPIHandler(item?._id, clearNotification);
 	};
+
+	const msgReceiverListHandler = useCallback(
+		(newMsgRecieved) =>
+			newMsgRecieved?.chat?.users?.filter(
+				(user) => user?._id !== newMsgRecieved?.sender?._id
+			),
+		[]
+	);
 
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			} else {
-				setNotification([...notificationList, newMsgRecieved]);
+				// setNotification([...notificationList, newMsgRecieved]);
 				unreadMessageAPIHandler(
 					newMsgRecieved?.chat?._id,
-					newMsgRecieved?.sender?._id
+					msgReceiverListHandler(newMsgRecieved)
 				);
 			}
 		});
 
 		return () => socket.off("getMessage");
 	}, [
+		msgReceiverListHandler,
 		newMessages,
 		notificationList,
 		selectedChat,
