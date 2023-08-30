@@ -333,7 +333,6 @@ const chatController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
-					console.log();
 					const unreadMessage = await CHAT_DB_UTILS.updateUnreadMessage(
 						req.body.chatID,
 						req.body.unreadMessageSenderID
