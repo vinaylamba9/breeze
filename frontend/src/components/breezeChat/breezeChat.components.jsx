@@ -5,6 +5,7 @@ import { DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import { socket } from "@Socket/socket";
+
 const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 	const { loggedInUser, selectedChat, setNewMessages, newMessages } =
 		useCombinedStore((state) => ({
@@ -52,49 +53,11 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 		[newMessages, loggedInUser?.userId]
 	);
 
-	// const getMessageByChatIDHandler = useCallback(async () => {
-	// 	if (!selectedChat) return;
-	// 	const response = await MessageDAO.getMessageByChatID({
-	// 		chatID: selectedChat?._id,
-	// 	});
-
-	// 	if (response?.statusCode === HTTPStatusCode.OK) {
-	// 		setNewMessages(response?.responseBody);
-	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, []);
-
-	// useEffect(() => {
-	// 	getMessageByChatIDHandler();
-	// }, [getMessageByChatIDHandler]);
-
 	useEffect(() => {
 		socket.on("roomMessage", (roomMessage) => {
 			setNewMessages(roomMessage);
 		});
-	}, [setNewMessages, selectedChat]);
-
-	// useEffect(() => {
-	// 	socket.on("getMessage", (newMsgRecieved) => {
-	// 		if (!selectedChat || selectedChat?._id === newMsgRecieved?.chat?._id) {
-	// 			setNewMessages([...newMessages, newMsgRecieved]);
-	// 		} else {
-	// 			setNotification([...notificationList, newMsgRecieved]);
-	// 			// setNewMessages([...newMessages, newMsgRecieved]);
-	// 		}
-
-	// 		// selectedChat?._id === newMsgRecieved?.chat?._id &&
-	// 		// 	setNewMessages([...newMessages, newMsgRecieved]);
-	// 	});
-
-	// 	return () => socket.off("getMessage");
-	// }, [
-	// 	newMessages,
-	// 	notificationList,
-	// 	selectedChat,
-	// 	setNewMessages,
-	// 	setNotification,
-	// ]);
+	}, [setNewMessages]);
 
 	return (
 		<>

@@ -12,14 +12,23 @@ import BreezeRoutes from "@Constants/routes";
 import { useNavigate } from "react-router-dom";
 import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
+import { ARRAY_METHODS } from "@Shared/utils/basic.utils";
 const BreezeSidebar = () => {
-	const { clearLoggedInUser, loggedInUser, showActive, showProfile } =
-		useCombinedStore((state) => ({
-			loggedInUser: state?.loggedInUser,
-			showActive: state?.showActive,
-			showProfile: state?.showProfile,
-			clearLoggedInUser: state?.clearLoggedInUser,
-		}));
+	const {
+		clearLoggedInUser,
+		loggedInUser,
+		showActive,
+		showProfile,
+		onlineUsers,
+		setOnlineUsers,
+	} = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+		showActive: state?.showActive,
+		showProfile: state?.showProfile,
+		clearLoggedInUser: state?.clearLoggedInUser,
+		onlineUsers: state?.onlineUsers,
+		setOnlineUsers: state?.setOnlineUsers,
+	}));
 	const navigate = useNavigate();
 	const onLogoutHandler = useCallback(() => {
 		clearLoggedInUser();
@@ -130,7 +139,10 @@ const BreezeSidebar = () => {
 						<BreezeAvatar
 							profileImage={loggedInUser?.profileImage}
 							isGrouped={false}
-							isActive={true}
+							isActive={ARRAY_METHODS.isElementExist(
+								onlineUsers,
+								loggedInUser?.userId
+							)}
 							title={loggedInUser?.name}
 						/>
 					</div>

@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"start:dev": "env-cmd -f .env.development node server.js",
-		"start:prod": "env-cmd -f .env.production node server.js",
+		"start:dev": "env-cmd -f .env.development nodemon server.js",
+		"start:prod": "env-cmd -f .env.production nodemon server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
