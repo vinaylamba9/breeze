@@ -13,15 +13,16 @@ import { useChatState } from "@Context/chatProvider";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import _ from "lodash";
 import useCombinedStore from "@Zustand/store/store";
+import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const { userList, setUserList } = useChatState();
-	const { chatList, setSelectedChat, setChatList } = useCombinedStore(
-		(state) => ({
+	const { chatList, setSelectedChat, setChatList, onlineUsers } =
+		useCombinedStore((state) => ({
 			chatList: state?.chatList,
+			onlineUsers: state?.onlineUsers,
 			setSelectedChat: state?.setSelectedChat,
 			setChatList: state?.setChatList,
-		})
-	);
+		}));
 	const [isLoading, setLoading] = useState(false);
 	const { register } = useForm({});
 
@@ -150,7 +151,10 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 											title={item?.name}
 											imgBackgroundColor={item?.imgBackgroundColor}
 											msg={item?.msg}
-											isActive={true}
+											isActive={ARRAY_METHODS.isElementExist(
+												onlineUsers,
+												item?._id
+											)}
 											isGrouped={item?.isGrouped}
 											profileImage={item?.profileImage}
 											isNotification={item?.isNotification}

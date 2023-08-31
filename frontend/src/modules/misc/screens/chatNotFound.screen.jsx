@@ -14,7 +14,7 @@ const ChatNotFound = ({ isLoading }) => {
 					/>
 					<span>
 						<p className='text-fontsize-brittle	 font-medium text-gray-600'>
-							Seamless Chats, Boundless Connections
+							Seamless Chat, Boundless Connection
 						</p>
 					</span>
 				</div>

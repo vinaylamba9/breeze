@@ -1,4 +1,3 @@
-import { MessageDAO } from "@Modules/chat/core/messageDAO";
 import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -7,7 +6,6 @@ import {
 	MdOutlineAttachFile,
 } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
-import { HTTPStatusCode } from "@Constants/network";
 import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeEmojiPicker from "@Components/breezeEmojiPicker/breezeEmojiPicker";

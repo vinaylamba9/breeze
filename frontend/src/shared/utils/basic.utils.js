@@ -48,3 +48,9 @@ export const DATE_UTILS = {
 		":" +
 		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getMinutes()),
 };
+
+export const ARRAY_METHODS = {
+	isElementExist: (array, ele) => {
+		return array?.some((item) => item?.user?.userId === ele);
+	},
+};

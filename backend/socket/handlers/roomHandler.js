@@ -6,6 +6,7 @@ const roomHandler = (socket, user, io) => {
 		const messageByChatIDResponse = await MESSAGE_DB_UTILS.findMessageByChatID(
 			chatID
 		);
+
 		io.to(user?.userId).emit("roomMessage", messageByChatIDResponse);
 	});
 	socket.on("leaveChat", (room) => {

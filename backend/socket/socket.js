@@ -15,9 +15,8 @@ const socketIOSetup = (socket, io) => {
 			socket.join(loggedInUserID);
 
 			//add users to online Users
-			if (!onlineUsers?.some((u) => u?.user?.userId === loggedInUserID?.userId))
-				onlineUsers = [...onlineUsers, { user: user, socketID: socket.id }];
-
+			if (!onlineUsers?.some((u) => u?.user?.userId === loggedInUserID))
+				onlineUsers?.push({ user: user, socketID: socket.id });
 			io.emit("onlineUsers", onlineUsers);
 		});
 
@@ -40,7 +39,6 @@ const socketIOSetup = (socket, io) => {
 		typingHandler(socket, io);
 
 		socket.on("leaveServer", () => {
-			console.log("loggedOUt");
 			socket.leave(user?.userId);
 			socket.disconnect();
 			delete socket.request.token;

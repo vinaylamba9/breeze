@@ -98,7 +98,6 @@ const io = new Server(server, {
 });
 io.use((socket, next) => {
 	userAuth.isLoggedInSocket(socket, next);
-	next();
 });
 
 io.on("connection", (socket) => {

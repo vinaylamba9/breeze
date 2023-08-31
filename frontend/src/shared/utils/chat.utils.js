@@ -1,4 +1,8 @@
 export const CHAT_UTILS = {
+	getOtherSideUserID: (loggedInUser, users) =>
+		users?.[0]?._id === loggedInUser?.userId
+			? users?.[1]?._id
+			: users?.[0]?._id,
 	getOtherSideUserName: (loggedInUser, users) =>
 		users?.[0]?._id === loggedInUser?.userId
 			? users?.[1]?.name

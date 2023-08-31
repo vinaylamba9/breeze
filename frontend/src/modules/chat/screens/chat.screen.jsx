@@ -15,10 +15,11 @@ import BreezeGroupChat from "@Components/breezeGroupChat/breezeGroupChat.compone
 import { ChatDAO } from "../core/chatDAO";
 import BreezeChatBox from "@Components/breezeChatBox/breezeChatBox.components";
 import { socket } from "@Socket/socket";
-import BreezeDivider from "@/components/breezeDivider/breezeDivider.components";
+import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
+import { ARRAY_METHODS } from "@Shared/utils/basic.utils";
 
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -41,6 +42,8 @@ const ChatScreen = () => {
 		newMessages,
 		setNotification,
 		hideProfile,
+		onlineUsers,
+		setOnlineUsers,
 	} = useCombinedStore((state) => ({
 		clearUserFromGroup: state?.clearUserFromGroup,
 		chatList: state?.chatList,
@@ -56,6 +59,8 @@ const ChatScreen = () => {
 		setNotification: state?.setNotification,
 		setNewMessages: state?.setNewMessages,
 		newMessages: state?.newMessages,
+		onlineUsers: state?.onlineUsers,
+		setOnlineUsers: state?.setOnlineUsers,
 	}));
 
 	const { register } = useForm({});
@@ -80,12 +85,12 @@ const ChatScreen = () => {
 
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
-		const response = await ChatDAO.fetchChatDAO(loggedInUser);
+		const response = await ChatDAO.fetchChatDAO(loggedInUser?.userId);
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setChatList(response?.responseBody);
 		} else clearChatList();
 		setLoading(false);
-	}, [clearChatList, loggedInUser, setChatList]);
+	}, [clearChatList, loggedInUser?.userId, setChatList]);
 
 	useEffect(() => {
 		onFetchChatHandler();
@@ -97,29 +102,30 @@ const ChatScreen = () => {
 	}, [setUserDetails]);
 	useEffect(() => {
 		socket.connect();
-		socket.emit("joinSocket", loggedInUser);
+		socket.emit("joinSocket", loggedInUser?.userId);
 		socket.on("connected", (callback) => {
 			callback();
 			setSocketConnection(true);
+		});
+		socket.on("onlineUsers", (users) => {
+			setOnlineUsers([...users]);
 		});
 
 		return () => {
 			socket.disconnect();
 			socket.off("joinSocket");
 			socket.off("connected");
+			socket.off("onlineUsers");
 		};
-	}, [loggedInUser]);
+	}, [loggedInUser, loggedInUser?.userId, setOnlineUsers]);
 
-	useEffect(() => {
-		socket.on("onlineUsers", (users) => console.log(users, "-online"));
-	}, []);
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
 			setChatList(chatByID);
 		});
-
 		return () => socket.off("fetchChats");
 	}, [setChatList]);
+
 	useEffect(() => {
 		socket.on("recentChatList", (chatByID) => {
 			setChatList(chatByID);
@@ -272,7 +278,13 @@ const ChatScreen = () => {
 															  "..."
 															: item?.recentMessage?.content
 													}
-													isActive={true}
+													isActive={ARRAY_METHODS.isElementExist(
+														onlineUsers,
+														CHAT_UTILS.getOtherSideUserID(
+															loggedInUser,
+															item?.users
+														)
+													)}
 													isGrouped={item?.isGroupChat}
 													profileImage={
 														item?.isGroupChat
