@@ -4,6 +4,7 @@ import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.comp
 import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import useCombinedStore from "@Zustand/store/store";
+import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
 const BreezeMessageHeader = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
@@ -11,13 +12,13 @@ const BreezeMessageHeader = ({
 	setFetchAgain,
 	isTyping,
 }) => {
-	const { showActive, loggedInUser, selectedChat } = useCombinedStore(
-		(state) => ({
+	const { showActive, onlineUsers, loggedInUser, selectedChat } =
+		useCombinedStore((state) => ({
 			showActive: state?.showActive,
 			loggedInUser: state?.loggedInUser,
 			selectedChat: state?.selectedChat,
-		})
-	);
+			onlineUsers: state?.onlineUsers,
+		}));
 
 	return (
 		<>
@@ -35,7 +36,10 @@ const BreezeMessageHeader = ({
 											selectedChat?.users
 									  )
 							}
-							isActive={true}
+							isActive={ARRAY_METHODS.isElementExist(
+								onlineUsers,
+								CHAT_UTILS.getOtherSideUserID(loggedInUser, selectedChat?.users)
+							)}
 							isGrouped={selectedChat?.isGroupChat}
 							profileImage={
 								selectedChat?.isGroupChat
@@ -56,37 +60,35 @@ const BreezeMessageHeader = ({
 											selectedChat?.users
 									  )}
 							</h1>
-							{isTyping && (
-								<span className='transition ease-in-out duration-300  text-green-500 text-sm'>
-									Typing ...
-								</span>
-							)}
+							<span>
+								{!selectedChat?.isGroupChat ? (
+									ARRAY_METHODS.isElementExist(
+										onlineUsers,
+										CHAT_UTILS.getOtherSideUserID(
+											loggedInUser,
+											selectedChat?.users
+										)
+									) ? (
+										<span className='  px-2 py-0.5 bg-green-500 rounded-xl font-medium text-white text-xs	'>
+											Online
+										</span>
+									) : (
+										<span className='  px-2 py-0.5 bg-gray-500 rounded-xl font-medium text-white text-xs	'>
+											Offline
+										</span>
+									)
+								) : null}
+
+								{isTyping && (
+									<span className='transition ease-in-out duration-300  text-green-500 text-sm'>
+										Typing ...
+									</span>
+								)}
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			{/* {isSelectedChatProfile && (
-				<SelectUserFromGroupProvider>
-					<BreezeSideDrawer
-						backgroundColor='bg-color-slate'
-						isOpen={isSelectedChatProfile}
-						onClose={() => setSelectedChatProfile(false)}
-						children={
-							selectedChat?.isGroupChat ? (
-								<BreezeGroupProfile
-									onClose={() => setSelectedChatProfile(false)}
-									setSelectedChatProfile={setSelectedChatProfile}
-									fetchAgain={fetchAgain}
-									setFetchAgain={setFetchAgain}
-								/>
-							) : (
-								<BreezeProfile onClose={() => setSelectedChatProfile(false)} />
-							)
-						}
-						position='right-0'
-					/>
-				</SelectUserFromGroupProvider>
-			)} */}
 		</>
 	);
 };

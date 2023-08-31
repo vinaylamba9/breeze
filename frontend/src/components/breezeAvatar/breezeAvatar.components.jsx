@@ -62,11 +62,13 @@ const BreezeAvatar = ({
 						initials
 					)}
 				</div>
-				{!isGrouped && isActive ? (
-					<span className='bottom-0 right-0 absolute  w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
-				) : (
-					<span className='bottom-0 right-0 absolute  w-3 h-3 bg-gray-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
-				)}
+				{!isGrouped ? (
+					isActive ? (
+						<span className='bottom-0 right-0 absolute  w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
+					) : (
+						<span className='bottom-0 right-0 absolute  w-3 h-3 bg-gray-400 border-2 border-white dark:border-gray-800 rounded-2xl'></span>
+					)
+				) : null}
 			</>
 		</div>
 	);

@@ -8,7 +8,7 @@ module.exports = (_, argv) => ({
 	output: {
 		publicPath: process.env.REACT_SIDE_ENDPOINT,
 	},
-
+	mode: "development",
 	resolve: {
 		extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
 		alias: {
@@ -32,6 +32,8 @@ module.exports = (_, argv) => ({
 	devServer: {
 		port: 3000,
 		historyApiFallback: true,
+		hot: true,
+		compress: true,
 	},
 
 	module: {
