@@ -6,13 +6,11 @@ const URL = process.env.BREEZE_BACKEND_URL;
 export const socket = io(URL, {
 	autoConnect: true,
 	forceBase64: true,
-	// query: {
-	// 	token: BreezeSessionManagement.getAPIKey(),
-	// },
+
 	extraHeaders: {
 		Authorization: BreezeSessionManagement.getAPIKey(),
 	},
-	forceNew: true,
+	// forceNew: true,
 	reconnection: true,
 	reconnectionAttempts: Infinity,
 });
