@@ -16,13 +16,19 @@ import useCombinedStore from "@Zustand/store/store";
 import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const { userList, setUserList } = useChatState();
-	const { chatList, setSelectedChat, setChatList, onlineUsers } =
-		useCombinedStore((state) => ({
-			chatList: state?.chatList,
-			onlineUsers: state?.onlineUsers,
-			setSelectedChat: state?.setSelectedChat,
-			setChatList: state?.setChatList,
-		}));
+	const {
+		chatList,
+		setSelectedChat,
+		setChatList,
+		setNewMessages,
+		onlineUsers,
+	} = useCombinedStore((state) => ({
+		chatList: state?.chatList,
+		onlineUsers: state?.onlineUsers,
+		setSelectedChat: state?.setSelectedChat,
+		setChatList: state?.setChatList,
+		setNewMessages: state?.setNewMessages,
+	}));
 	const [isLoading, setLoading] = useState(false);
 	const { register } = useForm({});
 
@@ -43,14 +49,17 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 			const response = await ChatDAO.createChatDAO({ userID: id });
 			if (response?.statusCode === HTTPStatusCode.OK) {
 				const data = response?.responseBody;
-				if (!chatList.find((c) => c._id === data._id))
+				if (!chatList.find((c) => c._id === data._id)) {
 					setChatList([data, ...chatList]);
+					setNewMessages([]);
+				}
 				setSelectedChat(data);
+
 				setLoading(false);
 				onClose();
 			}
 		},
-		[chatList, onClose, setChatList, setSelectedChat]
+		[chatList, onClose, setChatList, setNewMessages, setSelectedChat]
 	);
 
 	useEffect(() => {

@@ -20,7 +20,6 @@ export const MessagesAPI = {
 		httpCall.dataToSend = messageDetails;
 		try {
 			let response = await httpCall.sendPostRequest();
-			console.log(response, "-respoms");
 			return response;
 		} catch (error) {
 			return errorDebug(error, "MessagesAPI.createMessage()");

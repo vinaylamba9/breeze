@@ -102,7 +102,6 @@ const ChatScreen = () => {
 	}, [setUserDetails]);
 	useEffect(() => {
 		socket.connect();
-		socket.emit("joinSocket", loggedInUser?.userId);
 		socket.on("connected", (callback) => {
 			callback();
 			setSocketConnection(true);
@@ -110,14 +109,9 @@ const ChatScreen = () => {
 		socket.on("onlineUsers", (users) => {
 			setOnlineUsers([...users]);
 		});
-		socket.on("connect_error", (error) => {
-			console.error("Connection error:", error.message);
-			// Perform error handling or display a message to the user
-			// ...
-		});
+
 		return () => {
 			socket.disconnect();
-			socket.off("joinSocket");
 			socket.off("connected");
 			socket.off("onlineUsers");
 		};

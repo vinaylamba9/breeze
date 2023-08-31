@@ -32,8 +32,6 @@ module.exports = (_, argv) => ({
 	devServer: {
 		port: 3000,
 		historyApiFallback: true,
-		hot: true,
-		compress: true,
 	},
 
 	module: {

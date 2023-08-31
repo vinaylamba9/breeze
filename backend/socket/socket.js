@@ -11,26 +11,15 @@ const socketIOSetup = (socket, io) => {
 		console.info("\t 🏃‍♂️  SOCKET STATUS :: CONNECTED [✔️]".green);
 
 		// User joins or open the application
-		socket.on("joinSocket", (loggedInUserID) => {
-			socket.join(loggedInUserID);
+		socket.emit("connected", async () => {
+			socket.join(user?.userId);
 
 			//add users to online Users
-			if (!onlineUsers?.some((u) => u?.user?.userId === loggedInUserID))
+			if (!onlineUsers?.some((u) => u?.user?.userId === user?.userId))
 				onlineUsers?.push({ user: user, socketID: socket.id });
 			io.emit("onlineUsers", onlineUsers);
-		});
-
-		//socket disconnect
-		socket.on("disconnect", () => {
-			onlineUsers = onlineUsers?.filter((user) => user?.socketID !== socket.id);
-			io.emit("onlineUsers", onlineUsers);
-		});
-		//socket.offline
-
-		// Fetch initials chat list when user open the application
-		socket.emit("connected", async () => {
-			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
-			io.to(user?.userId).emit("fetchChats", chatByID);
+			// const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
+			// io.to(user?.userId).emit("fetchChats", chatByID);
 		});
 
 		// Join a chat room
@@ -44,12 +33,10 @@ const socketIOSetup = (socket, io) => {
 			delete socket.request.token;
 			delete socket.request.user;
 		});
-		socket.on("reconnect", (attemptNumber) => {
-			console.info(
-				`\t 🔄 Reconnected to the server after ${attemptNumber} attempts`
-			);
-			// Rejoin rooms and emit necessary events after reconnect
-			// ... Add your reconnection logic here
+		//socket disconnect
+		socket.on("disconnect", () => {
+			onlineUsers = onlineUsers?.filter((user) => user?.socketID !== socket.id);
+			io.emit("onlineUsers", onlineUsers);
 		});
 	} else {
 		console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
