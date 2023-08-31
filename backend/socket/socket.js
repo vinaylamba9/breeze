@@ -44,6 +44,13 @@ const socketIOSetup = (socket, io) => {
 			delete socket.request.token;
 			delete socket.request.user;
 		});
+		socket.on("reconnect", (attemptNumber) => {
+			console.info(
+				`\t 🔄 Reconnected to the server after ${attemptNumber} attempts`
+			);
+			// Rejoin rooms and emit necessary events after reconnect
+			// ... Add your reconnection logic here
+		});
 	} else {
 		console.info("\t 🏃‍♂️  AUTHENTICATION ERROR:: UNAUTHORIZED [ ❌ ]".red);
 		console.info("\t 🏃‍♂️  SOCKET STATUS :: DISCONNECTED [ ❌ ]".red);

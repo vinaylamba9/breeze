@@ -1,19 +1,25 @@
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useCallback, useEffect } from "react";
-import { DATE_UTILS } from "@Shared/utils/basic.utils";
+import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import { socket } from "@Socket/socket";
 
 const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
-	const { loggedInUser, selectedChat, setNewMessages, newMessages } =
-		useCombinedStore((state) => ({
-			loggedInUser: state?.loggedInUser,
-			selectedChat: state?.selectedChat,
-			setNewMessages: state?.setNewMessages,
-			newMessages: state?.newMessages,
-		}));
+	const {
+		loggedInUser,
+		selectedChat,
+		onlineUsers,
+		setNewMessages,
+		newMessages,
+	} = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+		selectedChat: state?.selectedChat,
+		setNewMessages: state?.setNewMessages,
+		newMessages: state?.newMessages,
+		onlineUsers: state?.onlineUsers,
+	}));
 
 	const msgDividerComponent = useCallback(
 		(msg) => {
@@ -46,6 +52,7 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 			selectedChat?.isGroupChat && (
 				<BreezeAvatar
 					title={msg?.sender?.name}
+					isActive={ARRAY_METHODS.isElementExist(onlineUsers, msg?.sender?._id)}
 					// onClickHandler={() => setSelectedChatProfile(true)}
 				/>
 			),

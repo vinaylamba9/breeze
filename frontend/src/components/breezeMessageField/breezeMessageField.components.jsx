@@ -65,7 +65,7 @@ const BreezeMessageFields = ({
 				});
 			} else typingIndicatorHandler(e);
 
-			// return () => socket.off("sendMessage");
+			return () => socket.off("sendMessage");
 		},
 		[message, selectedChat?._id, typingIndicatorHandler]
 	);

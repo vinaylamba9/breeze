@@ -110,14 +110,18 @@ const ChatScreen = () => {
 		socket.on("onlineUsers", (users) => {
 			setOnlineUsers([...users]);
 		});
-
+		socket.on("connect_error", (error) => {
+			console.error("Connection error:", error.message);
+			// Perform error handling or display a message to the user
+			// ...
+		});
 		return () => {
 			socket.disconnect();
 			socket.off("joinSocket");
 			socket.off("connected");
 			socket.off("onlineUsers");
 		};
-	}, [loggedInUser, loggedInUser?.userId, setOnlineUsers]);
+	}, [loggedInUser, setOnlineUsers]);
 
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
@@ -294,12 +298,13 @@ const ChatScreen = () => {
 																	item?.users
 															  )
 													}
+													isLastTimeActive={true}
 													styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
 														selectedChat === item
 															? " py-5 bg-gray-100"
 															: "bg-transparent"
 													} w-95% mx-auto`}
-													isNotification={unreadMessageCountHandler(item) > 0}
+													isNotification={true}
 													unreadMessageCount={unreadMessageCountHandler(item)}
 												/>
 												<hr
