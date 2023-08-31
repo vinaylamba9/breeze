@@ -80,12 +80,12 @@ const ChatScreen = () => {
 
 	const onFetchChatHandler = useCallback(async () => {
 		setLoading(true);
-		const response = await ChatDAO.fetchChatDAO(loggedInUser?.userId);
+		const response = await ChatDAO.fetchChatDAO(loggedInUser);
 		if (response?.statusCode === HTTPStatusCode.OK) {
 			setChatList(response?.responseBody);
 		} else clearChatList();
 		setLoading(false);
-	}, [clearChatList, loggedInUser?.userId, setChatList]);
+	}, [clearChatList, loggedInUser, setChatList]);
 
 	useEffect(() => {
 		onFetchChatHandler();
@@ -97,7 +97,7 @@ const ChatScreen = () => {
 	}, [setUserDetails]);
 	useEffect(() => {
 		socket.connect();
-		socket.emit("joinSocket", loggedInUser?.userId);
+		socket.emit("joinSocket", loggedInUser);
 		socket.on("connected", (callback) => {
 			callback();
 			setSocketConnection(true);
@@ -110,6 +110,9 @@ const ChatScreen = () => {
 		};
 	}, [loggedInUser]);
 
+	useEffect(() => {
+		socket.on("onlineUsers", (users) => console.log(users, "-online"));
+	}, []);
 	useEffect(() => {
 		socket.on("fetchChats", (chatByID) => {
 			setChatList(chatByID);

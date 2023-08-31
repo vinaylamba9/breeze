@@ -39,7 +39,7 @@ const userAuth = {
 			const data = BASIC_UTILS.cleanPassword(profileData);
 			socket.request.token = token;
 			socket.request.user = data;
-			next();
+			// next();
 		} catch (error) {
 			return next(new Error("PLEASE AUTHENTICATE."));
 		}
