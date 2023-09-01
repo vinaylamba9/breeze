@@ -28,13 +28,17 @@ const BreezeMessageFields = ({
 	const msgBoxRef = useRef(null);
 	const typingIndicatorHandler = useCallback(
 		(e) => {
+			if (message?.length === 0) {
+				socket.emit("stopTyping", selectedChat?._id);
+				setTyping(false);
+			}
 			if (!typing && message?.length > 0) {
 				setTyping(true);
 				socket.emit("typing", selectedChat?._id);
 			}
 
 			let lastTypingTime = new Date().getTime();
-			const timer = 2000;
+			const timer = 5000;
 			setTimeout(() => {
 				let currentTime = new Date().getTime();
 				if (currentTime - lastTypingTime >= timer && typing) {
@@ -64,8 +68,6 @@ const BreezeMessageFields = ({
 					chatID: selectedChat?._id,
 				});
 			} else typingIndicatorHandler(e);
-
-			return () => socket.off("sendMessage");
 		},
 		[message, selectedChat?._id, typingIndicatorHandler]
 	);

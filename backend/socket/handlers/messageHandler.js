@@ -13,8 +13,15 @@ const messageHandler = (socket, user, io) => {
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
 
 			chat?.users?.forEach((item) => {
-				io.to(item?._id?.toString()).emit("getMessage", response);
+				// Always emit the "getMessage" event to all users in the chat room
+				socket.to(item?._id?.toString()).emit("getMessage", response);
 			});
+			// Additionally, if you want to send the message to the current user (if the condition is met), you can use this:
+			if (chat?.users?.some((item) => item?._id?.toString() === user?.userId)) {
+				socket.emit("getMessage", response);
+			}
+
+			/** Recent chatlist */
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
 
 			const filteredChatByRoomID = chatByID?.filter(
@@ -27,6 +34,7 @@ const messageHandler = (socket, user, io) => {
 					io.to(item?._id?.toString()).emit("recentChatList", chatByID);
 				}
 			);
+
 			await Promise.all(userPromises);
 		} catch (error) {
 			console.error("Error handling newMessage:", error);

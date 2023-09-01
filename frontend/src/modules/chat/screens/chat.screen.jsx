@@ -27,6 +27,8 @@ const ChatScreen = () => {
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [isSelectedChatProfile, setSelectedChatProfile] = useState(false);
 	const [socketConnection, setSocketConnection] = useState(false);
+	const [typing, setTyping] = useState(false);
+	const [isTyping, setIsTyping] = useState(false);
 	const {
 		setUserDetails,
 		clearUserFromGroup,
@@ -157,13 +159,16 @@ const ChatScreen = () => {
 		[loggedInUser]
 	);
 
-	const clearNotificationByID = (item) => {
-		const clearNotification = item?.unreadMessage?.filter((msg) => {
-			return msg !== loggedInUser?.userId;
-		});
-		setNotification(clearNotification);
-		unreadMessageAPIHandler(item?._id, clearNotification);
-	};
+	const clearNotificationByID = useCallback(
+		(item) => {
+			const clearNotification = item?.unreadMessage?.filter((msg) => {
+				return msg !== loggedInUser?.userId;
+			});
+			setNotification(clearNotification);
+			unreadMessageAPIHandler(item?._id, clearNotification);
+		},
+		[loggedInUser?.userId, setNotification, unreadMessageAPIHandler]
+	);
 
 	const msgReceiverListHandler = useCallback(
 		(newMsgRecieved) =>
@@ -171,6 +176,20 @@ const ChatScreen = () => {
 				(user) => user?._id !== newMsgRecieved?.sender?._id
 			),
 		[]
+	);
+
+	const onChangeChatsHandler = useCallback(
+		(item) => {
+			clearNotificationByID(item);
+			hideProfile();
+			clearUserFromGroup();
+			setSelectedChat(item);
+			socket.emit("joinChat", item?._id);
+			// socket.emit("leaveChat", selectedChat?._id);
+			// socket.emit("stopTyping", selectedChat?._id);
+			// setTyping(false);
+		},
+		[clearNotificationByID, clearUserFromGroup, hideProfile, setSelectedChat]
 	);
 
 	useEffect(() => {
@@ -200,9 +219,9 @@ const ChatScreen = () => {
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
 				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
-					<p className='text-fontsize-pearl font-bold'>Chats</p>
+					<div className='text-fontsize-pearl font-bold'>Chats</div>
 					<div
-						className='flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
+						className='group flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
 						onClick={openSideBar}>
 						<BsPlusLg
 							style={{
@@ -212,7 +231,9 @@ const ChatScreen = () => {
 								fontWeight: 900,
 							}}
 						/>
-						<p className='text-white -mt-0.5'>Create chat</p>
+						<p className='hidden group-hover:inline  group-hover:text-white text-sm '>
+							Create chat
+						</p>
 					</div>
 				</header>
 				<div className='w-95% mx-auto mt-5 mb-8'>
@@ -251,15 +272,7 @@ const ChatScreen = () => {
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
 													tileID={selectedChat?._id}
-													onClickHandler={() => {
-														clearNotificationByID(item);
-														hideProfile();
-														clearUserFromGroup();
-														setSelectedChat(item);
-														socket.emit("joinChat", item?._id);
-														socket.emit("leaveChat", selectedChat?._id);
-														socket.emit("stopTyping", selectedChat?._id);
-													}}
+													onClickHandler={() => onChangeChatsHandler(item)}
 													title={
 														item?.isGroupChat
 															? item?.chatName
@@ -345,6 +358,10 @@ const ChatScreen = () => {
 					<ChatNotFound />
 				) : (
 					<BreezeChatBox
+						typing={typing}
+						isTyping={isTyping}
+						setIsTyping={setIsTyping}
+						setTyping={setTyping}
 						setChats={setChatList}
 						isSelectedChatProfile={isSelectedChatProfile}
 						setSelectedChatProfile={setSelectedChatProfile}
