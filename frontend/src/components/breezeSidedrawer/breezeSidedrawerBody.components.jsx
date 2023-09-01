@@ -142,7 +142,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 			<div className='w-100% mx-auto mt-5 '>
 				{isLoading ? (
 					<BreezeTileSkeleton tileLength={6} />
-				) : (
+				) : userList && userList?.length > 0 ? (
 					<div
 						className=' rounded-2xl'
 						style={{
@@ -150,35 +150,36 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 							maxHeight: "78vh",
 							overflowY: "scroll",
 						}}>
-						{userList?.map((item, index) => {
-							return (
-								<>
-									{alphabetsHandler(index, item)}
-									<div key={`add_user_${index}`}>
-										<BreezeTile
-											onClickHandler={() => onCreateChatHandler(item?._id)}
-											title={item?.name}
-											imgBackgroundColor={item?.imgBackgroundColor}
-											msg={item?.msg}
-											isActive={ARRAY_METHODS.isElementExist(
-												onlineUsers,
-												item?._id
-											)}
-											isGrouped={item?.isGrouped}
-											profileImage={item?.profileImage}
-											isNotification={item?.isNotification}
-											bio={item?.bio}
-											email={item?.email}
-											styleClass={
-												"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
-											}
-										/>
-									</div>
-								</>
-							);
-						})}
+						{userList?.length > 0 &&
+							userList?.map((item, index) => {
+								return (
+									<>
+										{alphabetsHandler(index, item)}
+										<div key={`add_user_${index}`}>
+											<BreezeTile
+												onClickHandler={() => onCreateChatHandler(item?._id)}
+												title={item?.name}
+												imgBackgroundColor={item?.imgBackgroundColor}
+												msg={item?.msg}
+												isActive={ARRAY_METHODS.isElementExist(
+													onlineUsers,
+													item?._id
+												)}
+												isGrouped={item?.isGrouped}
+												profileImage={item?.profileImage}
+												isNotification={item?.isNotification}
+												bio={item?.bio}
+												email={item?.email}
+												styleClass={
+													"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
+												}
+											/>
+										</div>
+									</>
+								);
+							})}
 					</div>
-				)}
+				) : null}
 			</div>
 		</div>
 	);
