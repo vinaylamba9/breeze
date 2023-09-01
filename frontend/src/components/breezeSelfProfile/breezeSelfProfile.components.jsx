@@ -81,7 +81,7 @@ const BreezeSelfProfile = ({ fetchAgain, setFetchAgain }) => {
 				maxHeight: "100vh",
 				minHeight: "100vh",
 			}}>
-			<div className=' bg-white drop-shadow-md py-3.5 rounded-bl rounded-br'>
+			<div className=' bg-white py-3.5 rounded-bl rounded-br'>
 				<div className='flex items-center gap-3 justify-start w-95% mx-auto'>
 					<div
 						className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 '

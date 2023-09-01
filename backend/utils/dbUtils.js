@@ -157,7 +157,7 @@ const CHAT_DB_UTILS = {
 					"-password -accountInItFrom  -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				)
 				.populate("recentMessage")
-				.sort({ updatedAt: -1 });
+				.sort({ recentMessage: -1 });
 
 			dbResponse = await userModel.populate(dbResponse, {
 				path: "recentMessage.sender",
