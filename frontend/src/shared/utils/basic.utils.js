@@ -42,11 +42,20 @@ export const DATE_UTILS = {
 		return splittedValue[0];
 	},
 	prefixZeroInTime: (hour) => (hour < 10 ? "0" + hour : hour),
+	AMPM: (hours) => (hours >= 12 ? "PM" : "AM"),
 
+	// Convert hours to 12-hour format
+	Hours12: (hours) => hours % 12 || 12,
 	getTimeInHHMM: (dateTime) =>
 		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getHours()) +
 		":" +
 		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getMinutes()),
+	getTimeInAMPM: (dateTime) =>
+		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getHours()) +
+		":" +
+		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getMinutes()) +
+		" " +
+		DATE_UTILS.AMPM(new Date(dateTime)?.getHours()),
 };
 
 export const ARRAY_METHODS = {

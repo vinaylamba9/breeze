@@ -19,7 +19,7 @@ import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
-import { ARRAY_METHODS } from "@Shared/utils/basic.utils";
+import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -283,6 +283,13 @@ const ChatScreen = () => {
 															item?.users
 														)
 													)}
+													lastMessageTime={
+														item &&
+														item?.recentMessage?.createdAt &&
+														DATE_UTILS.getTimeInAMPM(
+															item?.recentMessage?.createdAt
+														)
+													}
 													isGrouped={item?.isGroupChat}
 													profileImage={
 														item?.isGroupChat
