@@ -22,7 +22,7 @@ const BreezeMessageHeader = ({
 
 	return (
 		<>
-			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white drop-shadow-md rounded-bl rounded-br text-black'>
+			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white  rounded-bl rounded-br text-black'>
 				<div className='w-98%  mx-auto flex items-center justify-between py-4'>
 					<div
 						className='flex items-center gap-2 justify-start cursor-pointer'
