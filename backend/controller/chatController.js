@@ -99,7 +99,6 @@ const chatController = {
 		let responseStatusCode, responseMessage, responseData;
 		try {
 			const findChat = await CHAT_DB_UTILS.findByID(req.user.userId);
-
 			if (findChat.length === 0) {
 				responseStatusCode = HTTPStatusCode.NOT_FOUND;
 				responseMessage = HTTPStatusCode.NOT_FOUND;

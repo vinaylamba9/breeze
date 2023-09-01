@@ -10,18 +10,22 @@ const BreezeChatBox = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
 	setFetchAgain,
+	setTyping,
+	setIsTyping,
+	typing,
+	isTyping,
 }) => {
 	const { selectedChat } = useCombinedStore((state) => ({
 		selectedChat: state?.selectedChat,
 	}));
 	const [prevChat, setPrevChat] = useState(selectedChat);
 	const [showEmojiPicker, setEmojiPicker] = useState(false);
-	const [typing, setTyping] = useState(false);
-	const [isTyping, setIsTyping] = useState(false);
 
 	useEffect(() => {
-		socket.on("typing", () => setIsTyping(true));
-		socket.on("stopTyping", () => setIsTyping(false));
+		socket.on("typing", (val) => {
+			setIsTyping(true);
+		});
+		socket.on("stopTyping", (val) => setIsTyping(false));
 
 		return () => {
 			socket.off("typing");
