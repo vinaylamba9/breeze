@@ -526,8 +526,8 @@ const userController = {
 		try {
 			const users = await DB_UTILS.findAll(userModel, req.user.userId);
 			if (users.length === 0) {
-				responseStatusCode = HTTPStatusCode.OK;
-				responseMessage = HTTPStatusCode.OK;
+				responseStatusCode = HTTPStatusCode.NOT_FOUND;
+				responseMessage = HTTPStatusCode.NOT_FOUND;
 				responseData = "NO USERS FOUND.";
 			} else {
 				responseStatusCode = HTTPStatusCode.OK;
