@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
@@ -20,6 +20,7 @@ import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
+import { IoClose } from "react-icons/io5";
 
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -29,6 +30,8 @@ const ChatScreen = () => {
 	const [socketConnection, setSocketConnection] = useState(false);
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
+	const [searchChat, setSearchChat] = useState([]);
+
 	const {
 		setUserDetails,
 		clearUserFromGroup,
@@ -192,6 +195,22 @@ const ChatScreen = () => {
 		[clearNotificationByID, clearUserFromGroup, hideProfile, setSelectedChat]
 	);
 
+	/** -------- Chat Search Start --------------- */
+	const onSearchChat = (e) => {
+		let filteredData = chatList.filter((item) => {
+			const name = item?.isGroupChat
+				? item?.chatName
+				: CHAT_UTILS?.getOtherSideUserName(loggedInUser, item?.users);
+			return name?.toLowerCase()?.includes(e.target.value.toLowerCase());
+		});
+		setSearchChat([...filteredData]);
+	};
+
+	const searchedMemo = useMemo(
+		() => (searchChat && searchChat?.length > 0 ? searchChat : chatList),
+		[chatList, searchChat]
+	);
+	/** -------- Chat Search End --------------- */
 	useEffect(() => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
@@ -238,6 +257,7 @@ const ChatScreen = () => {
 				</header>
 				<div className='w-95% mx-auto mt-5 mb-8'>
 					<BreezeSearch
+						onChangeHandler={onSearchChat}
 						placeholder={"Search chat"}
 						leadingIcon={
 							<BiSearch
@@ -247,8 +267,21 @@ const ChatScreen = () => {
 								}}
 							/>
 						}
+						isDismissible
 						register={register}
 						name='searchUser'
+						// dismissibleIcon={
+						// 	<span
+						// 		onClick={()=>}
+						// 		className=' hover:bg-gray-300 text-white font-bold p-2 rounded-full cursor-pointer'>
+						// 		<IoClose
+						// 			style={{
+						// 				color: `var(--background-color-dark)`,
+						// 				fontSize: `var(--fontsize-virgin)`,
+						// 			}}
+						// 		/>
+						// 	</span>
+						// }
 					/>
 				</div>
 				<div className='w-95% mx-auto'>
@@ -267,7 +300,7 @@ const ChatScreen = () => {
 								<BreezeTileSkeleton tileLength={7} />
 							) : (
 								<>
-									{chatList?.map((item, index) => {
+									{searchedMemo?.map((item, index) => {
 										return (
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
@@ -282,6 +315,7 @@ const ChatScreen = () => {
 															  )
 													}
 													lastMsgSender={item?.recentMessage?.sender?.name}
+													lastMsgSenderID={item?.recentMessage?.sender?._id}
 													bio={!item?.recentMessage && item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
 													msg={
 														item?.recentMessage?.content > 30
