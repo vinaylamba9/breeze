@@ -332,10 +332,15 @@ const chatController = {
 				responseMessage = HTTPStatusCode.BAD_REQUEST;
 			} else {
 				if (req.body.chatID.match(RegEx.OBJECT_ID)) {
-					const unreadMessage = await CHAT_DB_UTILS.updateUnreadMessage(
-						req.body.chatID,
-						req.body.unreadMessageSenderID
-					);
+					const unreadMessage = req.body.isClear
+						? await CHAT_DB_UTILS.clearUnreadMessage(
+								req.body.chatID,
+								req.body.userIDToClear
+						  )
+						: await CHAT_DB_UTILS.updateUnreadMessage(
+								req.body.chatID,
+								req.body.unreadMessageSenderID
+						  );
 
 					if (!unreadMessage) {
 						responseStatusCode = HTTPStatusCode.NOT_FOUND;

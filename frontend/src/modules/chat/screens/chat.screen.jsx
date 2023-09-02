@@ -137,12 +137,21 @@ const ChatScreen = () => {
 		return () => socket.off("recentChatList");
 	}, [setChatList]);
 
-	const unreadMessageAPIHandler = useCallback(async (chatID, senderID) => {
-		const response = await ChatDAO.updateUnreadMessageDAO({
-			chatID: chatID,
-			unreadMessageSenderID: senderID,
-		});
-	}, []);
+	const unreadMessageAPIHandler = useCallback(
+		async (chatID, senderID, isClear) => {
+			const response = isClear
+				? await ChatDAO.updateUnreadMessageDAO({
+						chatID: chatID,
+						userIDToClear: senderID,
+						isClear: true,
+				  })
+				: await ChatDAO.updateUnreadMessageDAO({
+						chatID: chatID,
+						unreadMessageSenderID: senderID,
+				  });
+		},
+		[]
+	);
 
 	useEffect(() => {
 		const activeChat = chatList?.filter(
@@ -156,7 +165,6 @@ const ChatScreen = () => {
 			const count = item?.unreadMessage?.filter((msg) => {
 				return msg === loggedInUser?.userId;
 			});
-
 			return count?.length;
 		},
 		[loggedInUser]
@@ -164,13 +172,9 @@ const ChatScreen = () => {
 
 	const clearNotificationByID = useCallback(
 		(item) => {
-			const clearNotification = item?.unreadMessage?.filter((msg) => {
-				return msg !== loggedInUser?.userId;
-			});
-			setNotification(clearNotification);
-			unreadMessageAPIHandler(item?._id, clearNotification);
+			unreadMessageAPIHandler(item?._id, loggedInUser?.userId, true);
 		},
-		[loggedInUser?.userId, setNotification, unreadMessageAPIHandler]
+		[loggedInUser?.userId, unreadMessageAPIHandler]
 	);
 
 	const msgReceiverListHandler = useCallback(
@@ -352,8 +356,11 @@ const ChatScreen = () => {
 															? " py-5 bg-gray-100"
 															: "bg-transparent"
 													} w-95% mx-auto`}
-													isNotification={true}
-													unreadMessageCount={unreadMessageCountHandler(item)}
+													isNotification={item?.unreadMessage?.length > 0}
+													unreadMessageCount={
+														item?.unreadMessage?.length > 0 &&
+														unreadMessageCountHandler(item)
+													}
 												/>
 												<hr
 													style={{
