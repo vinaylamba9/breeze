@@ -8,6 +8,8 @@ const BreezeSearch = ({
 	leadingIcon,
 	disabled,
 	register,
+	isDismissible,
+	dismissibleIcon,
 }) => {
 	const formatRegister = { ...register(name) };
 	return (
@@ -47,6 +49,7 @@ const BreezeSearch = ({
 					onWheel={(e) => e.target.blur()}
 					autoComplete='off'
 				/>
+				{isDismissible && dismissibleIcon}
 			</div>
 		</Fragment>
 	);

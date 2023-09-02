@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { MdEmail, MdOutlineSubtitles } from "react-icons/md";
 import useAvatarColorGenerator from "@Shared/hooks/useAvatarColorGenerator";
+import useCombinedStore from "@/zustand/store/store";
 
 const BreezeTile = ({
 	title,
@@ -12,6 +13,7 @@ const BreezeTile = ({
 	isActive,
 	msg,
 	lastMsgSender,
+	lastMsgSenderID,
 	isAdmin,
 	isNotification,
 	onClickHandler,
@@ -21,7 +23,9 @@ const BreezeTile = ({
 	unreadMessageCount,
 }) => {
 	const [hexColor, textColor] = useAvatarColorGenerator(lastMsgSender);
-
+	const { loggedInUser } = useCombinedStore((state) => ({
+		loggedInUser: state?.loggedInUser,
+	}));
 	return (
 		<Fragment>
 			<div
@@ -60,9 +64,14 @@ const BreezeTile = ({
 							{lastMsgSender ? (
 								<div className=' truncate flex items-center justify-start gap-2'>
 									<p
-										className=' px-2 py-0.5 font-normal rounded-xl text-xs'
-										style={{ backgroundColor: hexColor, color: textColor }}>
-										{lastMsgSender?.split(" ")?.[0]}
+										className={` px-2 py-0.5 font-normal rounded-xl text-xs ${
+											lastMsgSenderID === loggedInUser?.userId
+												? "bg-gray-500 text-white"
+												: "bg-blue-500 text-white"
+										}`}>
+										{lastMsgSenderID === loggedInUser?.userId
+											? "You ~"
+											: lastMsgSender?.split(" ")?.[0] + " ~"}
 									</p>
 									<p className='text-black text-sm'>{msg}</p>
 								</div>

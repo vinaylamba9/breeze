@@ -245,7 +245,7 @@ const CHAT_DB_UTILS = {
 	updateGroupImage: async function (chatID, groupImage) {
 		try {
 			let dbResponse = await chatModel
-				.findByIdAndUpdate({ _id: chatId }, { groupImage }, { new: true })
+				.findByIdAndUpdate({ _id: chatID }, { groupImage }, { new: true })
 				.populate(
 					"users",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
