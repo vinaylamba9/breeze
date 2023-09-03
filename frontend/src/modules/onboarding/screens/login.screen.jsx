@@ -25,8 +25,6 @@ const Login = () => {
 	const {
 		register,
 		handleSubmit,
-		setError,
-		watch,
 		formState: { errors },
 	} = useForm({});
 
@@ -34,47 +32,44 @@ const Login = () => {
 		navigate(BreezeRoutes.FORGOTPASSWORDROUTE);
 	};
 
-	const loginHandler = useCallback(
-		async (d) => {
-			setLoading(true);
-			const response = await userDAO.loginDAO({
-				email: d?.email,
-				password: d?.password,
-			});
+	const loginHandler = useCallback(async (d) => {
+		setLoading(true);
+		const response = await userDAO.loginDAO({
+			email: d?.email,
+			password: d?.password,
+		});
 
-			if (response?.statusCode === HTTPStatusCode.OK) {
-				setLoading(false);
-				window.location.reload(BreezeButton.CHATROUTE);
-				// navigate(BreezeRoutes.CHATROUTE, {});
-			} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
-				setLoading(false);
-				return toast.error(response?.responseBody?.errors?.[0]?.msg, {
-					transition: Slide,
-					style: {
-						borderRadius: ".5rem",
-						color: "var(--background-color-dark)",
-						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-					},
-					progressStyle: { background: "var(--danger-color)" },
-				});
-			} else if (
-				response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
-				response?.statusCode === HTTPStatusCode.NOT_FOUND
-			) {
-				setLoading(false);
-				return toast.error(response?.responseBody, {
-					transition: Slide,
-					style: {
-						borderRadius: ".5rem",
-						color: "var(--background-color-dark)",
-						boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-					},
-					progressStyle: { background: "var(--danger-color)" },
-				});
-			}
-		},
-		[navigate]
-	);
+		if (response?.statusCode === HTTPStatusCode.OK) {
+			setLoading(false);
+			window.location.reload(BreezeButton.CHATROUTE);
+			// navigate(BreezeRoutes.CHATROUTE, {});
+		} else if (response?.statusCode === HTTPStatusCode.BAD_REQUEST) {
+			setLoading(false);
+			return toast.error(response?.responseBody?.errors?.[0]?.msg, {
+				transition: Slide,
+				style: {
+					borderRadius: ".5rem",
+					color: "var(--background-color-dark)",
+					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+				},
+				progressStyle: { background: "var(--danger-color)" },
+			});
+		} else if (
+			response?.statusCode === HTTPStatusCode.UNAUTHORIZED ||
+			response?.statusCode === HTTPStatusCode.NOT_FOUND
+		) {
+			setLoading(false);
+			return toast.error(response?.responseBody, {
+				transition: Slide,
+				style: {
+					borderRadius: ".5rem",
+					color: "var(--background-color-dark)",
+					boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+				},
+				progressStyle: { background: "var(--danger-color)" },
+			});
+		}
+	}, []);
 
 	useEffect(() => {
 		let login = BreezeSessionManagement.getAPIKey();
