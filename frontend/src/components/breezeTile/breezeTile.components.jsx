@@ -103,7 +103,7 @@ const BreezeTile = ({
 								{lastMessageTime}
 							</div>
 						) : null}
-						{isNotification && unreadMessageCount > 0 && (
+						{unreadMessageCount > 0 && (
 							<div className=' px-2 py-0.5 text-center text-fontsize-small bg-green-500 text-white rounded-full'>
 								{unreadMessageCount}
 							</div>

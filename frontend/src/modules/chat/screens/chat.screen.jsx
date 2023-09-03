@@ -137,22 +137,6 @@ const ChatScreen = () => {
 		return () => socket.off("recentChatList");
 	}, [setChatList]);
 
-	const unreadMessageAPIHandler = useCallback(
-		async (chatID, senderID, isClear) => {
-			const response = isClear
-				? await ChatDAO.updateUnreadMessageDAO({
-						chatID: chatID,
-						userIDToClear: senderID,
-						isClear: true,
-				  })
-				: await ChatDAO.updateUnreadMessageDAO({
-						chatID: chatID,
-						unreadMessageSenderID: senderID,
-				  });
-		},
-		[]
-	);
-
 	useEffect(() => {
 		const activeChat = chatList?.filter(
 			(item) => item?._id === selectedChat?._id
@@ -170,33 +154,24 @@ const ChatScreen = () => {
 		[loggedInUser]
 	);
 
-	const clearNotificationByID = useCallback(
-		(item) => {
-			unreadMessageAPIHandler(item?._id, loggedInUser?.userId, true);
-		},
-		[loggedInUser?.userId, unreadMessageAPIHandler]
-	);
-
-	const msgReceiverListHandler = useCallback(
-		(newMsgRecieved) =>
-			newMsgRecieved?.chat?.users?.filter(
-				(user) => user?._id !== newMsgRecieved?.sender?._id
-			),
-		[]
-	);
+	const clearUnreadMessage = useCallback((item) => {}, []);
 
 	const onChangeChatsHandler = useCallback(
 		(item) => {
-			clearNotificationByID(item);
+			// clearNotificationByID(item);
 			hideProfile();
 			clearUserFromGroup();
 			setSelectedChat(item);
+
 			socket.emit("joinChat", item?._id);
-			// socket.emit("leaveChat", selectedChat?._id);
+			socket.emit("checkUnreadMessage", {
+				chatID: item?._id,
+				loggedInID: loggedInUser?.userId,
+			});
 			// socket.emit("stopTyping", selectedChat?._id);
 			// setTyping(false);
 		},
-		[clearNotificationByID, clearUserFromGroup, hideProfile, setSelectedChat]
+		[clearUserFromGroup, hideProfile, loggedInUser?.userId, setSelectedChat]
 	);
 
 	/** -------- Chat Search Start --------------- */
@@ -219,25 +194,17 @@ const ChatScreen = () => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
-			} else {
-				// setNotification([...notificationList, newMsgRecieved]);
-				unreadMessageAPIHandler(
-					newMsgRecieved?.chat?._id,
-					msgReceiverListHandler(newMsgRecieved)
-				);
 			}
 		});
 
 		return () => socket.off("getMessage");
-	}, [
-		msgReceiverListHandler,
-		newMessages,
-		notificationList,
-		selectedChat,
-		setNewMessages,
-		setNotification,
-		unreadMessageAPIHandler,
-	]);
+	}, [newMessages, selectedChat?._id, setNewMessages]);
+
+	useEffect(() => {
+		socket.on("clearUnreadMessage", (unreadMessageResponse) => {
+			clearUnreadMessage(unreadMessageResponse);
+		});
+	}, [clearUnreadMessage]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
 			<div className=' bg-white w-25% '>
@@ -356,11 +323,8 @@ const ChatScreen = () => {
 															? " py-5 bg-gray-100"
 															: "bg-transparent"
 													} w-95% mx-auto`}
-													isNotification={item?.unreadMessage?.length > 0}
-													unreadMessageCount={
-														item?.unreadMessage?.length > 0 &&
-														unreadMessageCountHandler(item)
-													}
+													// isNotification={item?.unreadMessage?.length}
+													unreadMessageCount={unreadMessageCountHandler(item)}
 												/>
 												<hr
 													style={{
