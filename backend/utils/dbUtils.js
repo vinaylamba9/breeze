@@ -226,7 +226,28 @@ const CHAT_DB_UTILS = {
 			let dbResponse = await chatModel
 				.findByIdAndUpdate(
 					chatID,
-					{ unreadMessage: unreadMessage },
+					{ $push: { unreadMessage: unreadMessage } },
+					{ new: true }
+				)
+				.populate(
+					"users",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				)
+				.populate(
+					"groupAdmin",
+					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
+				);
+			return dbResponse;
+		} catch (error) {
+			return { msg: error, status: "NOT_FOUND" };
+		}
+	},
+	clearUnreadMessage: async function (chatID, userIDToClear) {
+		try {
+			let dbResponse = await chatModel
+				.findByIdAndUpdate(
+					chatID,
+					{ $pull: { unreadMessage: userIDToClear } },
 					{ new: true }
 				)
 				.populate(

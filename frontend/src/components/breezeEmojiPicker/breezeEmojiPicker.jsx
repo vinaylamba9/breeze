@@ -1,4 +1,4 @@
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 
 const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 	const handleEmojiPicker = (emojiData) => {
@@ -13,10 +13,12 @@ const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 			const range = selection.getRangeAt(0);
 
 			// Create a new text node with the emoji
+
 			const emojiNode = document.createTextNode(emoji);
 
 			// Insert the emoji at the cursor position
 			range.deleteContents();
+
 			range.insertNode(emojiNode);
 
 			// Move the cursor after the inserted emoji
@@ -48,6 +50,7 @@ const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 				width={"100%"}
 				previewConfig={{}}
 				onEmojiClick={handleEmojiPicker}
+				emojiStyle={EmojiStyle.APPLE}
 			/>
 		</div>
 	);

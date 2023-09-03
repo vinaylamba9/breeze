@@ -11,6 +11,13 @@ const messageHandler = (socket, user, io) => {
 			const chat = response?.chat;
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
+			const usersToSend = chat?.users?.filter(
+				(user) =>
+					user?._id?.toString() !== response?.sender?._id?.toString() &&
+					user?._id?.toString()
+			);
+
+			await CHAT_DB_UTILS.updateUnreadMessage(obj?.chatID, usersToSend);
 
 			chat?.users?.forEach((item) => {
 				// Always emit the "getMessage" event to all users in the chat room
@@ -20,6 +27,12 @@ const messageHandler = (socket, user, io) => {
 			if (chat?.users?.some((item) => item?._id?.toString() === user?.userId)) {
 				socket.emit("getMessage", response);
 			}
+			// chat?.users?.forEach((item) => {
+			// 	if (item?._id !== user?.userId)
+			// 		socket
+			// 			.to(item?._id?.toString())
+			// 			.emit("unreadMessage", unreadMessageResponse);
+			// });
 
 			/** Recent chatlist */
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
@@ -39,6 +52,15 @@ const messageHandler = (socket, user, io) => {
 		} catch (error) {
 			console.error("Error handling newMessage:", error);
 		}
+	});
+	socket.on("checkUnreadMessage", async (obj) => {
+		const res = await CHAT_DB_UTILS.clearUnreadMessage(
+			obj?.chatID,
+			obj?.loggedInID
+		);
+		const chat = res?.chat;
+		console.log(res, "-res");
+		io.to(obj?.loggedInID).emit("clearUnreadMessage", res);
 	});
 };
 
