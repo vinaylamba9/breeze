@@ -9,12 +9,12 @@ const PostOnboardingLayout = () => {
 	}));
 	const isMobile = useIsMobile();
 	return (
-		<div className=' w-screen  overflow-x-hidden flex items-start justify-start '>
+		<div className=' h-screen w-screen bg-gray-100  flex items-start justify-start '>
 			<div>
 				{!isMobile ? <BreezeSidebar /> : isSideMenu ? <BreezeSidebar /> : null}
 			</div>
 
-			<div className='flex-1 h-full '>
+			<div className='flex-1 h-screen'>
 				<Outlet />
 			</div>
 		</div>

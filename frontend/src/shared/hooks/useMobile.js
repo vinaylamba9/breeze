@@ -6,7 +6,7 @@ function useIsMobile() {
 	useEffect(() => {
 		function handleResize() {
 			// Check if the viewport width is less than a certain threshold (e.g., 768px for typical mobile devices)
-			const isMobileView = window.innerWidth < 1000;
+			const isMobileView = window.innerWidth <= 1000;
 			setIsMobile(isMobileView);
 		}
 

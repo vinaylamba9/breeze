@@ -22,6 +22,7 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
+import useIsMobile from "@Shared/hooks/useMobile";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ const ChatScreen = () => {
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
 	const [searchChat, setSearchChat] = useState([]);
-
+	const isMobile = useIsMobile();
 	const {
 		setUserDetails,
 		clearUserFromGroup,
@@ -402,12 +403,12 @@ const ChatScreen = () => {
 			</div>
 
 			<div
-				className={`${isActive ? "w-51%" : "flex-1 xs:w-0% sm:w-0% md:w-0%"}`}>
-				{!selectedChat ? (
-					<div className='w-100%'>
-						<ChatNotFound />
-					</div>
-				) : (
+				className={`${
+					isActive ? "w-51%" : "flex-1 w-full xs:w-0% sm:w-0% md:w-0%"
+				}`}>
+				{!selectedChat && !isMobile ? (
+					<ChatNotFound />
+				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (
 					<BreezeChatBox
 						typing={typing}
 						isTyping={isTyping}
@@ -419,7 +420,7 @@ const ChatScreen = () => {
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
 					/>
-				)}
+				) : null}
 			</div>
 			{isActive && (
 				<div className={`bg-white h-screen flex-1`}>
