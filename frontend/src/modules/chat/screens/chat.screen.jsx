@@ -195,7 +195,7 @@ const ChatScreen = () => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			} else {
-				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
+				socket.emit("sendUnreadMessageNotification");
 			}
 		});
 
@@ -209,7 +209,12 @@ const ChatScreen = () => {
 	}, [clearUnreadMessage]);
 	return (
 		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
-			<div className=' bg-white w-25% '>
+			<div
+				className={` bg-white w-25%  ${
+					selectedChat
+						? "xs:w-0% sm:w-0% md:w-0%"
+						: "xs:w-100% sm:w-100% md:w-100%"
+				}`}>
 				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
 					<div className='text-fontsize-pearl font-bold'>Chats</div>
 					<div
@@ -360,9 +365,13 @@ const ChatScreen = () => {
 					/>
 				)}
 			</div>
-			<div className={`${isActive ? "w-51%" : "flex-1"}`}>
+
+			<div
+				className={`${isActive ? "w-51%" : "flex-1 xs:w-0% sm:w-0% md:w-0%"}`}>
 				{!selectedChat ? (
-					<ChatNotFound />
+					<div className='w-100%'>
+						<ChatNotFound />
+					</div>
 				) : (
 					<BreezeChatBox
 						typing={typing}
@@ -377,7 +386,6 @@ const ChatScreen = () => {
 					/>
 				)}
 			</div>
-
 			{isActive && (
 				<div className={`bg-white h-screen flex-1`}>
 					<BreezeInDisplaySidebar
@@ -388,7 +396,6 @@ const ChatScreen = () => {
 					/>
 				</div>
 			)}
-
 			{isGroupChatModal && (
 				<BreezeModal
 					backgroundColor={"bg-white"}

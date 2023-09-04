@@ -43,8 +43,10 @@ const BreezeTile = ({
 							title={title}
 						/>
 						<div className=' flex flex-col items-start justify-between gap-1 w-70%  '>
-							<h3 className='truncate font-black text-sm '>{title}</h3>
-							<Fragment className=' truncate '>
+							<h3 className='text-ellipsis overflow-hidden ... font-black text-sm '>
+								{title}
+							</h3>
+							<Fragment>
 								{email && (
 									<div className='flex justify-start gap-2 items-center'>
 										<MdEmail
@@ -54,7 +56,7 @@ const BreezeTile = ({
 												fontSize: `var(--fontsize-smart)`,
 											}}
 										/>
-										<p className=' text-gray-700 text-fontsize-smart'>
+										<p className='truncate text-gray-700 text-fontsize-smart'>
 											{email}
 										</p>
 									</div>
