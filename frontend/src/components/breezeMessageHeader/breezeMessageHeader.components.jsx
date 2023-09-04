@@ -1,11 +1,10 @@
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { CHAT_UTILS } from "@Shared/utils/chat.utils";
-import BreezeSideDrawer from "@Components/breezeSidedrawer/breezeSidedrawer.components";
-import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
-import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import useCombinedStore from "@Zustand/store/store";
 import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
 import { useMemo } from "react";
+import useIsMobile from "@Shared/hooks/useMobile";
+import { IoArrowBack } from "react-icons/io5";
 const BreezeMessageHeader = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
@@ -13,17 +12,23 @@ const BreezeMessageHeader = ({
 	setFetchAgain,
 	isTyping,
 }) => {
+	const isMobile = useIsMobile();
 	const {
 		showActive,
 		isActive,
 		onlineUsers,
+		hideSidebarMenu,
 		hideActive,
+		clearSelectedChat,
 		loggedInUser,
 		selectedChat,
 	} = useCombinedStore((state) => ({
 		isActive: state?.isActive,
 		showActive: state?.showActive,
+		hideSidebarMenu: state?.hideSidebarMenu,
 		hideActive: state?.hideActive,
+		isSideMenu: state?.isSideMenu,
+		clearSelectedChat: state?.clearSelectedChat,
 		loggedInUser: state?.loggedInUser,
 		selectedChat: state?.selectedChat,
 		onlineUsers: state?.onlineUsers,
@@ -43,7 +48,22 @@ const BreezeMessageHeader = ({
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white  rounded-bl rounded-br text-black'>
-				<div className='w-98%  mx-auto flex items-center justify-between py-4'>
+				<div className='w-98%  mx-auto flex items-center justify-start  py-4'>
+					{isMobile && selectedChat ? (
+						<div
+							className='p-3 hover:rounded-full hover:bg-gray-200 cursor-pointer ease-in-out duration-300 mr-2 '
+							onClick={() => {
+								hideSidebarMenu();
+								clearSelectedChat();
+							}}>
+							<IoArrowBack
+								style={{
+									color: `var(--background-color-black)`,
+									fontSize: `var(--fontsize-trim)`,
+								}}
+							/>
+						</div>
+					) : null}
 					<div
 						className='flex items-center gap-2 justify-start cursor-pointer w-70%'
 						onClick={isActive ? hideActive : showActive}>

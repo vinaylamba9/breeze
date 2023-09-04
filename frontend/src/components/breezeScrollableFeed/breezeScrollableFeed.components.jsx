@@ -54,12 +54,16 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 
 	return (
 		<div
-			className='w-full bg-gray-100 '
+			className='w-full  '
 			style={{
+				backgroundColor: "#F3F4F6 ",
+				backgroundSize: "28px 28px",
 				maxHeight: showEmojiPicker
 					? "calc(100vh - 600px)"
 					: "calc(100vh - 156px)",
-
+				backgroundPosition: "0 0,14px 14px",
+				backgroundImage:
+					"radial-gradient(#8c49d3 0.7000000000000001px, #F3F4F6 0.7000000000000001px)",
 				height: showEmojiPicker ? "calc(100vh - 600px)" : "calc(100vh - 156px)",
 			}}>
 			<div

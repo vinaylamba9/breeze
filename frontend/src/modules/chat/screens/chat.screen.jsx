@@ -20,8 +20,8 @@ import useCombinedStore from "@Zustand/store/store";
 import BreezeInDisplaySidebar from "@Components/breezeInDisplaySidebar/breezeInDisplaySidebar.components";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
-import { IoClose } from "react-icons/io5";
-
+import { IoChevronBackOutline } from "react-icons/io5";
+import { HiMenu } from "react-icons/hi";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -43,6 +43,9 @@ const ChatScreen = () => {
 		selectedChat,
 		setSelectedChat,
 		notificationList,
+		showSidebarMenu,
+		hideSidebarMenu,
+		isSideMenu,
 		setNewMessages,
 		newMessages,
 		setNotification,
@@ -50,6 +53,9 @@ const ChatScreen = () => {
 		onlineUsers,
 		setOnlineUsers,
 	} = useCombinedStore((state) => ({
+		isSideMenu: state?.isSideMenu,
+		showSidebarMenu: state?.showSidebarMenu,
+		hideSidebarMenu: state?.hideSidebarMenu,
 		clearUserFromGroup: state?.clearUserFromGroup,
 		chatList: state?.chatList,
 		setChatList: state?.setChatList,
@@ -216,7 +222,36 @@ const ChatScreen = () => {
 						: "xs:w-100% sm:w-100% md:w-100%"
 				}`}>
 				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
-					<div className='text-fontsize-pearl font-bold'>Chats</div>
+					<div className='flex justify-start items-center gap-5 '>
+						{!isSideMenu ? (
+							<div
+								className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
+								onClick={showSidebarMenu}>
+								<HiMenu
+									style={{
+										cursor: "pointer",
+										color: `var(--background-color-dark)`,
+										fontSize: `var(--fontsize-tough)`,
+										fontWeight: 900,
+									}}
+								/>
+							</div>
+						) : (
+							<div
+								className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
+								onClick={hideSidebarMenu}>
+								<IoChevronBackOutline
+									style={{
+										cursor: "pointer",
+										color: `var(--background-color-dark)`,
+										fontSize: `var(--fontsize-tough)`,
+										fontWeight: 900,
+									}}
+								/>
+							</div>
+						)}
+						<div className='text-fontsize-pearl font-bold'>Chats</div>
+					</div>
 					<div
 						className='group flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
 						onClick={openSideBar}>
