@@ -5,6 +5,7 @@ import BreezeProfile from "@Components/breezeProfile/breezeProfile.components";
 import BreezeGroupProfile from "@Components/breezeGroupProfile/breezeGroupProfile.components";
 import useCombinedStore from "@Zustand/store/store";
 import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
+import { useMemo } from "react";
 const BreezeMessageHeader = ({
 	isSelectedChatProfile,
 	setSelectedChatProfile,
@@ -12,21 +13,40 @@ const BreezeMessageHeader = ({
 	setFetchAgain,
 	isTyping,
 }) => {
-	const { showActive, onlineUsers, loggedInUser, selectedChat } =
-		useCombinedStore((state) => ({
-			showActive: state?.showActive,
-			loggedInUser: state?.loggedInUser,
-			selectedChat: state?.selectedChat,
-			onlineUsers: state?.onlineUsers,
-		}));
+	const {
+		showActive,
+		isActive,
+		onlineUsers,
+		hideActive,
+		loggedInUser,
+		selectedChat,
+	} = useCombinedStore((state) => ({
+		isActive: state?.isActive,
+		showActive: state?.showActive,
+		hideActive: state?.hideActive,
+		loggedInUser: state?.loggedInUser,
+		selectedChat: state?.selectedChat,
+		onlineUsers: state?.onlineUsers,
+	}));
+
+	const getFiveUserFromGroupAt = useMemo(() => {
+		if (selectedChat?.users?.length <= 5) {
+			return (
+				selectedChat?.users?.map((item) => item?.name?.split(" ")[0]) + "  "
+			);
+		} else {
+			const topFive = selectedChat?.users?.slice(0, 5);
+			return topFive?.map((item) => item?.name?.split(" ")[0]) + " ";
+		}
+	}, [selectedChat]);
 
 	return (
 		<>
 			<div className=' transition-all duration-300 ease-in-out  w-100% bg-white  rounded-bl rounded-br text-black'>
 				<div className='w-98%  mx-auto flex items-center justify-between py-4'>
 					<div
-						className='flex items-center gap-2 justify-start cursor-pointer'
-						onClick={showActive}>
+						className='flex items-center gap-2 justify-start cursor-pointer w-70%'
+						onClick={isActive ? hideActive : showActive}>
 						<BreezeAvatar
 							title={
 								selectedChat?.isGroupChat
@@ -49,7 +69,6 @@ const BreezeMessageHeader = ({
 											selectedChat?.users
 									  )
 							}
-							onClickHandler={() => setSelectedChatProfile(true)}
 						/>
 						<div className='flex flex-col justify-start items-start'>
 							<h1 className='text-fontsize-brittle uppercase font-medium'>
@@ -61,6 +80,16 @@ const BreezeMessageHeader = ({
 									  )}
 							</h1>
 							<span>
+								{selectedChat?.isGroupChat && !isTyping ? (
+									<p className='text-fontsize-pool text-gray-500'>
+										{getFiveUserFromGroupAt}{" "}
+										{selectedChat?.users?.length > 5 ? (
+											<span className='text-black font-medium'>{` 	+${
+												selectedChat?.users?.length - 5
+											} more`}</span>
+										) : null}
+									</p>
+								) : null}
 								{!selectedChat?.isGroupChat ? (
 									ARRAY_METHODS.isElementExist(
 										onlineUsers,
