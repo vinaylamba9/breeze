@@ -194,6 +194,8 @@ const ChatScreen = () => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
+			} else {
+				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
 		});
 
