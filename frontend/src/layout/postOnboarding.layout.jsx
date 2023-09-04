@@ -5,7 +5,7 @@ const PostOnboardingLayout = () => {
 	return (
 		<div className='h-screen w-screen bg-gray-100 overflow-x-hidden flex items-start justify-start '>
 			<BreezeSidebar />
-			<div className='flex-1 '>
+			<div className='w-full'>
 				<Outlet />
 			</div>
 		</div>
