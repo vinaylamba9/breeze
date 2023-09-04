@@ -67,7 +67,7 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 	}, [setNewMessages]);
 
 	return (
-		<>
+		<div>
 			{newMessages?.length > 0 &&
 				newMessages?.map((msg, index) => (
 					<>
@@ -93,8 +93,8 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 								}}
 								className={` ${
 									msg?.sender?._id === loggedInUser?.userId
-										? "bg-white text-black"
-										: "bg-gray-800 text-white"
+										? "bg-[#fafaf9] text-black shadow"
+										: "bg-gray-800 text-white shadow"
 								}  rounded-2xl px-5 py-2 mb-2`}>
 								<div className='flex justify-between items-start gap-3'>
 									<div className='text-sm w-90% whitespace-pre-wrap'>
@@ -113,7 +113,7 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 						</div>
 					</>
 				))}
-		</>
+		</div>
 	);
 };
 
