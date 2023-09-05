@@ -156,9 +156,10 @@ const ChatScreen = () => {
 			const count = item?.unreadMessage?.filter((msg) => {
 				return msg === loggedInUser?.userId;
 			});
-			return count?.length;
+
+			return selectedChat?._id !== item?._id ? count?.length : 0;
 		},
-		[loggedInUser]
+		[loggedInUser, selectedChat]
 	);
 
 	const clearUnreadMessage = useCallback(
@@ -167,7 +168,7 @@ const ChatScreen = () => {
 				(chat) => chat?._id === item?._id
 			);
 			if (!!chatList?.length > 0 && !!chatList[indexOfUnreadMsg]?.unreadMessage)
-				chatList[indexOfUnreadMsg].unreadMessage = item?.unreadMessage;
+				chatList[indexOfUnreadMsg].unreadMessage = [];
 		},
 		[chatList]
 	);
@@ -178,10 +179,11 @@ const ChatScreen = () => {
 			clearUserFromGroup();
 			setSelectedChat(item);
 			socket.emit("joinChat", item?._id);
-			socket.emit("checkUnreadMessage", {
-				chatID: item?._id,
-				loggedInID: loggedInUser?.userId,
-			});
+			item?.unreadMessage?.length > 0 &&
+				socket.emit("checkUnreadMessage", {
+					chatID: item?._id,
+					loggedInID: loggedInUser?.userId,
+				});
 		},
 		[clearUserFromGroup, hideProfile, loggedInUser, setSelectedChat]
 	);
@@ -206,13 +208,13 @@ const ChatScreen = () => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
-			} else {
+			} else if (selectedChat._id !== newMsgRecieved?.chat?._id) {
 				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
 		});
 
 		return () => socket.off("getMessage");
-	}, [newMessages, selectedChat?._id, setNewMessages]);
+	}, [newMessages, selectedChat, setNewMessages]);
 
 	useEffect(() => {
 		socket.on("clearUnreadMessage", (unreadMessageResponse) => {
