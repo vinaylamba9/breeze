@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import BreezeChat from "@Components/breezeChat/breezeChat.components";
-import useCombinedStore from "@/zustand/store/store";
+import useCombinedStore from "@Zustand/store/store";
+import useIsMobile from "@Shared/hooks/useMobile";
 
 const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 	const chatContainerRef = useRef(null);
@@ -11,6 +12,7 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 		selectedChat: state?.selectedChat,
 		newMessages: state?.newMessages,
 	}));
+	const isMobile = useIsMobile();
 	useEffect(() => {
 		scrollToRecent();
 	}, [newMessages]);
@@ -59,12 +61,18 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 				backgroundColor: "#F3F4F6 ",
 				backgroundSize: "28px 28px",
 				maxHeight: showEmojiPicker
-					? "calc(100vh - 600px)"
+					? isMobile
+						? "calc(100vh - 460px)"
+						: "calc(100vh - 600px)"
 					: "calc(100vh - 156px)",
 				backgroundPosition: "0 0,14px 14px",
 				backgroundImage:
 					"radial-gradient(#8c49d3 0.7000000000000001px, #F3F4F6 0.7000000000000001px)",
-				height: showEmojiPicker ? "calc(100vh - 600px)" : "calc(100vh - 156px)",
+				height: showEmojiPicker
+					? isMobile
+						? "calc(100vh - 460px)"
+						: "calc(100vh - 600px)"
+					: "calc(100vh - 156px)",
 			}}>
 			<div
 				onScroll={onScrollMsg}

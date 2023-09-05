@@ -77,9 +77,9 @@ const BreezeMessageFields = ({
 		prevChat !== selectedChat && (tempRef.innerText = "");
 	}, [prevChat, selectedChat]);
 
-	useEffect(() => {
-		msgBoxRef.current.focus();
-	}, [msgBoxRef, selectedChat]);
+	// useEffect(() => {
+	// 	msgBoxRef.current.focus();
+	// }, [msgBoxRef, selectedChat]);
 
 	useEffect(() => {
 		return () => socket.off("sendMessage");
