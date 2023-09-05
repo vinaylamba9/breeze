@@ -77,13 +77,13 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 			<ToastContainer />
 			<div className='w-full flex items-center flex-col justify-center'>
 				{imagePreview ? (
-					<div className='h-36 w-36 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+					<div className='h-36 w-36 sm:28 md:28 xs:28 sm:28 md:28 xs:28 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 						<img
 							ref={uploadedImageRef}
 							src={imagePreview}
 							id='photo'
 							alt='preview'
-							className='w-32 h-32 rounded-full bg-no-repeat bg-center cursor-pointer'
+							className='w-32 h-32 sm:h-28  md:h-28  xs:h-28  sm:w-28   md:w-28  xs:w-28  rounded-full bg-no-repeat bg-center cursor-pointer'
 						/>
 					</div>
 				) : (
@@ -97,7 +97,7 @@ const BreezeImageUpload = ({ setGroupImageURL, isEdit }) => {
 						/>
 						<label
 							htmlFor='uploadImage'
-							className='h-36 w-36 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
+							className='h-36 w-36 sm:h-28 md:h-28 xs:h-28 sm:w-28 md:w-28 xs:w-28 border-2 border-black rounded-full bg-color-TealWithOpacity cursor-pointer flex justify-center items-center shadow-inner shadow-color-darkTeal'>
 							<ImUpload
 								style={{
 									color: `var(--background-color-black)`,

@@ -215,14 +215,14 @@ const ChatScreen = () => {
 		});
 	}, [clearUnreadMessage]);
 	return (
-		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
+		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div
-				className={` bg-white w-25%  ${
-					selectedChat
+				className={` bg-white   ${
+					selectedChat && isMobile
 						? "xs:w-0% sm:w-0% md:w-0%"
-						: "xs:w-100% sm:w-100% md:w-100%"
+						: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
 				}`}>
-				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
+				<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
 					<div className='flex justify-start items-center gap-5 '>
 						{!isSideMenu ? (
 							<div
@@ -402,10 +402,7 @@ const ChatScreen = () => {
 				)}
 			</div>
 
-			<div
-				className={`${
-					isActive ? "w-51%" : "flex-1 w-full xs:w-0% sm:w-0% md:w-0%"
-				}`}>
+			<div className={`${isActive ? "w-51%" : "flex-1 w-75%"}`}>
 				{!selectedChat && !isMobile ? (
 					<ChatNotFound />
 				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (

@@ -29,13 +29,15 @@ const BreezeModal = ({
 					<div className='fixed inset-0 bg-background-color-dark opacity-50'></div>
 					<div
 						ref={modalRef}
-						className={`relative ${backgroundColor} rounded-2xl p-6 z-50 animate-fadeIn ${
+						className={`relative ${backgroundColor} xs:w-100% sm:w-100% md:w-100% rounded-2xl p-6 z-50 animate-fadeIn ${
 							width || "w-50%"
 						}`}>
 						<div className='flex ml-auto mr-auto'>
 							{children || (
 								<div className='mt-10 w-95%'>
-									<h2 className='text-xl font-bold mb-4'>Modal Title</h2>
+									<h2 className='text-xl font-bold mb-4 sm:text-base md:text-base xs:text-base'>
+										Modal Title
+									</h2>
 									<p>This is the modal content.</p>
 									<button
 										onClick={closeModal}

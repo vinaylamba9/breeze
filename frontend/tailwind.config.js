@@ -7,9 +7,9 @@ module.exports = {
 		extend: {
 			screens: {
 				xs: { min: "0px", max: "400px" },
-				sm: { min: "401px", max: "600px" },
-				md: { min: "601px", max: "1000px" },
-				lg: { min: "1001px", max: "1300px" },
+				sm: { min: "401px", max: "700px" },
+				md: { min: "701px", max: "1000px" },
+				lg: { min: "1000px", max: "1300px" },
 				xl: "1301px",
 				"2xl": "1551px",
 			},
