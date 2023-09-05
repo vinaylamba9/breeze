@@ -50,7 +50,7 @@ const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 				lazyLoadEmojis={true}
 				searchDisabled={true}
 				width={"100%"}
-				height={`${isMobile ? "300px" : "440px"} `}
+				height={`${isMobile ? "300px" : "300px"} `}
 				onEmojiClick={handleEmojiPicker}
 				emojiStyle={EmojiStyle.APPLE}
 			/>
