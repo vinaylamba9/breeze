@@ -20,13 +20,6 @@ const messageHandler = (socket, user, io) => {
 				socket.emit("getMessage", response);
 			}
 
-			// chat?.users?.forEach((item) => {
-			// 	if (item?._id !== user?.userId)
-			// 		socket
-			// 			.to(item?._id?.toString())
-			// 			.emit("unreadMessage", unreadMessageResponse);
-			// });
-
 			/** Recent chatlist */
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
 
@@ -48,10 +41,9 @@ const messageHandler = (socket, user, io) => {
 	});
 	socket.on("sendUnreadMessageNotification", async (msg) => {
 		const chat = msg?.chat;
+
 		const usersToSend = chat?.users?.filter(
-			(user) =>
-				user?._id?.toString() !== msg?.sender?._id?.toString() &&
-				user?._id?.toString()
+			(user) => user?._id !== msg?.sender?._id && user?._id
 		);
 		await CHAT_DB_UTILS.updateUnreadMessage(chat?._id, usersToSend);
 	});
