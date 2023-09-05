@@ -161,24 +161,29 @@ const ChatScreen = () => {
 		[loggedInUser]
 	);
 
-	const clearUnreadMessage = useCallback((item) => {}, []);
+	const clearUnreadMessage = useCallback(
+		(item) => {
+			const indexOfUnreadMsg = chatList?.findIndex(
+				(chat) => chat?._id === item?._id
+			);
+			if (!!chatList?.length > 0 && !!chatList[indexOfUnreadMsg]?.unreadMessage)
+				chatList[indexOfUnreadMsg].unreadMessage = item?.unreadMessage;
+		},
+		[chatList]
+	);
 
 	const onChangeChatsHandler = useCallback(
 		(item) => {
-			// clearNotificationByID(item);
 			hideProfile();
 			clearUserFromGroup();
 			setSelectedChat(item);
-
 			socket.emit("joinChat", item?._id);
 			socket.emit("checkUnreadMessage", {
 				chatID: item?._id,
 				loggedInID: loggedInUser?.userId,
 			});
-			// socket.emit("stopTyping", selectedChat?._id);
-			// setTyping(false);
 		},
-		[clearUserFromGroup, hideProfile, loggedInUser?.userId, setSelectedChat]
+		[clearUserFromGroup, hideProfile, loggedInUser, setSelectedChat]
 	);
 
 	/** -------- Chat Search Start --------------- */
@@ -202,7 +207,7 @@ const ChatScreen = () => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			} else {
-				socket.emit("sendUnreadMessageNotification");
+				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
 		});
 

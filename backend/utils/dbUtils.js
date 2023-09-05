@@ -258,6 +258,7 @@ const CHAT_DB_UTILS = {
 					"groupAdmin",
 					"-password -accountInItFrom -accountStatus -isVerified -createdAt -updatedAt -otp -otpValidTill"
 				);
+
 			return dbResponse;
 		} catch (error) {
 			return { msg: error, status: "NOT_FOUND" };
