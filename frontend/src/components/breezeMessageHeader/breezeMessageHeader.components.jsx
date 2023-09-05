@@ -66,29 +66,31 @@ const BreezeMessageHeader = ({
 				<div
 					className='flex items-center gap-2 justify-start cursor-pointer w-70%'
 					onClick={isActive ? hideActive : showActive}>
-					<BreezeAvatar
-						title={
-							selectedChat?.isGroupChat
-								? selectedChat?.chatName
-								: CHAT_UTILS?.getOtherSideUserName(
-										loggedInUser,
-										selectedChat?.users
-								  )
-						}
-						isActive={ARRAY_METHODS.isElementExist(
-							onlineUsers,
-							CHAT_UTILS.getOtherSideUserID(loggedInUser, selectedChat?.users)
-						)}
-						isGrouped={selectedChat?.isGroupChat}
-						profileImage={
-							selectedChat?.isGroupChat
-								? selectedChat?.groupImage
-								: CHAT_UTILS?.getOtherSideProfileImage(
-										loggedInUser,
-										selectedChat?.users
-								  )
-						}
-					/>
+					{isActive && isMobile ? null : (
+						<BreezeAvatar
+							title={
+								selectedChat?.isGroupChat
+									? selectedChat?.chatName
+									: CHAT_UTILS?.getOtherSideUserName(
+											loggedInUser,
+											selectedChat?.users
+									  )
+							}
+							isActive={ARRAY_METHODS.isElementExist(
+								onlineUsers,
+								CHAT_UTILS.getOtherSideUserID(loggedInUser, selectedChat?.users)
+							)}
+							isGrouped={selectedChat?.isGroupChat}
+							profileImage={
+								selectedChat?.isGroupChat
+									? selectedChat?.groupImage
+									: CHAT_UTILS?.getOtherSideProfileImage(
+											loggedInUser,
+											selectedChat?.users
+									  )
+							}
+						/>
+					)}
 					<div className='flex flex-col justify-start items-start'>
 						<h1 className='text-fontsize-brittle uppercase font-medium'>
 							{selectedChat?.isGroupChat
