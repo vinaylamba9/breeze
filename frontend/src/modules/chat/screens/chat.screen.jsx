@@ -402,7 +402,10 @@ const ChatScreen = () => {
 				)}
 			</div>
 
-			<div className={`${isActive ? "w-51%" : "flex-1 w-75%"}`}>
+			<div
+				className={`${
+					isActive ? "sm:hidden xs:hidden md:hidden w-51%" : "flex-1 w-75%"
+				}`}>
 				{!selectedChat && !isMobile ? (
 					<ChatNotFound />
 				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (
@@ -420,7 +423,8 @@ const ChatScreen = () => {
 				) : null}
 			</div>
 			{isActive && (
-				<div className={`bg-white h-screen flex-1`}>
+				<div
+					className={`bg-white h-screen  sm:w-100% xs:w-100% md:w-100% flex-1`}>
 					<BreezeInDisplaySidebar
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
