@@ -38,7 +38,7 @@ const BreezeSideDrawer = ({
 		};
 	}, [isOpen]);
 
-	const drawerClasses = ` mx-auto fixed inset-y-0 ${position} z-50 w-30% ${backgroundColor} shadow-xl ${
+	const drawerClasses = ` mx-auto fixed inset-y-0 ${position} z-50 w-30% xs:w-100% sm:w-100% md:w-100% ${backgroundColor} shadow-xl ${
 		isOpen ? "animate-slideIn" : "animate-slideOut"
 	}`;
 

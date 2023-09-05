@@ -4,7 +4,7 @@ const BreezeStepper = ({ stepperList, currentStep }) => {
 	return (
 		<div>
 			<BreezeDivider isDashed={true} />
-			<div className='flex justify-center items-center mx-auto mt-5'>
+			<div className='flex justify-center items-center mx-auto mt-5 '>
 				{stepperList?.map((step, i) => {
 					return (
 						<>

@@ -185,7 +185,10 @@ const StepperTwo = ({
 						</div>
 					</div>
 				)}
-				<div className={`mt-10 ${isEditGroup ? "w-100%" : "w-70%"} mx-auto`}>
+				<div
+					className={`mt-10 ${
+						isEditGroup ? "w-100%" : "w-70% xs:w-100% sm:w-100%"
+					} mx-auto`}>
 					<BreezeSearch
 						placeholder={"Search user"}
 						leadingIcon={
@@ -202,8 +205,8 @@ const StepperTwo = ({
 				</div>
 				<div
 					className={`mt-5 ${
-						isEditGroup ? "w-100%" : "w-70%"
-					} mx-auto flex flex-nowrap items-center justify-start overflow-x-scroll gap-1`}>
+						isEditGroup ? "w-100%" : "w-70% xs:w-100% sm:w-100%"
+					} mx-auto flex flex-nowrap items-center justify-start overflow-x-scroll gap-1 `}>
 					{selectedUser?.map((item) => (
 						<div key={item} className='flex-shrink-0'>
 							<BreezePills
@@ -226,7 +229,7 @@ const StepperTwo = ({
 						minHeight: "50vh",
 					}}>
 					<div
-						className='my-2 rounded-2xl flex flex-wrap gap-1 items-center justify-between'
+						className='my-2 rounded-2xl  flex flex-row  flex-wrap gap-1 items-center justify-start'
 						style={{
 							maxHeight: "45vh",
 							minHeight: "45vh",
@@ -237,7 +240,9 @@ const StepperTwo = ({
 						) : (
 							userList?.map((item, index) => {
 								return (
-									<div className='w-48%' key={"group_chat_users_" + index}>
+									<div
+										className='w-48% xs:w-100% sm:w-100%'
+										key={"group_chat_users_" + index}>
 										<BreezeTile
 											onClickHandler={
 												isEditGroup

@@ -34,35 +34,31 @@ const BreezeChatBox = ({
 	}, [setIsTyping]);
 
 	return (
-		<>
-			<div
-				style={{ height: "calc(100vh)", maxHeight: "calc(100vh)" }}
-				className=' flex flex-col justify-start items-center '>
-				<BreezeMessageHeader
-					isSelectedChatProfile={isSelectedChatProfile}
-					setSelectedChatProfile={setSelectedChatProfile}
-					fetchAgain={fetchAgain}
-					setFetchAgain={setFetchAgain}
-					isTyping={isTyping}
-				/>
-				<BreezeScrollableFeed
-					setEmojiPicker={setEmojiPicker}
-					showEmojiPicker={showEmojiPicker}
-					prevChat={prevChat}
-					isTyping={isTyping}
-				/>
-				<BreezeMessageFields
-					setEmojiPicker={setEmojiPicker}
-					showEmojiPicker={showEmojiPicker}
-					prevChat={prevChat}
-					setIsTyping={setIsTyping}
-					typing={typing}
-					setTyping={setTyping}
-					fetchAgain={fetchAgain}
-					setFetchAgain={setFetchAgain}
-				/>
-			</div>
-		</>
+		<div className='h-screen'>
+			<BreezeMessageHeader
+				isSelectedChatProfile={isSelectedChatProfile}
+				setSelectedChatProfile={setSelectedChatProfile}
+				fetchAgain={fetchAgain}
+				setFetchAgain={setFetchAgain}
+				isTyping={isTyping}
+			/>
+			<BreezeScrollableFeed
+				setEmojiPicker={setEmojiPicker}
+				showEmojiPicker={showEmojiPicker}
+				prevChat={prevChat}
+				isTyping={isTyping}
+			/>
+			<BreezeMessageFields
+				setEmojiPicker={setEmojiPicker}
+				showEmojiPicker={showEmojiPicker}
+				prevChat={prevChat}
+				setIsTyping={setIsTyping}
+				typing={typing}
+				setTyping={setTyping}
+				fetchAgain={fetchAgain}
+				setFetchAgain={setFetchAgain}
+			/>
+		</div>
 	);
 };
 

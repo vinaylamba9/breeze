@@ -22,6 +22,7 @@ import { BreezeSessionManagement } from "@Shared/services/sessionManagement.serv
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
+import useIsMobile from "@Shared/hooks/useMobile";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ const ChatScreen = () => {
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
 	const [searchChat, setSearchChat] = useState([]);
-
+	const isMobile = useIsMobile();
 	const {
 		setUserDetails,
 		clearUserFromGroup,
@@ -214,14 +215,14 @@ const ChatScreen = () => {
 		});
 	}, [clearUnreadMessage]);
 	return (
-		<div className='xs:w-100% sm:w-100% md:w-100% lg:w-100% xl:w-100%  flex items-start justify-start gap-0.5 h-screen'>
+		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div
-				className={` bg-white w-25%  ${
-					selectedChat
+				className={` bg-white   ${
+					selectedChat && isMobile
 						? "xs:w-0% sm:w-0% md:w-0%"
-						: "xs:w-100% sm:w-100% md:w-100%"
+						: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
 				}`}>
-				<header className='flex items-center  justify-between  truncate w-95% mx-auto my-5 '>
+				<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
 					<div className='flex justify-start items-center gap-5 '>
 						{!isSideMenu ? (
 							<div
@@ -401,13 +402,10 @@ const ChatScreen = () => {
 				)}
 			</div>
 
-			<div
-				className={`${isActive ? "w-51%" : "flex-1 xs:w-0% sm:w-0% md:w-0%"}`}>
-				{!selectedChat ? (
-					<div className='w-100%'>
-						<ChatNotFound />
-					</div>
-				) : (
+			<div className={`${isActive ? "w-51%" : "flex-1 w-75%"}`}>
+				{!selectedChat && !isMobile ? (
+					<ChatNotFound />
+				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (
 					<BreezeChatBox
 						typing={typing}
 						isTyping={isTyping}
@@ -419,7 +417,7 @@ const ChatScreen = () => {
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
 					/>
-				)}
+				) : null}
 			</div>
 			{isActive && (
 				<div className={`bg-white h-screen flex-1`}>

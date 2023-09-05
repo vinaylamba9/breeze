@@ -39,7 +39,7 @@ const StepperOne = ({ handleNext }) => {
 	}, [setValue, formDetails]);
 
 	return (
-		<div className='mt-5 w-60% mx-auto'>
+		<div className='mt-5 w-60% sm:w-100% md:w-100% xs:w-100% mx-auto '>
 			<BreezeImageUpload setGroupImageURL={setGroupImageURL} />
 			<div className='mt-5 w-100% '>
 				<div className='my-5'>
@@ -64,7 +64,7 @@ const StepperOne = ({ handleNext }) => {
 						}}
 						placeholder='Group name'
 						required
-						iconStyle={"cursor-pointer absolute right-60"}
+						// iconStyle={"cursor-pointer absolute right-60"}
 					/>
 				</div>
 				<div className='my-5'>
@@ -84,7 +84,7 @@ const StepperOne = ({ handleNext }) => {
 							setFormDetails({ ...formDetails, bio: e.target.value });
 						}}
 						placeholder='Group bio'
-						iconStyle={"cursor-pointer absolute right-60"}
+						// iconStyle={"cursor-pointer absolute right-60"}
 					/>
 				</div>
 			</div>

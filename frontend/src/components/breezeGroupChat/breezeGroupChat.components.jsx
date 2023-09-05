@@ -35,9 +35,9 @@ const BreezeGroupChat = ({ closeModal }) => {
 	];
 	return (
 		<>
-			<div className='w-90% mx-auto select-none'>
+			<div className='w-90% mx-auto select-none sm:w-95% md:w-95% xs:w-95%'>
 				<div className='mb-5'>
-					<h2 className='text-fontsize-pearl text-black font-bold'>
+					<h2 className='text-fontsize-pearl text-black font-bold sm:text-lg md:text-lg xs:text-lg'>
 						Create group chat
 					</h2>
 
