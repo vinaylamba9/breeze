@@ -63,7 +63,7 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 				maxHeight: showEmojiPicker
 					? isMobile
 						? "calc(100vh - 460px)"
-						: "calc(100vh - 600px)"
+						: "calc(100vh - 460px)"
 					: "calc(100vh - 156px)",
 				backgroundPosition: "0 0,14px 14px",
 				backgroundImage:
@@ -71,7 +71,7 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 				height: showEmojiPicker
 					? isMobile
 						? "calc(100vh - 460px)"
-						: "calc(100vh - 600px)"
+						: "calc(100vh - 460px)"
 					: "calc(100vh - 156px)",
 			}}>
 			<div
