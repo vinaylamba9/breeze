@@ -1,6 +1,8 @@
+import useIsMobile from "@Shared/hooks/useMobile";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 
 const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
+	const isMobile = useIsMobile();
 	const handleEmojiPicker = (emojiData) => {
 		// e?.preventDefault();
 		const { emoji } = emojiData;
@@ -48,7 +50,7 @@ const BreezeEmojiPicker = ({ setMessage, msgBoxRef }) => {
 				lazyLoadEmojis={true}
 				searchDisabled={true}
 				width={"100%"}
-				previewConfig={{}}
+				height={`${isMobile ? "300px" : "440px"} `}
 				onEmojiClick={handleEmojiPicker}
 				emojiStyle={EmojiStyle.APPLE}
 			/>
