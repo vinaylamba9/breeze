@@ -76,12 +76,13 @@ const OTPScreen = () => {
 		<div className='flex flex-col animate-fadeIn'>
 			<ToastContainer />
 
-			<div className='mt-2 cursor-pointer'>
+			<div className='mt-2 ml-5 cursor-pointer flex justify-start items-center gap-3'>
 				<img
 					alt='breeze_logo'
-					width={150}
-					src='https://res.cloudinary.com/dtjqyp0r2/image/upload/v1690743542/Black_logo_-_no_background_cwsfs5.png'
+					width={60}
+					src='https://res.cloudinary.com/dtjqyp0r2/image/upload/v1693998223/breeze_kawnis.png'
 				/>
+				<h1 className='text-fontsize-tough font-semibold'>Breeze</h1>
 			</div>
 			<center>
 				<div

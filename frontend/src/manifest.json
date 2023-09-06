@@ -1,7 +1,0 @@
-{
-	"name": "Breeze",
-	"short_name": "Breeze",
-	"start_url": "/login",
-	"display": "fullscreen",
-	"orientation": "portrait"
-}
