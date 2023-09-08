@@ -56,6 +56,35 @@ export const DATE_UTILS = {
 		DATE_UTILS?.prefixZeroInTime(new Date(dateTime)?.getMinutes()) +
 		" " +
 		DATE_UTILS.AMPM(new Date(dateTime)?.getHours()),
+	isToday: (date) => {
+		const today = new Date();
+		const dateFormat = new Date(date);
+		return (
+			dateFormat?.getDate() === today?.getDate() &&
+			dateFormat?.getMonth() === today?.getMonth() &&
+			dateFormat?.getFullYear() === today?.getFullYear()
+		);
+	},
+	isYesterday: (date) => {
+		const yesterday = new Date();
+		const dateFormat = new Date(date);
+		yesterday.setDate(yesterday.getDate() - 1);
+		return (
+			dateFormat?.getDate() === yesterday?.getDate() &&
+			dateFormat?.getMonth() === yesterday?.getMonth() &&
+			dateFormat?.getFullYear() === yesterday?.getFullYear()
+		);
+	},
+	checkDate: (targetDate) => {
+		switch (true) {
+			case DATE_UTILS.isToday(targetDate):
+				return "TODAY";
+			case DATE_UTILS.isYesterday(targetDate):
+				return "YESTERDAY";
+			default:
+				return DATE_UTILS.getDate(targetDate);
+		}
+	},
 };
 
 export const ARRAY_METHODS = {

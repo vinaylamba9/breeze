@@ -28,7 +28,7 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 					<div
 						className='  text-xs  mx-auto date-sticky bg-gray-500 px-3 rounded-2xl text-center drop-shadow-md  tracking-wider text-white  py-1.5  top-3  z-10'
 						ref={stickyDateRef}>
-						{DATE_UTILS?.getDate(msg?.createdAt)}
+						{DATE_UTILS?.checkDate(msg?.createdAt)}
 					</div>
 				</div>
 			);
