@@ -198,6 +198,12 @@ const ChatScreen = () => {
 	);
 
 	/** -------- Chat Search Start --------------- */
+	/**
+	 * @Function (onSearchChat)
+	 * @param {*} e:any
+	 * @returns {} It will search on the name field and returns the filtered Value.
+	 */
+
 	const onSearchChat = (e) => {
 		let filteredData = chatList.filter((item) => {
 			const name = item?.isGroupChat
