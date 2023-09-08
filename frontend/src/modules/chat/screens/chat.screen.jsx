@@ -43,13 +43,14 @@ const ChatScreen = () => {
 		isActive,
 		selectedChat,
 		setSelectedChat,
-		notificationList,
+
 		showSidebarMenu,
 		hideSidebarMenu,
 		isSideMenu,
 		setNewMessages,
 		newMessages,
-		setNotification,
+		isProfile,
+
 		hideProfile,
 		onlineUsers,
 		setOnlineUsers,
@@ -62,13 +63,13 @@ const ChatScreen = () => {
 		setChatList: state?.setChatList,
 		clearChatList: state?.clearChatList,
 		loggedInUser: state?.loggedInUser,
+		isProfile: state?.isProfile,
 		isActive: state?.isActive,
 		hideProfile: state?.hideProfile,
 		setUserDetails: state?.setUserDetails,
 		selectedChat: state?.selectedChat,
 		setSelectedChat: state?.setSelectedChat,
-		notificationList: state?.notificationList,
-		setNotification: state?.setNotification,
+
 		setNewMessages: state?.setNewMessages,
 		newMessages: state?.newMessages,
 		onlineUsers: state?.onlineUsers,
@@ -176,6 +177,7 @@ const ChatScreen = () => {
 	const onChangeChatsHandler = useCallback(
 		(item) => {
 			hideProfile();
+			isMobile && hideSidebarMenu();
 			clearUserFromGroup();
 			setSelectedChat(item);
 			socket.emit("joinChat", item?._id);
@@ -185,7 +187,14 @@ const ChatScreen = () => {
 					loggedInID: loggedInUser?.userId,
 				});
 		},
-		[clearUserFromGroup, hideProfile, loggedInUser, setSelectedChat]
+		[
+			isMobile,
+			clearUserFromGroup,
+			hideSidebarMenu,
+			hideProfile,
+			loggedInUser,
+			setSelectedChat,
+		]
 	);
 
 	/** -------- Chat Search Start --------------- */
@@ -225,8 +234,8 @@ const ChatScreen = () => {
 		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div
 				className={` bg-white   ${
-					selectedChat && isMobile
-						? "xs:w-0% sm:w-0% md:w-0%"
+					(selectedChat && isMobile) || (isMobile && isProfile)
+						? "xs:hidden sm:hidden md:hidden"
 						: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
 				}`}>
 				<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
@@ -429,7 +438,7 @@ const ChatScreen = () => {
 					/>
 				) : null}
 			</div>
-			{isActive && (
+			{(isActive || isProfile) && (
 				<div
 					className={`bg-white h-screen  sm:w-100% xs:w-100% md:w-100% flex-1`}>
 					<BreezeInDisplaySidebar

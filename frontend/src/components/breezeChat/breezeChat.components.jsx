@@ -24,17 +24,11 @@ const BreezeChat = ({ showPill, stickyMsgPillRef, stickyDateRef }) => {
 	const msgDividerComponent = useCallback(
 		(msg) => {
 			return (
-				<div className='flex justify-between items-center w-90% mx-auto gap-4'>
-					<div className='w-100%'>
-						<BreezeDivider borderColor={"border-gray-200"} isDashed={true} />
-					</div>
+				<div className='flex justify-center items-center w-90% mx-auto gap-4'>
 					<div
-						className='  text-sm font-medium mx-auto date-sticky  text-center    text-gray-500  p-2  top-3  z-10'
+						className='  text-xs  mx-auto date-sticky bg-gray-500 px-3 rounded-2xl text-center drop-shadow-md  tracking-wider text-white  py-1.5  top-3  z-10'
 						ref={stickyDateRef}>
 						{DATE_UTILS?.getDate(msg?.createdAt)}
-					</div>
-					<div className='w-100%'>
-						<BreezeDivider borderColor={"border-gray-200"} isDashed={true} />
 					</div>
 				</div>
 			);

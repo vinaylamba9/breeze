@@ -86,7 +86,7 @@ module.exports = (_, argv) => ({
 			},
 		}),
 		new HtmlWebPackPlugin({
-			template: "./src/index.html",
+			template: "./public/index.html",
 		}),
 		new webpack.DefinePlugin({
 			"process.env": JSON.stringify(process.env),

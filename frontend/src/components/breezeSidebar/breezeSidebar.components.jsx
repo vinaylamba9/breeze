@@ -20,14 +20,12 @@ const BreezeSidebar = () => {
 		showActive,
 		showProfile,
 		onlineUsers,
-		setOnlineUsers,
 	} = useCombinedStore((state) => ({
 		loggedInUser: state?.loggedInUser,
 		showActive: state?.showActive,
 		showProfile: state?.showProfile,
 		clearLoggedInUser: state?.clearLoggedInUser,
 		onlineUsers: state?.onlineUsers,
-		setOnlineUsers: state?.setOnlineUsers,
 	}));
 	const navigate = useNavigate();
 	const onLogoutHandler = useCallback(() => {
