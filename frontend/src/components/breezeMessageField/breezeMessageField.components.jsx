@@ -19,8 +19,10 @@ const BreezeMessageFields = ({
 	showEmojiPicker,
 	setEmojiPicker,
 }) => {
-	const { selectedChat } = useCombinedStore((state) => ({
+	const { selectedChat, isActive, isProfile } = useCombinedStore((state) => ({
 		selectedChat: state?.selectedChat,
+		isActive: state?.isActive,
+		isProfile: state?.isProfile,
 	}));
 	const [message, setMessage] = useState(null);
 	const toggleEmojiPicker = () => {
@@ -61,6 +63,7 @@ const BreezeMessageFields = ({
 			}
 			if (!e?.shiftKey && e?.which === 13 && message?.length > 0) {
 				e.preventDefault();
+				setEmojiPicker(false);
 				socket.emit("stopTyping", selectedChat?._id);
 				e.target.innerText = "";
 				setMessage(null);
@@ -71,7 +74,7 @@ const BreezeMessageFields = ({
 				});
 			} else typingIndicatorHandler(e);
 		},
-		[message, selectedChat?._id, typingIndicatorHandler]
+		[message, setEmojiPicker, selectedChat?._id, typingIndicatorHandler]
 	);
 	const sendMessageOnMobile = useCallback(
 		async (e) => {
@@ -80,6 +83,7 @@ const BreezeMessageFields = ({
 				return;
 			}
 			if (message?.length > 0) {
+				setEmojiPicker(false);
 				e.preventDefault();
 				socket.emit("stopTyping", selectedChat?._id);
 				e.target.innerText = "";
@@ -91,7 +95,7 @@ const BreezeMessageFields = ({
 				});
 			} else typingIndicatorHandler(e);
 		},
-		[message, selectedChat?._id, typingIndicatorHandler]
+		[message, setEmojiPicker, selectedChat?._id, typingIndicatorHandler]
 	);
 
 	useEffect(() => {
@@ -119,7 +123,14 @@ const BreezeMessageFields = ({
 					/>
 				</span>
 			)}
-			<div className=' transition-all duration-300 ease-in-out  bg-white rounded-tl  py-4 w-100% '>
+			<div
+				className={` transition-all duration-300 ease-in-out  bg-white rounded-tl  py-2 absolute bottom-0 ${
+					isMobile
+						? "w-100%"
+						: isActive || isProfile
+						? " w-48.5%"
+						: "sm:w-0% xs:w-0% md:w-0% lg:w-69%  w-71%"
+				} `}>
 				<div className=' w-98% mx-auto flex justify-start items-start '>
 					<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
 						<BreezeTooltip id={"emoticons"}>
@@ -162,15 +173,24 @@ const BreezeMessageFields = ({
 						mx-auto px-4 py-3 overflow-y-auto text-gray-900 '
 						contentEditable
 						suppressContentEditableWarning
-						placeholder='Type a message'
+						placeholder={
+							msgBoxRef?.current?.innerText?.length === 0 && "Type a message"
+						}
 						title='Type a message'
 						tabIndex={10}
 						spellCheck></div>
-					<div
-						className={`${
-							!isMobile ? "py-2" : "py-0"
-						} mx-1  cursor-pointer text-center flex items-end`}>
-						{isMobile ? (
+					<div className={` mx-1  cursor-pointer text-center flex items-end`}>
+						<div
+							className='p-3 rounded-full bg-gray-200 cursor-pointer ease-in-out duration-300 '
+							onClick={sendMessageOnMobile}>
+							<MdSend
+								style={{
+									color: `var(--background-color-black)`,
+									fontSize: `var(--fontsize-trim)`,
+								}}
+							/>
+						</div>
+						{/* {isMobile ? (
 							<div
 								className='p-3 rounded-full bg-gray-200 cursor-pointer ease-in-out duration-300 '
 								onClick={sendMessageOnMobile}>
@@ -187,7 +207,7 @@ const BreezeMessageFields = ({
 									<MdOutlineKeyboardArrowUp className='text-gray-900 text-fontsize-trim' />
 								</span>
 							</BreezeTooltip>
-						)}
+						)} */}
 					</div>
 				</div>
 			</div>

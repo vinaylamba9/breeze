@@ -198,6 +198,12 @@ const ChatScreen = () => {
 	);
 
 	/** -------- Chat Search Start --------------- */
+	/**
+	 * @Function (onSearchChat)
+	 * @param {*} e:any
+	 * @returns {} It will search on the name field and returns the filtered Value.
+	 */
+
 	const onSearchChat = (e) => {
 		let filteredData = chatList.filter((item) => {
 			const name = item?.isGroupChat
@@ -235,7 +241,7 @@ const ChatScreen = () => {
 			<div
 				className={` bg-white   ${
 					(selectedChat && isMobile) || (isMobile && isProfile)
-						? "xs:hidden sm:hidden md:hidden"
+						? "xs:hidden sm:hidden md:hidden xl:hidden lg:hidden 2xl:hidden"
 						: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
 				}`}>
 				<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
@@ -420,7 +426,11 @@ const ChatScreen = () => {
 
 			<div
 				className={`${
-					isActive ? "sm:hidden xs:hidden md:hidden w-51%" : "flex-1 w-75%"
+					isActive
+						? "sm:hidden xs:hidden md:hidden w-51%"
+						: isMobile
+						? "lg:hidden xl:hidden 2xl:hidden flex-1 w-100%"
+						: "flex-1 w-75%"
 				}`}>
 				{!selectedChat && !isMobile ? (
 					<ChatNotFound />

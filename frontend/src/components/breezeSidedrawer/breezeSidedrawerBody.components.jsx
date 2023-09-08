@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
@@ -16,6 +16,7 @@ import useCombinedStore from "@Zustand/store/store";
 import { ARRAY_METHODS } from "@/shared/utils/basic.utils";
 const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 	const { userList, setUserList } = useChatState();
+	const [searchUser, setSearchUser] = useState([]);
 	const {
 		chatList,
 		setSelectedChat,
@@ -62,6 +63,28 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 		[chatList, onClose, setChatList, setNewMessages, setSelectedChat]
 	);
 
+	/** -------- User Search Start --------------- */
+	/**
+	 * @Function (onSearchUser)
+	 * @param {*} e:any
+	 * @returns {} It will search on the name and email field and returns the filtered Value.
+	 */
+
+	const onSearchUser = (e) => {
+		let filteredData = userList.filter((item) => {
+			return (
+				item?.name?.toLowerCase()?.includes(e.target.value.toLowerCase()) ||
+				item?.email?.toLowerCase()?.includes(e.target.value.toLowerCase())
+			);
+		});
+		setSearchUser([...filteredData]);
+	};
+
+	const searchedMemo = useMemo(
+		() => (searchUser && searchUser?.length > 0 ? searchUser : userList),
+		[userList, searchUser]
+	);
+	/** -------- User Search End --------------- */
 	useEffect(() => {
 		getAllUsers();
 	}, [getAllUsers]);
@@ -126,6 +149,7 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 
 			<div className='w-95% mx-auto mt-5 mb-2'>
 				<BreezeSearch
+					onChangeHandler={onSearchUser}
 					placeholder={"Search user"}
 					leadingIcon={
 						<BiSearch
@@ -150,34 +174,33 @@ const BreezeSideDrawerBody = ({ onClose, onModalClose, onModalOpen }) => {
 							maxHeight: "78vh",
 							overflowY: "scroll",
 						}}>
-						{userList?.length > 0 &&
-							userList?.map((item, index) => {
-								return (
-									<>
-										{alphabetsHandler(index, item)}
-										<div key={`add_user_${index}`}>
-											<BreezeTile
-												onClickHandler={() => onCreateChatHandler(item?._id)}
-												title={item?.name}
-												imgBackgroundColor={item?.imgBackgroundColor}
-												msg={item?.msg}
-												isActive={ARRAY_METHODS.isElementExist(
-													onlineUsers,
-													item?._id
-												)}
-												isGrouped={item?.isGrouped}
-												profileImage={item?.profileImage}
-												isNotification={item?.isNotification}
-												bio={item?.bio}
-												email={item?.email}
-												styleClass={
-													"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
-												}
-											/>
-										</div>
-									</>
-								);
-							})}
+						{searchedMemo?.map((item, index) => {
+							return (
+								<>
+									{alphabetsHandler(index, item)}
+									<div key={`add_user_${index}`}>
+										<BreezeTile
+											onClickHandler={() => onCreateChatHandler(item?._id)}
+											title={item?.name}
+											imgBackgroundColor={item?.imgBackgroundColor}
+											msg={item?.msg}
+											isActive={ARRAY_METHODS.isElementExist(
+												onlineUsers,
+												item?._id
+											)}
+											isGrouped={item?.isGrouped}
+											profileImage={item?.profileImage}
+											isNotification={item?.isNotification}
+											bio={item?.bio}
+											email={item?.email}
+											styleClass={
+												"bg-white w-95% mx-auto  py-4 rounded-2xl transform  hover:bg-gray-100 transition duration-300 ease-in-out"
+											}
+										/>
+									</div>
+								</>
+							);
+						})}
 					</div>
 				) : null}
 			</div>
