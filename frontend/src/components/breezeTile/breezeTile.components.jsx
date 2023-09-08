@@ -101,7 +101,10 @@ const BreezeTile = ({
 							</div>
 						)}
 						{lastMessageTime ? (
-							<div className='font-black text-center text-fontsize-small  text-gray-500 '>
+							<div
+								className={`font-black text-center text-fontsize-small  ${
+									unreadMessageCount ? "text-green-500" : "text-gray-500 "
+								}`}>
 								{lastMessageTime}
 							</div>
 						) : null}

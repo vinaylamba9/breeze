@@ -2,7 +2,6 @@ import { CHAT_UTILS } from "@Shared/utils/chat.utils";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { useCallback, useEffect } from "react";
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
-import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
 import useCombinedStore from "@Zustand/store/store";
 import { socket } from "@Socket/socket";
 
