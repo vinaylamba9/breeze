@@ -4,11 +4,13 @@ import {
 	MdOutlineEmojiEmotions,
 	MdOutlineKeyboardArrowUp,
 	MdOutlineAttachFile,
+	MdSend,
 } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeEmojiPicker from "@Components/breezeEmojiPicker/breezeEmojiPicker";
+import useIsMobile from "@Shared/hooks/useMobile";
 
 const BreezeMessageFields = ({
 	prevChat,
@@ -24,7 +26,7 @@ const BreezeMessageFields = ({
 	const toggleEmojiPicker = () => {
 		setEmojiPicker(!showEmojiPicker);
 	};
-
+	const isMobile = useIsMobile();
 	const msgBoxRef = useRef(null);
 	const typingIndicatorHandler = useCallback(
 		(e) => {
@@ -58,6 +60,26 @@ const BreezeMessageFields = ({
 				return;
 			}
 			if (!e?.shiftKey && e?.which === 13 && message?.length > 0) {
+				e.preventDefault();
+				socket.emit("stopTyping", selectedChat?._id);
+				e.target.innerText = "";
+				setMessage(null);
+
+				socket.emit("sendMessage", {
+					content: message,
+					chatID: selectedChat?._id,
+				});
+			} else typingIndicatorHandler(e);
+		},
+		[message, selectedChat?._id, typingIndicatorHandler]
+	);
+	const sendMessageOnMobile = useCallback(
+		async (e) => {
+			if (message?.trim()?.length === 0) {
+				e?.preventDefault();
+				return;
+			}
+			if (message?.length > 0) {
 				e.preventDefault();
 				socket.emit("stopTyping", selectedChat?._id);
 				e.target.innerText = "";
@@ -135,7 +157,7 @@ const BreezeMessageFields = ({
 							userSelect: "text",
 						}}
 						onInput={(e) => setMessage(e?.target?.innerText)}
-						onKeyDown={sendMessageHandler}
+						onKeyDown={!isMobile ? sendMessageHandler : null}
 						className='  bg-gray-100 text-md w-100%  rounded-2xl 
 						mx-auto px-4 py-3 overflow-y-auto text-gray-900 '
 						contentEditable
@@ -144,12 +166,28 @@ const BreezeMessageFields = ({
 						title='Type a message'
 						tabIndex={10}
 						spellCheck></div>
-					<div className=' py-2 mx-1  cursor-pointer text-center flex items-end'>
-						<BreezeTooltip id={"editor"}>
-							<span data-tooltip-id='editor' data-tooltip-content='Editor'>
-								<MdOutlineKeyboardArrowUp className='text-gray-900 text-fontsize-trim' />
-							</span>
-						</BreezeTooltip>
+					<div
+						className={`${
+							!isMobile ? "py-2" : "py-0"
+						} mx-1  cursor-pointer text-center flex items-end`}>
+						{isMobile ? (
+							<div
+								className='p-3 rounded-full bg-gray-200 cursor-pointer ease-in-out duration-300 '
+								onClick={sendMessageOnMobile}>
+								<MdSend
+									style={{
+										color: `var(--background-color-black)`,
+										fontSize: `var(--fontsize-trim)`,
+									}}
+								/>
+							</div>
+						) : (
+							<BreezeTooltip id={"editor"}>
+								<span data-tooltip-id='editor' data-tooltip-content='Editor'>
+									<MdOutlineKeyboardArrowUp className='text-gray-900 text-fontsize-trim' />
+								</span>
+							</BreezeTooltip>
+						)}
 					</div>
 				</div>
 			</div>

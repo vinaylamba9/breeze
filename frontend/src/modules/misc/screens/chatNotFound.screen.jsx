@@ -3,7 +3,7 @@ const ChatNotFound = ({ isLoading }) => {
 		!isLoading && (
 			<div
 				style={{ height: "calc(100vh)", maxHeight: "calc(100vh)" }}
-				className='bg-white xs:w-0% sm:w-0% md:w-0%  lg:w-100% xl:w-100% flex flex-col  '>
+				className='bg-white xs:hidden sm:hidden md:hidden  lg:w-100% xl:w-100% flex flex-col  '>
 				<div
 					style={{ height: "calc(95vh)", maxHeight: "calc(95vh)" }}
 					className='  flex flex-col items-center justify-center gap-10 '>
