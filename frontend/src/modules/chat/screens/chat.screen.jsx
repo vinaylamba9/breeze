@@ -155,12 +155,12 @@ const ChatScreen = () => {
 	const unreadMessageCountHandler = useCallback(
 		(item) => {
 			const count = item?.unreadMessage?.filter((msg) => {
-				return msg === loggedInUser?.userId;
+				return msg === loggedInUser?.userId && msg;
 			});
-
+			console.log("--called count---", count);
 			return selectedChat?._id !== item?._id ? count?.length : 0;
 		},
-		[loggedInUser, selectedChat]
+		[loggedInUser?.userId, selectedChat]
 	);
 
 	const clearUnreadMessage = useCallback(
@@ -224,11 +224,15 @@ const ChatScreen = () => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
 			} else {
+				console.log("-called notification");
 				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
 		});
 
-		return () => socket.off("getMessage");
+		return () => {
+			socket.off("getMessage");
+			socket.off("sendUnreadMessageNotification");
+		};
 	}, [newMessages, selectedChat, setNewMessages]);
 
 	useEffect(() => {

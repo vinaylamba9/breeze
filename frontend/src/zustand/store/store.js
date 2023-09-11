@@ -20,7 +20,6 @@ const useCombinedStore = create((...set) => ({
 	...useNotification(...set),
 	...useNewMessage(...set),
 	...useOnlineUsers(...set),
-
 	...useSidebarMenu(...set),
 }));
 

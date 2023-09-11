@@ -31,7 +31,7 @@ const BreezeTile = ({
 			<div
 				onClick={onClickHandler}
 				className={`flex my-4 cursor-pointer 
-                    justify-start items-center ${styleClass}  `}>
+                    justify-start items-center ${styleClass} hover:py-5 hover:bg-gray-100 `}>
 				<div className={` m-auto w-95%  flex items-start justify-between `}>
 					<div
 						className='flex w-80%  items-start justify-start 

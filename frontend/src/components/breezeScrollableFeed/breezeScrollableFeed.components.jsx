@@ -5,7 +5,6 @@ import useIsMobile from "@Shared/hooks/useMobile";
 
 const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 	const chatContainerRef = useRef(null);
-	const stickyMsgPillRef = useRef(null);
 	const timeoutRef = useRef(null);
 	const [showPill, setShowPill] = useState(false);
 	const { selectedChat, newMessages } = useCombinedStore((state) => ({
@@ -13,9 +12,6 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 		newMessages: state?.newMessages,
 	}));
 	const isMobile = useIsMobile();
-	useEffect(() => {
-		scrollToRecent();
-	}, [newMessages]);
 
 	useEffect(() => {
 		scrollToRecent();
@@ -56,7 +52,7 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 
 	return (
 		<div
-			className='w-full  '
+			className='w-full'
 			style={{
 				backgroundColor: "#F3F4F6 ",
 				backgroundSize: "28px 28px",
@@ -65,9 +61,9 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 						? "calc(100vh - 465px)"
 						: "calc(100vh - 465px)"
 					: "calc(100vh - 160px)",
-				backgroundPosition: "0 0,14px 14px",
+				backgroundPosition: "0 0 28px 28px",
 				backgroundImage:
-					"radial-gradient(#8c49d3 0.7000000000000001px, #F3F4F6 0.7000000000000001px)",
+					"radial-gradient(#000000 0.7000000000000001px, #F3F4F6 0.7000000000000001px)",
 				height: showEmojiPicker
 					? isMobile
 						? "calc(100vh - 465px)"
@@ -79,11 +75,7 @@ const BreezeScrollableFeed = ({ showEmojiPicker, setEmojiPicker }) => {
 				className='w-95% mx-auto overflow-y-auto'
 				style={{ maxHeight: "100%" }}
 				ref={chatContainerRef}>
-				<BreezeChat
-					showPill={showPill}
-					stickyMsgPillRef={stickyMsgPillRef}
-					stickyDateRef={stickyDateRef}
-				/>
+				<BreezeChat showPill={showPill} stickyDateRef={stickyDateRef} />
 			</div>
 		</div>
 	);
