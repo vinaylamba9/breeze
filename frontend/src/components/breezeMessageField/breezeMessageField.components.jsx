@@ -76,27 +76,27 @@ const BreezeMessageFields = ({
 		},
 		[message, setEmojiPicker, selectedChat?._id, typingIndicatorHandler]
 	);
-	const sendMessageOnMobile = useCallback(
-		async (e) => {
-			if (message?.trim()?.length === 0) {
-				e?.preventDefault();
-				return;
-			}
-			if (message?.length > 0) {
-				setEmojiPicker(false);
-				e.preventDefault();
-				socket.emit("stopTyping", selectedChat?._id);
-				e.target.innerText = "";
-				setMessage(null);
+	// const sendMessageOnMobile = useCallback(
+	// 	async (e) => {
+	// 		if (message?.trim()?.length === 0) {
+	// 			e?.preventDefault();
+	// 			return;
+	// 		}
+	// 		if (message?.length > 0) {
+	// 			setEmojiPicker(false);
+	// 			e.preventDefault();
+	// 			socket.emit("stopTyping", selectedChat?._id);
+	// 			e.target.innerText = "";
+	// 			setMessage(null);
 
-				socket.emit("sendMessage", {
-					content: message,
-					chatID: selectedChat?._id,
-				});
-			} else typingIndicatorHandler(e);
-		},
-		[message, setEmojiPicker, selectedChat?._id, typingIndicatorHandler]
-	);
+	// 			socket.emit("sendMessage", {
+	// 				content: message,
+	// 				chatID: selectedChat?._id,
+	// 			});
+	// 		} else typingIndicatorHandler(e);
+	// 	},
+	// 	[message, setEmojiPicker, selectedChat?._id, typingIndicatorHandler]
+	// );
 
 	useEffect(() => {
 		let tempRef = msgBoxRef.current;
@@ -128,8 +128,8 @@ const BreezeMessageFields = ({
 					isMobile
 						? "w-100%"
 						: isActive || isProfile
-						? " w-48.5%"
-						: "sm:w-0% xs:w-0% md:w-0% lg:w-69%  w-71%"
+						? " w-48.5 xl:w-48.6%"
+						: "sm:w-0% xs:w-0% md:w-0% lg:w-69% xl:w-71% w-71%"
 				} `}>
 				<div className=' w-98% mx-auto flex justify-start items-start '>
 					<div className='mx-1 py-2  cursor-pointer text-center rounded-full flex items-end'>
@@ -182,7 +182,8 @@ const BreezeMessageFields = ({
 					<div className={` mx-1  cursor-pointer text-center flex items-end`}>
 						<div
 							className='p-3 rounded-full bg-gray-200 cursor-pointer ease-in-out duration-300 '
-							onClick={sendMessageOnMobile}>
+							// onClick={sendMessageOnMobile}
+						>
 							<MdSend
 								style={{
 									color: `var(--background-color-black)`,
