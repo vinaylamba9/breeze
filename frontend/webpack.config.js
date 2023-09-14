@@ -71,7 +71,9 @@ module.exports = (_, argv) => ({
 		new ModuleFederationPlugin({
 			name: "frontend",
 			filename: "remoteEntry.js",
-			remotes: {},
+			remotes: {
+				feed: "feed@https://breeze-feed.vercel.app/remoteEntry.js",
+			},
 			exposes: {},
 			shared: {
 				...deps,
