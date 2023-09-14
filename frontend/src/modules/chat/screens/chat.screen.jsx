@@ -23,6 +23,7 @@ import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
 import useIsMobile from "@Shared/hooks/useMobile";
+
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -69,7 +70,6 @@ const ChatScreen = () => {
 		setUserDetails: state?.setUserDetails,
 		selectedChat: state?.selectedChat,
 		setSelectedChat: state?.setSelectedChat,
-
 		setNewMessages: state?.setNewMessages,
 		newMessages: state?.newMessages,
 		onlineUsers: state?.onlineUsers,
@@ -157,7 +157,6 @@ const ChatScreen = () => {
 			const count = item?.unreadMessage?.filter((msg) => {
 				return msg === loggedInUser?.userId && msg;
 			});
-			console.log("--called count---", count);
 			return selectedChat?._id !== item?._id ? count?.length : 0;
 		},
 		[loggedInUser?.userId, selectedChat]
@@ -186,14 +185,17 @@ const ChatScreen = () => {
 					chatID: item?._id,
 					loggedInID: loggedInUser?.userId,
 				});
+
+			// selectedChat?._id !== item?._id &&
+			// 	socket.emit("leaveChat", selectedChat?._id);
 		},
 		[
-			isMobile,
-			clearUserFromGroup,
-			hideSidebarMenu,
 			hideProfile,
-			loggedInUser,
+			isMobile,
+			hideSidebarMenu,
+			clearUserFromGroup,
 			setSelectedChat,
+			loggedInUser?.userId,
 		]
 	);
 
@@ -223,10 +225,11 @@ const ChatScreen = () => {
 		socket.on("getMessage", (newMsgRecieved) => {
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
 				setNewMessages([...newMessages, newMsgRecieved]);
-			} else {
-				console.log("-called notification");
-				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
+			// else {
+			// 	// console.log("-here- notificaton");
+			// 	// socket.emit("sendUnreadMessageNotification", newMsgRecieved);
+			// }
 		});
 
 		return () => {

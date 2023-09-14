@@ -69,7 +69,7 @@ const BreezeMessageFields = ({
 				setMessage(null);
 
 				socket.emit("sendMessage", {
-					content: message,
+					content: message?.replace(/\s+\n/g, "\n").trim(),
 					chatID: selectedChat?._id,
 				});
 			} else typingIndicatorHandler(e);

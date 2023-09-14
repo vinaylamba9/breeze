@@ -2,6 +2,11 @@ const { CHAT_DB_UTILS, MESSAGE_DB_UTILS } = require("../../utils/dbUtils");
 const messageHandler = (socket, user, io) => {
 	socket.on("sendMessage", async (obj) => {
 		try {
+			// console.log("--message sent to this room---", obj?.chatID);
+			console.log(
+				"----users active in the room--- ",
+				io.sockets.adapter.rooms.get(obj?.chatID)
+			);
 			const response = await MESSAGE_DB_UTILS?.createMessage({
 				sender: user?.userId,
 				content: obj?.content,
@@ -12,9 +17,8 @@ const messageHandler = (socket, user, io) => {
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
 
-			chat?.users?.forEach((item) => {
-				socket.to(item?._id?.toString()).emit("getMessage", response);
-			});
+			//send to particular chat [ room ]
+			socket.broadcast.to(obj?.chatID).emit("getMessage", response);
 			// Additionally, if you want to send the message to the current user (if the condition is met), you can use this:
 			if (chat?.users?.some((item) => item?._id?.toString() === user?.userId)) {
 				socket.emit("getMessage", response);
@@ -41,7 +45,7 @@ const messageHandler = (socket, user, io) => {
 	});
 	socket.on("sendUnreadMessageNotification", async (msg) => {
 		const chat = msg?.chat;
-
+		// console.log(chat, "-chat");
 		const usersToSend = chat?.users?.filter(
 			(item) =>
 				item?._id?.toString() !== msg?.sender?._id?.toString() && item?._id
