@@ -44,14 +44,12 @@ const ChatScreen = () => {
 		isActive,
 		selectedChat,
 		setSelectedChat,
-
 		showSidebarMenu,
 		hideSidebarMenu,
 		isSideMenu,
 		setNewMessages,
 		newMessages,
 		isProfile,
-
 		hideProfile,
 		onlineUsers,
 		setOnlineUsers,
@@ -178,7 +176,6 @@ const ChatScreen = () => {
 			hideProfile();
 			isMobile && hideSidebarMenu();
 			clearUserFromGroup();
-			setSelectedChat(item);
 			socket.emit("joinChat", item?._id);
 			item?.unreadMessage?.length > 0 &&
 				socket.emit("checkUnreadMessage", {
@@ -186,8 +183,7 @@ const ChatScreen = () => {
 					loggedInID: loggedInUser?.userId,
 				});
 
-			// selectedChat?._id !== item?._id &&
-			// 	socket.emit("leaveChat", selectedChat?._id);
+			setSelectedChat(item);
 		},
 		[
 			hideProfile,
@@ -348,7 +344,9 @@ const ChatScreen = () => {
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
 													tileID={selectedChat?._id}
-													onClickHandler={() => onChangeChatsHandler(item)}
+													onClickHandler={() => {
+														onChangeChatsHandler(item);
+													}}
 													title={
 														item?.isGroupChat
 															? item?.chatName
