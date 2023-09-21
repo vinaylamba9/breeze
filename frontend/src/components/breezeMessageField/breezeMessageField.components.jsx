@@ -2,7 +2,6 @@ import BreezeTooltip from "@Components/breezeTooltip/breezeTooltip.components";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
 	MdOutlineEmojiEmotions,
-	MdOutlineKeyboardArrowUp,
 	MdOutlineAttachFile,
 	MdSend,
 } from "react-icons/md";

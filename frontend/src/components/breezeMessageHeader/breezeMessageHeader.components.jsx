@@ -37,13 +37,19 @@ const BreezeMessageHeader = ({
 	const getFiveUserFromGroupAt = useMemo(() => {
 		if (selectedChat?.users?.length <= 5) {
 			return (
-				selectedChat?.users?.map((item) => item?.name?.split(" ")[0]) + "  "
+				selectedChat?.users?.map((item) =>
+					item?._id === loggedInUser?.userId ? "You" : item?.name?.split(" ")[0]
+				) + "  "
 			);
 		} else {
 			const topFive = selectedChat?.users?.slice(0, 5);
-			return topFive?.map((item) => item?.name?.split(" ")[0]) + " ";
+			return (
+				topFive?.map((item) =>
+					item?._id === loggedInUser?.userId ? "You" : item?.name?.split(" ")[0]
+				) + " "
+			);
 		}
-	}, [selectedChat]);
+	}, [selectedChat, loggedInUser]);
 
 	return (
 		<div className=' transition-all duration-300 ease-in-out  border w-100% bg-white  rounded-bl rounded-br text-black'>
