@@ -1,6 +1,8 @@
 import { FaRegUser } from "react-icons/fa";
 import { LuSettings } from "react-icons/lu";
 import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { IoMdPhotos, IoMdCamera } from "react-icons/io";
+import { IoDocumentText } from "react-icons/io5";
 import { BiHelpCircle } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
 
@@ -88,18 +90,26 @@ export class InputType {
 
 Object.freeze(InputType);
 
-export class profileMenuType {
+export class ProfileMenuType {
 	static PROFILE = "PROFILE";
 	static SETTINGS = "SETTINGS";
 	static GUIDE = "GUIDE";
 	static HELP_CENTER = "HELP_CENTER";
 	static LOGOUT = "LOGOUT";
 }
-Object.freeze(profileMenuType);
+Object.freeze(ProfileMenuType);
 export class InputFieldStyleType {
 	static UNDERLINE = "UNDERLINE";
 	static BOX = "BOX";
 }
+Object.freeze(InputFieldStyleType);
+export class DropdownDirection {
+	static TOP = "top";
+	static BOTTOM = "bottom";
+	static LEFT = "left";
+	static RIGHT = "right";
+}
+Object.freeze(DropdownDirection);
 export const profileDropdown = [
 	{
 		id: 0,
@@ -158,3 +168,46 @@ export const profileDropdown = [
 ];
 
 Object.freeze(profileDropdown);
+
+export const msgAttachementsDropdown = [
+	{
+		id: 0,
+		label: "Document",
+		key: "DOCUMENT",
+		icon: (
+			<IoDocumentText
+				style={{
+					fontSize: `var(--fontsize-trim)`,
+					color: "blueviolet",
+				}}
+			/>
+		),
+	},
+	{
+		id: 1,
+		label: "Photos & Videos",
+		key: "PHOTOS_VIDEOS",
+		icon: (
+			<IoMdPhotos
+				style={{
+					fontSize: `var(--fontsize-trim)`,
+					color: `var(--info-color)`,
+				}}
+			/>
+		),
+	},
+	{
+		id: 2,
+		label: "Camera",
+		key: "CAMERA",
+		icon: (
+			<IoMdCamera
+				style={{
+					fontSize: `var(--fontsize-trim)`,
+					color: `var(--danger-color)`,
+				}}
+			/>
+		),
+	},
+];
+Object.freeze(msgAttachementsDropdown);

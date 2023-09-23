@@ -83,8 +83,8 @@ const Login = () => {
 			<div className='mt-2 ml-5 cursor-pointer flex justify-start items-center gap-3'>
 				<img
 					alt='breeze_logo'
-					width={60}
-					src='https://res.cloudinary.com/dtjqyp0r2/image/upload/v1693998223/breeze_kawnis.png'
+					width={40}
+					src='https://res.cloudinary.com/dtjqyp0r2/image/upload/v1695488831/Group_4_d9lhto.png'
 				/>
 				<h1 className='text-fontsize-tough font-semibold'>Breeze</h1>
 			</div>

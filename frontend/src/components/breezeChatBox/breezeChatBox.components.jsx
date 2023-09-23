@@ -34,7 +34,7 @@ const BreezeChatBox = ({
 	}, [setIsTyping]);
 
 	return (
-		<div className='h-screen'>
+		<div className='h-screen bg-white'>
 			<BreezeMessageHeader
 				isSelectedChatProfile={isSelectedChatProfile}
 				setSelectedChatProfile={setSelectedChatProfile}
