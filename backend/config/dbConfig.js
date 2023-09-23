@@ -27,6 +27,10 @@ const DB_CONFIG = {
 				console.info.bind(console, "\t 🏃‍♂️  DB STATUS :: CONNECTED [✔️]".green)
 			);
 		} catch (error) {
+			dbConnection.on(
+				"error",
+				console.error.bind(console, "DB STATUS :: ERROR: [ ❌ ]")
+			);
 			console.log(error);
 			process.exit();
 		}

@@ -50,7 +50,7 @@ const messageHandler = (socket, user, io) => {
 			(item) =>
 				item?._id?.toString() !== msg?.sender?._id?.toString() && item?._id
 		);
-
+		console.log(usersToSend, "-usersToSend");
 		await CHAT_DB_UTILS.updateUnreadMessage(chat?._id, usersToSend);
 	});
 	socket.on("checkUnreadMessage", async (obj) => {

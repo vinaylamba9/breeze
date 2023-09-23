@@ -203,7 +203,7 @@ const ChatScreen = () => {
 	 */
 
 	const onSearchChat = (e) => {
-		let filteredData = chatList.filter((item) => {
+		let filteredData = chatList?.filter((item) => {
 			const name = item?.isGroupChat
 				? item?.chatName
 				: CHAT_UTILS?.getOtherSideUserName(loggedInUser, item?.users);
@@ -218,21 +218,22 @@ const ChatScreen = () => {
 	);
 	/** -------- Chat Search End --------------- */
 	useEffect(() => {
+		console.log("-insiude useeffect--");
 		socket.on("getMessage", (newMsgRecieved) => {
+			console.log("-inside getMessage--");
 			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
+				console.log("-inside oif--", newMsgRecieved);
 				setNewMessages([...newMessages, newMsgRecieved]);
+			} else {
+				console.log(newMsgRecieved, "=newMsgRecieved");
+				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
 			}
-			// else {
-			// 	// console.log("-here- notificaton");
-			// 	// socket.emit("sendUnreadMessageNotification", newMsgRecieved);
-			// }
 		});
 
 		return () => {
 			socket.off("getMessage");
-			socket.off("sendUnreadMessageNotification");
 		};
-	}, [newMessages, selectedChat, setNewMessages]);
+	}, [newMessages, selectedChat?._id, setNewMessages]);
 
 	useEffect(() => {
 		socket.on("clearUnreadMessage", (unreadMessageResponse) => {
@@ -435,7 +436,7 @@ const ChatScreen = () => {
 						? "sm:hidden xs:hidden md:hidden w-51%"
 						: isMobile
 						? "lg:hidden xl:hidden 2xl:hidden flex-1 w-100%"
-						: "flex-1 w-75%"
+						: "flex-1 w-75% "
 				}`}>
 				{!selectedChat && !isMobile ? (
 					<ChatNotFound />
