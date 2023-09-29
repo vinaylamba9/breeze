@@ -103,6 +103,115 @@ const ChatScreen = () => {
 		setLoading(false);
 	}, [clearChatList, loggedInUser?.userId, setChatList]);
 
+	const onChangeChatsHandler = useCallback(
+		(item) => {
+			hideProfile();
+			isMobile && hideSidebarMenu();
+			clearUserFromGroup();
+			socket.emit("joinChat", {
+				chatID: item?._id,
+			});
+			item?.unreadMessage?.length > 0 &&
+				socket.emit("checkUnreadMessage", {
+					chatID: item?._id,
+					loggedInID: loggedInUser?.userId,
+				});
+			setSelectedChat(item);
+		},
+		[
+			hideProfile,
+			isMobile,
+			hideSidebarMenu,
+			clearUserFromGroup,
+			setSelectedChat,
+			loggedInUser?.userId,
+		]
+	);
+
+	/** -------- Chat Search Start --------------- */
+	/**
+	 * @Function (onSearchChat)
+	 * @param {*} e:any
+	 * @returns {} It will search on the name field and returns the filtered Value.
+	 */
+
+	const onSearchChat = (e) => {
+		let filteredData = chatList?.filter((item) => {
+			const name = item?.isGroupChat
+				? item?.chatName
+				: CHAT_UTILS?.getOtherSideUserName(loggedInUser, item?.users);
+			return name?.toLowerCase()?.includes(e.target.value.toLowerCase());
+		});
+		setSearchChat([...filteredData]);
+	};
+
+	const searchedMemo = useMemo(
+		() => (searchChat && searchChat?.length > 0 ? searchChat : chatList),
+		[chatList, searchChat]
+	);
+	/** -------- Chat Search End --------------- */
+
+	/**------- Chat notification starts --------- */
+	const unreadMessageCountHandler = useCallback(
+		(item) => {
+			const count = item?.unreadMessage?.filter((msg) => {
+				return msg === loggedInUser?.userId && msg;
+			});
+			return selectedChat?._id !== item?._id ? count?.length : 0;
+		},
+		[loggedInUser?.userId, selectedChat]
+	);
+
+	const clearUnreadMessage = useCallback(
+		(item) => {
+			const indexOfUnreadMsg = chatList?.findIndex(
+				(chat) => chat?._id === item?._id
+			);
+			if (!!chatList?.length > 0 && !!chatList[indexOfUnreadMsg]?.unreadMessage)
+				chatList[indexOfUnreadMsg].unreadMessage = [];
+		},
+		[chatList]
+	);
+
+	const handleReceivedMessage = useCallback(
+		(newMsgReceived) => {
+			if (
+				selectedChat &&
+				newMsgReceived &&
+				selectedChat._id !== newMsgReceived.chat._id
+			) {
+				console.log("Not in the chat, sending unread message notification");
+				socket.emit("sendUnreadMessageNotification", newMsgReceived);
+			} else {
+				console.log("In the chat, updating new messages");
+				setNewMessages([...newMessages, newMsgReceived]);
+			}
+		},
+		[selectedChat, newMessages, setNewMessages]
+	);
+
+	useEffect(() => {
+		socket.on("getMessage", (newMsgReceived) => {
+			handleReceivedMessage(newMsgReceived);
+		});
+
+		return () => {
+			socket.off("getMessage");
+		};
+	}, [handleReceivedMessage, newMessages, setNewMessages]);
+
+	useEffect(() => {
+		socket.on("clearUnreadMessage", (unreadMessageResponse) => {
+			clearUnreadMessage(unreadMessageResponse);
+		});
+
+		return () => {
+			socket.off("clearUnreadMessage");
+		};
+	}, [clearUnreadMessage]);
+
+	/**------- Chat notification Ends --------- */
+
 	useEffect(() => {
 		onFetchChatHandler();
 	}, [onFetchChatHandler]);
@@ -149,97 +258,34 @@ const ChatScreen = () => {
 		);
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
-
-	const unreadMessageCountHandler = useCallback(
-		(item) => {
-			const count = item?.unreadMessage?.filter((msg) => {
-				return msg === loggedInUser?.userId && msg;
-			});
-			return selectedChat?._id !== item?._id ? count?.length : 0;
-		},
-		[loggedInUser?.userId, selectedChat]
-	);
-
-	const clearUnreadMessage = useCallback(
-		(item) => {
-			const indexOfUnreadMsg = chatList?.findIndex(
-				(chat) => chat?._id === item?._id
+	useEffect(() => {
+		socket.on("updatedGroupName", (groupDetails) => {
+			let tempDetails = [...chatList];
+			const indexToReplace = tempDetails.findIndex(
+				(obj) => obj?._id === groupDetails?.chatID
 			);
-			if (!!chatList?.length > 0 && !!chatList[indexOfUnreadMsg]?.unreadMessage)
-				chatList[indexOfUnreadMsg].unreadMessage = [];
-		},
-		[chatList]
-	);
-
-	const onChangeChatsHandler = useCallback(
-		(item) => {
-			hideProfile();
-			isMobile && hideSidebarMenu();
-			clearUserFromGroup();
-			socket.emit("joinChat", item?._id);
-			item?.unreadMessage?.length > 0 &&
-				socket.emit("checkUnreadMessage", {
-					chatID: item?._id,
-					loggedInID: loggedInUser?.userId,
-				});
-
-			setSelectedChat(item);
-		},
-		[
-			hideProfile,
-			isMobile,
-			hideSidebarMenu,
-			clearUserFromGroup,
-			setSelectedChat,
-			loggedInUser?.userId,
-		]
-	);
-
-	/** -------- Chat Search Start --------------- */
-	/**
-	 * @Function (onSearchChat)
-	 * @param {*} e:any
-	 * @returns {} It will search on the name field and returns the filtered Value.
-	 */
-
-	const onSearchChat = (e) => {
-		let filteredData = chatList?.filter((item) => {
-			const name = item?.isGroupChat
-				? item?.chatName
-				: CHAT_UTILS?.getOtherSideUserName(loggedInUser, item?.users);
-			return name?.toLowerCase()?.includes(e.target.value.toLowerCase());
-		});
-		setSearchChat([...filteredData]);
-	};
-
-	const searchedMemo = useMemo(
-		() => (searchChat && searchChat?.length > 0 ? searchChat : chatList),
-		[chatList, searchChat]
-	);
-	/** -------- Chat Search End --------------- */
-	useEffect(() => {
-		console.log("-insiude useeffect--");
-		socket.on("getMessage", (newMsgRecieved) => {
-			console.log("-inside getMessage--");
-			if (selectedChat?._id === newMsgRecieved?.chat?._id) {
-				console.log("-inside oif--", newMsgRecieved);
-				setNewMessages([...newMessages, newMsgRecieved]);
-			} else {
-				console.log(newMsgRecieved, "=newMsgRecieved");
-				socket.emit("sendUnreadMessageNotification", newMsgRecieved);
+			if (indexToReplace !== -1) {
+				tempDetails[indexToReplace].chatName = groupDetails?.chatName;
 			}
+			setChatList(tempDetails);
+			setSelectedChat(tempDetails[indexToReplace]);
 		});
-
-		return () => {
-			socket.off("getMessage");
-		};
-	}, [newMessages, selectedChat?._id, setNewMessages]);
-
+		return () => socket.off("updatedGroupName");
+	}, [chatList, setChatList, setSelectedChat]);
 	useEffect(() => {
-		socket.on("clearUnreadMessage", (unreadMessageResponse) => {
-			clearUnreadMessage(unreadMessageResponse);
+		socket.on("updatedGroupBio", (groupDetails) => {
+			let tempDetails = [...chatList];
+			const indexToReplace = tempDetails.findIndex(
+				(obj) => obj?._id === groupDetails?.chatID
+			);
+			if (indexToReplace !== -1) {
+				tempDetails[indexToReplace].bio = groupDetails?.bio;
+			}
+			setChatList(tempDetails);
+			setSelectedChat(tempDetails[indexToReplace]);
 		});
-	}, [clearUnreadMessage]);
+		return () => socket.off("updatedGroupBio");
+	}, [chatList, setChatList, setSelectedChat]);
 	return (
 		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div
@@ -346,7 +392,8 @@ const ChatScreen = () => {
 												<BreezeTile
 													tileID={selectedChat?._id}
 													onClickHandler={() => {
-														onChangeChatsHandler(item);
+														selectedChat?._id !== item?._id &&
+															onChangeChatsHandler(item);
 													}}
 													title={
 														item?.isGroupChat

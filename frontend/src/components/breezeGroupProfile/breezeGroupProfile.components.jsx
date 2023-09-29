@@ -18,6 +18,7 @@ import BreezeProfileAvatar from "@Components/breezeProfileAvatar/breezeProfileAv
 import useCombinedStore from "@Zustand/store/store";
 import { IoArrowForward } from "react-icons/io5";
 import BreezeDivider from "@Components/breezeDivider/breezeDivider.components";
+import { socket } from "@Socket/socket";
 
 const BreezeGroupProfile = ({
 	setSelectedChatProfile,
@@ -72,8 +73,10 @@ const BreezeGroupProfile = ({
 				});
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					isEditGroupName && setEditGroupName(false);
-					setSelectedChat(response?.responseData);
-					setFetchAgain(!fetchAgain);
+					setSelectedChat(response?.responseBody);
+					socket.emit("updateGroupName", {
+						updatedGroupName: response?.responseBody,
+					});
 				}
 			} else {
 				setEditGroupName(false);
@@ -84,8 +87,6 @@ const BreezeGroupProfile = ({
 			selectedChat?._id,
 			isEditGroupName,
 			setSelectedChat,
-			setFetchAgain,
-			fetchAgain,
 		]
 	);
 	const renameGroupBioHandler = useCallback(
@@ -98,20 +99,13 @@ const BreezeGroupProfile = ({
 				if (response?.statusCode === HTTPStatusCode.OK) {
 					isEditGroupBio && setEditGroupBio(false);
 					setSelectedChat(response?.responseData);
-					setFetchAgain(!fetchAgain);
+					socket.emit("updateGroupBio", {
+						updatedGroupBio: response?.responseBody,
+					});
 				}
-			} else {
-				setEditGroupBio(false);
-			}
+			} else setEditGroupBio(false);
 		},
-		[
-			selectedChat?.bio,
-			selectedChat?._id,
-			isEditGroupBio,
-			setSelectedChat,
-			setFetchAgain,
-			fetchAgain,
-		]
+		[selectedChat?.bio, selectedChat?._id, isEditGroupBio, setSelectedChat]
 	);
 	const leaveGroupHandler = useCallback(async () => {
 		const response = await ChatDAO.removeUserFromGroupDAO({

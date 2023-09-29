@@ -1,11 +1,11 @@
 const { MESSAGE_DB_UTILS } = require("../../utils/dbUtils");
 
 const roomHandler = (socket, user, io) => {
-	socket.on("joinChat", async (chatID) => {
-		console.log("user => " + chatID, "- joined");
-		socket.join(chatID);
+	socket.on("joinChat", async (obj) => {
+		// console.log("user => " + chatID, "- joined");
+		socket.join(obj?.chatID);
 		const messageByChatIDResponse = await MESSAGE_DB_UTILS.findMessageByChatID(
-			chatID
+			obj?.chatID
 		);
 		socket.emit("roomMessage", messageByChatIDResponse);
 		// io.to(user?.userId).emit("roomMessage", messageByChatIDResponse);
