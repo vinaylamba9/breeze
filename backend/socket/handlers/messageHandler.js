@@ -2,11 +2,14 @@ const { CHAT_DB_UTILS, MESSAGE_DB_UTILS } = require("../../utils/dbUtils");
 const messageHandler = (socket, user, io) => {
 	socket.on("sendMessage", async (obj) => {
 		try {
+			// console.log(socket.id, "-socketUD");
 			// console.log("--message sent to this room---", obj?.chatID);
-			console.log(
-				"----users active in the room--- ",
-				io.sockets.adapter.rooms.get(obj?.chatID)
-			);
+			// console.log(
+			// 	"----users active in the room--- ",
+			// 	// io.sockets.adapter.rooms
+			// 	io.sockets.adapter.rooms.get(obj?.chatID)
+			// );
+
 			const response = await MESSAGE_DB_UTILS?.createMessage({
 				sender: user?.userId,
 				content: obj?.content,
@@ -17,12 +20,15 @@ const messageHandler = (socket, user, io) => {
 
 			await CHAT_DB_UTILS.updateLatestMessage(obj?.chatID, response);
 
-			//send to particular chat [ room ]
+			// send to particular chat [ room ]
 			socket.broadcast.to(obj?.chatID).emit("getMessage", response);
 			// Additionally, if you want to send the message to the current user (if the condition is met), you can use this:
 			if (chat?.users?.some((item) => item?._id?.toString() === user?.userId)) {
 				socket.emit("getMessage", response);
 			}
+			// chat?.users?.forEach((item) => {
+			// 	io.to(item?._id?.toString()).emit("getMessage", response);
+			// });
 
 			/** Recent chatlist */
 			const chatByID = await CHAT_DB_UTILS.findByID(user?.userId);
@@ -45,12 +51,11 @@ const messageHandler = (socket, user, io) => {
 	});
 	socket.on("sendUnreadMessageNotification", async (msg) => {
 		const chat = msg?.chat;
-		// console.log(chat, "-chat");
+
 		const usersToSend = chat?.users?.filter(
-			(item) =>
-				item?._id?.toString() !== msg?.sender?._id?.toString() && item?._id
+			(item) => item?._id?.toString() !== msg?.sender?._id?.toString()
 		);
-		console.log(usersToSend, "-usersToSend");
+		// console.table(usersToSend);
 		await CHAT_DB_UTILS.updateUnreadMessage(chat?._id, usersToSend);
 	});
 	socket.on("checkUnreadMessage", async (obj) => {
@@ -58,7 +63,6 @@ const messageHandler = (socket, user, io) => {
 			obj?.chatID,
 			obj?.loggedInID
 		);
-
 		io.to(obj?.loggedInID).emit("clearUnreadMessage", res);
 	});
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import BreezeAvatar from "@Components/breezeAvatar/breezeAvatar.components";
 import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import useCombinedStore from "@Zustand/store/store";
@@ -30,25 +30,30 @@ const BreezeChat = ({ showPill }) => {
 		);
 	};
 
-	const usersMsgFilter = (msg, index) =>
-		CHAT_UTILS?.isSameSenderOfMsg(
-			newMessages,
-			msg,
-			index,
-			loggedInUser?.userId
-		) &&
-		selectedChat?.isGroupChat && (
-			<BreezeAvatar
-				title={msg?.sender?.name}
-				isActive={ARRAY_METHODS.isElementExist(onlineUsers, msg?.sender?._id)}
-				// onClickHandler={() => setSelectedChatProfile(true)}
-			/>
-		);
+	const usersMsgFilter = useCallback(
+		(msg, index) =>
+			CHAT_UTILS?.isSameSenderOfMsg(
+				newMessages,
+				msg,
+				index,
+				loggedInUser?.userId
+			) &&
+			selectedChat?.isGroupChat && (
+				<BreezeAvatar
+					title={msg?.sender?.name}
+					isActive={ARRAY_METHODS.isElementExist(onlineUsers, msg?.sender?._id)}
+					// onClickHandler={() => setSelectedChatProfile(true)}
+				/>
+			),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[loggedInUser?.userId, newMessages, onlineUsers]
+	);
 
 	useEffect(() => {
 		socket.on("roomMessage", (roomMessage) => {
 			setNewMessages(roomMessage);
 		});
+		return () => socket.off("roomMessage");
 	}, [setNewMessages]);
 
 	return (

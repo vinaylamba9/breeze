@@ -13,14 +13,15 @@ import { userDAO } from "@Modules/onboarding/core/userDAO";
 import { HTTPStatusCode } from "@Constants/network";
 import { BreezeSessionManagement } from "@Shared/services/sessionManagement.service";
 import useCombinedStore from "@Zustand/store/store";
+import { socket } from "@Socket/socket";
 
 const BreezeProfileAvatar = ({
 	isIndividual,
 	profileImage,
 	setSelectedChatProfile,
 	title,
-	setFetchAgain,
-	fetchAgain,
+	// setFetchAgain,
+	// fetchAgain,
 }) => {
 	const { setUser } = useChatState();
 	const [hexColor, textColor] = useAvatarColorGenerator(title);
@@ -39,11 +40,14 @@ const BreezeProfileAvatar = ({
 				chatID: selectedChat?._id,
 				groupImage: url,
 			});
+			socket.emit("updateGroupImage", {
+				updateGroupImage: response?.responseBody,
+			});
 
 			setSelectedChat(response?.responseData);
-			setFetchAgain(!fetchAgain);
+			// setFetchAgain(!fetchAgain);
 		},
-		[fetchAgain, selectedChat?._id, setFetchAgain, setSelectedChat]
+		[selectedChat?._id, setSelectedChat]
 	);
 
 	const onUpdatePersonalImageHandler = useCallback(
