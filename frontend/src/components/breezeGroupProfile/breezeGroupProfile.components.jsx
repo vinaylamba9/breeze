@@ -349,6 +349,7 @@ const BreezeGroupProfile = ({
 																: null
 														}
 														title={item?.name}
+														bio={item?.bio}
 														msg={item?.bio} // TODO:- FIXES BASED ON MSG || BIO
 														isGrouped={item?.isGroupChat}
 														profileImage={item?.profileImage}
@@ -356,6 +357,7 @@ const BreezeGroupProfile = ({
 														isAdmin={
 															selectedChat?.groupAdmin?._id === item?._id
 														}
+														styleClass={`transition-all duration-300 ease-in-out rounded-2xl`}
 													/>
 													<hr
 														style={{
