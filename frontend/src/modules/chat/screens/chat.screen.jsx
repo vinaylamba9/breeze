@@ -258,6 +258,7 @@ const ChatScreen = () => {
 		);
 		setSelectedChat(activeChat?.[0]);
 	}, [chatList, selectedChat?._id, setSelectedChat]);
+
 	useEffect(() => {
 		socket.on("updatedGroupName", (groupDetails) => {
 			let tempDetails = [...chatList];
@@ -272,6 +273,7 @@ const ChatScreen = () => {
 		});
 		return () => socket.off("updatedGroupName");
 	}, [chatList, setChatList, setSelectedChat]);
+
 	useEffect(() => {
 		socket.on("updatedGroupBio", (groupDetails) => {
 			let tempDetails = [...chatList];
@@ -286,6 +288,21 @@ const ChatScreen = () => {
 		});
 		return () => socket.off("updatedGroupBio");
 	}, [chatList, setChatList, setSelectedChat]);
+
+	useEffect(() => {
+		socket.on("updatedGroupImage", (groupDetails) => {
+			let tempDetails = [...chatList];
+			const indexToReplace = tempDetails.findIndex(
+				(obj) => obj?._id === groupDetails?.chatID
+			);
+			if (indexToReplace !== -1) {
+				tempDetails[indexToReplace].groupImage = groupDetails?.groupImage;
+			}
+			setChatList(tempDetails);
+			setSelectedChat(tempDetails[indexToReplace]);
+		});
+		return () => socket.off("updatedGroupImage");
+	});
 	return (
 		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div

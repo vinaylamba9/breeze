@@ -16,10 +16,10 @@ const ChatDetailsHandler = (socket, io) => {
 		});
 	});
 	socket.on("updateGroupImage", async (obj) => {
-		obj?.updatedGroupBio?.users?.forEach((item) => {
+		obj?.updateGroupImage?.users?.forEach((item) => {
 			io.to(item?._id?.toString()).emit("updatedGroupImage", {
-				chatID: obj?.updatedGroupBio?._id,
-				bio: obj?.updatedGroupBio?.bio,
+				chatID: obj?.updateGroupImage?._id,
+				groupImage: obj?.updateGroupImage?.groupImage,
 			});
 		});
 	});
