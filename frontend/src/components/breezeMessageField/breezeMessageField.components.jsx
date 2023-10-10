@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MdOutlineEmojiEmotions, MdSend } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
-import { IoClose } from "react-icons/io5";
 import { socket } from "@Socket/socket";
 import useCombinedStore from "@Zustand/store/store";
 import BreezeEmojiPicker from "@Components/breezeEmojiPicker/breezeEmojiPicker";
 import useIsMobile from "@Shared/hooks/useMobile";
 import BreezeDropdown from "@Components/breezeDropdown/breezeDropdown.components";
-import { msgAttachementsDropdown } from "@Constants/application";
+import {
+	AttachementsMenuType,
+	msgAttachementsDropdown,
+} from "@Constants/application";
 import { motion } from "framer-motion";
+import { MediaHandler } from "@/shared/utils/media_handler.utils";
 const BreezeMessageFields = ({
 	prevChat,
 	typing,
@@ -16,6 +19,7 @@ const BreezeMessageFields = ({
 	showEmojiPicker,
 	setEmojiPicker,
 }) => {
+	const [imageAttachements, setImageAttachements] = useState();
 	const [isRotatedAttachements, setIsRotatedAttachements] = useState(false);
 	const { selectedChat, isActive, isProfile } = useCombinedStore((state) => ({
 		selectedChat: state?.selectedChat,
@@ -156,10 +160,22 @@ const BreezeMessageFields = ({
 							isRotatedAttachements ? "bg-gray-200" : ""
 						} `}>
 						<BreezeDropdown
+							isUploadFile={true}
 							isAnimation={isRotatedAttachements}
 							setIsAnimation={setIsRotatedAttachements}
 							listItems={msgAttachementsDropdown}
-							menuAction={(e, key) => {}}
+							menuAction={(e, key) => {
+								switch (key) {
+									case AttachementsMenuType.PHOTOS_VIDEOS: {
+										// setImageAttachements(true);
+										// MediaHandler.uploadImageVideo(e);
+										console.log("hello");
+										return;
+									}
+									default:
+										break;
+								}
+							}}
 							width={"w-52"}
 							direction={"bottom"}
 							isIcon={true}
