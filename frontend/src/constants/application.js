@@ -1,10 +1,10 @@
 import { FaRegUser } from "react-icons/fa";
 import { LuSettings } from "react-icons/lu";
 import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import { IoMdPhotos, IoMdCamera } from "react-icons/io";
-import { IoDocumentText } from "react-icons/io5";
+import { IoMdPhotos } from "react-icons/io";
 import { BiHelpCircle } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
+import BreezeImageVideoAttachements from "@Components/breezeImageVideoAttachements/breezeImageVideoAttachements";
 
 export const TypeWriterTextList = ["Breeze"];
 export class AccountStatus {
@@ -110,6 +110,7 @@ export class DropdownDirection {
 	static RIGHT = "right";
 }
 Object.freeze(DropdownDirection);
+
 export const profileDropdown = [
 	{
 		id: 0,
@@ -169,45 +170,51 @@ export const profileDropdown = [
 
 Object.freeze(profileDropdown);
 
+export class AttachementsMenuType {
+	static PHOTOS_VIDEOS = "PHOTOS_VIDEOS";
+	static DOCUMENTS = "DOCUMENT";
+	static CAMERA = "CAMERA";
+}
+Object.freeze(AttachementsMenuType);
+
+export class FileAcceptType {
+	static PHOTOS_VIDEOS = "image/png,image/jpeg,image/gif,image/webp,video/*";
+	static DOCUMENTS =
+		"application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf, image/*";
+}
+Object.freeze(FileAcceptType);
+
 export const msgAttachementsDropdown = [
 	{
 		id: 0,
-		label: "Document",
-		key: "DOCUMENT",
-		icon: (
-			<IoDocumentText
-				style={{
-					fontSize: `var(--fontsize-trim)`,
-					color: "blueviolet",
-				}}
-			/>
-		),
+		key: AttachementsMenuType.DOCUMENTS,
+		fileComponent: null,
 	},
 	{
 		id: 1,
-		label: "Photos & Videos",
-		key: "PHOTOS_VIDEOS",
-		icon: (
-			<IoMdPhotos
-				style={{
-					fontSize: `var(--fontsize-trim)`,
-					color: `var(--info-color)`,
-				}}
+		key: AttachementsMenuType.PHOTOS_VIDEOS,
+		fileComponent: (
+			<BreezeImageVideoAttachements
+				fileUplaodID='document_media_type'
+				fileUploadName='document_media_type'
+				isMultiple={true}
+				icon={
+					<IoMdPhotos
+						style={{
+							fontSize: `var(--fontsize-trim)`,
+							color: `var(--info-color)`,
+						}}
+					/>
+				}
+				label='Photos & Videos'
+				fileAcceptType={FileAcceptType.PHOTOS_VIDEOS}
 			/>
 		),
 	},
 	{
 		id: 2,
-		label: "Camera",
-		key: "CAMERA",
-		icon: (
-			<IoMdCamera
-				style={{
-					fontSize: `var(--fontsize-trim)`,
-					color: `var(--danger-color)`,
-				}}
-			/>
-		),
+		key: AttachementsMenuType.CAMERA,
+		fileComponent: null,
 	},
 ];
 Object.freeze(msgAttachementsDropdown);
