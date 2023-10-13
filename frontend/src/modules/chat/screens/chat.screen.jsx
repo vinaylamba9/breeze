@@ -44,6 +44,7 @@ const ChatScreen = () => {
 		isActive,
 		selectedChat,
 		setSelectedChat,
+		clearSelectedChat,
 		showSidebarMenu,
 		hideSidebarMenu,
 		isSideMenu,
@@ -53,6 +54,9 @@ const ChatScreen = () => {
 		hideProfile,
 		onlineUsers,
 		setOnlineUsers,
+		isBreezeGPT,
+		showBreezeGPT,
+		hideBreezeGPT,
 	} = useCombinedStore((state) => ({
 		isSideMenu: state?.isSideMenu,
 		showSidebarMenu: state?.showSidebarMenu,
@@ -68,10 +72,14 @@ const ChatScreen = () => {
 		setUserDetails: state?.setUserDetails,
 		selectedChat: state?.selectedChat,
 		setSelectedChat: state?.setSelectedChat,
+		clearSelectedChat: state?.clearSelectedChat,
 		setNewMessages: state?.setNewMessages,
 		newMessages: state?.newMessages,
 		onlineUsers: state?.onlineUsers,
 		setOnlineUsers: state?.setOnlineUsers,
+		isBreezeGPT: state?.isBreezeGPT,
+		showBreezeGPT: state?.showBreezeGPT,
+		hideBreezeGPT: state?.hideBreezeGPT,
 	}));
 
 	const { register } = useForm({});
@@ -403,12 +411,40 @@ const ChatScreen = () => {
 								<BreezeTileSkeleton tileLength={7} />
 							) : (
 								<>
+									<div key={`breezeGPT`}>
+										<BreezeTile
+											isGPT={true}
+											tileID={selectedChat?._id}
+											onClickHandler={() => {
+												showBreezeGPT();
+												clearSelectedChat();
+											}}
+											title={"BreezeGPT"}
+											bio={"Connect and get your problem solved."} // TODO:- FIXES BASED ON MSG || BIO
+											isGrouped={false}
+											isActive={true}
+											styleClass={`${
+												isBreezeGPT ? "bg-gray-900" : "bg-gray-600"
+											} transition-all duration-300 ease-in-out rounded-2xl w-95% mx-auto`}
+											// isNotification={item?.unreadMessage?.length}
+											// unreadMessageCount={unreadMessageCountHandler(item)}
+										/>
+										<hr
+											style={{
+												width: "95%",
+												margin: "0 auto",
+												borderTop: "1px solid var(--muted-color)",
+											}}
+										/>
+									</div>
 									{searchedMemo?.map((item, index) => {
 										return (
 											<div key={`tile_item_${index}`}>
 												<BreezeTile
+													isGPT={false}
 													tileID={selectedChat?._id}
 													onClickHandler={() => {
+														hideBreezeGPT();
 														selectedChat?._id !== item?._id &&
 															onChangeChatsHandler(item);
 													}}
@@ -502,7 +538,7 @@ const ChatScreen = () => {
 						? "lg:hidden xl:hidden 2xl:hidden flex-1 w-100%"
 						: "flex-1 w-75% "
 				}`}>
-				{!selectedChat && !isMobile ? (
+				{!selectedChat && !isMobile && !isBreezeGPT ? (
 					<ChatNotFound />
 				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (
 					<BreezeChatBox
@@ -516,6 +552,8 @@ const ChatScreen = () => {
 						fetchAgain={fetchAgain}
 						setFetchAgain={setFetchAgain}
 					/>
+				) : !selectedChat && isBreezeGPT ? (
+					<h1>Hello</h1>
 				) : null}
 			</div>
 			{(isActive || isProfile) && (

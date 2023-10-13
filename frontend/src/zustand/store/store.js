@@ -9,6 +9,7 @@ import useNotification from "@Zustand/slice/useNotification";
 import useNewMessage from "@Zustand/slice/useNewMessage";
 import useOnlineUsers from "@Zustand/slice/useOnlineUsers";
 import useSidebarMenu from "@Zustand/slice/useSidebarMenu";
+import useBreezeGPT from "@Zustand/slice/useBreezeGPT";
 
 const useCombinedStore = create((...set) => ({
 	...useToggleSidebarSlice(...set),
@@ -21,6 +22,7 @@ const useCombinedStore = create((...set) => ({
 	...useNewMessage(...set),
 	...useOnlineUsers(...set),
 	...useSidebarMenu(...set),
+	...useBreezeGPT(...set),
 }));
 
 export default useCombinedStore;

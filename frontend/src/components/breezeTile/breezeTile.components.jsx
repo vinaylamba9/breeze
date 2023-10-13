@@ -20,6 +20,7 @@ const BreezeTile = ({
 	styleClass,
 	lastMessageTime,
 	email,
+	isGPT = false,
 	unreadMessageCount,
 }) => {
 	const [hexColor, textColor] = useAvatarColorGenerator(lastMsgSender);
@@ -30,8 +31,11 @@ const BreezeTile = ({
 		<Fragment>
 			<div
 				onClick={onClickHandler}
-				className={`flex my-4 cursor-pointer 
-                    justify-start items-center ${styleClass} hover:py-5 hover:bg-gray-100 `}>
+				className={`${
+					isGPT
+						? `flex my-4 bg-gre cursor-pointer justify-start items-center ${styleClass}  py-4 hover:py-5 `
+						: `flex my-4 cursor-pointer justify-start items-center ${styleClass} hover:py-5 hover:bg-gray-100`
+				}`}>
 				<div className={` m-auto w-95%  flex items-start justify-between `}>
 					<div
 						className='flex w-80%  items-start justify-start 
@@ -43,7 +47,12 @@ const BreezeTile = ({
 							title={title}
 						/>
 						<div className=' flex flex-col items-start justify-between gap-1 w-70%  '>
-							<h3 className='text-ellipsis overflow-hidden ... font-black text-sm '>
+							<h3
+								className={`${
+									isGPT
+										? "text-ellipsis overflow-hidden ... text-white font-semibold text-sm"
+										: "text-ellipsis overflow-hidden ... text-black text-sm "
+								}`}>
 								{title}
 							</h3>
 							<Fragment>
@@ -84,11 +93,18 @@ const BreezeTile = ({
 									<MdOutlineSubtitles
 										className='mt-0.5'
 										style={{
-											color: `text-gray-600`,
+											color: isGPT ? `white` : `black`,
 											fontSize: `var(--fontsize-smart)`,
 										}}
 									/>
-									<p className=' text-gray-500 text-fontsize-smart'>{bio}</p>
+									<p
+										className={`${
+											isGPT
+												? "text-white text-fontsize-smart"
+												: " text-gray-500 text-fontsize-smart"
+										}`}>
+										{bio}
+									</p>
 								</div>
 							)}
 						</div>
