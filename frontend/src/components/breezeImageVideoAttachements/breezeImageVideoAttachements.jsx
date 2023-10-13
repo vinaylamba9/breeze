@@ -9,10 +9,25 @@ const BreezeImageVideoAttachements = ({
 	label,
 }) => {
 	const fileUplaodHandler = (e) => {
-		let filesToUpload = e.target.files;
-
-		filesToUpload?.forEach((file) => {});
-		console.log(e.target.files);
+		let filesToUpload = Array.from(e?.target?.files);
+		filesToUpload?.map((item) => console.log(item));
+		filesToUpload?.forEach((file) => {
+			if (
+				(file.type !== "image/png" &&
+					file.type !== "image/jpeg" &&
+					file.type !== "image/gif" &&
+					file.type !== "image/webp") ||
+				file.size > 1024 * 1024 * 5
+			) {
+				return;
+			} else {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = (e) => {
+					console.log(e.target.result);
+				};
+			}
+		});
 	};
 	return (
 		<div>
