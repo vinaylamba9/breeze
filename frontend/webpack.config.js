@@ -73,6 +73,7 @@ module.exports = (_, argv) => ({
 			filename: "remoteEntry.js",
 			remotes: {
 				feed: "feed@https://breeze-feed.vercel.app/remoteEntry.js",
+				BreezeGPT: `BreezeGPT@${process.env.REACT_SIDE_BREEGEGPT_ENDPOINT}/remoteEntry.js`,
 			},
 			exposes: {},
 			shared: {

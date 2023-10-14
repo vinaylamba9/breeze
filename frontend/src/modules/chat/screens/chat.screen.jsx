@@ -23,7 +23,7 @@ import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
 import useIsMobile from "@Shared/hooks/useMobile";
-
+import BreezeGPTChat from "BreezeGPT/BreezeGPTChat";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -413,7 +413,7 @@ const ChatScreen = () => {
 								<>
 									<div key={`breezeGPT`}>
 										<BreezeTile
-											isGPT={true}
+											isGPT={isBreezeGPT}
 											tileID={selectedChat?._id}
 											onClickHandler={() => {
 												showBreezeGPT();
@@ -424,10 +424,8 @@ const ChatScreen = () => {
 											isGrouped={false}
 											isActive={true}
 											styleClass={`${
-												isBreezeGPT ? "bg-gray-900" : "bg-gray-600"
-											} transition-all duration-300 ease-in-out rounded-2xl w-95% mx-auto`}
-											// isNotification={item?.unreadMessage?.length}
-											// unreadMessageCount={unreadMessageCountHandler(item)}
+												isBreezeGPT ? "bg-color-darkTeal" : "bg-color-lightTeal"
+											} transition-all duration-300 ease-in-out rounded-2xl py-5 w-95% mx-auto`}
 										/>
 										<hr
 											style={{
@@ -553,7 +551,7 @@ const ChatScreen = () => {
 						setFetchAgain={setFetchAgain}
 					/>
 				) : !selectedChat && isBreezeGPT ? (
-					<h1>Hello</h1>
+					<BreezeGPTChat />
 				) : null}
 			</div>
 			{(isActive || isProfile) && (

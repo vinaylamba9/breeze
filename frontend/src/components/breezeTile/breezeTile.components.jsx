@@ -33,7 +33,7 @@ const BreezeTile = ({
 				onClick={onClickHandler}
 				className={`${
 					isGPT
-						? `flex my-4 bg-gre cursor-pointer justify-start items-center ${styleClass}  py-4 hover:py-5 `
+						? `flex my-4 cursor-pointer justify-start items-center ${styleClass} hover:py-5 `
 						: `flex my-4 cursor-pointer justify-start items-center ${styleClass} hover:py-5 hover:bg-gray-100`
 				}`}>
 				<div className={` m-auto w-95%  flex items-start justify-between `}>
@@ -51,7 +51,7 @@ const BreezeTile = ({
 								className={`${
 									isGPT
 										? "text-ellipsis overflow-hidden ... text-white font-semibold text-sm"
-										: "text-ellipsis overflow-hidden ... text-black text-sm "
+										: "text-ellipsis overflow-hidden ... text-black font-semibold text-sm "
 								}`}>
 								{title}
 							</h3>
