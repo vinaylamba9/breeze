@@ -424,7 +424,9 @@ const ChatScreen = () => {
 											isGrouped={false}
 											isActive={true}
 											styleClass={`${
-												isBreezeGPT ? "bg-color-darkTeal" : "bg-color-lightTeal"
+												isBreezeGPT
+													? " bg-color-darkTeal"
+													: "bg-color-lightTeal"
 											} transition-all duration-300 ease-in-out rounded-2xl py-5 w-95% mx-auto`}
 										/>
 										<hr
