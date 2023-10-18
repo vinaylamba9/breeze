@@ -23,7 +23,7 @@ import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
 import useIsMobile from "@Shared/hooks/useMobile";
-import BreezeGPTChat from "BreezeGPT/BreezeGPTChat";
+import BreezeGPTApp from "BreezeGPT/BreezeGPTApp";
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
 	const [isLoading, setLoading] = useState(false);
@@ -311,6 +311,8 @@ const ChatScreen = () => {
 		});
 		return () => socket.off("updatedGroupImage");
 	});
+	console.log("isActive---", isActive);
+	console.log("isMobile----", isMobile);
 	return (
 		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
 			<div
@@ -534,9 +536,9 @@ const ChatScreen = () => {
 				className={`${
 					isActive
 						? "sm:hidden xs:hidden md:hidden w-51%"
-						: isMobile
-						? "lg:hidden xl:hidden 2xl:hidden flex-1 w-100%"
-						: "flex-1 w-75% "
+						: isMobile || isActive
+						? "lg:hidden xl:hidden 2xl:hidden flex-1"
+						: "flex-1  w-75% "
 				}`}>
 				{!selectedChat && !isMobile && !isBreezeGPT ? (
 					<ChatNotFound />
@@ -553,7 +555,7 @@ const ChatScreen = () => {
 						setFetchAgain={setFetchAgain}
 					/>
 				) : !selectedChat && isBreezeGPT ? (
-					<BreezeGPTChat />
+					<BreezeGPTApp />
 				) : null}
 			</div>
 			{(isActive || isProfile) && (
