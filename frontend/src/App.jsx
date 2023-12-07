@@ -23,7 +23,6 @@ const App = () => {
 						path={BreezeRoutes.LANDINGROUTE}
 						element={<Navigate to={BreezeRoutes.LOGINROUTE} />}
 					/>
-
 					<Route
 						path={BreezeRoutes.LANDINGROUTE}
 						element={<OnboardingLayout />}>
@@ -31,9 +30,8 @@ const App = () => {
 							return <Route exact key={path} element={component} path={path} />;
 						})}
 					</Route>
-
 					<Route
-						path={BreezeRoutes.CHATROUTE}
+						path={BreezeRoutes.LANDINGROUTE}
 						element={<ProtectedRoutes Component={PostOnboardingLayout} />}>
 						{Object.entries(postOnboardingRoutes)?.map(([path, component]) => (
 							<Route exact key={path} element={component} path={path} />

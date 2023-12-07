@@ -218,7 +218,7 @@ const BreezeMessageFields = ({
 						title='Type a message'
 						tabIndex={10}
 						spellCheck></div>
-					<div className={` mx-1  cursor-pointer text-center flex items-end`}>
+					<div className={` mx-1 cursor-pointer text-center flex items-end`}>
 						<div
 							className='p-3 rounded-full bg-gray-200 cursor-pointer ease-in-out duration-300 '
 							onClick={sendMessageOnMobile}>

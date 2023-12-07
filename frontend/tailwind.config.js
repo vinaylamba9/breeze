@@ -47,6 +47,8 @@ module.exports = {
 				"color-purple": "var(--color-purple)",
 				"color-pearl": "var(--color-pearl)",
 				"color-admin": "var(--admin-color)",
+				"color-parrot": "var(--color-parrot)",
+				"color-sky": "var(--color-sky)",
 			},
 
 			fontSize: {

@@ -113,7 +113,7 @@ const BreezeDropdown = ({
 											key={item?.key}
 											className={
 												item?.isDisabled
-													? "flex justify-start items-center py-2 cursor-not-allowed opacity-30"
+													? "flex  justify-start items-center py-2 cursor-not-allowed opacity-30"
 													: " group hover:bg-gray-100 hover:rounded-lg flex justify-start items-center ease-out duration-300 py-2 cursor-pointer gap-3 px-2"
 											}>
 											{isIcon && <div key={item?.key}>{item?.icon}</div>}

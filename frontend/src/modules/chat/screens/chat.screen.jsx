@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCallback, useState, useEffect, useMemo, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
@@ -23,6 +23,7 @@ import { ARRAY_METHODS, DATE_UTILS } from "@Shared/utils/basic.utils";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
 import useIsMobile from "@Shared/hooks/useMobile";
+import BreezeGPTApp from "BreezeGPT/BreezeGPTApp";
 
 const ChatScreen = () => {
 	const [isGroupChatModal, setGroupChatModal] = useState(false);
@@ -311,251 +312,202 @@ const ChatScreen = () => {
 		});
 		return () => socket.off("updatedGroupImage");
 	});
+
 	return (
 		<div className=' flex items-start justify-start gap-0.5 h-full w-full'>
-			<div
-				className={` bg-white   ${
-					(selectedChat && isMobile) || (isMobile && isProfile)
-						? "xs:hidden sm:hidden md:hidden xl:hidden lg:hidden 2xl:hidden"
-						: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
-				}`}>
-				<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
-					<div className='flex justify-start items-center gap-5 '>
-						{!isSideMenu ? (
-							<div
-								className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
-								onClick={showSidebarMenu}>
-								<HiMenu
-									style={{
-										cursor: "pointer",
-										color: `var(--background-color-dark)`,
-										fontSize: `var(--fontsize-tough)`,
-										fontWeight: 900,
-									}}
-								/>
-							</div>
-						) : (
-							<div
-								className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
-								onClick={hideSidebarMenu}>
-								<IoChevronBackOutline
-									style={{
-										cursor: "pointer",
-										color: `var(--background-color-dark)`,
-										fontSize: `var(--fontsize-tough)`,
-										fontWeight: 900,
-									}}
-								/>
-							</div>
-						)}
-						<div className='text-fontsize-pearl font-bold'>Chats</div>
-					</div>
-					<div
-						className='group flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
-						onClick={openSideBar}>
-						<BsPlusLg
-							style={{
-								cursor: "pointer",
-								color: `var(--background-color-light)`,
-								fontSize: `var(--fontsize-glossy)`,
-								fontWeight: 900,
-							}}
-						/>
-						<p className='hidden group-hover:inline  group-hover:text-white text-sm '>
-							Create chat
-						</p>
-					</div>
-				</header>
-				<div className='w-95% mx-auto mt-5 mb-8'>
-					<BreezeSearch
-						onChangeHandler={onSearchChat}
-						placeholder={"Search chat"}
-						leadingIcon={
-							<BiSearch
+			<Fragment>
+				<div
+					className={` bg-white   ${
+						(selectedChat && isMobile) || (isMobile && isProfile)
+							? "xs:hidden sm:hidden md:hidden xl:hidden lg:hidden 2xl:hidden"
+							: "xs:w-100% sm:w-100% md:w-100% lg:w-25% xl:w-25% 2xl:w-25%"
+					}`}>
+					<header className='flex items-center justify-between  truncate w-95% mx-auto my-5 '>
+						<div className='flex justify-start items-center gap-5 '>
+							{!isSideMenu ? (
+								<div
+									className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
+									onClick={showSidebarMenu}>
+									<HiMenu
+										style={{
+											cursor: "pointer",
+											color: `var(--background-color-dark)`,
+											fontSize: `var(--fontsize-tough)`,
+											fontWeight: 900,
+										}}
+									/>
+								</div>
+							) : (
+								<div
+									className='cursor-pointer lg:hidden xl:hidden 2xl:hidden'
+									onClick={hideSidebarMenu}>
+									<IoChevronBackOutline
+										style={{
+											cursor: "pointer",
+											color: `var(--background-color-dark)`,
+											fontSize: `var(--fontsize-tough)`,
+											fontWeight: 900,
+										}}
+									/>
+								</div>
+							)}
+							<div className='text-fontsize-pearl font-bold'>Chats</div>
+						</div>
+						<div
+							className='group flex items-center justify-start gap-3 cursor-pointer bg-black px-3 py-3 rounded-xl'
+							onClick={openSideBar}>
+							<BsPlusLg
 								style={{
-									color: `var(--background-color-dark)`,
+									cursor: "pointer",
+									color: `var(--background-color-light)`,
 									fontSize: `var(--fontsize-glossy)`,
+									fontWeight: 900,
 								}}
 							/>
-						}
-						isDismissible
-						register={register}
-						name='searchUser'
-						// dismissibleIcon={
-						// 	<span
-						// 		onClick={()=>}
-						// 		className=' hover:bg-gray-300 text-white font-bold p-2 rounded-full cursor-pointer'>
-						// 		<IoClose
-						// 			style={{
-						// 				color: `var(--background-color-dark)`,
-						// 				fontSize: `var(--fontsize-virgin)`,
-						// 			}}
-						// 		/>
-						// 	</span>
-						// }
-					/>
-				</div>
-				<div className='w-95% mx-auto'>
-					<BreezeDivider isDashed={true} />
-				</div>
+							<p className='hidden group-hover:inline  group-hover:text-white text-sm '>
+								Create chat
+							</p>
+						</div>
+					</header>
+					<div className='w-95% mx-auto mt-5 mb-8'>
+						<BreezeSearch
+							onChangeHandler={onSearchChat}
+							placeholder={"Search chat"}
+							leadingIcon={
+								<BiSearch
+									style={{
+										color: `var(--background-color-dark)`,
+										fontSize: `var(--fontsize-glossy)`,
+									}}
+								/>
+							}
+							isDismissible
+							register={register}
+							name='searchUser'
+						/>
+					</div>
+					<div className='w-95% mx-auto'>
+						<BreezeDivider isDashed={true} />
+					</div>
 
-				<div className='w-100% mx-auto'>
-					<div className='rounded-xl  items-start justify-between gap-5 m-auto'>
-						<div
-							className='bg-white rounded-xl overflow-y-auto '
-							style={{
-								height: "calc(100vh - 170px)",
-								maxHeight: "calc(100vh - 170px)",
-							}}>
-							{isLoading ? (
-								<BreezeTileSkeleton tileLength={7} />
-							) : (
-								<>
-									<div key={`breezeGPT`}>
-										<BreezeTile
-											isGPT={true}
-											tileID={selectedChat?._id}
-											onClickHandler={() => {
-												showBreezeGPT();
-												clearSelectedChat();
-											}}
-											title={"BreezeGPT"}
-											bio={"Connect and get your problem solved."} // TODO:- FIXES BASED ON MSG || BIO
-											isGrouped={false}
-											isActive={true}
-											styleClass={`${
-												isBreezeGPT ? "bg-gray-900" : "bg-gray-600"
-											} transition-all duration-300 ease-in-out rounded-2xl w-95% mx-auto`}
-											// isNotification={item?.unreadMessage?.length}
-											// unreadMessageCount={unreadMessageCountHandler(item)}
-										/>
-										<hr
-											style={{
-												width: "95%",
-												margin: "0 auto",
-												borderTop: "1px solid var(--muted-color)",
-											}}
-										/>
-									</div>
-									{searchedMemo?.map((item, index) => {
-										return (
-											<div key={`tile_item_${index}`}>
-												<BreezeTile
-													isGPT={false}
-													tileID={selectedChat?._id}
-													onClickHandler={() => {
-														hideBreezeGPT();
-														selectedChat?._id !== item?._id &&
-															onChangeChatsHandler(item);
-													}}
-													title={
-														item?.isGroupChat
-															? item?.chatName
-															: CHAT_UTILS?.getOtherSideUserName(
-																	loggedInUser,
-																	item?.users
-															  )
-													}
-													lastMsgSender={item?.recentMessage?.sender?.name}
-													lastMsgSenderID={item?.recentMessage?.sender?._id}
-													bio={!item?.recentMessage && item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
-													msg={
-														item?.recentMessage?.content > 30
-															? item?.recentMessage?.content?.substring(0, 30) +
-															  "..."
-															: item?.recentMessage?.content
-													}
-													isActive={ARRAY_METHODS.isElementExist(
-														onlineUsers,
-														CHAT_UTILS.getOtherSideUserID(
-															loggedInUser,
-															item?.users
-														)
-													)}
-													lastMessageTime={
-														item &&
-														item?.recentMessage?.createdAt &&
-														DATE_UTILS.getTimeInAMPM(
-															item?.recentMessage?.createdAt
-														)
-													}
-													isGrouped={item?.isGroupChat}
-													profileImage={
-														item?.isGroupChat
-															? item?.groupImage
-															: CHAT_UTILS?.getOtherSideProfileImage(
-																	loggedInUser,
-																	item?.users
-															  )
-													}
-													isLastTimeActive={true}
-													styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
-														selectedChat === item
-															? " py-5 bg-gray-100"
-															: "bg-transparent"
-													} w-95% mx-auto`}
-													// isNotification={item?.unreadMessage?.length}
-													unreadMessageCount={unreadMessageCountHandler(item)}
-												/>
-												<hr
-													style={{
-														width: "95%",
-														margin: "0 auto",
-														borderTop: "1px solid var(--muted-color)",
-													}}
-												/>
-											</div>
-										);
-									})}
-								</>
-							)}
+					<div className='w-100% mx-auto'>
+						<div className='rounded-xl  items-start justify-between gap-5 m-auto'>
+							<div
+								className='bg-white rounded-xl overflow-y-auto '
+								style={{
+									height: "calc(100vh - 170px)",
+									maxHeight: "calc(100vh - 170px)",
+								}}>
+								{isLoading ? (
+									<BreezeTileSkeleton tileLength={7} />
+								) : (
+									<>
+										{searchedMemo?.map((item, index) => {
+											return (
+												<div key={`tile_item_${index}`}>
+													<BreezeTile
+														isGPT={false}
+														tileID={selectedChat?._id}
+														onClickHandler={() => {
+															hideBreezeGPT();
+															selectedChat?._id !== item?._id &&
+																onChangeChatsHandler(item);
+														}}
+														title={
+															item?.isGroupChat
+																? item?.chatName
+																: CHAT_UTILS?.getOtherSideUserName(
+																		loggedInUser,
+																		item?.users
+																  )
+														}
+														lastMsgSender={item?.recentMessage?.sender?.name}
+														lastMsgSenderID={item?.recentMessage?.sender?._id}
+														bio={!item?.recentMessage && item?.users?.[1]?.bio} // TODO:- FIXES BASED ON MSG || BIO
+														msg={
+															item?.recentMessage?.content > 30
+																? item?.recentMessage?.content?.substring(
+																		0,
+																		30
+																  ) + "..."
+																: item?.recentMessage?.content
+														}
+														isActive={ARRAY_METHODS.isElementExist(
+															onlineUsers,
+															CHAT_UTILS.getOtherSideUserID(
+																loggedInUser,
+																item?.users
+															)
+														)}
+														lastMessageTime={
+															item &&
+															item?.recentMessage?.createdAt &&
+															DATE_UTILS.getTimeInAMPM(
+																item?.recentMessage?.createdAt
+															)
+														}
+														isGrouped={item?.isGroupChat}
+														profileImage={
+															item?.isGroupChat
+																? item?.groupImage
+																: CHAT_UTILS?.getOtherSideProfileImage(
+																		loggedInUser,
+																		item?.users
+																  )
+														}
+														isLastTimeActive={true}
+														styleClass={`transition-all duration-300 ease-in-out rounded-2xl ${
+															selectedChat === item
+																? " py-5 bg-gray-100"
+																: "bg-transparent"
+														} w-95% mx-auto`}
+														// isNotification={item?.unreadMessage?.length}
+														unreadMessageCount={unreadMessageCountHandler(item)}
+													/>
+													<hr
+														style={{
+															width: "95%",
+															margin: "0 auto",
+															borderTop: "1px solid var(--muted-color)",
+														}}
+													/>
+												</div>
+											);
+										})}
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
 
-				{isSidebar && (
-					<BreezeSideDrawer
-						isOpen={isSidebar}
-						onClose={closeSideBar}
-						backgroundColor={"bg-white"}
-						position='right-0'
-						children={
-							<BreezeSideDrawerBody
-								onModalOpen={openGroupModal}
-								onClose={closeSideBar}
-								onModalClose={closeGroupModal}
+				<div
+					className={`${
+						isActive
+							? "sm:hidden xs:hidden md:hidden w-51%"
+							: isMobile || isActive
+							? "lg:hidden xl:hidden 2xl:hidden flex-1"
+							: "flex-1  w-75% "
+					}`}>
+					{!selectedChat && !isMobile && !isBreezeGPT ? (
+						<ChatNotFound />
+					) : (
+						((selectedChat && isMobile) || (selectedChat && !isMobile)) && (
+							<BreezeChatBox
+								typing={typing}
+								isTyping={isTyping}
+								setIsTyping={setIsTyping}
+								setTyping={setTyping}
+								setChats={setChatList}
+								isSelectedChatProfile={isSelectedChatProfile}
+								setSelectedChatProfile={setSelectedChatProfile}
+								fetchAgain={fetchAgain}
+								setFetchAgain={setFetchAgain}
 							/>
-						}
-					/>
-				)}
-			</div>
-
-			<div
-				className={`${
-					isActive
-						? "sm:hidden xs:hidden md:hidden w-51%"
-						: isMobile
-						? "lg:hidden xl:hidden 2xl:hidden flex-1 w-100%"
-						: "flex-1 w-75% "
-				}`}>
-				{!selectedChat && !isMobile && !isBreezeGPT ? (
-					<ChatNotFound />
-				) : (selectedChat && isMobile) || (selectedChat && !isMobile) ? (
-					<BreezeChatBox
-						typing={typing}
-						isTyping={isTyping}
-						setIsTyping={setIsTyping}
-						setTyping={setTyping}
-						setChats={setChatList}
-						isSelectedChatProfile={isSelectedChatProfile}
-						setSelectedChatProfile={setSelectedChatProfile}
-						fetchAgain={fetchAgain}
-						setFetchAgain={setFetchAgain}
-					/>
-				) : !selectedChat && isBreezeGPT ? (
-					<h1>Hello</h1>
-				) : null}
-			</div>
+						)
+					)}
+				</div>
+			</Fragment>
 			{(isActive || isProfile) && (
 				<div
 					className={`bg-white h-screen  sm:w-100% xs:w-100% md:w-100% flex-1`}>
@@ -575,6 +527,21 @@ const ChatScreen = () => {
 					key={"Group_chat_modal"}
 					children={<BreezeGroupChat closeModal={closeGroupModal} />}
 					isDismissible={true}
+				/>
+			)}
+			{isSidebar && (
+				<BreezeSideDrawer
+					isOpen={isSidebar}
+					onClose={closeSideBar}
+					backgroundColor={"bg-white"}
+					position='right-0'
+					children={
+						<BreezeSideDrawerBody
+							onModalOpen={openGroupModal}
+							onClose={closeSideBar}
+							onModalClose={closeGroupModal}
+						/>
+					}
 				/>
 			)}
 		</div>
