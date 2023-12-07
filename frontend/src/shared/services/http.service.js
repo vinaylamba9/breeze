@@ -47,7 +47,6 @@ export class BreezeHttpService {
 					},
 				}
 			);
-
 			return {
 				statusCode: response?.status,
 				responseBody: response?.data,
