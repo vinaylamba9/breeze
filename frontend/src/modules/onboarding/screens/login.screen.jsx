@@ -147,9 +147,9 @@ const Login = () => {
 									required
 								/>
 							</div>
-							<div className=' -mt-2 mb-5 flex justify-end items-end   text-black '>
+							<div className=' -mt-2 mb-5 flex justify-end items-end text-black '>
 								<div
-									className='hover:tracking-wide relative cursor-pointer ease-in-out duration-300'
+									className='hover:tracking-wide float-right cursor-pointer text-sm ease-in-out duration-300'
 									onClick={onForgotPasswordClickHandler}>
 									Forgot Password ?
 								</div>
