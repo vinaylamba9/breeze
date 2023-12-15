@@ -217,13 +217,7 @@ const ForgotPassword = () => {
 							/>
 							<center className='my-10'>
 								<span className=' text-gray-500 flex items-center justify-center gap-1 '>
-									<MdOutlineKeyboardBackspace
-										className='mt-0.5'
-										style={{
-											color: `text-black !important`,
-											fontSize: `var(--fontsize-trim) `,
-										}}
-									/>
+									<MdOutlineKeyboardBackspace className='mt-0.5 cursor-pointer text-black text-fontsize-strong  border p-2 rounded-full hover:bg-gray-900 hover:text-white ease-in-out duration-300' />
 									&nbsp; &nbsp;<p>Back to</p>
 									<p
 										onClick={() => navigate(BreezeRoutes.LOGINROUTE)}
