@@ -39,7 +39,6 @@ const chatModel = mongoose.Schema(
 			{
 				type: SchemaTypes.ObjectId,
 				ref: "User",
-				
 			},
 		],
 	},
